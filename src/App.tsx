@@ -1,7 +1,15 @@
 import * as React from 'react';
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
 import './App.scss';
 
 class App extends React.Component {
+  componentDidMount() {
+    firebase.auth().signInAnonymously().catch(function (error) {
+      // Handle Errors here.
+    });
+  }
+
   render() {
     return (
       <div className="App">
