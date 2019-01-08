@@ -5,9 +5,11 @@ import './App.scss';
 
 class App extends React.Component {
   componentDidMount() {
-    firebase.auth().signInAnonymously().catch(function (error) {
-      // Handle Errors here.
-    });
+    if (!firebase.auth().currentUser) {
+      firebase.auth().signInAnonymously().catch(function (error) {
+        // Handle Errors here.
+      });
+    }
   }
 
   render() {
