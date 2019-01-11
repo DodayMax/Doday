@@ -1,0 +1,32 @@
+type Hero {
+  id: ID!
+  name: String
+  friends: [Hero] @relation(name: "FRIENDS", direction: "BOTH")
+  dodays: [Doday] @relation(name: "DO", direction: "BOTH")
+  tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
+}
+
+type Doday {
+  id: ID!
+  title: String
+  owner: [Hero] @relation(name: "CREATE", direction: "IN")
+  dodayers: [Hero] @relation(name: "DO", direction: "BOTH")
+  tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
+}
+
+type Tag {
+  id: ID!
+  name: String
+}
+
+type Category {
+  id: ID!
+  name: String
+}
+
+type Query {
+  dodaysBySubstring(substring: String): [Doday]
+    @cypher(
+      statement: "MATCH (u:Doday) WHERE u.title CONTAINS $substring RETURN u"
+    )
+}
