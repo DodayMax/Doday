@@ -1,0 +1,19 @@
+.grid {
+  &__container {
+    width: 30rem;
+    height: 100vh;
+    background-color: #222;
+    overflow-y: scroll;
+  }
+
+  &__cell {
+    display: flex;
+    height: 4rem;
+    align-items: center;
+    padding-left: 1rem;
+    background-color: #fefefe;
+    font-size: 1.6rem;
+    margin: 1rem;
+    border-radius: 4px;
+  }
+}

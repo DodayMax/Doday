@@ -49,3 +49,33 @@ export const createDodayNode = (variables: any) => {
       variables
     })
 } 
+
+export const removeHeroDodays = (variables: any) => {
+  return client
+    .mutate({
+      mutation: gql`
+        mutation RemoveHeroDodays($from: _HeroInput!, $to: _DodayInput!) {
+            RemoveHeroDodays(from: $from, to: $to) {
+              from {
+                name
+              }
+            }
+          }
+      `,
+      variables
+    })
+} 
+
+export const deleteDodayNode = (variables: any) => {
+  return client
+    .mutate({
+      mutation: gql`
+        mutation DeleteDoday($id: ID!) {
+            DeleteDoday(id: $id) {
+              id
+            }
+          }
+      `,
+      variables
+    })
+} 

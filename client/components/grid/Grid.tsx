@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { Doday, dodayStore } from '../../stores';
+import './grid.scss';
 
 @observer
 class Grid extends React.Component {
@@ -10,17 +11,14 @@ class Grid extends React.Component {
 
   render() {
     return (
-      <div>
-        Dodays
-        <div>
-          {
-            dodayStore.dodays.map((doday: Doday) => (
+      <ul className="grid__container">
+        {
+          dodayStore.dodays.map((doday: Doday) => (
             <li
+              className="grid__cell"
               key={doday.id}
-              onClick={() => dodayStore.toggleDoday(doday.id)}
-            >{doday.name}</li>))}
-        </div>
-      </div>
+            ><input type="checkbox" />{doday.name}<button onClick={() => dodayStore.removeDoday(doday.id)}>x</button></li>))}
+      </ul>
     );
   }
 }

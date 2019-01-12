@@ -6,6 +6,7 @@ import { createHeroNode, createDodayNode, addHeroDodays } from './graphs/mutatio
 import { authStore, dodayStore } from './stores';
 import Grid from './components/grid/Grid';
 import 'firebase/auth';
+import './styles/base.scss'
 
 @observer
 class App extends React.Component {
@@ -28,15 +29,16 @@ class App extends React.Component {
 
   addDodayNodeButton = () => {
     return (
-      <button
-        onClick={async () => {
-          const { data }: any = await createDodayNode({ name: `${Math.random()} doday`, created: Date.now() });
-          await addHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id: data!.CreateDoday.id } });
-          await dodayStore.fetchActiveDodays();
-        }}
-      >
-        Add doday node
-      </button>
+      <div>
+        <input />
+        <button
+          onClick={async () => {
+            dodayStore.createDodayNode();
+          }}
+        >
+          Add doday node
+        </button>
+      </div>
     )
   }
 
@@ -49,7 +51,9 @@ class App extends React.Component {
       return (
         <>
           <Grid />
-          {this.addDodayNodeButton()}
+          <div className="control_panel">
+            {this.addDodayNodeButton()}
+          </div>
         </>
       );
     }
