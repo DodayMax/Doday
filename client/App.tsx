@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
-import { Mutation } from "react-apollo";
 import client from './graphs/client';
-import { CREATE_HERO } from './graphs/mutations';
-import { dodayStore, Doday, authStore } from './stores';
+import { createHeroNode, createDodayNode, addHeroDodays } from './graphs/mutations';
+import { authStore, dodayStore } from './stores';
+import Grid from './components/grid/Grid';
 import 'firebase/auth';
-import './App.scss';
 
 @observer
 class App extends React.Component {
@@ -14,24 +13,30 @@ class App extends React.Component {
     authStore.listenAuthChange();
   }
 
-  signInAnonymously = (callback: any) => {
+  signInAnonymously = () => {
     authStore.loginAnonymously()
       .then((user) => {
-        callback({ variables: { id: user.user!.uid, name: 'Unknown Dodayer', created: Date.now() } });
+        createHeroNode({ variables: { id: user.user!.uid, name: 'Unknown Dodayer', created: Date.now() } });
       })
   }
 
   loginAnonymously = () => {
     return (
-      <Mutation mutation={CREATE_HERO}>
-        {(CreateHero, { data }) => (
-          <button
-            onClick={() => {
-              this.signInAnonymously(CreateHero)
-            }}
-          >Login Anonymously</button>
-        )}
-      </Mutation>
+      <button onClick={() => this.signInAnonymously}>Login Anonymously</button>
+    )
+  }
+
+  addDodayNodeButton = () => {
+    return (
+      <button
+        onClick={async () => {
+          const { data }: any = await createDodayNode({ name: `${Math.random()} doday`, created: Date.now() });
+          await addHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id: data!.CreateDoday.id } });
+          await dodayStore.fetchActiveDodays();
+        }}
+      >
+        Add doday node
+      </button>
     )
   }
 
@@ -41,9 +46,12 @@ class App extends React.Component {
     } else if (authStore.currentHero === null) {
       return this.loginAnonymously();
     } else {
-      return <div className="App">
-        {dodayStore.dodays.map((doday: Doday) => (<li key={doday.id} onClick={() => dodayStore.toggleDoday(doday.id)}>{doday.title} | {`${doday.completed}`}</li>))}
-      </div>;
+      return (
+        <>
+          <Grid />
+          {this.addDodayNodeButton()}
+        </>
+      );
     }
   }
 

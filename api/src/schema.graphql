@@ -16,16 +16,14 @@ type Doday {
   doing: [Hero] @relation(name: "DOING", direction: "BOTH")
   done: [Hero] @relation(name: "DONE", direction: "BOTH")
   tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
-  completed(heroID: ID): Boolean
-    @cypher(
-      statement: "MATCH (this)-[r:DONE]-(h:Hero) WHERE h.id = $heroID RETURN exists(r.timestamp)"
-    )
+  created: Float
 }
 
 type Path {
   id: ID!
   name: String
   dodays: [Doday] @relation(name: "INCLUDE", direction: "IN")
+  created: Float
 }
 
 type Tag {
@@ -42,6 +40,7 @@ type Role {
 type Category {
   id: ID!
   name: String
+  created: Float
 }
 
 type Done @relation(name: "DONE") {
@@ -54,5 +53,9 @@ type Query {
   dodaysBySubstring(substring: String): [Doday]
     @cypher(
       statement: "MATCH (u:Doday) WHERE u.title CONTAINS $substring RETURN u"
+    )
+  activeDodays(heroID: ID): [Doday]
+    @cypher(
+      statement: "MATCH (d:Doday)-[:DOING]-(h:Hero) WHERE h.id = $heroID RETURN d"
     )
 }

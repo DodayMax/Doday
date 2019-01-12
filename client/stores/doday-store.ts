@@ -1,20 +1,16 @@
 import { observable, action, computed } from 'mobx';
-
-const mockDodays = [{
-  id: '1',
-  title: 'First doday',
-  completed: false,
-}]
+import { activeDodaysForHero } from '../graphs/queries';
+import { authStore } from '../stores/auth-store';
 
 export interface Doday {
   id: string;
-  title: string;
+  name: string;
   completed: boolean;
 }
 
 export class DodayStore {
-  constructor(dodays: Doday[]) {
-    this._dodays = dodays;
+  constructor() {
+    this._dodays = [];
   }
 
   @observable private _dodays: Doday[] = [];
@@ -22,6 +18,13 @@ export class DodayStore {
   @computed
   get dodays(): Doday[] {
     return this._dodays;
+  }
+
+  @action
+  public fetchActiveDodays = async () => {
+    const { data }: any = await activeDodaysForHero({ id: authStore.currentHero!.uid });
+    this._dodays = data.activeDodays;
+    console.log('fetch', data);
   }
 
   @action
@@ -44,4 +47,4 @@ export class DodayStore {
   }
 }
 
-export const dodayStore = new DodayStore(mockDodays);
+export const dodayStore = new DodayStore();
