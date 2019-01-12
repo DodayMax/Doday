@@ -2,16 +2,29 @@ type Hero {
   id: ID!
   name: String
   friends: [Hero] @relation(name: "FRIENDS", direction: "BOTH")
-  dodays: [Doday] @relation(name: "DO", direction: "BOTH")
+  dodays: [Doday] @relation(name: "DOING", direction: "BOTH")
+  done: [Doday] @relation(name: "DONE", direction: "BOTH")
   tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
+  roles: [Role] @relation(name: "HAS", direction: "OUT")
 }
 
 type Doday {
   id: ID!
-  title: String
+  name: String
   owner: [Hero] @relation(name: "CREATE", direction: "IN")
-  dodayers: [Hero] @relation(name: "DO", direction: "BOTH")
+  doing: [Hero] @relation(name: "DOING", direction: "BOTH")
+  done: [Hero] @relation(name: "DONE", direction: "BOTH")
   tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
+  completed(heroID: ID): Boolean
+    @cypher(
+      statement: "MATCH (this)-[r:DONE]-(h:Hero) WHERE h.id = $heroID RETURN exists(r.timestamp)"
+    )
+}
+
+type Path {
+  id: ID!
+  name: String
+  dodays: [Doday] @relation(name: "INCLUDE", direction: "IN")
 }
 
 type Tag {
@@ -19,9 +32,21 @@ type Tag {
   name: String
 }
 
+type Role {
+  id: ID!
+  name: String
+  members: [Hero] @relation(name: "HAS", direction: "IN")
+}
+
 type Category {
   id: ID!
   name: String
+}
+
+type Done @relation(name: "DONE") {
+  from: Hero
+  to: Doday
+  timestamp: Float
 }
 
 type Query {
