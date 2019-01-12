@@ -6,6 +6,7 @@ type Hero {
   done: [Doday] @relation(name: "DONE", direction: "BOTH")
   tags: [Tag] @relation(name: "TOUCH_TAG", direction: "OUT")
   roles: [Role] @relation(name: "HAS", direction: "OUT")
+  created: Float
 }
 
 type Doday {

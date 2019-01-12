@@ -11,7 +11,7 @@ export class AuthStore {
 
   @action
   loginAnonymously() {
-    firebase.auth().signInAnonymously();
+    return firebase.auth().signInAnonymously();
   }
 
   @action
