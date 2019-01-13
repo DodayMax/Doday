@@ -1,5 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { createDodayNode, addHeroDodays, removeHeroDodays, deleteDodayNode } from '../graphs/mutations';
+import { createDodayNode, addHeroDodays, removeHeroDodays, deleteDodayNode, addHeroDone } from '../graphs/mutations';
 import { activeDodaysForHero } from '../graphs/queries';
 import { authStore } from '../stores/auth-store';
 
@@ -28,19 +28,17 @@ export class DodayStore {
   }
 
   @action
-  public createDodayNode = async () => {
-    const { data }: any = await createDodayNode({ name: `${Math.random()} doday`, created: Date.now() });
+  public createDodayNode = async (name: string) => {
+    const { data }: any = await createDodayNode({ name, created: Date.now() });
     await addHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id: data!.CreateDoday.id } });
     this.fetchActiveDodays();
   }
 
   @action
-  public toggleDoday(id: string) {
-    this._dodays.map(doday => {
-      if (doday.id === id) {
-        doday.completed = !doday.completed;
-      }
-    })
+  public completeDoday = async (id: string) => {
+    await removeHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id } });
+    await addHeroDone({ from: { id: authStore.currentHero!.uid }, to: { id } });
+    this.fetchActiveDodays();
   }
 
   @action

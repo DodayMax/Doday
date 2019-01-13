@@ -15,4 +15,33 @@ ul {
   bottom: 0;
   left: 30%;
   background-color: #222;
+  display: flex;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.control_input {
+  flex: 1;
+  height: 3.4rem;
+  border-radius: 4px;
+  border: 0;
+  margin: 0.7rem;
+  padding: 0 .6rem;
+  font-size: 1.2rem;
+}
+
+.control_button {
+  height: 3.4rem;
+  border-radius: 4px;
+  border: 0;
+  margin: 0.7rem;
+  padding: 0 .6rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgb(216, 187, 58);
+  }
 }

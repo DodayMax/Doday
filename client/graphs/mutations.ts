@@ -66,6 +66,22 @@ export const removeHeroDodays = (variables: any) => {
     })
 } 
 
+export const addHeroDone = (variables: any) => {
+  return client
+    .mutate({
+      mutation: gql`
+        mutation AddHeroDone($from: _HeroInput!, $to: _DodayInput!) {
+            AddHeroDone(from: $from, to: $to) {
+              from {
+                name
+              }
+            }
+          }
+      `,
+      variables
+    })
+} 
+
 export const deleteDodayNode = (variables: any) => {
   return client
     .mutate({
