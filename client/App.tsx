@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
 import client from './graphs/client';
-import { dodayStore } from './stores';
+import { authStore, dodayStore } from './stores';
 import Grid from './components/grid/Grid';
 import './styles/base.scss';
 import { observable } from 'mobx';
@@ -10,6 +10,10 @@ import { observable } from 'mobx';
 @observer
 class App extends React.Component {
   @observable private inputValue: string = "";
+
+  componentDidMount() {
+    authStore.showLock();
+  }
 
   setInputValue = (value: string) => {
     this.inputValue = value;
@@ -39,21 +43,13 @@ class App extends React.Component {
     )
   }
 
-  renderContent = () => {
+  render() {
     return (
-      <>
+      <ApolloProvider client={client}>
         <Grid />
         <div className="control_panel">
           {this.addDodayNodeButton()}
         </div>
-      </>
-    );
-  }
-
-  render() {
-    return (
-      <ApolloProvider client={client}>
-        { this.renderContent() }
       </ApolloProvider>
     );
   }
