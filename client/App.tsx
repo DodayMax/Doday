@@ -1,15 +1,17 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
+import Drawer from 'react-drag-drawer';
 import client from './graphs/client';
 import { authStore, dodayStore } from './stores';
 import Grid from './components/grid/Grid';
 import './styles/base.scss';
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 @observer
 class App extends React.Component {
   @observable private inputValue: string = "";
+  @observable private isDrawerShown = false;
 
   componentDidMount() {
     authStore.showLock();
@@ -17,6 +19,11 @@ class App extends React.Component {
 
   setInputValue = (value: string) => {
     this.inputValue = value;
+  }
+
+  @action
+  toggle = () => {
+    this.isDrawerShown = !this.isDrawerShown
   }
 
   addDodayNodeButton = () => {
@@ -31,10 +38,11 @@ class App extends React.Component {
         <button
           className="control_button"
           onClick={async () => {
-            if (this.inputValue) {
-              dodayStore.createDodayNode(this.inputValue);
-              this.inputValue = "";
-            }
+            this.toggle();
+            // if (this.inputValue) {
+            //   dodayStore.createDodayNode(this.inputValue);
+            //   this.inputValue = "";
+            // }
           }}
         >
           Add doday node
@@ -50,6 +58,18 @@ class App extends React.Component {
         <div className="control_panel">
           {this.addDodayNodeButton()}
         </div>
+        <Drawer
+          open={this.isDrawerShown}
+          onRequestClose={this.toggle}
+          modalElementClass={"modal"}
+        >
+          <div className="card">
+            I'm in a drawer!
+            <button className="toggle" onClick={this.toggle}>
+              Close drawer
+            </button>
+          </div>
+        </Drawer>
       </ApolloProvider>
     );
   }
