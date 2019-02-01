@@ -23,27 +23,27 @@ export class DodayStore {
 
   @action
   public fetchActiveDodays = async () => {
-    const { data }: any = await activeDodaysForHero({ id: authStore.currentHero!.uid });
+    const { data }: any = await activeDodaysForHero({ id: 'id' });
     this._dodays = data.activeDodays;
   }
 
   @action
   public createDodayNode = async (name: string) => {
     const { data }: any = await createDodayNode({ name, created: Date.now() });
-    await addHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id: data!.CreateDoday.id } });
+    await addHeroDodays({ from: { id: 'id' }, to: { id: data!.CreateDoday.id } });
     this.fetchActiveDodays();
   }
 
   @action
   public completeDoday = async (id: string) => {
-    await removeHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id } });
-    await addHeroDone({ from: { id: authStore.currentHero!.uid }, to: { id } });
+    await removeHeroDodays({ from: { id: 'id' }, to: { id } });
+    await addHeroDone({ from: { id: 'id' }, to: { id } });
     this.fetchActiveDodays();
   }
 
   @action
   public removeDoday = async(id: string) => {
-    await removeHeroDodays({ from: { id: authStore.currentHero!.uid }, to: { id } });
+    await removeHeroDodays({ from: { id: 'id' }, to: { id } });
     await deleteDodayNode({ id });
     this.fetchActiveDodays();
   }
