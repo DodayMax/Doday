@@ -1,6 +1,6 @@
 import { globalUIStore } from '@stores';
 
-describe('GlobalUIStore tests', () => {
+describe('GlobalUIStore', () => {
 
   let store;
 

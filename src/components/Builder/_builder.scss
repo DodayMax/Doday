@@ -1,0 +1,19 @@
+.builder {
+  &__menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem 3rem;
+  }
+
+  &__menu-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
+    width: 8rem;
+    height: 8rem;
+    border-radius: .6rem;
+    border: 2px solid #222;
+  }
+}
