@@ -6,7 +6,7 @@ import '@styles/base.scss';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import { Shell } from '@components';
-import { authStore, dodayStore, globalUIStore, builderStore } from '@stores';
+import { authStore, dodayStore, globalUIStore, builderUIStore } from '@stores';
 
 interface TranslationProps {
   t?: i18next.TFunction;
@@ -22,7 +22,7 @@ export class App extends React.Component<TranslationProps> {
             globalUIStore={globalUIStore}
             authStore={authStore}
             dodaysStore={dodayStore}
-            builderStore={builderStore}
+            builderUIStore={builderUIStore}
           >
             <Shell />
           </Provider>

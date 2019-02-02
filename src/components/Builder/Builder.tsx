@@ -1,38 +1,80 @@
 import * as React from 'react';
-import { Button } from '@components';
+import { Button, Input } from '@components';
 import { inject, observer } from 'mobx-react';
-import { DodayTypeMenuItem } from '@lib/common-interfaces';
+import { BuilderUIStore } from '@stores';
+import { sysnames } from '@lib/constants';
 import './_builder.scss';
 
+
 interface BuilderProps {
-  dodayTypes: DodayTypeMenuItem[];
-  selectedDodayType?: string;
-  selectDodayType: (type: string) => void;
+  builderUIStore?: BuilderUIStore;
 }
 
 @observer
 export class Builder extends React.Component<BuilderProps> {
   render() {
-    const { dodayTypes, selectedDodayType, selectDodayType } = this.props;
+    const { builderUIStore } = this.props;
 
-    if (!selectedDodayType) {
+    if (!builderUIStore!.selectedDodayType) {
       return (
         <div className="builder__menu">
-          {dodayTypes.map(type => {
+          {builderUIStore!.dodayTypes.map(type => {
             return (
               <Button
                 className="builder__menu-item"
                 key={type.id}
                 text={type.sysname}
-                onClick={() => selectDodayType(type.sysname)}
+                onClick={() => builderUIStore!.selectDodayType(type.sysname)}
               />
             );
           })}
         </div>
       );
     }
-    return <div className="builder__container"></div>;
+    switch (builderUIStore!.selectedDodayType) {
+      case sysnames.dodayTypes.todo:
+        return (
+          <div className="builder__container">
+            <Input
+              value={builderUIStore!.dodayNameInput}
+              onChange={(event) => builderUIStore!.changeDodayNameInput(event.target.value)}
+            />
+            <Button
+              text={'+'}
+              onClick={() => builderUIStore!.createDoday()}
+            />
+          </div>
+        );
+      case sysnames.dodayTypes.watch:
+        return (
+          <div className="builder__container">
+            <Input
+              value={builderUIStore!.dodayNameInput}
+              onChange={(event) => builderUIStore!.changeDodayNameInput(event.target.value)}
+            />
+            <Button
+              text={'+'}
+              onClick={() => builderUIStore!.createDoday()}
+            />
+          </div>
+        );
+      case sysnames.dodayTypes.read:
+        return (
+          <div className="builder__container">
+            <Input
+              value={builderUIStore!.dodayNameInput}
+              onChange={(event) => builderUIStore!.changeDodayNameInput(event.target.value)}
+            />
+            <Button
+              text={'+'}
+              onClick={() => builderUIStore!.createDoday()}
+            />
+          </div>
+        );
+      default:
+        return 'nothing'
+    }
   }
 }
 
-export default Builder;
+export default inject('builderUIStore')(Builder);

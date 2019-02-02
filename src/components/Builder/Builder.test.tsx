@@ -1,33 +1,29 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { Builder } from '@components';
-import { builderStore } from '@stores';
+import { builderUIStore } from '@stores';
 
 describe('Builder', () => {
   afterEach(() => {
-    builderStore.clearSelectedType();
+    builderUIStore.clear();
   });
 
   it('initially renders menu with doday types', () => {
     const builder = mount(
       <Builder
-        dodayTypes={builderStore.dodayTypes}
-        selectDodayType={builderStore.selectDodayType}
-        selectedDodayType={builderStore.selectedDodayType}
+        builderUIStore={builderUIStore}
       />
     );
 
     expect(builder.find('button').length).toBe(3);
-    expect(builder.find('button').first().contains(builderStore.dodayTypes[0].sysname)).toBe(true);
+    expect(builder.find('button').first().contains(builderUIStore.dodayTypes[0].sysname)).toBe(true);
   });
 
   it('render builder when doday type is selected', () => {
-    builderStore.selectDodayType('Todo');
+    builderUIStore.selectDodayType('todo');
     const builder = mount(
       <Builder
-        dodayTypes={builderStore.dodayTypes}
-        selectDodayType={builderStore.selectDodayType}
-        selectedDodayType={builderStore.selectedDodayType}
+        builderUIStore={builderUIStore}
       />
     );
 

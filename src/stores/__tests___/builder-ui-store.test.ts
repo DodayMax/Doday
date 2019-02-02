@@ -1,11 +1,11 @@
-import { builderStore } from '@stores';
+import { builderUIStore } from '@stores';
 
-describe('BuilderStore', () => {
+describe('builderUIStore', () => {
 
   let store;
 
   beforeEach(() => {
-    store = builderStore;
+    store = builderUIStore;
   })
 
   it('initial value of _isBuilderShown is false', () => {

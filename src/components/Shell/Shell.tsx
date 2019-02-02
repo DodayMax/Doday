@@ -3,7 +3,7 @@ import Drawer from 'react-drag-drawer';
 import { Grid, DodayTopBar, Builder } from '@components';
 import i18next from 'i18next';
 import { observer, inject } from 'mobx-react';
-import { AuthStore, DodayStore, GlobalUIStore, BuilderStore, builderStore } from '@stores';
+import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore } from '@stores';
 
 const { translate } = require('react-i18next');
 
@@ -13,19 +13,20 @@ interface TranslationProps {
 }
 
 interface ShellProps {
-  authStore: AuthStore;
-  dodaysStore: DodayStore;
-  globalUIStore: GlobalUIStore;
-  builderStore: BuilderStore;
+  authStore?: AuthStore;
+  dodaysStore?: DodayStore;
+  globalUIStore?: GlobalUIStore;
+  builderUIStore?: BuilderUIStore;
 }
 
 @observer
 export class Shell extends React.Component<ShellProps & TranslationProps> {
   componentDidMount() {
-    //this.props.authStore.showLock();
+    //authStore.showLock();
   }
 
   render() {
+    const { globalUIStore, builderUIStore } = this.props;
     return (
       <>
         <DodayTopBar coins={50} energy={8} />
@@ -33,7 +34,7 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
         <button
           className="control_button"
           onClick={() => {
-            this.props.globalUIStore.toggleBuilder()
+            globalUIStore!.toggleBuilder()
             // if (this.inputValue) {
             //   dodayStore.createDodayNode(this.inputValue);
             //   this.inputValue = "";
@@ -41,17 +42,15 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
           }}
         ></button>
         <Drawer
-          open={this.props.globalUIStore.isBuilderShown}
+          open={globalUIStore!.isBuilderShown}
           onRequestClose={() => {
-            this.props.globalUIStore.toggleBuilder();
-            this.props.builderStore.clearSelectedType();
+            globalUIStore!.toggleBuilder();
+            builderUIStore!.clear();
           }}
           modalElementClass={"modal"}
         >
           <Builder
-            dodayTypes={builderStore!.dodayTypes}
-            selectDodayType={(type: string) => builderStore!.selectDodayType(type)}
-            selectedDodayType={builderStore!.selectedDodayType}
+            builderUIStore={builderUIStore}
           />
         </Drawer>
       </>
@@ -59,4 +58,4 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
   }
 }
 
-export default translate()(inject('authStore', 'dodaysStore', 'globalUIStore', 'builderStore')(Shell));
+export default translate()(inject('authStore', 'dodaysStore', 'globalUIStore', 'builderUIStore')(Shell));

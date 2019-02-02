@@ -1,7 +1,16 @@
 import * as React from 'react';
 
-export const Input = (props) => {
+interface InputProps {
+  value?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export const Input = ({ value, onChange, ...props }: InputProps & React.InputHTMLAttributes<HTMLInputElement>) => {
   return (
-    <input {...props} />
+    <input
+      value={value}
+      onChange={onChange}
+      {...props}
+    />
   );
 }
