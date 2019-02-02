@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { Doday, dodayStore } from '../../stores';
+import { Doday, dodayStore } from '@stores';
 import './grid.scss';
 
 @observer

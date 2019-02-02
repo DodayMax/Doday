@@ -2,9 +2,9 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
 import Drawer from 'react-drag-drawer';
-import client from './services/api/apollo-client';
-import { authStore, dodayStore } from './stores';
-import Grid from './components/grid/Grid';
+import { client } from '@api';
+import { authStore } from '@stores';
+import { Grid } from '@components';
 import './styles/base.scss';
 import { observable, action } from 'mobx';
 

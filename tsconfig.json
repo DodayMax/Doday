@@ -24,6 +24,12 @@
       "@api": [
         "src/services/api"
       ],
+      "@components": [
+        "src/components"
+      ],
+      "@stores": [
+        "src/stores"
+      ],
     }
   },
   "exclude": [
