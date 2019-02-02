@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { ApolloProvider } from 'react-apollo';
 import Drawer from 'react-drag-drawer';
-import { api } from '@services';
-import { authStore } from '@stores';
 import { Grid } from '@components';
 import { observable, action } from 'mobx';
 import i18next from 'i18next';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
+import { AuthStore, DodayStore, GlobalUIStore, authStore, globalUIStore } from '@stores';
 
 const { translate } = require('react-i18next');
 
@@ -15,66 +13,46 @@ interface TranslationProps {
   i18n?: i18next.i18n;
 }
 
-@translate()
-@observer
-export class Shell extends React.Component<TranslationProps> {
-  @observable private inputValue: string = "";
-  @observable private isDrawerShown = false;
+interface ShellProps {
+  authStore: AuthStore;
+  dodaysStore: DodayStore;
+  globalUIStore: GlobalUIStore;
+}
 
+export class Shell extends React.Component<ShellProps & TranslationProps> {
   componentDidMount() {
-    authStore.showLock();
+    this.props.authStore.showLock();
   }
 
-  setInputValue = (value: string) => {
-    this.inputValue = value;
-  }
-
-  @action
-  toggle = () => {
-    this.isDrawerShown = !this.isDrawerShown
-  }
-
-  addDodayNodeButton = () => {
+  render() {
     return (
       <>
+        <Grid />
         <button
           className="control_button"
-          onClick={async () => {
-            this.toggle();
+          onClick={() => {
+            this.props.globalUIStore.toggleBuilder()
             // if (this.inputValue) {
             //   dodayStore.createDodayNode(this.inputValue);
             //   this.inputValue = "";
             // }
           }}
         ></button>
-      </>
-    )
-  }
-
-  render() {
-    return (
-      <ApolloProvider client={api.client}>
-        <Grid />
-        {this.addDodayNodeButton()}
         <Drawer
-          open={this.isDrawerShown}
-          onRequestClose={this.toggle}
+          open={this.props.globalUIStore.isBuilderShown}
+          onRequestClose={this.props.globalUIStore.toggleBuilder}
           modalElementClass={"modal"}
         >
           <div className="card">
             I'm in a drawer!
-            <input
-              className="control_input"
-              onChange={(e: any) => this.setInputValue(e.target.value)}
-              value={this.inputValue || ""}
-              placeholder="Create doday here"
-            />
-            <button className="toggle" onClick={this.toggle}>
+            <button className="toggle" onClick={this.props.globalUIStore.toggleBuilder}>
               {this.props.t!('intro')}
             </button>
           </div>
         </Drawer>
-      </ApolloProvider>
+      </>
     );
   }
 }
+
+export default translate()(inject('authStore', 'dodaysStore', 'globalUIStore')(observer(Shell)));

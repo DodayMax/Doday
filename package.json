@@ -25,6 +25,7 @@
     "@svgr/webpack": "2.4.1",
     "@types/auth0-js": "^8.11.11",
     "@types/auth0-lock": "^11.4.10",
+    "@types/enzyme": "^3.1.16",
     "@types/graphql": "^14.0.4",
     "@types/i18next": "^12.1.0",
     "@types/jest": "^23.3.10",
@@ -102,7 +103,8 @@
     ],
     "resolver": "jest-pnp-resolver",
     "setupFiles": [
-      "react-app-polyfill/jsdom"
+      "react-app-polyfill/jsdom",
+      "<rootDir>/src/setupTests"
     ],
     "testMatch": [
       "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -121,7 +123,12 @@
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^@root(.*)$": "<rootDir>/src$1",
+      "^@components(.*)$": "<rootDir>/src/components$1",
+      "^@services(.*)$": "<rootDir>/src/services$1",
+      "^@styles(.*)$": "<rootDir>/src/styles$1",
+      "^@stores(.*)$": "<rootDir>/src/stores$1"
     },
     "moduleFileExtensions": [
       "web.js",
