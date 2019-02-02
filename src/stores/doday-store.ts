@@ -1,7 +1,5 @@
 import { observable, action, computed } from 'mobx';
-import { createDodayNode, addHeroDodays, removeHeroDodays, deleteDodayNode, addHeroDone } from '../graphs/mutations';
-import { activeDodaysForHero } from '../graphs/queries';
-import { authStore } from '../stores/auth-store';
+import { dodays, heroes } from '@api';
 
 export interface Doday {
   id: string;
@@ -23,28 +21,28 @@ export class DodayStore {
 
   @action
   public fetchActiveDodays = async () => {
-    const { data }: any = await activeDodaysForHero({ id: 'id' });
+    const { data }: any = await dodays.queries.activeDodaysForHero({ id: 'id' });
     this._dodays = data.activeDodays;
   }
 
   @action
   public createDodayNode = async (name: string) => {
-    const { data }: any = await createDodayNode({ name, created: Date.now() });
-    await addHeroDodays({ from: { id: 'id' }, to: { id: data!.CreateDoday.id } });
+    const { data }: any = await dodays.mutations.createDodayNode({ name, created: Date.now() });
+    await heroes.mutations.addHeroDodays({ from: { id: 'id' }, to: { id: data!.CreateDoday.id } });
     this.fetchActiveDodays();
   }
 
   @action
   public completeDoday = async (id: string) => {
-    await removeHeroDodays({ from: { id: 'id' }, to: { id } });
-    await addHeroDone({ from: { id: 'id' }, to: { id } });
+    await dodays.mutations.removeHeroDodays({ from: { id: 'id' }, to: { id } });
+    await dodays.mutations.addHeroDone({ from: { id: 'id' }, to: { id } });
     this.fetchActiveDodays();
   }
 
   @action
   public removeDoday = async(id: string) => {
-    await removeHeroDodays({ from: { id: 'id' }, to: { id } });
-    await deleteDodayNode({ id });
+    await dodays.mutations.removeHeroDodays({ from: { id: 'id' }, to: { id } });
+    await dodays.mutations.deleteDodayNode({ id });
     this.fetchActiveDodays();
   }
 }

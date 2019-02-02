@@ -12,15 +12,22 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": ".",
+    "baseUrl": ".",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "paths": {
+      "@root": [
+        "src"
+      ],
+      "@api": [
+        "src/services/api"
+      ],
+    }
   },
   "exclude": [
     "node_modules",
-    "api",
     "build",
     "scripts",
     "acceptance-tests",

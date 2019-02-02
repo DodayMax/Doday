@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
 import Drawer from 'react-drag-drawer';
-import client from './graphs/client';
+import client from './services/api/apollo-client';
 import { authStore, dodayStore } from './stores';
 import Grid from './components/grid/Grid';
 import './styles/base.scss';
@@ -29,12 +29,6 @@ class App extends React.Component {
   addDodayNodeButton = () => {
     return (
       <>
-        <input
-          className="control_input"
-          onChange={(e: any) => this.setInputValue(e.target.value)}
-          value={this.inputValue || ""}
-          placeholder="Create doday here"
-        />
         <button
           className="control_button"
           onClick={async () => {
@@ -44,9 +38,7 @@ class App extends React.Component {
             //   this.inputValue = "";
             // }
           }}
-        >
-          Add doday node
-        </button>
+        ></button>
       </>
     )
   }
@@ -55,9 +47,7 @@ class App extends React.Component {
     return (
       <ApolloProvider client={client}>
         <Grid />
-        <div className="control_panel">
-          {this.addDodayNodeButton()}
-        </div>
+        {this.addDodayNodeButton()}
         <Drawer
           open={this.isDrawerShown}
           onRequestClose={this.toggle}
@@ -65,6 +55,12 @@ class App extends React.Component {
         >
           <div className="card">
             I'm in a drawer!
+            <input
+              className="control_input"
+              onChange={(e: any) => this.setInputValue(e.target.value)}
+              value={this.inputValue || ""}
+              placeholder="Create doday here"
+            />
             <button className="toggle" onClick={this.toggle}>
               Close drawer
             </button>
