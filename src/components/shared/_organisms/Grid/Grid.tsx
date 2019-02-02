@@ -4,7 +4,7 @@ import { Doday, dodayStore } from '@stores';
 import './grid.scss';
 
 @observer
-class Grid extends React.Component {
+export class Grid extends React.Component {
   componentDidMount() {
     dodayStore.fetchActiveDodays();
   }
@@ -22,5 +22,3 @@ class Grid extends React.Component {
     );
   }
 }
-
-export default Grid;

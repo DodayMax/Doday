@@ -1,5 +1,3 @@
-import Grid from './_organisms/Grid/Grid';
-
-export {
-  Grid,
-};
+export * from './shared/_organisms/Grid';
+export * from './App';
+export * from './Shell';

@@ -21,14 +21,17 @@
       "@root": [
         "src"
       ],
-      "@api": [
-        "src/services/api"
+      "@services": [
+        "src/services"
       ],
       "@components": [
         "src/components"
       ],
       "@stores": [
         "src/stores"
+      ],
+      "@styles": [
+        "src/styles"
       ],
     }
   },

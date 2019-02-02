@@ -1,15 +1,23 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
 import Drawer from 'react-drag-drawer';
-import { client } from '@api';
+import { api } from '@services';
 import { authStore } from '@stores';
 import { Grid } from '@components';
-import './styles/base.scss';
 import { observable, action } from 'mobx';
+import i18next from 'i18next';
+import { observer } from 'mobx-react';
 
+const { translate } = require('react-i18next');
+
+interface TranslationProps {
+  t?: i18next.TFunction;
+  i18n?: i18next.i18n;
+}
+
+@translate()
 @observer
-class App extends React.Component {
+export class Shell extends React.Component<TranslationProps> {
   @observable private inputValue: string = "";
   @observable private isDrawerShown = false;
 
@@ -45,7 +53,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <ApolloProvider client={client}>
+      <ApolloProvider client={api.client}>
         <Grid />
         {this.addDodayNodeButton()}
         <Drawer
@@ -62,7 +70,7 @@ class App extends React.Component {
               placeholder="Create doday here"
             />
             <button className="toggle" onClick={this.toggle}>
-              Close drawer
+              {this.props.t!('intro')}
             </button>
           </div>
         </Drawer>
@@ -70,5 +78,3 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;

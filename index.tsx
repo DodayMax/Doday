@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as firebase from 'firebase/app';
-import App from './src/App';
+import { App } from '@components';
 import * as serviceWorker from './serviceWorker';
 
 var config = {
