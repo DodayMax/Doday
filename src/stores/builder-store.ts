@@ -1,7 +1,28 @@
 import { observable, action, computed } from 'mobx';
+import { DodayTypeMenuItem } from '@lib/common-interfaces';
+const cuid = require('cuid');
 
 export class BuilderStore {
   @observable private _selectedDodayType?: string = undefined;
+  
+  private _dodayTypes: DodayTypeMenuItem[] = [
+    {
+      id: cuid(),
+      sysname: 'todo'
+    },
+    {
+      id: cuid(),
+      sysname: 'watch'
+    },
+    {
+      id: cuid(),
+      sysname: 'read'
+    },
+  ];
+
+  get dodayTypes() {
+    return this._dodayTypes;
+  }
 
   @computed
   get selectedDodayType() {

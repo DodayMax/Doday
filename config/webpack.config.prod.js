@@ -228,7 +228,8 @@ module.exports = {
       '@components': '@root/components',
       '@stores': '@root/stores',
       '@services': '@root/services',
-      '@styles': '@root/styles'
+      '@styles': '@root/styles',
+      '@lib': '@root/lib'
     },
     plugins: [
       // Adds support for installing with Plug'n'Play, leading to faster installs and adding

@@ -48,7 +48,11 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
           }}
           modalElementClass={"modal"}
         >
-          <Builder />
+          <Builder
+            dodayTypes={builderStore!.dodayTypes}
+            selectDodayType={(type: string) => builderStore!.selectDodayType(type)}
+            selectedDodayType={builderStore!.selectedDodayType}
+          />
         </Drawer>
       </>
     );

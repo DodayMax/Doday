@@ -21,6 +21,9 @@
       "@root": [
         "src"
       ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
       "@services": [
         "src/services"
       ],
