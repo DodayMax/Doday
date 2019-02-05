@@ -1,5 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import * as auth0 from 'auth0-js';
+import { dodayStore } from '@stores';
 import { api, history } from '@services';
 
 
@@ -47,6 +48,7 @@ export class AuthStore {
 
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
+      console.log(authResult);
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.setSession(authResult);
       } else if (err) {
@@ -67,21 +69,26 @@ export class AuthStore {
 
   fetchHeroProfile = () => {
     if (this.accessToken) {
-      this.auth0.client.userInfo(this.accessToken, (err, profile) => {
+      return this.auth0.client.userInfo(this.accessToken, async (err, profile) => {
         if (profile) {
           this._hero = profile;
+          const { data }: any = await api.heroes.queries.getHeroByID({ id: profile.sub });
+          if (!data.Hero.length) {
+            // Create new Hero node in db if it doesn't existed yet
+            await api.heroes.mutations.createHeroNode({ id: profile.sub, name: profile.nickname });
+          }
+          await dodayStore.fetchActiveDodays();
         }
       });
     }
   }
 
-  setSession = (authResult) => {
-    console.log(authResult);
-    // Set isLoggedIn flag in localStorage
-    localStorage.setItem('isLoggedIn', 'true');
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('accessToken', authResult.accessToken);
-    localStorage.setItem('expiresIn', authResult.expiresIn);
+  setSession = async (authResult) => {
+    // Set flags in localStorage
+    await localStorage.setItem('isLoggedIn', 'true');
+    await localStorage.setItem('id_token', authResult.idToken);
+    await localStorage.setItem('accessToken', authResult.accessToken);
+    await localStorage.setItem('expiresIn', authResult.expiresIn);
 
     // Set the time that the access token will expire at
     let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
@@ -90,10 +97,11 @@ export class AuthStore {
     this.expiresAt = expiresAt;
 
     // schedule a token renewal
-    this.scheduleRenewal();
+    await this.scheduleRenewal();
 
     // fetch Hero profile
-    this.fetchHeroProfile();
+    await this.fetchHeroProfile();
+    await dodayStore.fetchActiveDodays();
 
     // navigate to the home route
     history.replace('/');
@@ -139,7 +147,7 @@ export class AuthStore {
     this.expiresAt = 0;
     this._hero = null;
 
-    // Remove isLoggedIn flag from localStorage
+    // Remove flags from localStorage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('id_token');
     localStorage.removeItem('accessToken');

@@ -23,7 +23,6 @@ interface ShellProps {
 export class Shell extends React.Component<ShellProps & TranslationProps> {
   render() {
     const { globalUIStore, builderUIStore, authStore } = this.props;
-    console.log(authStore!.currentHero);
 
     return (
       <>

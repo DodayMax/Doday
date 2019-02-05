@@ -5,10 +5,6 @@ import './grid.scss';
 
 @observer
 export class Grid extends React.Component {
-  componentDidMount() {
-    dodayStore.fetchActiveDodays();
-  }
-
   render() {
     return (
       <ul className="grid__container">
@@ -17,7 +13,7 @@ export class Grid extends React.Component {
             <li
               className="grid__cell"
               key={doday.id}
-            ><input type="checkbox" onChange={e => dodayStore.completeDoday(doday.id)} />{doday.name}<button onClick={() => dodayStore.removeDoday(doday.id)}>x</button></li>))}
+            ><input type="checkbox" />{doday.name}</li>))}
       </ul>
     );
   }
