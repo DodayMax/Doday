@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { authStore } from '@stores';
 import { api } from '@services';
+const cuid = require('cuid');
 
 export interface Doday {
   id: string;
@@ -9,10 +10,6 @@ export interface Doday {
 }
 
 export class DodayStore {
-  constructor() {
-    this._dodays = [];
-  }
-
   @observable private _dodays: Doday[] = [];
 
   @computed
@@ -28,17 +25,53 @@ export class DodayStore {
 
   @action
   public createDodayNode = async (name: string) => {
-    const { data }: any = await api.dodays.mutations.createDodayNode({ name, created: Date.now() });
-    await api.heroes.mutations.addHeroDodays({ from: { id: 'id' }, to: { id: data!.CreateDoday.id } });
-    this.fetchActiveDodays();
+    const newDoday = { id: cuid(), name, created: Date.now() };
+    this._dodays.unshift({ ...newDoday, completed: false });
+    try {
+      const newDodayNode = await api.dodays.mutations.createDodayNode(newDoday);
+      await api.dodays.mutations.addDodayOwner({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data as any).CreateDoday.id } });
+      await api.dodays.mutations.addDodayCategories({ from: { id: (newDodayNode.data as any).CreateDoday.id }, to: { id: "100" } });
+
+      // Create DOING relation from Hero to Doday with props
+      const today = new Date();
+      const doingProps = {
+        tookAt: {
+          year: today.getFullYear(),
+          month: today.getMonth() + 1,
+          day: today.getDate(),
+          hour: today.getHours(),
+          minute: today.getMinutes(),
+          second: today.getSeconds(),
+        },
+        completed: false,
+      }
+      await api.heroes.mutations.addHeroDodays({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data as any).CreateDoday.id }, data: doingProps });
+    } catch (e) {
+      this._dodays = this._dodays.filter(doday => doday.id !== newDoday.id);
+    }
   }
 
-  // @action
-  // public completeDoday = async (id: string) => {
-  //   await api.dodays.mutations.removeHeroDodays({ from: { id: 'id' }, to: { id } });
-  //   await api.dodays.mutations.addHeroDone({ from: { id: 'id' }, to: { id } });
-  //   this.fetchActiveDodays();
-  // }
+  @action
+  public completeDoday = async (id: string) => {
+    const doday = this._dodays.find(doday => doday.id === id);
+    if (doday) {
+      this.updateDoday(id, { completed: !doday.completed });
+      try {
+        await api.dodays.mutations.toggleDoday({ heroID: authStore.heroID, dodayID: id, date: Date.now(), value: doday.completed });
+      } catch (e) {
+        this.updateDoday(id, { completed: !doday.completed });
+      }
+    }
+  }
+
+  private updateDoday(id: string, updates: any) {
+    const doday = this._dodays.find(doday => doday.id === id);
+    if (doday) {
+      Object.entries(updates).forEach(([key, value]) => {
+        doday[key] = value;
+      });
+    }
+  }
 
   // @action
   // public removeDoday = async(id: string) => {

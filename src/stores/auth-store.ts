@@ -46,6 +46,11 @@ export class AuthStore {
     return this._hero;
   }
 
+  @computed
+  get heroID() {
+    return this._hero && this._hero.sub;
+  }
+
   handleAuthentication = () => {
     this.auth0.parseHash((err, authResult) => {
       console.log(authResult);

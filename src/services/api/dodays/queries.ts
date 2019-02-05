@@ -12,6 +12,7 @@ export const activeDodaysForHero = (variables: any) => {
           activeDodays(heroID: $id) {
             id
             name
+            completed
           }
         }
       `,

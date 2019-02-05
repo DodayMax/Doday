@@ -73,12 +73,12 @@ export const addDodayCategories = (variables: { from: { id: string }, to: { id: 
  * @param variables HeroID, DodayID, DateTime
  */
 
-export const completeDoday = (variables: any) => {
+export const toggleDoday = (variables: any) => {
   return client
     .mutate({
       mutation: gql`
-        mutation completeDoday($heroID: ID!, $dodayID: ID!, $date: Float!) {
-          completeDoday(heroID: $heroID, dodayID: $dodayID, date: $date) {
+        mutation toggleDoday($heroID: ID!, $dodayID: ID!, $date: Float! $value: Boolean) {
+          toggleDoday(heroID: $heroID, dodayID: $dodayID, date: $date, value: $value) {
             name
           }
         }

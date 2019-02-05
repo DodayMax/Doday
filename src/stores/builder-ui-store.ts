@@ -3,6 +3,7 @@ import { DodayTypeMenuItem } from '@lib/common-interfaces';
 import { globalUIStore, authStore } from '@stores';
 import { api } from '@services';
 import { sysnames } from '@lib/constants';
+import { dodayStore } from './doday-store';
 const cuid = require('cuid');
 
 export class BuilderUIStore {
@@ -50,28 +51,7 @@ export class BuilderUIStore {
   
   @action
   async createDoday() {
-    try {
-      const newDodayNode = await api.dodays.mutations.createDodayNode({ name: this._dodayNameInput, created: Date.now() });
-      await api.dodays.mutations.addDodayOwner({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data! as any).CreateDoday.id } });
-      await api.dodays.mutations.addDodayCategories({ from: { id: (newDodayNode.data! as any).CreateDoday.id }, to: { id: "100" } });
-
-      // Create DOING relation from Hero to Doday with props
-      const today = new Date();
-      const doingProps = {
-        tookAt: {
-          year: today.getFullYear(),
-          month: today.getMonth() + 1,
-          day: today.getDate(),
-          hour: today.getHours(),
-          minute: today.getMinutes(),
-          second: today.getSeconds(),
-        },
-        completed: false,
-      }
-      await api.heroes.mutations.addHeroDodays({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data! as any).CreateDoday.id }, data: doingProps },);
-    } catch (e) {
-
-    }
+    dodayStore.createDodayNode(this._dodayNameInput);
     globalUIStore.toggleBuilder();
     this.clear();
   }

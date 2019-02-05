@@ -9,8 +9,8 @@ export const createHeroNode = async (variables: any) => {
   const res = await client
     .mutate({
       mutation: gql`
-        mutation CreateHero($id: ID!, $name: String, $created: Float) {
-          CreateHero(id: $id, name: $name, created: $created) {
+        mutation CreateHero($id: ID!, $name: String) {
+          CreateHero(id: $id, name: $name) {
             id
           }
         }
