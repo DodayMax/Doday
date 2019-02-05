@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Drawer from 'react-drag-drawer';
 import { Grid, DodayTopBar, Builder } from '@components';
-import { api } from '@services';
 import i18next from 'i18next';
 import { observer, inject } from 'mobx-react';
 import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore } from '@stores';
@@ -22,13 +21,10 @@ interface ShellProps {
 
 @observer
 export class Shell extends React.Component<ShellProps & TranslationProps> {
-  async componentDidMount() {
-    const req = await api.heroes.queries.getHeroByID({ id: "1" });
-    console.log(req);
-  }
-
   render() {
     const { globalUIStore, builderUIStore, authStore } = this.props;
+    console.log(authStore!.currentHero);
+
     return (
       <>
         <DodayTopBar coins={50} energy={8} />
@@ -36,12 +32,11 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
         <button
           className="control_button"
           onClick={() => {
-            //globalUIStore!.toggleBuilder()
-            authStore!.login();
-            // if (this.inputValue) {
-            //   dodayStore.createDodayNode(this.inputValue);
-            //   this.inputValue = "";
-            // }
+            if (authStore!.currentHero) {
+              globalUIStore!.toggleBuilder()
+            } else {
+              authStore!.login();
+            }
           }}
         ></button>
         <Drawer

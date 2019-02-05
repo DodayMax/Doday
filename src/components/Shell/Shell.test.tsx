@@ -10,7 +10,9 @@ describe('Shell', () => {
 
   beforeEach(() => {
     authStoreMock = {
+      currentHero: null,
       showLock: jest.fn(),
+      login: jest.fn(),
     };
     globalUIStoreMock = {
       isBuilderShown: false,
@@ -22,6 +24,9 @@ describe('Shell', () => {
 
   it('Click add button open Builder modal', () => {
     expect(globalUIStoreMock.isBuilderShown).toBe(false);
+    wrapper.find('.control_button').simulate('click');
+    expect(authStoreMock.login.mock.calls.length).toBe(1);
+    authStoreMock.currentHero = {};
     wrapper.find('.control_button').simulate('click');
     expect(globalUIStoreMock.toggleBuilder.mock.calls.length).toBe(1);
   });
