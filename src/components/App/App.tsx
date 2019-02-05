@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Provider } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
-import { api, i18n } from '@services';
+import { Route, Router } from 'react-router-dom';
+import { api, i18n, history } from '@services';
 import '@styles/base.scss';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
@@ -11,6 +12,12 @@ import { authStore, dodayStore, globalUIStore, builderUIStore } from '@stores';
 interface TranslationProps {
   t?: i18next.TFunction;
   i18n?: i18next.i18n;
+}
+
+const handleAuthentication = (nextState) => {
+  if (/access_token|id_token|error/.test(nextState.location.hash)) {
+    authStore.handleAuthentication();
+  }
 }
 
 export class App extends React.Component<TranslationProps> {
@@ -24,7 +31,15 @@ export class App extends React.Component<TranslationProps> {
             dodaysStore={dodayStore}
             builderUIStore={builderUIStore}
           >
-            <Shell />
+            <Router history={history}>
+              <div>
+                <Route path="/" component={Shell} />
+                <Route path="/callback" render={(props) => {
+                  handleAuthentication(props);
+                  return <div>Callback</div>
+                }} />
+              </div>
+            </Router>
           </Provider>
         </I18nextProvider>
       </ApolloProvider>

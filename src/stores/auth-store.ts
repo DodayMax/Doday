@@ -1,55 +1,110 @@
 import { observable, action, computed } from 'mobx';
 import * as auth0 from 'auth0-js';
-import Auth0Lock from 'auth0-lock';
+import { api, history } from '@services';
 
-const options = {
-  allowedConnections: ['google-oauth2', 'vkontakte'],
-  theme: {
-    primaryColor: '#222'
-  },
-  socialButtonStyle: "small",
-};
-
-const lock = new Auth0Lock(
-  '9W19nila2vQ9zh3TrMVza6Vl4xghJs4u',
-  'doday.eu.auth0.com',
-  options as any
-);
-
-// Listening for the authenticated event
-lock.on("authenticated", function (authResult) {
-  // Use the token in authResult to getUserInfo() and save it to localStorage
-  lock.getUserInfo(authResult.accessToken, function (error, profile) {
-    if (error) {
-      // Handle error
-      return;
-    }
-    console.log(authResult, 'auth');
-    console.log(profile, 'profile');
-
-    localStorage.setItem('accessToken', authResult.accessToken);
-    localStorage.setItem('profile', JSON.stringify(profile));
-  });
-});
 
 export class AuthStore {
   @observable private _hero: any;
 
+  private accessToken;
+  private idToken;
+  private expiresAt;
+
+  constructor() {
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.isAuthenticated = this.isAuthenticated.bind(this);
+    this.getAccessToken = this.getAccessToken.bind(this);
+    this.getIdToken = this.getIdToken.bind(this);
+    this.renewSession = this.renewSession.bind(this);
+  }
+
+
   auth0 = new auth0.WebAuth({
     domain: 'doday.eu.auth0.com',
-    clientID: '9W19nila2vQ9zh3TrMVza6Vl4xghJs4u',
+    clientID: 'ETaYtEdwUg2x24UeIRYf7Y2DZzvGx7Lh',
     redirectUri: 'http://localhost:3000/callback',
     responseType: 'token id_token',
     scope: 'openid'
   });
 
-  showLock() {
-    lock.show();
+  login() {
+    this.auth0.authorize();
   }
 
   @computed
   get currentHero() {
     return this._hero;
+  }
+
+  handleAuthentication() {
+    this.auth0.parseHash((err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        history.replace('/home');
+        console.log(err);
+        alert(`Error: ${err.error}. Check the console for further details.`);
+      }
+    });
+  }
+
+  getAccessToken() {
+    return this.accessToken;
+  }
+
+  getIdToken() {
+    return this.idToken;
+  }
+
+  setSession(authResult) {
+    console.log(authResult);
+    // Set isLoggedIn flag in localStorage
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('id_token', authResult.idToken);
+
+    // Set the time that the access token will expire at
+    let expiresAt = (authResult.expiresIn * 1000) + new Date().getTime();
+    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken;
+    this.expiresAt = expiresAt;
+
+    // navigate to the home route
+    history.replace('/');
+  }
+
+  renewSession() {
+    this.auth0.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.setSession(authResult);
+      } else if (err) {
+        this.logout();
+        console.log(err);
+        alert(`Could not get a new token (${err.error}: ${err.description}).`);
+      }
+    });
+  }
+
+  logout() {
+    // Remove tokens and expiry time
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = 0;
+
+    // Remove isLoggedIn flag from localStorage
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('id_token');
+
+    // navigate to the home route
+    history.replace('/');
+  }
+
+  isAuthenticated() {
+    // Check whether the current time is past the
+    // access token's expiry time
+    let expiresAt = this.expiresAt;
+    return new Date().getTime() < expiresAt;
   }
 }
 

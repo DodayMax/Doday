@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "apollo-boost": "^0.1.23",
+    "apollo-cache-inmemory": "^1.4.2",
+    "apollo-client": "^2.4.12",
+    "apollo-link-context": "^1.0.14",
+    "apollo-link-http": "^1.5.11",
     "auth0-js": "^9.10.0",
-    "auth0-lock": "^11.14.0",
     "cuid": "^2.1.4",
     "firebase": "^5.7.1",
     "graphql": "^14.0.2",
@@ -19,7 +21,8 @@
     "react-dev-utils": "^6.1.1",
     "react-dom": "^16.7.0",
     "react-drag-drawer": "^3.3.0",
-    "react-i18next": "^9.0.10"
+    "react-i18next": "^9.0.10",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "7.1.0",
@@ -35,6 +38,7 @@
     "@types/react": "^16.7.17",
     "@types/react-dom": "^16.0.11",
     "@types/react-i18next": "^8.1.0",
+    "@types/react-router-dom": "^4.3.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
