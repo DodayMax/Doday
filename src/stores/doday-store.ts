@@ -19,7 +19,7 @@ export class DodayStore {
 
   @action
   public fetchActiveDodays = async () => {
-    const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.currentHero.sub });
+    const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.heroID });
     this._dodays = data.activeDodays;
   }
 
@@ -29,8 +29,9 @@ export class DodayStore {
     this._dodays.unshift({ ...newDoday, completed: false });
     try {
       const newDodayNode = await api.dodays.mutations.createDodayNode(newDoday);
-      await api.dodays.mutations.addDodayOwner({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data as any).CreateDoday.id } });
-      await api.dodays.mutations.addDodayCategories({ from: { id: (newDodayNode.data as any).CreateDoday.id }, to: { id: "100" } });
+      const newProgressNode = await api.dodays.mutations.createProgressNode({ id: cuid(), type: 'doday' });
+      await api.dodays.mutations.addDodayOwner({ from: { id: authStore.heroID }, to: { id: (newDodayNode.data as any).CreateDoday.id } });
+      await api.dodays.mutations.addProgressHero({ from: { id: authStore.heroID }, to: { id: (newProgressNode.data as any).CreateProgress.id } });
 
       // Create DOING relation from Hero to Doday with props
       const today = new Date();
@@ -45,7 +46,7 @@ export class DodayStore {
         },
         completed: false,
       }
-      await api.heroes.mutations.addHeroDodays({ from: { id: authStore.currentHero.sub }, to: { id: (newDodayNode.data as any).CreateDoday.id }, data: doingProps });
+      await api.dodays.mutations.addProgressDoday({ from: { id: (newProgressNode.data as any).CreateProgress.id }, to: { id: (newDodayNode.data as any).CreateDoday.id }, data: doingProps });
     } catch (e) {
       this._dodays = this._dodays.filter(doday => doday.id !== newDoday.id);
     }

@@ -58,24 +58,6 @@ export const removeHeroDodays = (variables: any) => {
 
 /////////////////////////////////////////////////////////////////
 
-export const addHeroDone = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation AddHeroDone($from: _HeroInput!, $to: _DodayInput!) {
-            AddHeroDone(from: $from, to: $to) {
-              from {
-                name
-              }
-            }
-          }
-      `,
-      variables
-    });
-};
-
-/////////////////////////////////////////////////////////////////
-
 export const addHeroRoles = (variables: any) => {
   return client
     .mutate({
@@ -94,12 +76,12 @@ export const addHeroRoles = (variables: any) => {
 
 /////////////////////////////////////////////////////////////////
 
-export const addHeroCategory = (variables: any) => {
+export const addHeroTag = (variables: any) => {
   return client
     .mutate({
       mutation: gql`
-        mutation AddHeroCategories($from: _HeroInput!, $to: _CategoryInput!) {
-            AddHeroCategories(from: $from, to: $to) {
+        mutation AddHeroTags($from: _HeroInput!, $to: _TagInput!) {
+            AddHeroTags(from: $from, to: $to) {
               from {
                 id
                 name
