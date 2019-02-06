@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Drawer from 'react-drag-drawer';
-import { Grid, DodayTopBar, Builder } from '@components';
+import { Grid, DodayTopBar, Builder, Drawer as DodayDrawer } from '@components';
 import i18next from 'i18next';
 import { observer, inject } from 'mobx-react';
 import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore } from '@stores';
@@ -59,9 +59,7 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
           }}
           modalElementClass={"sidebar"}
         >
-          <div className="card">
-            I'm a sidebar drawer
-          </div>
+          <DodayDrawer />
         </Drawer>
       </>
     );

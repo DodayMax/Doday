@@ -32,7 +32,7 @@ export class App extends React.Component<TranslationProps> {
             builderUIStore={builderUIStore}
           >
             <Router history={history}>
-              <div>
+              <div className="app-container">
                 <Route path="/" component={Shell} />
                 <Route path="/callback" render={(props) => {
                   handleAuthentication(props);

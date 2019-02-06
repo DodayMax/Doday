@@ -6,8 +6,10 @@ export * from './shared/_organisms/Grid';
 export * from './App';
 import Shell from './Shell/Shell';
 import Builder from './Builder/Builder';
+import { Drawer } from './Drawer';
 
 export {
   Shell,
   Builder,
+  Drawer
 };

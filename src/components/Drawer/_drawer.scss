@@ -1,0 +1,64 @@
+.drawer {
+  &__container {
+    height: 100%;
+    display: flex;
+    background-color: white;
+    flex-direction: column;
+    margin: 0 auto;
+    @media (min-width: 768px) {
+      border-radius: 0;
+    }
+  }
+
+  &__profile {
+    background-color: #222;
+    width: 100%;
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &--info {
+      width: 10rem;
+    }
+
+    &--avatar {
+      width: inherit;
+      height: 10rem;
+      border-radius: 5rem;
+      background: white;
+    }
+
+    &--name {
+      width: inherit;
+      text-align: center;
+      padding-top: 1rem;
+      color: white;
+    }
+  }
+
+  &__level {
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__menu {
+    width: 100%;
+    flex: 3;
+
+    li {
+      padding-left: 4rem;
+      display: flex;
+      height: 4rem;
+      align-items: center;
+      border-bottom: 1px solid #ccc;
+
+      &:first-child {
+        border-top: 1px solid #ccc;
+      }
+    }
+  }
+}
