@@ -1,5 +1,6 @@
 export * from './shared/_atoms/Text';
 export * from './shared/_atoms/Input';
+export * from './shared/_atoms/Loader';
 export * from './shared/_atoms/Button';
 export * from './DodayTopBar';
 export * from './shared/_organisms/Grid';

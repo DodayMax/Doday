@@ -22,6 +22,7 @@
     "react-dom": "^16.7.0",
     "react-drag-drawer": "^3.3.0",
     "react-i18next": "^9.0.10",
+    "react-js-pull-to-refresh": "^1.2.1",
     "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
