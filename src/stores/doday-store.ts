@@ -72,7 +72,7 @@ export class DodayStore {
         doday[key] = value;
       });
     }
-  }
+  } 
 
   // @action
   // public removeDoday = async(id: string) => {

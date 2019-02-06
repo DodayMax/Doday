@@ -52,7 +52,8 @@ ul {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin: 40px auto;
+  background-color: white;
+  margin: 0 auto;
   @media (min-width: 768px) {
     border-radius: 0;
   }
@@ -93,4 +94,14 @@ ul {
   @media (max-width: 767px) {
     width: 100%;
   }
+}
+
+.sidebar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 70%;
+  max-width: 300px;
+  border-radius: 0;
+  left: 0;
 }

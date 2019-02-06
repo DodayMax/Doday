@@ -13,7 +13,7 @@ export class Grid extends React.Component {
             <li
               className="grid__cell"
               key={doday.id}
-            ><input type="checkbox" onClick={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed}/>{doday.name}</li>))}
+            ><input type="checkbox" onChange={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed}/>{doday.name}</li>))}
       </ul>
     );
   }

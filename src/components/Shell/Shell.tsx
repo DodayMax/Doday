@@ -26,6 +26,7 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
 
     return (
       <>
+        <button onClick={() => globalUIStore!.toggleDrawer()}>=</button>
         <DodayTopBar coins={50} energy={8} />
         <Grid />
         <button
@@ -49,6 +50,18 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
           <Builder
             builderUIStore={builderUIStore}
           />
+        </Drawer>
+        <Drawer
+          open={globalUIStore!.isDrawerShown}
+          direction='left'
+          onRequestClose={() => {
+            globalUIStore!.toggleDrawer();
+          }}
+          modalElementClass={"sidebar"}
+        >
+          <div className="card">
+            I'm a sidebar drawer
+          </div>
         </Drawer>
       </>
     );
