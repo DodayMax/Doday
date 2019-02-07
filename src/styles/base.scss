@@ -1,5 +1,8 @@
 @import "../components/Drawer/drawer";
+@import "../components/DodayTopBar/dodaytopbar";
+@import "../components/Builder/builder";
 @import "../components/shared/_atoms/Loader/loader";
+@import "../components/shared/_organisms/Grid/grid";
 
 * {
   margin: 0;
@@ -9,6 +12,7 @@
 
 .app-container {
   height: 100vh;
+  -webkit-overflow-scrolling: touch;
 }
 
 ul {
@@ -40,13 +44,14 @@ ul {
 .control_button {
   width: 7rem;
   height: 7rem;
-  position: absolute;
+  position: fixed;
   bottom: 3.5rem;
   right: 3.5rem;
   border-radius: 3.5rem;
   border: 0;
   font-size: 1.2rem;
   cursor: pointer;
+  z-index: 1;
 
   &:hover {
     background-color: rgb(216, 187, 58);
@@ -98,6 +103,7 @@ ul {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   text-align: center;
+  z-index: 100;
   @media (max-width: 767px) {
     width: 100%;
   }

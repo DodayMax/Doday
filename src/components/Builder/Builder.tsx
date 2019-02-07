@@ -3,8 +3,6 @@ import { Button, Input } from '@components';
 import { inject, observer } from 'mobx-react';
 import { BuilderUIStore } from '@stores';
 import { sysnames } from '@lib/constants';
-import './_builder.scss';
-
 
 interface BuilderProps {
   builderUIStore?: BuilderUIStore;

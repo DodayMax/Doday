@@ -1,5 +1,4 @@
 import * as React from 'react';
-import './_dodaytopbar.scss';
 
 interface DodayTopBarProps {
   coins: string | number;
