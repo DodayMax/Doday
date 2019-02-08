@@ -1,6 +1,7 @@
 import { observable, action, computed } from 'mobx';
 import { authStore } from '@stores';
 import { api } from '@services';
+import { Tag } from './config-store';
 const cuid = require('cuid');
 
 export interface Doday {
@@ -24,7 +25,7 @@ export class DodayStore {
   }
 
   @action
-  public createDodayNode = async (name: string) => {
+  public createDodayNode = async (name: string, tags?: Tag[]) => {
     const newDoday = { id: cuid(), name, created: Date.now() };
     this._dodays.unshift({ ...newDoday, completed: false });
     try {
@@ -32,6 +33,11 @@ export class DodayStore {
       const newProgressNode = await api.dodays.mutations.createProgressNode({ id: cuid(), type: 'doday' });
       await api.dodays.mutations.addDodayOwner({ from: { id: authStore.heroID }, to: { id: (newDodayNode.data as any).CreateDoday.id } });
       await api.dodays.mutations.addProgressHero({ from: { id: authStore.heroID }, to: { id: (newProgressNode.data as any).CreateProgress.id } });
+
+      if (tags) {
+        // Add selected tags to Doday
+        await this.addTags((newDodayNode.data as any).CreateDoday.id, tags);
+      }
 
       // Create DOING relation from Hero to Doday with props
       const today = new Date();
@@ -49,6 +55,17 @@ export class DodayStore {
       await api.dodays.mutations.addProgressDoday({ from: { id: (newProgressNode.data as any).CreateProgress.id }, to: { id: (newDodayNode.data as any).CreateDoday.id }, data: doingProps });
     } catch (e) {
       this._dodays = this._dodays.filter(doday => doday.id !== newDoday.id);
+    }
+  }
+
+  @action
+  public addTags(dodayID: string, tags: Tag[]) {
+    try {
+      tags.forEach(async tag => {
+        await api.dodays.mutations.addDodayTag({ from: { id: dodayID }, to: { id: tag.id }, data: { weight: 1 } });
+      })
+    } catch (e) {
+
     }
   }
 

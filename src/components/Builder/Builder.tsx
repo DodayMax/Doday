@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { Button, Input } from '@components';
 import { inject, observer } from 'mobx-react';
-import { BuilderUIStore } from '@stores';
+import Select from 'react-virtualized-select';
+import { BuilderUIStore, ConfigStore } from '@stores';
 import { sysnames } from '@lib/constants';
 
 interface BuilderProps {
   builderUIStore?: BuilderUIStore;
+  configStore?: ConfigStore;
 }
 
 @observer
-export class Builder extends React.Component<BuilderProps> {
+export class Builder extends React.Component<BuilderProps, any> {
   render() {
-    const { builderUIStore } = this.props;
+    const { builderUIStore, configStore } = this.props;
 
     if (!builderUIStore!.selectedDodayType) {
       return (
@@ -41,6 +43,15 @@ export class Builder extends React.Component<BuilderProps> {
               text={'+'}
               onClick={() => builderUIStore!.createDoday()}
             />
+            <Select
+              autofocus
+              labelKey='sysname'
+              multi
+              onChange={(tags) => builderUIStore!.changeDodayTagsInput(tags)}
+              searchable
+              value={builderUIStore!.tags}
+              valueKey='id'
+              options={configStore!.tags}/>,
           </div>
         );
       case sysnames.dodayTypes.watch:
@@ -75,4 +86,4 @@ export class Builder extends React.Component<BuilderProps> {
   }
 }
 
-export default inject('builderUIStore')(Builder);
+export default inject('builderUIStore', 'configStore')(Builder);

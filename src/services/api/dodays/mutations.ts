@@ -125,15 +125,15 @@ export const addDodayOwner = (variables: { from: { id: string }, to: { id: strin
 /**
  * Add Doday to one of the Tag
  * 
- * @param variables from Doday id to Tag id
+ * @param variables from Doday id to Tag id with weight of relation
  */
 
-export const addDodayTags = (variables: { from: { id: string }, to: { id: string } }) => {
+export const addDodayTag = (variables: { from: { id: string }, to: { id: string }, data: { weight: number } }) => {
   return client
     .mutate({
       mutation: gql`
-        mutation AddDodayTags($from: _DodayInput!, $to: _TagInput!) {
-          AddDodayTags(from: $from, to: $to) {
+        mutation AddDodayTags($from: _DodayInput!, $to: _TagInput!, $data: _TaggedDodayInput!) {
+          AddDodayTags(from: $from, to: $to, data: $data) {
             from {
               id
             }

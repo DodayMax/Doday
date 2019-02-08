@@ -7,7 +7,7 @@ import '@styles/base.scss';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import { Shell } from '@components';
-import { authStore, dodayStore, globalUIStore, builderUIStore } from '@stores';
+import { authStore, dodayStore, globalUIStore, builderUIStore, configStore } from '@stores';
 
 interface TranslationProps {
   t?: i18next.TFunction;
@@ -30,6 +30,7 @@ export class App extends React.Component<TranslationProps> {
             authStore={authStore}
             dodaysStore={dodayStore}
             builderUIStore={builderUIStore}
+            configStore={configStore}
           >
             <Router history={history}>
               <div className="app-container">

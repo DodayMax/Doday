@@ -3,7 +3,9 @@ import Drawer from 'react-drag-drawer';
 import { Grid, DodayTopBar, Builder, Drawer as DodayDrawer } from '@components';
 import i18next from 'i18next';
 import { observer, inject } from 'mobx-react';
-import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore } from '@stores';
+import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore, configStore } from '@stores';
+import 'react-select/dist/react-select.css'
+import 'react-virtualized-select/styles.css'
 
 const { translate } = require('react-i18next');
 
@@ -21,6 +23,10 @@ interface ShellProps {
 
 @observer
 export class Shell extends React.Component<ShellProps & TranslationProps> {
+  componentDidMount() {
+    configStore.fetchAllTags();
+  }
+
   render() {
     const { globalUIStore, builderUIStore, authStore } = this.props;
 
