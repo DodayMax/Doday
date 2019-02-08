@@ -6,6 +6,7 @@ import { api, history } from '@services';
 
 export class AuthStore {
   @observable private _hero: any = null;
+  @observable private _dodayHero: any = null;
   @observable public isLoggedIn = false;
 
   private accessToken;
@@ -47,8 +48,25 @@ export class AuthStore {
   }
 
   @computed
+  get dodayHero() {
+    return this._dodayHero;
+  }
+
+  @computed
   get heroID() {
     return this._hero && this._hero.sub;
+  }
+
+  @computed
+  get tagsForChart() {
+    if (this._dodayHero) {
+      return this._dodayHero.tags.map(tag => ({
+        label: tag.sysname,
+        color: tag.color,
+        value: tag.weight,
+      }));
+    }
+    return [];
   }
 
   handleAuthentication = () => {
@@ -81,7 +99,10 @@ export class AuthStore {
           if (!data.Hero.length) {
             // Create new Hero node in db if it doesn't existed yet
             await api.heroes.mutations.createHeroNode({ id: profile.sub, name: profile.nickname });
+            const { data }: any = await api.heroes.queries.getHeroByID({ id: profile.sub });
+            this._dodayHero = data.Hero[0];
           }
+          this._dodayHero = data.Hero[0];
           await dodayStore.fetchActiveDodays();
         }
       });

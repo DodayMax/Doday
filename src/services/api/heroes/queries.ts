@@ -15,6 +15,7 @@ export const getHeroByID = (variables: any) => {
             tags {
               id
               sysname
+              color
               weight
             }
           }
