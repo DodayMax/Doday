@@ -12,6 +12,11 @@ export const getHeroByID = (variables: any) => {
           Hero(id: $id) {
             id
             name
+            tags {
+              id
+              sysname
+              weight
+            }
           }
         }
       `,

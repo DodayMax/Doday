@@ -20,8 +20,10 @@ export class DodayStore {
 
   @action
   public fetchActiveDodays = async () => {
-    const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.heroID });
-    this._dodays = data.activeDodays;
+    if (authStore.heroID) {
+      const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.heroID });
+      this._dodays = data.activeDodays;
+    }
   }
 
   @action

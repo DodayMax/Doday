@@ -15,6 +15,13 @@
   -webkit-overflow-scrolling: touch;
 }
 
+.shell_container {
+  overflow: hidden;
+  display: grid;
+
+  grid-template-rows: 50px 1fr; 
+}
+
 ul {
   list-style: none;
 }

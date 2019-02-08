@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer } from 'mobx-react';
-import { PullToRefresh, PullDownContent, ReleaseContent } from "react-js-pull-to-refresh";
+import Pullable from 'react-pullable';
 import { Loader } from '@components';
 import { Doday, dodayStore } from '@stores';
 
@@ -16,30 +16,21 @@ export class Grid extends React.Component {
 
   render() {
     return (
-      <div style={{ marginTop: '1rem' }}>
-        <PullToRefresh
-          pullDownContent={<PullDownContent />}
-          releaseContent={<ReleaseContent />}
-          refreshContent={<Loader />}
-          pullDownThreshold={80}
-          onRefresh={this.handleRefresh}
-          triggerHeight={200}
-          backgroundColor='white'
+      <div id="grid" className="grid__container">
+        <Pullable
+          shouldPullToRefresh={() => document.getElementById('grid')!.scrollTop <= 0}
+          onRefresh={() => this.handleRefresh()}
         >
-          <div className="grid__container">
-            <ul>
-              {dodayStore.dodays.map((doday: Doday) => (
-                <li
-                  className="grid__cell"
-                  key={doday.id}
-                >
-                  <input type="checkbox" className="grid__cell--checkbox" onChange={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed} />
-                  <span className="grid__cell--title">{doday.name}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </PullToRefresh>
+          {dodayStore.dodays.map((doday: Doday) => (
+            <li
+              className="grid__cell"
+              key={doday.id}
+            >
+              <input type="checkbox" className="grid__cell--checkbox" onChange={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed} />
+              <span className="grid__cell--title">{doday.name}</span>
+            </li>
+          ))}
+        </Pullable>
       </div>
     );
   }

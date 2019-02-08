@@ -32,19 +32,20 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
 
     return (
       <>
-        <button onClick={() => globalUIStore!.toggleDrawer()}>=</button>
-        <DodayTopBar coins={50} energy={8} />
-        <Grid />
-        <button
-          className="control_button"
-          onClick={() => {
-            if (authStore!.currentHero) {
-              globalUIStore!.toggleBuilder()
-            } else {
-              authStore!.login();
-            }
-          }}
-        ></button>
+        <div className="shell_container">
+          <DodayTopBar coins={50} energy={8} toggle={() => globalUIStore!.toggleDrawer()} />
+          <Grid />
+          <button
+            className="control_button"
+            onClick={() => {
+              if (authStore!.currentHero) {
+                globalUIStore!.toggleBuilder()
+              } else {
+                authStore!.login();
+              }
+            }}
+          ></button>
+        </div>
         <Drawer
           open={globalUIStore!.isBuilderShown}
           onRequestClose={() => {
