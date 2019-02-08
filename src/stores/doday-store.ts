@@ -91,6 +91,7 @@ export class DodayStore {
         doday[key] = value;
       });
     }
+    this._dodays = this._dodays.sort((a, b) => a.completed > b.completed ? 1 : -1);
   } 
 
   // @action

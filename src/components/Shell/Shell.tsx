@@ -33,7 +33,7 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
     return (
       <>
         <div className="shell_container">
-          <DodayTopBar coins={50} energy={8} toggle={() => globalUIStore!.toggleDrawer()} />
+          <DodayTopBar coins={50} energy={8} />
           <Grid />
           <button
             className="control_button"
@@ -45,6 +45,7 @@ export class Shell extends React.Component<ShellProps & TranslationProps> {
               }
             }}
           ></button>
+          <button className="drawer_button" onClick={() => globalUIStore!.toggleDrawer()}>=</button>
         </div>
         <Drawer
           open={globalUIStore!.isBuilderShown}
