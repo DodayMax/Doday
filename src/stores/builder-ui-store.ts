@@ -62,10 +62,12 @@ export class BuilderUIStore {
   }
   
   @action
-  async createDoday() {
-    dodayStore.createDodayNode(this._dodayNameInput, this._tags);
-    globalUIStore.toggleBuilder();
-    this.clear();
+  async createDoday(isPublic: boolean) {
+    if (this._dodayNameInput) {
+      dodayStore.createDodayNode(this._dodayNameInput, this._tags);
+      globalUIStore.toggleBuilder();
+      this.clear();
+    }
   }
 
   @action

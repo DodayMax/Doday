@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer } from 'mobx-react';
 import Pullable from 'react-pullable';
 import { Loader } from '@components';
-import { Doday, dodayStore } from '@stores';
+import { Doday, dodayStore, globalUIStore } from '@stores';
 
 @observer
 export class Grid extends React.Component {
@@ -15,10 +15,11 @@ export class Grid extends React.Component {
   }
 
   render() {
+    const classes = `grid__container ${globalUIStore.isDrawerShown || globalUIStore.isBuilderShown ? 'locked' : ''}`;
     return (
-      <div id="grid" className="grid__container">
+      <div id="grid" className={classes}>
         <Pullable
-          shouldPullToRefresh={() => document.getElementById('grid')!.scrollTop <= 0}
+          shouldPullToRefresh={() => document.getElementById('grid')!.scrollTop <= 0 && !globalUIStore.isDrawerShown && !globalUIStore.isBuilderShown}
           onRefresh={() => this.handleRefresh()}
         >
           {dodayStore.dodays.map((doday: Doday) => (
@@ -26,7 +27,8 @@ export class Grid extends React.Component {
               className="grid__cell"
               key={doday.id}
             >
-              <input type="checkbox" className="grid__cell--checkbox" onChange={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed} />
+              {!dodayStore.loading && <input type="checkbox" className="grid__cell--checkbox" onChange={(e) => dodayStore.completeDoday(doday.id)} checked={doday.completed} />}
+              {dodayStore.loading && <Loader />}
               <span className="grid__cell--title">{doday.name}</span>
             </li>
           ))}

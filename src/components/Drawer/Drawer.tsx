@@ -31,6 +31,8 @@ export class Drawer extends React.Component {
           <li>Today</li>
           <li>Paths</li>
           <li>Store</li>
+          <li>Created dodays</li>
+          <li>Created paths</li>
         </ul>
       </div>
     );

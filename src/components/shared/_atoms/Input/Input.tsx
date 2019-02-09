@@ -1,16 +1,38 @@
 import * as React from 'react';
 
 interface InputProps {
-  value?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  autofocus: boolean;
 }
 
-export const Input = ({ value, onChange, ...props }: InputProps & React.InputHTMLAttributes<HTMLInputElement>) => {
-  return (
-    <input
-      value={value}
-      onChange={onChange}
-      {...props}
-    />
-  );
+export class Input extends React.Component<InputProps & React.InputHTMLAttributes<HTMLInputElement>> {
+  input: React.RefObject<HTMLInputElement>;
+
+  constructor(props) {
+    super(props);
+
+    this.input = React.createRef();
+  }
+
+  componentDidMount() {
+    if (this.props.autofocus && this.input && this.input.current) {
+      setTimeout(
+        () => this.input.current!.focus(),
+        100
+      );
+    }
+  }
+
+  render() {
+    const { value, onChange, autofocus, ...props } = this.props;
+
+    return (
+      <input
+        className="input"
+        ref={this.input}
+        value={value}
+        onChange={onChange}
+        {...props}
+      />
+    );
+  }
 }

@@ -12,11 +12,15 @@ export interface Doday {
 
 export class DodayStore {
   @observable private _dodays: Doday[] = [];
+  @observable private _loading: boolean = false;
 
   @computed
   get dodays(): Doday[] {
     return this._dodays;
   }
+
+  @computed
+  get loading() { return this._loading; }
 
   @action
   public fetchActiveDodays = async () => {
@@ -75,24 +79,14 @@ export class DodayStore {
   public completeDoday = async (id: string) => {
     const doday = this._dodays.find(doday => doday.id === id);
     if (doday) {
-      this.updateDoday(id, { completed: !doday.completed });
       try {
-        await api.dodays.mutations.toggleDoday({ heroID: authStore.heroID, dodayID: id, date: Date.now(), value: doday.completed });
+        await api.dodays.mutations.toggleDoday({ heroID: authStore.heroID, dodayID: id, date: Date.now(), value: !doday.completed });
+        await this.fetchActiveDodays();
       } catch (e) {
-        this.updateDoday(id, { completed: !doday.completed });
+        // show error to Hero
       }
     }
   }
-
-  private updateDoday(id: string, updates: any) {
-    const doday = this._dodays.find(doday => doday.id === id);
-    if (doday) {
-      Object.entries(updates).forEach(([key, value]) => {
-        doday[key] = value;
-      });
-    }
-    this._dodays = this._dodays.sort((a, b) => a.completed > b.completed ? 1 : -1);
-  } 
 
   // @action
   // public removeDoday = async(id: string) => {
