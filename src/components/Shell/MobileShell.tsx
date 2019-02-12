@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
-import { Route, Link, match } from 'react-router-dom';
+import { Route, match } from 'react-router-dom';
 import i18next from 'i18next';
 import Drawer from 'react-drag-drawer';
 import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore, configStore } from '@stores';

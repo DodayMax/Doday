@@ -78,13 +78,19 @@ export class DodayStore {
   @action
   public completeDoday = async (id: string) => {
     const doday = this._dodays.find(doday => doday.id === id);
-    if (doday) {
-      try {
-        await api.dodays.mutations.toggleDoday({ heroID: authStore.heroID, dodayID: id, date: Date.now(), value: !doday.completed });
-        await this.fetchActiveDodays();
-      } catch (e) {
-        // show error to Hero
+    const today = new Date();
+    const day: any = await api.days.queries.getDay({ year: today.getFullYear(), month: today.getMonth(), day: today.getDate() });
+    if (day.data.Day && day.data.Day.length > 0 && day.data.Day[0].active) {
+      if (doday) {
+        try {
+          await api.dodays.mutations.toggleDoday({ heroID: authStore.heroID, dodayID: id, date: Date.now(), value: !doday.completed });
+          await this.fetchActiveDodays();
+        } catch (e) {
+          // show error to Hero
+        }
       }
+    } else {
+      console.log('This Date doesn\'t exist on the planet Earth!');
     }
   }
 
