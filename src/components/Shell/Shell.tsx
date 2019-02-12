@@ -5,6 +5,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
+import { DodayTopBar } from '@components';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 
@@ -18,7 +19,8 @@ export class Shell extends React.Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="shell_container">
+          <DodayTopBar coins={50} energy={8} />
           <Route path="/" component={LoadableComponent} />
         </div>
       </Router>

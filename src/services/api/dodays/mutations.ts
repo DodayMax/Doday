@@ -10,14 +10,20 @@ type Neo4jDateTimeInput = {
   second: number;
 };
 
+type Neo4jDateInput = {
+  year: number;
+  month: number;
+  day: number;
+};
+
 // Dodays mutations
 
-export const createDodayNode = (variables: { name: string, created: number }) => {
+export const createDodayNode = (variables: { name: string, created: number, date: Neo4jDateInput }) => {
   return client
     .mutate({
       mutation: gql`
-        mutation CreateDoday($name: String!, $created: Float) {
-          CreateDoday(name: $name, created: $created) {
+        mutation CreateDoday($name: String!, $created: Float, $date: _Neo4jDateInput) {
+          CreateDoday(name: $name, created: $created, date: $date) {
             id
           }
         }

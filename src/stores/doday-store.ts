@@ -2,6 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { authStore } from '@stores';
 import { api } from '@services';
 import { Tag } from './config-store';
+import { dateInputFromDate, dateInputStringFromDate } from '@lib/utils';
 const cuid = require('cuid');
 
 export interface Doday {
@@ -25,14 +26,14 @@ export class DodayStore {
   @action
   public fetchActiveDodays = async () => {
     if (authStore.heroID) {
-      const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.heroID });
+      const { data }: any = await api.dodays.queries.activeDodaysForHero({ id: authStore.heroID, date: dateInputStringFromDate(new Date()) });
       this._dodays = data.activeDodays;
     }
   }
 
   @action
   public createDodayNode = async (name: string, tags?: Tag[]) => {
-    const newDoday = { id: cuid(), name, created: Date.now() };
+    const newDoday = { id: cuid(), name, created: Date.now(), date: dateInputFromDate(new Date()) };
     this._dodays.unshift({ ...newDoday, completed: false });
     try {
       const newDodayNode = await api.dodays.mutations.createDodayNode(newDoday);

@@ -20,7 +20,7 @@ interface ShellProps {
   match?: match;
 }
 
-import { Grid, DodayTopBar, Builder, Drawer as DodayDrawer } from '@components';
+import { Grid, Builder, Drawer as DodayDrawer } from '@components';
 
 @observer
 export class MobileShell extends React.Component<ShellProps & TranslationProps> {
@@ -33,23 +33,20 @@ export class MobileShell extends React.Component<ShellProps & TranslationProps> 
 
     return (
       <>
-        <div className="shell_container">
-          <DodayTopBar coins={50} energy={8} />
-          <Route exact path={`/`} component={Grid}/>
-          <Route path={`/paths`} render={() => <div>Paths</div>} />
-          <Route path={`/store`} render={() => <div>Store</div>} />
-          <button
-            className="control_button"
-            onClick={() => {
-              if (authStore!.currentHero) {
-                globalUIStore!.toggleBuilder()
-              } else {
-                authStore!.login();
-              }
-            }}
-          ></button>
-          <button className="drawer_button" onClick={() => globalUIStore!.toggleDrawer()}>=</button>
-        </div>
+        <Route exact path={`/`} component={Grid} />
+        <Route path={`/paths`} render={() => <div>Paths</div>} />
+        <Route path={`/store`} render={() => <div>Store</div>} />
+        <button
+          className="control_button"
+          onClick={() => {
+            if (authStore!.currentHero) {
+              globalUIStore!.toggleBuilder()
+            } else {
+              authStore!.login();
+            }
+          }}
+        ></button>
+        <button className="drawer_button" onClick={() => globalUIStore!.toggleDrawer()}>=</button>
         <Drawer
           open={globalUIStore!.isBuilderShown}
           onRequestClose={() => {

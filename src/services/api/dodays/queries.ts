@@ -8,8 +8,8 @@ export const activeDodaysForHero = (variables: any) => {
   return client
     .query({
       query: gql`
-        query activeDodays($id: ID!) {
-          activeDodays(heroID: $id) {
+        query activeDodays($id: ID!, $date: String) {
+          activeDodays(heroID: $id, date: $date) {
             id
             name
             completed
