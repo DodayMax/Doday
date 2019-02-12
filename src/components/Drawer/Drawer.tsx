@@ -1,9 +1,17 @@
 import * as React from 'react';
-import { authStore } from '@stores';
+import { Link, match } from 'react-router-dom';
+import { authStore, GlobalUIStore } from '@stores';
+import { inject } from 'mobx-react';
 
 const Doughnut = require("react-chartjs").Doughnut;
 
-export class Drawer extends React.Component {
+interface DrawerProps {
+  globalUIStore: GlobalUIStore;
+  match?: match;
+}
+
+@inject('globalUIStore')
+export class Drawer extends React.Component<DrawerProps> {
   render() {
     return(
       <div className="drawer__container">
@@ -28,9 +36,21 @@ export class Drawer extends React.Component {
           1 Level, Novice
         </div>
         <ul className="drawer__menu">
-          <li>Today</li>
-          <li>Paths</li>
-          <li>Store</li>
+          <li>
+            <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Today
+            </Link>
+          </li>
+          <li>
+            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Paths
+            </Link>
+          </li>
+          <li>
+            <Link to={`/store`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Store
+            </Link>
+          </li>
           <li>Created dodays</li>
           <li>Created paths</li>
         </ul>

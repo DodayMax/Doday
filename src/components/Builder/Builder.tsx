@@ -33,15 +33,15 @@ export class Builder extends React.Component<BuilderProps, any> {
         />
         <Button
           text={'Draft'}
-          onClick={() => builderUIStore!.createDoday(true)}
+          onClick={() => builderUIStore!.createDoday('draft')}
         />
         <Button
           text={'Private'}
-          onClick={() => builderUIStore!.createDoday(false)}
+          onClick={() => builderUIStore!.createDoday('private')}
         />
         <Button
           text={'Public'}
-          onClick={() => builderUIStore!.createDoday(true)}
+          onClick={() => builderUIStore!.createDoday('public')}
         />
       </div>
     );

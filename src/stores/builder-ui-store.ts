@@ -62,7 +62,7 @@ export class BuilderUIStore {
   }
   
   @action
-  async createDoday(isPublic: boolean) {
+  async createDoday(publicity: string) {
     if (this._dodayNameInput) {
       dodayStore.createDodayNode(this._dodayNameInput, this._tags);
       globalUIStore.toggleBuilder();

@@ -257,10 +257,14 @@ module.exports = {
               configFile: false,
               compact: false,
               presets: [
+                "@babel/react",
                 [
                   require.resolve('babel-preset-react-app/dependencies'),
                   { helpers: true },
                 ],
+              ],
+              plugins: [
+                "syntax-dynamic-import"
               ],
               cacheDirectory: true,
               // Don't waste time on Gzipping the cache
