@@ -314,11 +314,12 @@ module.exports = {
           // Adds support for CSS Modules, but using SASS
           // using the extension .module.scss or .module.sass
           {
-            test: sassModuleRegex,
+            test: sassRegex,
             use: getStyleLoaders(
               {
                 importLoaders: 2,
                 modules: true,
+                camelCase: 'dashes',
                 getLocalIdent: getCSSModuleLocalIdent,
               },
               'sass-loader'

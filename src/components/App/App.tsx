@@ -3,11 +3,12 @@ import { Provider } from 'mobx-react';
 import { ApolloProvider } from 'react-apollo';
 import { Route, Router } from 'react-router-dom';
 import { api, i18n, history } from '@services';
-import '@styles/base.scss';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
 import { Shell } from '@components';
 import { authStore, dodayStore, globalUIStore, builderUIStore, configStore } from '@stores';
+
+import '@root/styles/styles.scss';
 
 interface TranslationProps {
   t?: i18next.TFunction;

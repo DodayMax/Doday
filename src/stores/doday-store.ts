@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import { authStore } from '@stores';
 import { api } from '@services';
 import { Tag } from './config-store';
-import { dateInputFromDate, dateInputStringFromDate } from '@lib/utils';
+import { dateInputFromDate, dateInputStringFromDate, dateTimeInputFromDate } from '@lib/utils';
 const cuid = require('cuid');
 
 export interface Doday {
@@ -49,14 +49,7 @@ export class DodayStore {
       // Create DOING relation from Hero to Doday with props
       const today = new Date();
       const doingProps = {
-        tookAt: {
-          year: today.getFullYear(),
-          month: today.getMonth() + 1,
-          day: today.getDate(),
-          hour: today.getHours(),
-          minute: today.getMinutes(),
-          second: today.getSeconds(),
-        },
+        tookAt: dateTimeInputFromDate(today),
         completed: false,
       }
       await api.dodays.mutations.addProgressDoday({ from: { id: (newProgressNode.data as any).CreateProgress.id }, to: { id: (newDodayNode.data as any).CreateDoday.id }, data: doingProps });

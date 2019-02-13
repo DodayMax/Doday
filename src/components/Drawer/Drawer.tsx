@@ -3,6 +3,8 @@ import { Link, match } from 'react-router-dom';
 import { authStore, GlobalUIStore } from '@stores';
 import { inject } from 'mobx-react';
 
+const styles = require('./_drawer.module.scss');
+
 const Doughnut = require("react-chartjs").Doughnut;
 
 interface DrawerProps {
@@ -14,8 +16,8 @@ interface DrawerProps {
 export class Drawer extends React.Component<DrawerProps> {
   render() {
     return(
-      <div className="drawer__container">
-        <div className="drawer__profile">
+      <div className={styles.drawerContainer}>
+        <div className={styles.drawerProfile}>
           <div>
             <Doughnut
               data={authStore.tagsForChart}
@@ -32,10 +34,10 @@ export class Drawer extends React.Component<DrawerProps> {
             />
           </div>
         </div>
-        <div className="drawer__level">
+        <div className={styles.drawerLevel}>
           1 Level, Novice
         </div>
-        <ul className="drawer__menu">
+        <ul className={styles.drawerMenu}>
           <li>
             <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
               Today
