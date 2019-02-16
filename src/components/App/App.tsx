@@ -5,7 +5,8 @@ import { Route, Router } from 'react-router-dom';
 import { api, i18n, history } from '@services';
 import i18next from 'i18next';
 import { I18nextProvider } from 'react-i18next';
-import { Shell } from '@components';
+import Media from 'react-media';
+import { Shell, DesktopShell } from '@components';
 import { authStore, dodayStore, globalUIStore, builderUIStore, configStore } from '@stores';
 
 import '@root/styles/styles.scss';
@@ -35,7 +36,15 @@ export class App extends React.Component<TranslationProps> {
           >
             <Router history={history}>
               <div className="app-container">
-                <Route path="/" component={Shell} />
+                <Media query="(max-width: 767px)">
+                  {matches =>
+                    matches ? (
+                      <Route path="/" component={Shell} />
+                    ) : (
+                      <Route path="/" component={DesktopShell} />
+                    )
+                  }
+                </Media>
                 <Route path="/callback" render={(props) => {
                   handleAuthentication(props);
                   return <div>Callback</div>

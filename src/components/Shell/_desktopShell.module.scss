@@ -1,0 +1,44 @@
+.drawer {
+  width: 0px;
+  transition: width 160ms linear;
+  transform: translateX(-280px);
+  border-right: 1px solid #222;
+}
+
+.drawer-visible {
+  width: 280px;
+  transition: width 130ms linear;
+  transform: none;
+}
+
+.drawer-profile {
+  background-color: #222;
+  height: 200px;
+}
+
+.doday-app {
+  width: 240px;
+}
+
+.main-layout {
+  flex: 1;
+}
+
+.nav-bar, .sub-menu, .canvas {
+  border: 1px solid #222;
+}
+
+.nav-bar {
+  height: 40px;
+}
+
+.toggleMenu {
+  width: 40px;
+  height: 40px;
+}
+
+.desktop-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}

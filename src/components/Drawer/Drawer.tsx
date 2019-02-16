@@ -8,7 +8,7 @@ const styles = require('./_drawer.module.scss');
 const Doughnut = require("react-chartjs").Doughnut;
 
 interface DrawerProps {
-  globalUIStore: GlobalUIStore;
+  globalUIStore?: GlobalUIStore;
   match?: match;
 }
 
