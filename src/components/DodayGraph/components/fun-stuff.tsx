@@ -1,8 +1,8 @@
-import React from "react"
-import { observer } from "mobx-react"
+import * as React from "react";
+import { observer } from "mobx-react";
 
-import { generateStuff } from "../stores/domain-state"
-import * as history from "../stores/time"
+import { generateStuff } from "../stores/domain-state";
+import * as history from "../stores/time";
 
 export default observer(() => (
     <div className="funstuff">
@@ -16,16 +16,16 @@ export default observer(() => (
             &gt;
         </button>
     </div>
-))
+));
 
 function generateItems() {
-    generateStuff(20)
+    generateStuff(20);
 }
 
 function previous() {
-    history.previousState()
+    history.previousState();
 }
 
 function next() {
-    history.nextState()
+    history.nextState();
 }

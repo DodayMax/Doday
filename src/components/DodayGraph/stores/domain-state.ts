@@ -28,13 +28,13 @@ export const Box = types
     setName(newName) {
       self.name = newName
     }
-  }))
+  }));
 
 export const Arrow = types.model("Arrow", {
   id: types.identifier,
   from: types.reference(Box),
   to: types.reference(Box)
-})
+});
 
 export const Store = types
   .model("Store", {
@@ -59,7 +59,7 @@ export const Store = types
       self.setSelection(box)
       if (source) self.addArrow(source.id, box.id)
     }
-  }))
+  }));
 
 /*
     The store that holds our domain: boxes and arrows
@@ -87,7 +87,7 @@ const store = Store.create({
     }
   ],
   selection: null
-})
+});
 
 export default store;
 

@@ -1,11 +1,15 @@
-import React, { Component } from "react";
+import * as React from "react";
 import { observer } from "mobx-react";
 
 const styles = require('./_sidebar.module.scss');
 
-class Sidebar extends Component {
+interface SidebarProps {
+    store: any;
+}
+
+class Sidebar extends React.Component<SidebarProps> {
     render() {
-        const { selection } = this.props.store
+        const { selection } = this.props.store;
         return selection ? (
             <div className={`${styles.sidebar} ${styles.sidebarOpen}`}>
                 <small>(control click the canvas to create new boxes)</small>
@@ -15,11 +19,11 @@ class Sidebar extends Component {
             </div>
         ) : (
             <div className={styles.sidebar} />
-        )
+        );
     }
 
     onChange = e => {
-        this.props.store.selection.setName(e.target.value)
+        this.props.store.selection.setName(e.target.value);
     }
 }
 
