@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
-import { Drawer, Canvas } from '@components';
+import { Drawer } from '@components';
 
 const styles = require('./_desktopShell.module.scss');
 
@@ -29,14 +29,16 @@ export class Shell extends React.Component<any, any> {
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <nav className={classes}>
-            <Drawer />
+          <nav className={styles.navBar}>
+            <button onClick={() => this.toggleMenu()} className={styles.toggleMenu}>=</button>
           </nav>
-          <section className={styles.mainLayout}>
-            <nav className={styles.navBar}>
-              <button onClick={() => this.toggleMenu()} className={styles.toggleMenu}>=</button>
+          <section className={styles.contentContainer}>
+            <nav className={classes}>
+              <Drawer />
             </nav>
-            <Canvas />
+            <section className={styles.mainLayout}>
+
+            </section>
           </section>
         </div>
       </Router>

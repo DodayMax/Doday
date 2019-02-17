@@ -1,0 +1,153 @@
+// config
+
+:root {
+  --primary-text: rgba(0, 0, 0, 0.9);
+  --secondary-text: rgba(0, 0, 0, 0.62);
+  --disabled-text: rgba(0, 0, 0, 0.38);
+  --surface-card: #F7F7F7;
+}
+
+// primary
+$yellow: #F5CE24;
+$yellow-light: #FFE86C;
+$yellow-dark: #EBBF00;
+
+// secondary
+$blue: #009DE6;
+$blue-light: #74C7ED;
+$blue-dark: #0789C6;
+
+// secondary
+$violet: #9452C1;
+$violet-light: #A772CB;
+$violet-dark: #7C2CB3;
+
+// error
+$red: #FF4E00;
+$red-light: #FF7C42;
+$red-dark: #DB4300;
+
+// success
+$green: #94C234;
+$green-light: #B6E060;
+$green-dark: #71A20D;
+
+// black and grays
+$black: #222;
+$gray-10: #343a40;
+$gray-9: #494949;
+$gray-8: #5D5D5D;
+$gray-7: #7C7C7C;
+$gray-6: #B7BBC0;
+$gray-5: #CCD1D9;
+$gray-4: #E6E9ED;
+$gray-3: #F0F0F0;
+$gray-2: #F7F7F7;
+$gray-1: #FAFAFA;
+$skeleton-gray: rgba(0, 0, 0, 0.1);
+
+// white
+$white: #fff;
+
+// by purpose
+$dark-bg: $gray-10;
+$primary-bg: $yellow-light;
+$card-bg: $gray-2;
+$success-bg: $green-light;
+$error-bg: $red-light;
+
+// typography colors
+$primary-text: var(--primary-text);
+$secondary-text: var(--secondary-text);
+$disabled-text: var(--disabled-text);
+$primary-text-invert: white;
+$error-text: $red-dark;
+$success-text: $green-dark;
+$warning-text: $yellow-dark;
+$link-text: $blue;
+
+// status colors
+$status-green: $success-text;
+$status-red: $error-text;
+$status-gray: $gray-7;
+
+// backdrop colors
+$dark-backdrop: rgba(0, 0, 0, 0.12);
+$light-backdrop: rgba(0, 0, 0, 0.03);
+
+// easings
+$ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+$ease-out-quint: cubic-bezier(0.19, 1, 0.22, 1);
+$ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+
+// fonts
+$font-light: 'Avenir Light';
+$font-regular: 'Avenir Regular';
+$font-medium: 'Avenir Medium';
+$font-demi: 'Avenir Demi';
+$font-heavy: 'Avenir Heavy';
+
+// typography sizes
+$body-s: 1.2rem;
+$body-m: 1.4rem;
+$body-l: 1.6rem;
+$title-s: 1.7rem;
+$title-m: 2.1rem;
+$title-l: 2.8rem;
+
+// breakpoints
+$tablet-screen: 768px;
+$phone-screen-max: $tablet-screen - 1px;
+$small-screen: 1100px;
+$tablet-screen-max: $small-screen - 1px;
+$medium-screen: 1300px;
+$small-screen-max: $medium-screen - 1px;
+$large-screen: 1500px;
+$medium-screen-max: $large-screen - 1px;
+
+// inset, stack, and inline spacings
+$space-xxs:  4px;
+$space-xs:   8px;
+$space-s:   16px;
+$space-m:   20px;
+$space-xm:  24px;
+$space-l:   32px;
+$space-xl:  40px;
+$space-xxl: 60px;
+
+// input font sizes
+$input-font-size: $body-l;
+
+// top bar
+$top-bar-height: 44px;
+
+// corner radius
+$radius-2: 2px;
+$radius-4: 4px;
+$radius-6: 6px;
+$radius-circle: 100%;
+
+:export {
+  tabletScreen: $tablet-screen;
+  smallScreen: $small-screen;
+  mediumScreen: $medium-screen;
+  largeScreen: $large-screen;
+
+  yellow: $yellow;
+  yellowLight: $yellow-light;
+  red: $red;
+  redLight: $red-light;
+  green: $green;
+  greenLight: $green-light;
+
+  spaceXXS: $space-xxs;
+  spaceXS: $space-xs;
+  spaceS: $space-s;
+  spaceM: $space-m;
+  spaceXM: $space-xm;
+  spaceL: $space-l;
+  spaceXL: $space-xl;
+  spaceXXL: $space-xxl;
+}

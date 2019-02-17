@@ -1,13 +1,13 @@
 .drawer {
   width: 0px;
-  transition: width 160ms linear;
+  transition: all 160ms linear;
   transform: translateX(-280px);
   border-right: 1px solid #222;
 }
 
 .drawer-visible {
   width: 280px;
-  transition: width 130ms linear;
+  transition: all 130ms linear;
   transform: none;
 }
 
@@ -30,6 +30,7 @@
 
 .nav-bar {
   height: 40px;
+  background: #222;
 }
 
 .toggleMenu {
@@ -40,5 +41,9 @@
 .desktop-container {
   height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.content-container {
+  display: flex;
 }

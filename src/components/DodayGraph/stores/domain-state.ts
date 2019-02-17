@@ -9,15 +9,14 @@ export const Box = types
     id: types.identifier,
     name: "hal",
     x: 0,
-    y: 0
+    y: 0,
+    width: 150,
+    height: 44,
   })
   .views(self => ({
-    get width() {
-      return self.name.length * 15
-    },
     get isSelected() {
-      if (!hasParent(self)) return false
-      return (getParent(self, 2) as any).selection === self
+      if (!hasParent(self)) return false;
+      return (getParent(self, 2) as any).selection === self;
     }
   }))
   .actions(self => ({
