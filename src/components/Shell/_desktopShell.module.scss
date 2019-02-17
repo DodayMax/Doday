@@ -1,19 +1,16 @@
+@import "~@styles/_config";
+
 .drawer {
   width: 0px;
   transition: all 160ms linear;
   transform: translateX(-280px);
-  border-right: 1px solid #222;
+  border-right: 1px solid $dark-bg;
 }
 
 .drawer-visible {
   width: 280px;
   transition: all 130ms linear;
   transform: none;
-}
-
-.drawer-profile {
-  background-color: #222;
-  height: 200px;
 }
 
 .doday-app {
@@ -24,13 +21,9 @@
   flex: 1;
 }
 
-.nav-bar, .sub-menu, .canvas {
-  border: 1px solid #222;
-}
-
 .nav-bar {
-  height: 40px;
-  background: #222;
+  height: $top-bar-height;
+  background: $dark-bg;
 }
 
 .toggleMenu {
@@ -46,4 +39,5 @@
 
 .content-container {
   display: flex;
+  height: calc(100vh - 4.4rem);
 }

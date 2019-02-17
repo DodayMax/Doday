@@ -2,15 +2,32 @@ import * as React from 'react';
 import { Link, match } from 'react-router-dom';
 import { authStore, GlobalUIStore } from '@stores';
 import { inject } from 'mobx-react';
+import Chart from "react-google-charts";
 
 const styles = require('./_drawer.module.scss');
-
-const Doughnut = require("react-chartjs").Doughnut;
 
 interface DrawerProps {
   globalUIStore?: GlobalUIStore;
   match?: match;
 }
+
+const data = [
+  ["Task", "Hours per Day"],
+  ["Evolution", 7],
+  ["Family", 2],
+  ["Money", 2],
+  ["Health", 3],
+  ["Career", 11],
+  ["Hobby", 2],
+];
+
+const options = {
+  backgroundColor: { fill: 'transparent' } as any,
+  pieHole: 0.4,
+  is3D: false,
+  legend: 'none',
+  pieSliceText: 'label',
+};
 
 @inject('globalUIStore')
 export class Drawer extends React.Component<DrawerProps> {
@@ -19,25 +36,19 @@ export class Drawer extends React.Component<DrawerProps> {
       <div className={styles.drawerContainer}>
         <div className={styles.drawerProfile}>
           <div>
-            <Doughnut
-              data={authStore.tagsForChart}
-              options={{
-                showScale: false,
-                animateRotate: false,
-                segmentStrokeColor: "rgba(255,255,255,0.6)",
-                scaleShowLabelBackdrop: false,
-                scaleBackdropColor: "rgba(0,0,0,0)",
-                scaleShowLine: false,
-              }}
-              width="150"
-              height="150"
+            <Chart
+              chartType="PieChart"
+              width="28rem"
+              height="28rem"
+              data={data}
+              options={options}
             />
           </div>
         </div>
         <div className={styles.drawerLevel}>
           1 Level, Novice
         </div>
-        <ul className={styles.drawerMenu}>
+        <ul role="navigation" className={styles.drawerMenu}>
           <li>
             <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
               Today
@@ -56,6 +67,9 @@ export class Drawer extends React.Component<DrawerProps> {
           <li>Created dodays</li>
           <li>Created paths</li>
         </ul>
+        <div className={styles.drawerFooter}>
+          <button>></button>
+        </div>
       </div>
     );
   }

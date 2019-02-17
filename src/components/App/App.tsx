@@ -9,8 +9,6 @@ import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
 import { authStore, dodayStore, globalUIStore, builderUIStore, configStore } from '@stores';
 
-import '@root/styles/styles.scss';
-
 interface TranslationProps {
   t?: i18next.TFunction;
   i18n?: i18next.i18n;

@@ -1,18 +1,52 @@
-.drawer-container {
-  height: 100%;
-  display: flex;
-  background-color: white;
-  flex-direction: column;
-  margin: 0 auto;
-  @media (min-width: 768px) {
-    border-radius: 0;
+@import '@styles/_config';
+
+.drawer {
+  &-container {
+    height: 100%;
+    display: flex;
+    background-color: $white;
+    flex-direction: column;
+    margin: 0 auto;
+    @media (min-width: $tablet-screen) {
+      border-radius: 0;
+    }
+  }
+
+  &-level {
+    height: 6.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-menu {
+    width: 100%;
+    flex: 3;
+
+    li {
+      padding-left: 4rem;
+      display: flex;
+      height: $cell-height;
+      align-items: center;
+      border-bottom: 1px solid $border-light;
+
+      &:first-child {
+        border-top: 1px solid $border-light;
+      }
+    }
+  }
+
+  &-footer {
+    display: flex;
+    flex-shrink: 0;
+    justify-content: flex-end;
   }
 }
 
 .drawer-profile {
-  background-color: #222;
+  background-color: $dark-bg;
   width: 100%;
-  flex: 2;
+  height: 28rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -25,38 +59,14 @@
   &-avatar {
     width: inherit;
     height: 10rem;
-    border-radius: 5rem;
-    background: white;
+    border-radius: $radius-circle;
+    background: $white;
   }
 
   &-name {
     width: inherit;
     text-align: center;
     padding-top: 1rem;
-    color: white;
-  }
-}
-
-.drawer-level {
-  height: 6.5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.drawer-menu {
-  width: 100%;
-  flex: 3;
-
-  li {
-    padding-left: 4rem;
-    display: flex;
-    height: 4.4rem;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-
-    &:first-child {
-      border-top: 1px solid #ccc;
-    }
+    color: $white;
   }
 }

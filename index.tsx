@@ -4,6 +4,8 @@ import * as firebase from 'firebase/app';
 import { App } from '@components';
 import * as serviceWorker from './serviceWorker';
 
+import '@root/styles/styles.scss';
+
 var config = {
   apiKey: "AIzaSyCn_YyozaC8EeTjzKDqAiKKZCg83yIL4VE",
   authDomain: "doday-web.firebaseapp.com",

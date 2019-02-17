@@ -4,6 +4,7 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
+import * as classNames from 'classnames';
 import { Drawer } from '@components';
 
 const styles = require('./_desktopShell.module.scss');
@@ -25,7 +26,10 @@ export class Shell extends React.Component<any, any> {
   }
 
   render() {
-    const classes = `${styles.drawer} ${this.state.visible ? styles.drawerVisible : ''}`;
+    const className = classNames({
+      [styles['drawer']]: true,
+      [styles['drawer-visible']]: this.state.visible,
+    });
     return (
       <Router>
         <div className={styles.desktopContainer}>
@@ -33,7 +37,7 @@ export class Shell extends React.Component<any, any> {
             <button onClick={() => this.toggleMenu()} className={styles.toggleMenu}>=</button>
           </nav>
           <section className={styles.contentContainer}>
-            <nav className={classes}>
+            <nav className={className}>
               <Drawer />
             </nav>
             <section className={styles.mainLayout}>
