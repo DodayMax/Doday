@@ -2,6 +2,8 @@ export * from './shared/_atoms/text';
 export * from './shared/_atoms/input';
 export * from './shared/_atoms/loader';
 export * from './shared/_atoms/button';
+export * from './shared/_atoms/clickable-icon/clickable-icon';
+import * as Icons from './shared/_atoms/icons';
 export * from './main-top-bar';
 export * from './shared/_organisms/grid';
 export * from './app';
@@ -15,5 +17,6 @@ export {
   Shell,
   Builder,
   Drawer,
-  DesktopShell
+  DesktopShell,
+  Icons
 };

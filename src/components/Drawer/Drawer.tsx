@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { Link, match } from 'react-router-dom';
 import Chart from "react-google-charts";
+import { Icons } from '@components';
+import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 
 const styles = require('./_drawer.module.scss');
 
@@ -58,7 +60,9 @@ export class Drawer extends React.Component<DrawerProps> {
             <li>icon4</li>
           </ul>
           <div className={styles.drawerFooter}>
-            <button className={styles.drawerToggleButton} onClick={toggle}>{'>'}</button>
+            <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
+              <Icons.DoubleChevronIcon width={10} height={10} />
+            </ClickableIcon>
           </div>
         </div>
       );
@@ -99,7 +103,9 @@ export class Drawer extends React.Component<DrawerProps> {
           <li>Created by me</li>
         </ul>
         <div className={styles.drawerFooter}>
-          <button className={styles.drawerToggleButton} onClick={toggle}>{'<'}</button>
+          <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
+            <Icons.DoubleChevronIcon left width={10} height={10} />
+          </ClickableIcon>
         </div>
       </div>
     );

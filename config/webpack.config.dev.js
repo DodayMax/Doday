@@ -225,7 +225,6 @@ module.exports = {
           {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
             include: paths.appSrc,
-            exclude: /stores/,
             loader: require.resolve('babel-loader'),
             options: {
               customize: require.resolve(
