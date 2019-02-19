@@ -1,18 +1,5 @@
 @import "~@styles/_config";
 
-.drawer {
-  width: 0px;
-  transition: all 160ms linear;
-  transform: translateX(-280px);
-  border-right: 1px solid $dark-bg;
-}
-
-.drawer-visible {
-  width: 280px;
-  transition: all 130ms linear;
-  transform: none;
-}
-
 .doday-app {
   width: 240px;
 }
@@ -23,7 +10,8 @@
 
 .nav-bar {
   height: $top-bar-height;
-  background: $dark-bg;
+  background: $white;
+  border-bottom: 1px solid $gray-4;
 }
 
 .toggleMenu {

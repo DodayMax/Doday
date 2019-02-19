@@ -9,6 +9,8 @@ const styles = require('./_drawer.module.scss');
 interface DrawerProps {
   globalUIStore?: GlobalUIStore;
   match?: match;
+  collapsed: boolean;
+  toggle: () => void;
 }
 
 const data = [
@@ -32,9 +34,43 @@ const options = {
 @inject('globalUIStore')
 export class Drawer extends React.Component<DrawerProps> {
   render() {
-    return(
+    const { collapsed, toggle } = this.props;
+
+    if (collapsed) {
+      return (
+        <div className={styles.drawerContainerCollapsed}>
+          <div className={styles.drawerProfileContainerCollapsed}>
+            <div className={styles.drawerProfileAvatarCollapsed}></div>
+          </div>
+          <div className={styles.drawerLevel}>1</div>
+          <ul role="navigation" className={styles.drawerMenuCollapsed}>
+            <li>
+              <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+                icon1
+            </Link>
+            </li>
+            <li>
+              <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+                icon2
+            </Link>
+            </li>
+            <li>
+              <Link to={`/categories`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+                icon3
+            </Link>
+            </li>
+            <li>icon4</li>
+          </ul>
+          <div className={styles.drawerFooter}>
+            <button className={styles.drawerToggleButton} onClick={toggle}>{'>'}</button>
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div className={styles.drawerContainer}>
-        <div className={styles.drawerProfile}>
+        <div className={styles.drawerProfileContainer}>
           <div>
             <Chart
               chartType="PieChart"
@@ -51,7 +87,12 @@ export class Drawer extends React.Component<DrawerProps> {
         <ul role="navigation" className={styles.drawerMenu}>
           <li>
             <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
-              Today
+              Dodays
+            </Link>
+          </li>
+          <li>
+            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Paths
             </Link>
           </li>
           <li>
@@ -59,15 +100,10 @@ export class Drawer extends React.Component<DrawerProps> {
               Categories
             </Link>
           </li>
-          <li>
-            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
-              Chains
-            </Link>
-          </li>
           <li>Created by me</li>
         </ul>
         <div className={styles.drawerFooter}>
-          <button>></button>
+          <button className={styles.drawerToggleButton} onClick={toggle}>{'<'}</button>
         </div>
       </div>
     );

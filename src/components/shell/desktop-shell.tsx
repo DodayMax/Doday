@@ -27,20 +27,13 @@ export class DesktopShell extends React.Component<any, any> {
   }
 
   render() {
-    const className = classNames({
-      [styles['drawer']]: true,
-      [styles['drawer-visible']]: this.state.visible,
-    });
-
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <nav className={styles.navBar}>
-            <button onClick={() => this.toggleMenu()} className={styles.toggleMenu}>=</button>
-          </nav>
+          <nav className={styles.navBar}></nav>
           <section className={styles.contentContainer}>
-            <nav className={className}>
-              <Drawer />
+            <nav>
+              <Drawer collapsed={this.state.visible} toggle={() => this.toggleMenu()} />
             </nav>
             <DodayApp dodays={fakeDodays} />
             <section className={styles.mainLayout}>
