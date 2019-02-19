@@ -6,7 +6,7 @@ export * from './main-top-bar';
 export * from './shared/_organisms/grid';
 export * from './app';
 export * from './doday-app';
-export * from './shell/desktop-shell';
+import DesktopShell from './shell/desktop-shell';
 import Shell from './shell/shell';
 import Builder from './builder/builder';
 import { Drawer } from './drawer';
@@ -14,5 +14,6 @@ import { Drawer } from './drawer';
 export {
   Shell,
   Builder,
-  Drawer
+  Drawer,
+  DesktopShell
 };

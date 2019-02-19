@@ -3,25 +3,22 @@ import {
   BrowserRouter as Router,
   Route
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 import * as classNames from 'classnames';
 import { Drawer, DodayApp } from '@components';
 import { fakeDodays } from '@lib/fake-data/dodays';
+import { RootState } from '@lib/models';
+import { actions } from '@ducks/hero-settings';
 
 const styles = require('./_desktop-shell.module.scss');
 
-export class DesktopShell extends React.Component<any, any> {
+class DesktopShell extends React.Component<any, any> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      visible: false
-    };
   }
 
   toggleMenu() {
-    this.setState({
-      visible: !this.state.visible
-    })
+    this.props.toggleDrawer();
   }
 
   render() {
@@ -31,7 +28,7 @@ export class DesktopShell extends React.Component<any, any> {
           <nav className={styles.navBar}></nav>
           <section className={styles.contentContainer}>
             <nav>
-              <Drawer collapsed={this.state.visible} toggle={() => this.toggleMenu()} />
+              <Drawer collapsed={this.props.isDrawerShown} toggle={() => this.toggleMenu()} />
             </nav>
             <DodayApp dodays={fakeDodays} />
             <section className={styles.mainLayout}>
@@ -43,3 +40,9 @@ export class DesktopShell extends React.Component<any, any> {
     );
   }
 }
+
+const mapState = (state: RootState) => ({
+  isDrawerShown: state.heroSettings.isDrawerShown,
+});
+
+export default connect(mapState, { toggleDrawer: actions.toggleDrawer })(DesktopShell);

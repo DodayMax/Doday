@@ -19,8 +19,8 @@
     "strictNullChecks": true,
     "experimentalDecorators": true,
     "paths": {
-      "@root": [
-        "src"
+      "@root/*": [
+        "src/*"
       ],
       "@lib/*": [
         "src/lib/*"
@@ -36,6 +36,9 @@
       ],
       "@styles": [
         "src/styles"
+      ],
+      "@ducks/*": [
+        "src/ducks/*"
       ],
     }
   },

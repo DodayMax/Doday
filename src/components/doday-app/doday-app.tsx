@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TopBar } from './top-bar/TopBar';
+import { TopBar } from './top-bar/top-bar';
 import { Doday } from '@lib/common-interfaces';
 import { Grid } from '@components';
 
