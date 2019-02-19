@@ -5,9 +5,9 @@ import {
   Route
 } from 'react-router-dom';
 import * as classNames from 'classnames';
-import { Drawer } from '@components';
+import { Drawer, DodayApp } from '@components';
 
-const styles = require('./_desktopShell.module.scss');
+const styles = require('./_desktop-shell.module.scss');
 
 @observer
 export class Shell extends React.Component<any, any> {
@@ -30,6 +30,7 @@ export class Shell extends React.Component<any, any> {
       [styles['drawer']]: true,
       [styles['drawer-visible']]: this.state.visible,
     });
+
     return (
       <Router>
         <div className={styles.desktopContainer}>
@@ -40,6 +41,7 @@ export class Shell extends React.Component<any, any> {
             <nav className={className}>
               <Drawer />
             </nav>
+            <DodayApp />
             <section className={styles.mainLayout}>
 
             </section>

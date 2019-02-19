@@ -10,7 +10,7 @@ import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 
 const LoadableComponent = Loadable({
-  loader: () => import('./MobileShell'),
+  loader: () => import('./mobile-shell'),
   loading: () => <div>Loading...</div>,
 })
 

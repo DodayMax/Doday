@@ -55,17 +55,16 @@ export class Drawer extends React.Component<DrawerProps> {
             </Link>
           </li>
           <li>
-            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
-              Paths
+            <Link to={`/categories`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Categories
             </Link>
           </li>
           <li>
-            <Link to={`/store`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
-              Store
+            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              Chains
             </Link>
           </li>
-          <li>Created dodays</li>
-          <li>Created paths</li>
+          <li>Created by me</li>
         </ul>
         <div className={styles.drawerFooter}>
           <button>></button>

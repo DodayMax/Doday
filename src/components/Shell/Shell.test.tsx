@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Shell } from '@components/Shell/Shell';
+import { Shell } from '@components';
 import { mount } from 'enzyme';
 
 describe('Shell', () => {
