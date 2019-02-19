@@ -3,13 +3,8 @@ import { authStore } from '@stores';
 import { api } from '@services';
 import { Tag } from './config-store';
 import { dateInputFromDate, dateInputStringFromDate, dateTimeInputFromDate } from '@lib/utils';
+import { Doday } from '@lib/common-interfaces';
 const cuid = require('cuid');
-
-export interface Doday {
-  id: string;
-  name: string;
-  completed: boolean;
-}
 
 export class DodayStore {
   @observable private _dodays: Doday[] = [];

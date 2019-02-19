@@ -6,11 +6,12 @@ import {
 } from 'react-router-dom';
 import * as classNames from 'classnames';
 import { Drawer, DodayApp } from '@components';
+import { fakeDodays } from '@lib/fake-data/dodays';
 
 const styles = require('./_desktop-shell.module.scss');
 
 @observer
-export class Shell extends React.Component<any, any> {
+export class DesktopShell extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
@@ -41,7 +42,7 @@ export class Shell extends React.Component<any, any> {
             <nav className={className}>
               <Drawer />
             </nav>
-            <DodayApp />
+            <DodayApp dodays={fakeDodays} />
             <section className={styles.mainLayout}>
 
             </section>
@@ -51,5 +52,3 @@ export class Shell extends React.Component<any, any> {
     );
   }
 }
-
-export default Shell;
