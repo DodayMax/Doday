@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { Link, match } from 'react-router-dom';
-import { authStore, GlobalUIStore } from '@stores';
-import { inject } from 'mobx-react';
 import Chart from "react-google-charts";
 
 const styles = require('./_drawer.module.scss');
 
 interface DrawerProps {
-  globalUIStore?: GlobalUIStore;
   match?: match;
   collapsed: boolean;
   toggle: () => void;
@@ -31,7 +28,6 @@ const options = {
   pieSliceText: 'label',
 };
 
-@inject('globalUIStore')
 export class Drawer extends React.Component<DrawerProps> {
   render() {
     const { collapsed, toggle } = this.props;
@@ -45,19 +41,19 @@ export class Drawer extends React.Component<DrawerProps> {
           <div className={styles.drawerLevel}>1</div>
           <ul role="navigation" className={styles.drawerMenuCollapsed}>
             <li>
-              <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              <Link to={`/dodays`}>
                 icon1
-            </Link>
+              </Link>
             </li>
             <li>
-              <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              <Link to={`/paths`}>
                 icon2
-            </Link>
+              </Link>
             </li>
             <li>
-              <Link to={`/categories`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+              <Link to={`/categories`}>
                 icon3
-            </Link>
+              </Link>
             </li>
             <li>icon4</li>
           </ul>
@@ -86,17 +82,17 @@ export class Drawer extends React.Component<DrawerProps> {
         </div>
         <ul role="navigation" className={styles.drawerMenu}>
           <li>
-            <Link to={`/`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+            <Link to={`/dodays`}>
               Dodays
             </Link>
           </li>
           <li>
-            <Link to={`/paths`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+            <Link to={`/paths`}>
               Paths
             </Link>
           </li>
           <li>
-            <Link to={`/categories`} onClick={() => this.props.globalUIStore!.toggleDrawer()}>
+            <Link to={`/categories`}>
               Categories
             </Link>
           </li>

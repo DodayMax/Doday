@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 import {
   BrowserRouter as Router,
   Route
@@ -10,7 +9,6 @@ import { fakeDodays } from '@lib/fake-data/dodays';
 
 const styles = require('./_desktop-shell.module.scss');
 
-@observer
 export class DesktopShell extends React.Component<any, any> {
   constructor(props) {
     super(props);

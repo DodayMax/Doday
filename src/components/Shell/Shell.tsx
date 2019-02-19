@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { observer } from 'mobx-react';
 import * as Loadable from 'react-loadable';
 import {
   BrowserRouter as Router,
@@ -14,7 +13,6 @@ const LoadableComponent = Loadable({
   loading: () => <div>Loading...</div>,
 })
 
-@observer
 export class Shell extends React.Component {
   render() {
     return (

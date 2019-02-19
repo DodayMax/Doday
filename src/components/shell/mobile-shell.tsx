@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { observer, inject } from 'mobx-react';
 import { Route, match } from 'react-router-dom';
 import i18next from 'i18next';
 import Drawer from 'react-drag-drawer';
-import { AuthStore, DodayStore, GlobalUIStore, BuilderUIStore, configStore } from '@stores';
 import { fakeDodays } from '@lib/fake-data/dodays';
 
 const { translate } = require('react-i18next');
@@ -14,24 +12,13 @@ interface TranslationProps {
 }
 
 interface ShellProps {
-  authStore?: AuthStore;
-  dodaysStore?: DodayStore;
-  globalUIStore?: GlobalUIStore;
-  builderUIStore?: BuilderUIStore;
   match?: match;
 }
 
 import { Grid, Builder, Drawer as DodayDrawer } from '@components';
 
-@observer
 export class MobileShell extends React.Component<ShellProps & TranslationProps> {
-  componentDidMount() {
-    configStore.fetchAllTags();
-  }
-
   render() {
-    const { authStore, globalUIStore, builderUIStore } = this.props;
-
     return (
       <>
         <Route exact path={`/`} render={() => <Grid items={fakeDodays} />} />
@@ -40,32 +27,21 @@ export class MobileShell extends React.Component<ShellProps & TranslationProps> 
         <button
           className="control_button"
           onClick={() => {
-            if (authStore!.currentHero) {
-              globalUIStore!.toggleBuilder()
-            } else {
-              authStore!.login();
-            }
+            
           }}
         ></button>
-        <button className="drawer_button" onClick={() => globalUIStore!.toggleDrawer()}>=</button>
+        <button className="drawer_button">=</button>
         <Drawer
-          open={globalUIStore!.isBuilderShown}
           onRequestClose={() => {
-            globalUIStore!.toggleBuilder();
-            builderUIStore!.clear();
           }}
           modalElementClass={"modal"}
         >
           <Builder
-            builderUIStore={builderUIStore}
           />
         </Drawer>
         <Drawer
-          open={globalUIStore!.isDrawerShown}
           direction='left'
-          onRequestClose={() => {
-            globalUIStore!.toggleDrawer();
-          }}
+          onRequestClose={() => {}}
           modalElementClass={"sidebar"}
         >
           <Route path="/" component={DodayDrawer} />
@@ -75,4 +51,4 @@ export class MobileShell extends React.Component<ShellProps & TranslationProps> 
   }
 }
 
-export default translate()(inject('authStore', 'dodaysStore', 'globalUIStore', 'builderUIStore')(MobileShell));
+export default translate()(MobileShell);
