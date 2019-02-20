@@ -1,4 +1,4 @@
-export * from './shared/_atoms/text';
+export * from './shared/_atoms/typography';
 export * from './shared/_atoms/input';
 export * from './shared/_atoms/loader';
 export * from './shared/_atoms/button';

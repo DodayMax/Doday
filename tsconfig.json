@@ -32,11 +32,8 @@
       "@components": [
         "src/components"
       ],
-      "@stores": [
-        "src/stores"
-      ],
-      "@styles": [
-        "src/styles"
+      "@styles/*": [
+        "src/styles/*"
       ],
       "@ducks/*": [
         "src/ducks/*"

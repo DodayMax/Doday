@@ -157,6 +157,7 @@ module.exports = {
       '@stores': '@root/stores',
       '@services': '@root/services',
       '@styles': '@root/styles',
+      '@styles/*': '@root/styles/*',
       '@lib': '@root/lib',
       '@lib/*': '@root/lib/*',
       '@ducks': '@root/ducks',
