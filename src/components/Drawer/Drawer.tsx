@@ -61,7 +61,7 @@ export class Drawer extends React.Component<DrawerProps> {
           </ul>
           <div className={styles.drawerFooter}>
             <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
-              <Icons.DoubleChevronIcon width={10} height={10} />
+              <Icons.DoubleChevronIcon right />
             </ClickableIcon>
           </div>
         </div>
@@ -104,7 +104,7 @@ export class Drawer extends React.Component<DrawerProps> {
         </ul>
         <div className={styles.drawerFooter}>
           <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
-            <Icons.DoubleChevronIcon left width={10} height={10} />
+            <Icons.DoubleChevronIcon left />
           </ClickableIcon>
         </div>
       </div>

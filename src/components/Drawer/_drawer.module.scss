@@ -103,11 +103,9 @@
   }
 
   &-toggle-button {
-    width: 3rem;
-    height: 3rem;
-    margin-right: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: $radius-circle;
+    margin-right: 2rem;
+    margin-bottom: 2rem;
+    border: 0;
     background: $white;
   }
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface InputProps {
-  autofocus: boolean;
+  autofocus?: boolean;
 }
 
 export class Input extends React.Component<InputProps & React.InputHTMLAttributes<HTMLInputElement>> {

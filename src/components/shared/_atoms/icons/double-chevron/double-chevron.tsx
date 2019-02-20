@@ -17,13 +17,13 @@ export const DoubleChevronIcon: React.SFC<DoubleChevronIconProps> = ({
   height,
   color,
   className,
-  right = true,
-  left,
+  left = true,
+  right,
 }) => {
   const classNames = classnames({
     [styles.icon]: true,
     [className || '']: true,
-    [styles.flip]: left,
+    [styles.flip]: right,
   });
 
   return (
@@ -33,10 +33,7 @@ export const DoubleChevronIcon: React.SFC<DoubleChevronIconProps> = ({
       className={classNames}
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg">
-      <g fill={color || '#494949'} fillRule="nonzero">
-        <path d="M10.362 11.804l-6.124 6.86-1.757-1.968 6.125-6.86L2.48 2.977 4.238 1.01l6.124 6.859.025-.028 1.757 1.968-.025.027.025.028-1.757 1.968-.025-.028z" />
-        <path d="M15.932 11.804l-6.124 6.86-1.757-1.968 6.125-6.86L8.05 2.977 9.808 1.01l6.124 6.859.025-.028 1.757 1.968-.025.027.025.028-1.757 1.968-.025-.028z" />
-      </g>
+      <path fill={color || '#494949'} fillRule="evenodd" d="M9.991 20C15.504 20 20 15.521 20 9.991S15.521 0 9.991 0 0 4.479 0 9.991C0 15.504 4.479 20 9.991 20zm0-18.605c4.738 0 8.596 3.86 8.596 8.596 0 4.738-3.858 8.596-8.596 8.596-4.737 0-8.596-3.858-8.596-8.596 0-4.737 3.86-8.596 8.596-8.596zm.948 13.592a.69.69 0 0 0 .5.207.707.707 0 0 0 .5-1.206L7.888 9.94l4.049-4.049a.707.707 0 0 0-1-.999L6.392 9.44a.69.69 0 0 0-.207.5c0 .19.07.361.207.5l4.548 4.547z"/>
     </svg>
   )
 };

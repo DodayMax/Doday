@@ -4,14 +4,9 @@ import { Text } from '@components';
 
 describe('Text', () => {
   it('renders correctly without props', () => {
-    const text = shallow(<Text />);
+    const text = shallow(<Text text='test' />);
 
     expect(text).toMatchSnapshot();
-  });
-
-  it('renders correctly with text prop', () => {
-    const text = shallow(<Text text={'qwe'} />);
-
-    expect(text.find('span').contains('qwe')).toBe(true);
+    expect(text.find('span').contains('test')).toBe(true);
   });
 });

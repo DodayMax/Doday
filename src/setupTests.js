@@ -1,6 +1,6 @@
 import './tempPolyfills';
 
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import * as Enzyme from 'enzyme';
+import * as Adapter from 'enzyme-adapter-react-16';
 
-configure({ adapter: new Adapter(), disableLifecycleMethods: true });
+Enzyme.configure({ adapter: new Adapter(), disableLifecycleMethods: true });
