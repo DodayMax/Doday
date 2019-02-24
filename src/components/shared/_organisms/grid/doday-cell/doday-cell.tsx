@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Doday } from '@lib/common-interfaces';
+import { Checkbox } from '@components';
 
 const styles = require('./_doday-cell.module.scss');
 
@@ -13,7 +14,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({ doday }) => {
       className={styles.cellContainer}
       key={doday.id}
     >
-      {<input type="checkbox" className={styles.cellCheckbox} onChange={(e) => console.log('complete')} checked={doday.completed} />}
+      {<Checkbox onClick={(e) => console.log('complete')} checked={doday.completed} />}
       <span className={styles.cellTitle}>{doday.name}</span>
     </li>
   );

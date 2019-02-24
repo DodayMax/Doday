@@ -5,13 +5,13 @@ export const fakeDodays = [
     completed: false,
   },
   {
-    id: '123',
+    id: '124',
     name: 'Second',
     completed: false,
   },
   {
-    id: '123',
+    id: '125',
     name: 'Third',
-    completed: false,
+    completed: true,
   }
 ];

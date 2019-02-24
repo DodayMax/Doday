@@ -1,5 +1,5 @@
 .icon-container {
-  composes: button from '@styles/_common.scss';
+  composes: pointer from '@styles/_common.scss';
   display: flex;
   justify-content: center;
   align-items: center;
