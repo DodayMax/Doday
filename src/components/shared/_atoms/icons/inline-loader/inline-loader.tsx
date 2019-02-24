@@ -1,7 +1,11 @@
 import * as React from 'react';
 
-export const InlineLoader = () => (
-  <svg version="1.1" id="inline-loader" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+interface InlineLoaderProps {
+  className: string;
+}
+
+export const InlineLoader = (props: InlineLoaderProps) => (
+  <svg version="1.1" id="inline-loader" {...props} xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
     width="24px" height="30px" viewBox="0 0 24 30" xmlSpace="preserve">
     <rect x="0" y="13" width="4" height="5" fill="#333">
       <animate attributeName="height" attributeType="XML"
