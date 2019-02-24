@@ -9,16 +9,16 @@ describe('Text', () => {
     const text = shallow(<Text text='test' />);
 
     expect(text).toMatchSnapshot();
-    expect(text.find('span').contains('test')).toBe(true);
-    expect(text.find('span').hasClass('text-l') ).toBe(true);
+    expect(text.find('div').contains('test')).toBe(true);
+    expect(text.find('div').hasClass('text-l') ).toBe(true);
   });
 
   it('renders correctly with props', () => {
     const text = shallow(<Text text='test' size={TypographySize.s} color={TypographyColor.Primary} align={TypographyAlignment.Center} />);
 
-    expect(text.find('span').contains('test')).toBe(true);
-    expect(text.find('span').hasClass('text-s')).toBe(true);
-    expect(text.find('span').hasClass('primary-text')).toBe(true);
-    expect(text.find('span').hasClass('align-center')).toBe(true);
+    expect(text.find('div').contains('test')).toBe(true);
+    expect(text.find('div').hasClass('text-s')).toBe(true);
+    expect(text.find('div').hasClass('primary-text')).toBe(true);
+    expect(text.find('div').hasClass('align-center')).toBe(true);
   });
 });
