@@ -2,6 +2,14 @@
   "name": "Doday",
   "version": "0.1.0",
   "private": true,
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "test": "node scripts/test.js",
+    "test:coverage": "node scripts/test.js --coverage",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
   "dependencies": {
     "apollo-cache-inmemory": "^1.4.2",
     "apollo-client": "^2.4.12",
@@ -116,13 +124,6 @@
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "test": "node scripts/test.js",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
-  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -135,7 +136,8 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
+      "!src/**/*.d.ts",
+      "!src/**/*.story.tsx"
     ],
     "resolver": "jest-pnp-resolver",
     "setupFiles": [

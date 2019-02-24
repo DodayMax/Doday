@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 interface InlineLoaderProps {
-  className: string;
+  className?: string;
 }
 
 export const InlineLoader = (props: InlineLoaderProps) => (
