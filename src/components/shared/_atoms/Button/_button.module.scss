@@ -1,0 +1,19 @@
+@import "@styles/_config";
+
+.default {
+  composes: button flex-center from '@styles/_common';
+  background-color: $gray-1;
+
+  &:hover {
+    background-color: $gray-3;
+  }
+}
+
+.primary {
+  composes: button from '@styles/_common';
+  background-color: $yellow-light;
+
+  &:hover {
+    background-color: $yellow;
+  }
+}

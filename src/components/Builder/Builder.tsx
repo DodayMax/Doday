@@ -21,12 +21,15 @@ export class Builder extends React.Component<BuilderProps, any> {
         />
         <Button
           text={'Draft'}
+          onClick={() => {}}
         />
         <Button
           text={'Private'}
+          onClick={() => {}}
         />
         <Button
           text={'Public'}
+          onClick={() => {}}
         />
       </div>
     );

@@ -1,5 +1,19 @@
+@import "./config";
+
 .button {
   cursor: pointer;
+  outline: none;
+  border: 2px solid $border-dark;
+  border-radius: $radius-4;
+  height: 3rem;
+  padding: .4rem 1rem;
+  font-size: 1rem;
+  transition: all 200ms ease;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
 }
 
 .flip {

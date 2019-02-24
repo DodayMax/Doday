@@ -39,6 +39,11 @@
   },
   "devDependencies": {
     "@babel/core": "7.1.0",
+    "@storybook/addon-actions": "^4.1.13",
+    "@storybook/addon-info": "^4.1.13",
+    "@storybook/addon-links": "^4.1.13",
+    "@storybook/addons": "^4.1.13",
+    "@storybook/react": "^4.1.13",
     "@svgr/webpack": "2.4.1",
     "@types/auth0-js": "^8.11.11",
     "@types/auth0-lock": "^11.4.10",
@@ -96,6 +101,8 @@
     "postcss-loader": "3.0.0",
     "postcss-preset-env": "6.0.6",
     "postcss-safe-parser": "4.0.1",
+    "react-docgen-typescript-loader": "^3.0.1",
+    "react-docgen-typescript-webpack-plugin": "^1.1.0",
     "redux-devtools-extension": "^2.13.8",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
@@ -112,7 +119,9 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -148,7 +157,6 @@
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web",
       "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
       "^@root(.*)$": "<rootDir>/src$1",
       "^@components(.*)$": "<rootDir>/src/components$1",

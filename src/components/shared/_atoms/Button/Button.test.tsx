@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Button } from '@components';
+import { Button, Icons } from '@components';
 
 describe('Button', () => {
   it('renders correctly without props', () => {
@@ -17,5 +17,12 @@ describe('Button', () => {
     expect(button.props().text).toEqual('qwe');
     button.simulate('click');
     expect(onClick.mock.calls.length).toBe(1);
+  });
+
+  it('Render loading state', () => {
+    const onClick = jest.fn();
+    const button = mount(<Button text={'qwe'} onClick={onClick} isLoading={true} />);
+
+    expect(button.find('svg')).toHaveLength(1);
   });
 });
