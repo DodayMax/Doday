@@ -10,7 +10,6 @@ interface TextProps {
 
 export const Text: React.SFC<TextProps & TypographyProps & React.HTMLAttributes<HTMLElement>> = ({ text, color, align, size, bold, italic, uppercase, capitalize, underline, strikethrough, ellipsize, wordwrap, className, ...props }) => {
   const classNames = classnames({
-    [styles['text-l']]: true, // default size for text
     [styles['bold']]: !!bold,
     [styles['italic']]: !!italic,
     [styles['uppercase']]: !!uppercase,
@@ -22,11 +21,12 @@ export const Text: React.SFC<TextProps & TypographyProps & React.HTMLAttributes<
     [styles[`${align}`]]: !!align,
     [styles[`text-${size}`]]: !!size,
     [styles[`${color}-text`]]: !!color,
+    [styles['text-l']]: !!!size, // default size for text
   });
 
   return (
-    <span className={classNames} {...props}>
+    <div className={classNames} {...props}>
       {text}
-    </span>
+    </div>
   );
 };

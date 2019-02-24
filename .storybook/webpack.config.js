@@ -60,7 +60,7 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(jpg|png|svg)$/,
+                test: /\.(jpg|png|svg|otf)$/,
                 loader: 'file-loader',
                 include: SRC_PATH
             },
