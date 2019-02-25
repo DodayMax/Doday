@@ -10,10 +10,10 @@
 }
 
 .primary {
-  composes: button from '@styles/_common';
-  background-color: $yellow-light;
+  composes: button flex-center from '@styles/_common';
+  background-color: $yellow;
 
   &:hover {
-    background-color: $yellow;
+    background-color: $yellow-light;
   }
 }

@@ -5,7 +5,7 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as classNames from 'classnames';
-import { Drawer, DodayApp } from '@components';
+import { Drawer, DodayApp, Button } from '@components';
 import { fakeDodays } from '@lib/fake-data/dodays';
 import { RootState } from '@lib/models';
 import { actions } from '@ducks/hero-settings';
@@ -25,7 +25,10 @@ class DesktopShell extends React.Component<any, any> {
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <nav className={styles.navBar}></nav>
+          <nav className={styles.navBar}>
+            <div>Logo</div>
+            <Button text={'New Doday'} primary onClick={() => {}} />
+          </nav>
           <section className={styles.contentContainer}>
             <nav>
               <Drawer collapsed={this.props.isDrawerShown} toggle={() => this.toggleMenu()} />

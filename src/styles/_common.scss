@@ -9,13 +9,18 @@
   outline: none;
   border: 2px solid $border-dark;
   border-radius: $radius-4;
-  height: 5rem;
+  height: 4rem;
   padding: 0 1rem;
-  font-size: $body-l;
+  font-size: $body-m;
   transition: all 200ms ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .flex-center {
+  display: flex;
   justify-content: center;
   align-items: center;
 }
