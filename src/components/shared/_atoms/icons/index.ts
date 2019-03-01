@@ -6,5 +6,6 @@ export * from './lighting/lighting';
 export * from './folder-plus/folder-plus';
 export * from './apps/apps';
 export * from './checkbox-in-box/checkbox-in-box';
+export * from './chevron/chevron';
 
 export * from './names';

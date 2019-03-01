@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as cuid from 'cuid';
 import { actions } from '@ducks/doday-app';
 import { DodayCell } from './doday-cell/doday-cell';
 import { DodayAppMenuCell } from './doday-app-menu-cell/doday-app-menu-cell';
@@ -55,10 +56,11 @@ export class GridComponent extends React.Component<GridProps, GridState> {
         {items.map((item: any, index) => {
           switch(cellType) {
             case 'DodayCell':
-              return <DodayCell doday={item} />;
+              return <DodayCell doday={item} key={cuid()} />;
             case 'DodayAppMenuCell':
               return (
                 <DodayAppMenuCell
+                  key={cuid()}
                   collapsed={this.props.collapsed}
                   item={item}
                   active={index === this.state.activeIndex}

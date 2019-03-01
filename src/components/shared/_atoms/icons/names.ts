@@ -1,4 +1,10 @@
 export type IconNames = 'Checkbox'
   | 'DoubleChevron'
   | 'InlineLoader'
-  | 'TodayCalendar';
+  | 'TodayCalendar'
+  | 'Lighting'
+  | 'FolderPlus'
+  | 'CheckboxInBox'
+  | 'ArrowLeft'
+  | 'ArrowRight'
+  | 'Apps';

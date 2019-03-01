@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as cuid from 'cuid';
 import classnames from 'classnames';
 import { Icons } from '@components';
 import { DrawerMenuItem } from '@root/components/drawer';
@@ -15,7 +14,6 @@ interface DodayAppMenuCellProps {
 
 export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onClick, active, collapsed }) => {
   const Icon = Icons[item.icon];
-  console.log(Icon);
   const classNames = classnames({
     [styles.cell]: true,
     [styles.active]: active,
@@ -26,7 +24,6 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
     return (
       <li
         className={classNames}
-        key={cuid()}
         onClick={onClick}
       >
         {<Icon />}
@@ -36,7 +33,6 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
     return (
       <li
         className={classNames}
-        key={cuid()}
         onClick={onClick}
       >
         {<Icon />}

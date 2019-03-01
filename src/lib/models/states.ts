@@ -9,4 +9,5 @@ export interface DodayAppState {
 
 export interface HeroSettingsState {
   isDrawerShown: boolean;
+  chosenDate: Date;
 }

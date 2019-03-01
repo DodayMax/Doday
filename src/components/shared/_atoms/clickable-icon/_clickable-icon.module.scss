@@ -1,8 +1,15 @@
+@import '@styles/_config';
+
 .icon-container {
   composes: pointer from '@styles/_common.scss';
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: $radius-4;
+  background-color: $gray-2;
 
-  &:focus {outline:0;}
+  &:focus { outline:0; }
+  &:hover, &:active {
+    background-color: $gray-1;
+  }
 }

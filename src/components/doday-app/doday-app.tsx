@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { actions } from '@ducks/doday-app';
-import { TopBar } from './top-bar/top-bar';
+import { actions as appActions } from '@ducks/doday-app';
+import { actions as settingsActions } from '@ducks/hero-settings';
+import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { Doday } from '@lib/common-interfaces';
 import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
+import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -13,9 +15,14 @@ interface DodayAppProps {
   path?: string;
 }
 
-export class DodayAppComponent extends React.Component<DodayAppProps> {
+interface StateProps {
+  chosenDate?: Date;
+  changeDate?: (date: Date) => ChangeDateAction;
+}
+
+export class DodayAppComponent extends React.Component<DodayAppProps & StateProps> {
   renderContent() {
-    const path = this.props.path;
+    const { path, chosenDate, changeDate } = this.props;
 
     switch (path) {
       case dodayApp.paths.actions:
@@ -33,7 +40,7 @@ export class DodayAppComponent extends React.Component<DodayAppProps> {
       default:
         return (
           <>
-            <TopBar />
+            <TodayTopBar date={chosenDate!} changeDate={changeDate!} />
             <Grid items={this.props.dodays || []} cellType="DodayCell" />
           </>
         );
@@ -49,8 +56,9 @@ export class DodayAppComponent extends React.Component<DodayAppProps> {
   }
 }
 
-const mapState = ({ dodayApp }) => ({
-  path: dodayApp.path
+const mapState = ({ dodayApp, heroSettings }) => ({
+  path: dodayApp.path,
+  chosenDate: heroSettings.chosenDate,
 });
 
-export default connect(mapState, { ...actions })(DodayAppComponent);
+export default connect(mapState, { ...appActions, ...settingsActions })(DodayAppComponent);
