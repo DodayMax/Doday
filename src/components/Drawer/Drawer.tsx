@@ -125,19 +125,19 @@ export class DrawerComponent extends React.Component<DrawerProps & Actions> {
               },
               {
                 text: 'Actions',
-                icon: 'TodayCalendar',
+                icon: 'CheckboxInBox',
                 action: 'changePath',
                 payload: dodayApp.paths.actions,
               },
               {
                 text: 'Memos',
-                icon: 'TodayCalendar',
+                icon: 'Lighting',
                 action: 'changePath',
                 payload: dodayApp.paths.memos,
               },
               {
                 text: 'Created by me',
-                icon: 'TodayCalendar',
+                icon: 'Apps',
                 action: 'changePath',
                 payload: dodayApp.paths.createdByMe,
               }

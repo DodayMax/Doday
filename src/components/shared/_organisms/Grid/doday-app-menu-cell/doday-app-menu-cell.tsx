@@ -15,6 +15,7 @@ interface DodayAppMenuCellProps {
 
 export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onClick, active, collapsed }) => {
   const Icon = Icons[item.icon];
+  console.log(Icon);
   const classNames = classnames({
     [styles.cell]: true,
     [styles.active]: active,
