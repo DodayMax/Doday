@@ -12,3 +12,13 @@
     padding: 0 2rem;
   }
 }
+
+.date-container {
+  display: flex;
+  align-items: center;
+}
+
+.date {
+  padding-right: $space-xs;
+  padding-top: 2px;
+}

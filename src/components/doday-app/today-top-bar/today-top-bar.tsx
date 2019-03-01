@@ -26,15 +26,26 @@ export class TodayTopBar extends React.Component<TodayTopBarProps> {
     this.props.changeDate(date.toDate());
   }
 
+  todayDate = (today) => {
+    this.props.changeDate(today);
+  }
+
   render() {
     const date = moment(this.props.date).format('ll');
+    const today = new Date();
+    const isToday = date === moment(today).format('ll');
 
     return (
       <div className={styles.topbarContainer}>
         <ClickableIcon onClick={this.previousDate}>
           <Icons.Chevron />
         </ClickableIcon>
-        <div>{date}</div>
+        <div className={styles.dateContainer}>
+          <span className={styles.date}>{date}</span>
+          {!isToday && <ClickableIcon onClick={() => this.todayDate(today)}>
+            <Icons.TodayCalendar />
+          </ClickableIcon>}
+        </div>
         <ClickableIcon onClick={this.nextDate}>
           <Icons.Chevron right />
         </ClickableIcon>
