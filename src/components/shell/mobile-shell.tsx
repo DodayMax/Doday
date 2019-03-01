@@ -21,7 +21,7 @@ export class MobileShell extends React.Component<ShellProps & TranslationProps> 
   render() {
     return (
       <>
-        <Route exact path={`/`} render={() => <Grid items={fakeDodays} />} />
+        <Route exact path={`/`} render={() => <Grid items={fakeDodays} cellType="DodayCell" />} />
         <Route path={`/paths`} render={() => <div>Paths</div>} />
         <Route path={`/store`} render={() => <div>Store</div>} />
         <button

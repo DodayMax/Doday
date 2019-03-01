@@ -12,4 +12,7 @@ storiesOf('Icons', module)
   ))
   .add('InlineLoader', () => (
     <Icons.InlineLoader />
+  ))
+  .add('TodayCalendar', () => (
+    <Icons.TodayCalendar />
   ));

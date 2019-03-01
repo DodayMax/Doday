@@ -72,18 +72,6 @@
     width: 100%;
     flex: 3;
 
-    li {
-      padding-left: 4rem;
-      display: flex;
-      height: $cell-height;
-      align-items: center;
-      border-bottom: 1px solid $border-light;
-
-      &:first-child {
-        border-top: 1px solid $border-light;
-      }
-    }
-
     &-collapsed {
       composes: drawer-menu;
 

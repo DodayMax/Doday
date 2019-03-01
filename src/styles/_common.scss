@@ -13,9 +13,18 @@
   padding: 0 1rem;
   font-size: $body-m;
   transition: all 200ms ease;
+}
 
-  &:hover {
-    transform: scale(1.1);
+.cell {
+  border-bottom: 1px solid $border-light;
+  padding: 0 $space-s;
+  
+  &:first-child {
+    border-top: 1px solid $border-light;
+  }
+
+  span {
+    padding-left: $space-xs;
   }
 }
 

@@ -5,9 +5,11 @@ import { all } from 'redux-saga/effects';
 import { RootState } from '@lib/models';
 
 //reducers and sagas
+import DodayAppReducer from '@ducks/doday-app';
 import HeroSettingsReducer, { sagas as HeroSettingsSagas } from '@ducks/hero-settings';
 
 const rootReducer = combineReducers<RootState>({
+  dodayApp: DodayAppReducer,
   heroSettings: HeroSettingsReducer,
 });
 
