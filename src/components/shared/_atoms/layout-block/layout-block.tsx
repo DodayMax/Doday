@@ -9,6 +9,11 @@ interface LayoutBlockProps {
   valign?: vAlignTypes;
   direction?: 'row' | 'column';
   flex?: number;
+  absolute?: boolean;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
   padding?: string;
   margin?: string;
   children?: React.ReactNode;
@@ -19,10 +24,11 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles.layoutBlock]: true,
     [styles[props.align || '']]: !!props.align,
     [styles[props.valign || '']]: !!props.valign,
-    [styles[props.direction || '']]: !!props.direction
+    [styles[props.direction || '']]: !!props.direction,
+    [styles.absolute]: !!props.absolute,
   });
   return (
-    <div className={classNames} style={{ flex: props.flex || 1, padding: props.padding, margin: props.margin }}>
+    <div className={classNames} style={{ flex: props.flex || 1, padding: props.padding, margin: props.margin, top: props.top, left: props.left, right: props.right, bottom: props.bottom }}>
       {props.children}
     </div>
   )

@@ -1,5 +1,8 @@
 export interface Doday {
   id: string;
+  type: 'action' | 'folder';
   name: string;
-  completed: boolean;
+  date?: number;
+  completed?: boolean;
+  children?: Doday[];
 }

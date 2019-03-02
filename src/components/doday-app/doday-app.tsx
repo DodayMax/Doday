@@ -3,10 +3,10 @@ import { connect } from 'react-redux';
 import { actions as appActions } from '@ducks/doday-app';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
-import { Doday } from '@lib/common-interfaces';
 import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
 import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
+import { Doday } from '@root/lib/common-interfaces';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -41,7 +41,7 @@ export class DodayAppComponent extends React.Component<DodayAppProps & StateProp
         return (
           <>
             <TodayTopBar date={chosenDate!} changeDate={changeDate!} />
-            <Grid items={this.props.dodays || []} cellType="DodayCell" />
+            <Grid items={this.props.dodays || []} />
           </>
         );
     }

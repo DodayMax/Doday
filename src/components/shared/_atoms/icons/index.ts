@@ -8,5 +8,6 @@ export * from './apps/apps';
 export * from './checkbox-in-box/checkbox-in-box';
 export * from './chevron/chevron';
 export * from './close-circle/close-circle';
+export * from './close/close';
 
 export * from './names';

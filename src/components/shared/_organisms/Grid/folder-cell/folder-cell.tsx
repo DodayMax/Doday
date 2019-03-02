@@ -1,17 +1,17 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Doday } from '@lib/common-interfaces';
-import { Checkbox } from '@components';
+import { Icons } from '@components';
 
-const styles = require('./_doday-cell.module.scss');
+const styles = require('./_folder-cell.module.scss');
 
-interface DodayCellProps {
+interface FolderCellProps {
   doday: Doday;
   active?: boolean;
-  onClick?: (route: string) => void;
+  onClick?: (folder: Doday) => void;
 }
 
-export const DodayCell: React.SFC<DodayCellProps> = ({ doday, active = false, onClick }) => {
+export const FolderCell: React.SFC<FolderCellProps> = ({ doday, active = false, onClick }) => {
   const classNames = classnames({
     [styles.cell]: true,
     [styles.active]: active,
@@ -21,9 +21,9 @@ export const DodayCell: React.SFC<DodayCellProps> = ({ doday, active = false, on
     <li
       className={classNames}
       key={doday.id}
-      onClick={() => onClick && onClick(`/dodays/${doday.id}`)}
+      onClick={() => onClick && onClick(doday)}
     >
-      {<Checkbox onClick={(e) => console.log('complete')} checked={doday.completed} />}
+      {<Icons.FolderPlus />}
       <span className={styles.cellTitle}>{doday.name}</span>
     </li>
   );

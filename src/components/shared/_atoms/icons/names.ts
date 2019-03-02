@@ -8,4 +8,5 @@ export type IconNames = 'Checkbox'
   | 'ArrowLeft'
   | 'ArrowRight'
   | 'Apps'
-  | 'CloseCircle';
+  | 'CloseCircle'
+  | 'Close';

@@ -1,19 +1,24 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import * as cuid from 'cuid';
 import { actions } from '@ducks/doday-app';
 import { DodayCell } from './doday-cell/doday-cell';
 import { DodayAppMenuCell } from './doday-app-menu-cell/doday-app-menu-cell';
+import { FolderCell } from './folder-cell/folder-cell';
+import { Doday } from '@lib/common-interfaces';
 
 const styles = require('./_grid.module.scss');
 
 type GridCellTypes = 'DodayCell'
-  | 'DodayAppMenuCell';
+  | 'DodayAppMenuCell'
+  | 'FolderCell';
 
 interface GridProps {
   items: any[];
-  cellType: GridCellTypes;
+  cellType?: GridCellTypes;
   collapsed: boolean;
+  history: any;
 }
 
 interface GridState {
@@ -40,12 +45,20 @@ export class GridComponent extends React.Component<GridProps, GridState> {
     return promise;
   }
 
-  handleClick = (item, index) => {
+  handleMenuClick = (item, index) => {
     const action = this.props[item.action];
     if (action) {
       action(item.payload);
     }
     this.setState({ activeIndex: index });
+  }
+
+  handleDodayCellClick = (route: string) => {
+    this.props.history.push(route);
+  }
+
+  handleFolderCellClick = (folder: Doday) => {
+    // push folder to navigation stack
   }
 
   render() {
@@ -54,21 +67,32 @@ export class GridComponent extends React.Component<GridProps, GridState> {
     return (
       <div id="grid" className={styles.gridContainer}>
         {items.map((item: any, index) => {
-          switch(cellType) {
-            case 'DodayCell':
-              return <DodayCell doday={item} key={cuid()} />;
-            case 'DodayAppMenuCell':
-              return (
-                <DodayAppMenuCell
-                  key={cuid()}
-                  collapsed={this.props.collapsed}
-                  item={item}
-                  active={index === this.state.activeIndex}
-                  onClick={() => this.handleClick(item, index)}
-                />
-              );
-            default:
-              return <div>Not cell specified.</div>;
+          if (cellType) {
+            switch(cellType) {
+              case 'DodayCell':
+                return <DodayCell doday={item} key={cuid()} />;
+              case 'DodayAppMenuCell':
+                return (
+                  <DodayAppMenuCell
+                    key={cuid()}
+                    collapsed={this.props.collapsed}
+                    item={item}
+                    active={index === this.state.activeIndex}
+                    onClick={() => this.handleMenuClick(item, index)}
+                  />
+                );
+              default:
+                return <div>Not cell specified.</div>;
+            }
+          } else {
+            switch(item.type) {
+              case 'action':
+                return <DodayCell doday={item} key={cuid()} onClick={this.handleDodayCellClick} />;
+              case 'folder':
+                return <FolderCell doday={item} key={cuid()} onClick={this.handleFolderCellClick} />;
+              default:
+                return <div>Not cell specified for this type of doday.</div>;
+            }
           }
         })}
       </div>
@@ -76,4 +100,4 @@ export class GridComponent extends React.Component<GridProps, GridState> {
   }
 }
 
-export default connect(null, { ...actions })(GridComponent);
+export default withRouter(connect(null, { ...actions })(GridComponent) as any) as any;

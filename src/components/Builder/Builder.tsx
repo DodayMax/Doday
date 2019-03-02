@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Input, LayoutBlock, Text, Icons } from '@components';
 import Select from 'react-virtualized-select';
 import { ButtonGroup } from '../shared/_molecules/button-group';
@@ -7,16 +8,20 @@ import { TypographyColor, TypographySize } from '@root/lib/common-interfaces';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 
 const vars = require('@styles/_config.scss');
-console.log(vars);
 const styles = require('./_builder.module.scss');
 
 interface BuilderProps {
 }
 
-export class Builder extends React.Component<BuilderProps, any> {
+export class Builder extends React.Component<BuilderProps & RouteComponentProps, any> {
   render() {
     return (
       <section className={styles.builderContainer}>
+        <LayoutBlock absolute top='1rem' right='1rem'>
+          <ClickableIcon onClick={() => {this.props.history.push('/')}}>
+            <Icons.Close color={vars.gray6} width={30} height={30} />
+          </ClickableIcon>
+        </LayoutBlock>
         <Input
           autofocus
           placeholder="Enter name or paste link..."
@@ -81,4 +86,4 @@ export class Builder extends React.Component<BuilderProps, any> {
   }
 }
 
-export default connect()(Builder);
+export default withRouter(connect()(Builder) as any);

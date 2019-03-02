@@ -1,0 +1,21 @@
+@import "@styles/_config";
+
+.cell {
+  composes: cell pointer from '@styles/_common';
+  display: flex;
+  height: $cell-height;
+  align-items: center;
+  padding:  $space-xs;
+
+  &:hover, &:active {
+    background-color: $white;
+  }
+}
+
+.active {
+  background-color: $white;
+}
+
+.center {
+  composes: flex-center from '@styles/_common';
+}
