@@ -5,16 +5,22 @@ const styles = require('./_clickable-icon.module.scss');
 
 interface ClickableIconProps {
   onClick: () => void;
+  backdrop?: boolean;
+  border?: boolean;
+  background?: string;
 }
 
-export const ClickableIcon: React.SFC<ClickableIconProps & React.HTMLAttributes<HTMLElement>> = ({ children, onClick, className, ...props }) => {
+export const ClickableIcon: React.SFC<ClickableIconProps & React.HTMLAttributes<HTMLElement>> = ({ children, onClick, className, backdrop = false, border = false, background, ...props }) => {
   const classNames = classnames({
     [styles.iconContainer]: true,
+    [styles.backdrop]: !!backdrop,
+    [styles.border]: !!border,
+    [styles.hover]: !!background,
     [className || '']: true,
   });
 
   return (
-    <button className={classNames} {...props} onClick={onClick}>
+    <button className={classNames} style={{ backgroundColor: background || undefined }} {...props} onClick={onClick}>
       {children}
     </button>
   );

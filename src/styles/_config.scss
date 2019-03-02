@@ -110,8 +110,9 @@ $status-red: $error-text;
 $status-gray: $gray-7;
 
 // backdrop colors
-$dark-backdrop: rgba(0, 0, 0, 0.12);
-$light-backdrop: rgba(0, 0, 0, 0.03);
+$dark-backdrop-hover: rgba(0, 0, 0, 0.33);
+$dark-backdrop: rgba(0, 0, 0, 0.21);
+$light-backdrop: rgba(0, 0, 0, 0.1);
 
 // easings
 $ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);

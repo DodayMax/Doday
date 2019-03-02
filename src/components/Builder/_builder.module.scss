@@ -14,6 +14,34 @@
     padding-top: $space-l;
   }
 
+  &-select-container {
+    flex: 1;
+    &:first-child {
+      margin-right: 1rem;
+    }
+  }
+
+  &-attachment-container {
+    position: relative;
+    width: 100%;
+    clip: auto;
+    border: 1px solid $gray-4;
+  }
+
+  &-attachment-close-icon-container {
+    position: absolute;
+    top: .6rem;
+    right: .6rem;
+  }
+
+  &-attachment-image {
+    width: inherit;
+  }
+
+  &-attachment-text-container {
+    padding: $space-xs $space-m;
+  }
+
   &__menu {
     display: flex;
     flex-direction: row;

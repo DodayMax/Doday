@@ -7,4 +7,5 @@ export type IconNames = 'Checkbox'
   | 'CheckboxInBox'
   | 'ArrowLeft'
   | 'ArrowRight'
-  | 'Apps';
+  | 'Apps'
+  | 'CloseCircle';

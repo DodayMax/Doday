@@ -4,6 +4,7 @@ import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
 import { ClickableIcon } from '@root/components/shared/_atoms/clickable-icon/clickable-icon';
 import { Icons } from '@root/components';
 
+const vars = require('@styles/_config.scss');
 const styles = require('./_today-top-bar.module.scss');
 
 interface TodayTopBarProps {
@@ -37,16 +38,26 @@ export class TodayTopBar extends React.Component<TodayTopBarProps> {
 
     return (
       <div className={styles.topbarContainer}>
-        <ClickableIcon onClick={this.previousDate}>
+        <ClickableIcon
+          border
+          background={vars.gray1}
+          onClick={this.previousDate}>
           <Icons.Chevron />
         </ClickableIcon>
         <div className={styles.dateContainer}>
           <span className={styles.date}>{date}</span>
-          {!isToday && <ClickableIcon onClick={() => this.todayDate(today)}>
+          {!isToday &&
+          <ClickableIcon
+            border
+            background={vars.gray1}
+            onClick={() => this.todayDate(today)}>
             <Icons.TodayCalendar />
           </ClickableIcon>}
         </div>
-        <ClickableIcon onClick={this.nextDate}>
+        <ClickableIcon
+          border
+          background={vars.gray1}
+          onClick={this.nextDate}>
           <Icons.Chevron right />
         </ClickableIcon>
       </div>

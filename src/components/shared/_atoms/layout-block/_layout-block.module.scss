@@ -1,6 +1,9 @@
 .layout-block {
-  composes: padding-block from '@styles/_common';
   display: flex;
+
+  div {
+    flex: 1;
+  }
 }
 
 .flex-center {
@@ -33,4 +36,12 @@
 
 .space-around {
   justify-content: space-around;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.column {
+  flex-direction: column;
 }
