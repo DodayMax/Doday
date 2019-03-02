@@ -1,0 +1,36 @@
+.layout-block {
+  composes: padding-block from '@styles/_common';
+  display: flex;
+}
+
+.flex-center {
+  justify-content: center;
+}
+
+.vflex-center {
+  align-items: center;
+}
+
+.flex-start {
+  justify-content: flex-start;
+}
+
+.vflex-start {
+  align-items: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.vflex-end {
+  align-items: flex-end;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.space-around {
+  justify-content: space-around;
+}

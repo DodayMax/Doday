@@ -15,7 +15,7 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-export const ButtonComponent = ({ text, primary = false, isLoading = false, disabled = false, onClick, to, staticContext, ...props }: any) => {
+export const ButtonComponent = ({ text, primary = false, isLoading = false, disabled = false, onClick, to, staticContext, ...props }: ButtonProps & any) => {
   const classNames = classnames({
     [styles.default]: !primary,
     [styles.primary]: primary,
