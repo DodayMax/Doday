@@ -10,7 +10,7 @@ interface CheckboxProps {
 
 export const Checkbox = ({ checked = false, onClick }: CheckboxProps) => {
   return (
-    <div role="checkbox" onClick={onClick}>
+    <div className={styles.checkboxConainer} role="checkbox" onClick={onClick}>
       <Icons.Checkbox checked={checked} />
     </div>
   );

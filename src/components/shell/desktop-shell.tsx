@@ -27,7 +27,7 @@ class DesktopShell extends React.Component<any, any> {
         <div className={styles.desktopContainer}>
           <nav className={styles.navBar}>
             <div>Logo</div>
-            <Button text={'New Doday'} primary onClick={() => {}} />
+            <Button text={'New Doday'} primary to={'/builder'} />
           </nav>
           <section className={styles.contentContainer}>
             <nav>
@@ -35,7 +35,9 @@ class DesktopShell extends React.Component<any, any> {
             </nav>
             <DodayApp dodays={fakeDodays} />
             <section className={styles.mainLayout}>
-
+              <Route exact path="/" render={() => <div>Store</div>} />
+              <Route path="/dodays/:id" render={() => <div>Doday details</div>} />
+              <Route path="/builder" render={() => <div>Builder</div>} />
             </section>
           </section>
         </div>
