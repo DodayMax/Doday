@@ -1,23 +1,25 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { Icons } from '@components';
 
 const styles = require('./_button.module.scss');
 
-interface ButtonProps {
+export interface ButtonProps {
   text: string;
   primary?: boolean;
   isLoading?: boolean;
   onClick?: () => void;
   to?: string;
+  disabled?: boolean;
 }
 
-export const Button = ({ text, primary = false, isLoading = false, onClick, to, ...props }: ButtonProps) => {
+export const ButtonComponent = ({ text, primary = false, isLoading = false, disabled = false, onClick, to, staticContext, ...props }: any) => {
   const classNames = classnames({
     [styles.default]: !primary,
-    [styles.primary]: primary
+    [styles.primary]: primary,
+    [styles.disabled]: props.location.pathname === to,
   });
   if (onClick) {
     return (
@@ -28,4 +30,6 @@ export const Button = ({ text, primary = false, isLoading = false, onClick, to, 
       <Link className={classNames} to={to || '/'}>{isLoading ? <Icons.InlineLoader /> : text}</Link>
     );
   }
-}
+};
+
+export default withRouter(ButtonComponent);

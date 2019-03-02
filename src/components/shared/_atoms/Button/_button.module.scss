@@ -17,3 +17,7 @@
     background-color: $yellow-light;
   }
 }
+
+.disabled {
+  composes: disabled from '@styles/_common';
+}

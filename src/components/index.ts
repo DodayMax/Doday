@@ -2,6 +2,7 @@ import DesktopShell from './shell/desktop-shell';
 import Shell from './shell/shell';
 import Builder from './builder/builder';
 import { Drawer } from './drawer';
+import Button from './shared/_atoms/button/button';
 import Grid from './shared/_organisms/grid/grid';
 
 export * from './shared/_atoms/typography';
@@ -22,5 +23,6 @@ export {
   Drawer,
   DesktopShell,
   Icons,
-  Grid
+  Grid,
+  Button
 };

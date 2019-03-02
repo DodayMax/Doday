@@ -1,6 +1,9 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Button, Input } from '@components';
 import Select from 'react-virtualized-select';
+
+const styles = require('./_builder.module.scss');
 
 interface BuilderProps {
 }
@@ -8,7 +11,7 @@ interface BuilderProps {
 export class Builder extends React.Component<BuilderProps, any> {
   render() {
     return (
-      <div className="builder__container">
+      <div className={styles.builderContainer}>
         <Input
           autofocus
           placeholder="Enter name or paste link..."
@@ -36,4 +39,4 @@ export class Builder extends React.Component<BuilderProps, any> {
   }
 }
 
-export default Builder;
+export default connect()(Builder);

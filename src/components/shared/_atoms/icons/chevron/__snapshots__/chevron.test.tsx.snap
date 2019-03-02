@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Chevron renders correctly with right prop 1`] = `ShallowWrapper {}`;
+
+exports[`Chevron renders correctly without props 1`] = `ShallowWrapper {}`;

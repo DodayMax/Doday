@@ -7,6 +7,7 @@ const styles = require('./_input.module.scss');
 interface InputProps {
   isLoading?: boolean;
   autofocus?: boolean;
+  setRef?: (node: HTMLInputElement | null) => void;
 }
 
 export class Input extends React.Component<InputProps & React.InputHTMLAttributes<HTMLInputElement>> {
@@ -19,6 +20,9 @@ export class Input extends React.Component<InputProps & React.InputHTMLAttribute
   }
 
   componentDidMount() {
+    if (this.props.setRef) {
+      this.props.setRef(this.input);
+    }
     if (this.props.autofocus && this.input) {
       setTimeout(
         () => this.input!.focus(),

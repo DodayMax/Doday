@@ -17,6 +17,9 @@
   &::placeholder {
     color: $gray-6;
   }
+  &:focus {
+    outline: none;
+  }
 }
 
 .loader {

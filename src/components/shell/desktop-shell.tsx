@@ -4,8 +4,7 @@ import {
   Route
 } from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as classNames from 'classnames';
-import { Drawer, DodayApp, Button } from '@components';
+import { Drawer, DodayApp, Button, Builder } from '@components';
 import { fakeDodays } from '@lib/fake-data/dodays';
 import { RootState } from '@lib/models';
 import { actions } from '@ducks/hero-settings';
@@ -27,7 +26,11 @@ class DesktopShell extends React.Component<any, any> {
         <div className={styles.desktopContainer}>
           <nav className={styles.navBar}>
             <div>Logo</div>
-            <Button text={'New Doday'} primary to={'/builder'} />
+            <Button
+              primary
+              text={'New Doday'}
+              to={'/builder'}
+              disabled={this.props.history.location.pathname === '/builder'} />
           </nav>
           <section className={styles.contentContainer}>
             <nav>
@@ -37,7 +40,7 @@ class DesktopShell extends React.Component<any, any> {
             <section className={styles.mainLayout}>
               <Route exact path="/" render={() => <div>Store</div>} />
               <Route path="/dodays/:id" render={() => <div>Doday details</div>} />
-              <Route path="/builder" render={() => <div>Builder</div>} />
+              <Route path="/builder" component={Builder} />
             </section>
           </section>
         </div>

@@ -1,9 +1,24 @@
 import reducer from './reducer';
-import { changePath } from './actions';
+import { changePath, ActionConstants } from './actions';
 
 describe('doday-app duck', () => {
-  it('change path action', () => {
-    const path = 'dodays';
-    expect(reducer(undefined, changePath(path)).path).toEqual(path);
+  
+  describe('doday-app action creators', () => {
+    it('change path action creator', () => {
+      const path = 'dodays';
+      const expectedActionObject = {
+        type: ActionConstants.CHANGE_PATH,
+        payload: path,
+      };
+      expect(changePath(path)).toEqual(expectedActionObject);
+    });
   });
+
+  describe('doday-app reducers', () => {
+    it('change path reducer', () => {
+      const path = 'dodays';
+      expect(reducer(undefined, changePath(path)).path).toEqual(path);
+    });
+  });
+
 });
