@@ -7,6 +7,7 @@ import { DodayCell } from './doday-cell/doday-cell';
 import { DodayAppMenuCell } from './doday-app-menu-cell/doday-app-menu-cell';
 import { FolderCell } from './folder-cell/folder-cell';
 import { Doday } from '@lib/common-interfaces';
+import { PushToNavigationStackAction } from '@root/ducks/doday-app/actions';
 
 const styles = require('./_grid.module.scss');
 
@@ -21,11 +22,15 @@ interface GridProps {
   history: any;
 }
 
+interface PropsFromConnect {
+  pushToNavStack: (doday: Doday) => PushToNavigationStackAction;
+}
+
 interface GridState {
   activeIndex: number;
 }
 
-export class GridComponent extends React.Component<GridProps, GridState> {
+export class GridComponent extends React.Component<GridProps & PropsFromConnect, GridState> {
   constructor(props) {
     super(props);
 
@@ -59,6 +64,7 @@ export class GridComponent extends React.Component<GridProps, GridState> {
 
   handleFolderCellClick = (folder: Doday) => {
     // push folder to navigation stack
+    this.props.pushToNavStack(folder);
   }
 
   render() {

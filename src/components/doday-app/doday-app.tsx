@@ -7,6 +7,7 @@ import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
 import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
 import { Doday } from '@root/lib/common-interfaces';
+import { PopFromNavigationStackAction } from '@root/ducks/doday-app/actions';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -15,12 +16,23 @@ interface DodayAppProps {
   path?: string;
 }
 
-interface StateProps {
+interface PropsFromConnect {
   chosenDate?: Date;
   changeDate?: (date: Date) => ChangeDateAction;
+  navStack: Doday[];
+  popFromNavStack: () => PopFromNavigationStackAction;
 }
 
-export class DodayAppComponent extends React.Component<DodayAppProps & StateProps> {
+export class DodayAppComponent extends React.Component<DodayAppProps & PropsFromConnect> {
+  getDodaysToRender = () => {
+    const navStack = this.props.navStack;
+    if (navStack.length > 0) {
+      return navStack[navStack.length - 1].children || [];
+    } else {
+      return this.props.dodays || [];
+    }
+  }
+
   renderContent() {
     const { path, chosenDate, changeDate } = this.props;
 
@@ -40,8 +52,12 @@ export class DodayAppComponent extends React.Component<DodayAppProps & StateProp
       default:
         return (
           <>
-            <TodayTopBar date={chosenDate!} changeDate={changeDate!} />
-            <Grid items={this.props.dodays || []} />
+            <TodayTopBar
+              back={this.props.navStack.length > 0}
+              backAction={this.props.popFromNavStack}
+              date={chosenDate!}
+              changeDate={changeDate!} />
+            <Grid items={this.getDodaysToRender()} />
           </>
         );
     }
@@ -59,6 +75,7 @@ export class DodayAppComponent extends React.Component<DodayAppProps & StateProp
 const mapState = ({ dodayApp, heroSettings }) => ({
   path: dodayApp.path,
   chosenDate: heroSettings.chosenDate,
+  navStack: dodayApp.navStack,
 });
 
 export default connect(mapState, { ...appActions, ...settingsActions })(DodayAppComponent);

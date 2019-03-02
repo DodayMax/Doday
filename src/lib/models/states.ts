@@ -1,3 +1,5 @@
+import { Doday } from "../common-interfaces";
+
 export interface RootState {
   dodayApp: DodayAppState;
   heroSettings: HeroSettingsState;
@@ -5,6 +7,7 @@ export interface RootState {
 
 export interface DodayAppState {
   path: string;
+  navStack: Doday[];
 }
 
 export interface HeroSettingsState {
