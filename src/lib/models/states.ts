@@ -6,9 +6,11 @@ export interface RootState {
 }
 
 export interface DodayAppState {
-  path: string;
+  loading: boolean;
+  path: string,
+  badge: number;
   navStack: Doday[];
-  todayDodays: Doday[];
+  dodays: Doday[];
   chosenDate: Date;
 }
 

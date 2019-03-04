@@ -2,10 +2,12 @@ import * as actions from './actions';
 import { DodayAppState } from '@lib/models';
 
 export const initialState: DodayAppState = {
+  loading: false,
   path: '',
+  badge: 0,
   chosenDate: new Date(),
   navStack: [],
-  todayDodays: [],
+  dodays: [],
 };
 
 export default (
@@ -13,6 +15,11 @@ export default (
   action: actions.ActionTypes,
 ): DodayAppState => {
   switch (action && action.type) {
+    case actions.ActionConstants.SET_LOADING_STATE:
+      return {
+        ...state,
+        loading: action.payload,
+      };
     case actions.ActionConstants.CHANGE_PATH:
       return {
         ...state,
@@ -36,7 +43,12 @@ export default (
     case actions.ActionConstants.SET_DODAYS_FOR_DATE:
       return {
         ...state,
-        todayDodays: action.payload,
+        dodays: action.payload,
+      }
+    case actions.ActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
+      return {
+        ...state,
+        badge: action.payload,
       }
     default:
       return state;

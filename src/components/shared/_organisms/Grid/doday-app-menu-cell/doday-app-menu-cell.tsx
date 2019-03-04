@@ -10,10 +10,9 @@ interface DodayAppMenuCellProps {
   onClick: () => void;
   active: boolean;
   collapsed: boolean;
-  badge?: string | number;
 }
 
-export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onClick, active, collapsed, badge }) => {
+export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onClick, active, collapsed }) => {
   const Icon = Icons[item.icon];
   const classNames = classnames({
     [styles.cell]: true,
@@ -28,9 +27,9 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
         onClick={onClick}
       >
         {<Icon />}
-        {badge != null &&
+        {item.badge != null &&
           <div className={styles.badgeContainer}>
-            <Badge value={badge} />
+            <Badge value={item.badge} />
           </div>
         }
       </li>
@@ -43,9 +42,9 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
       >
         {<Icon />}
         <span id="#cell-title" className={styles.cellTitle}>{item.text}</span>
-        {badge != null &&
+        {item.badge != null &&
           <div className={styles.badgeContainer}>
-            <Badge value={badge} />
+            <Badge value={item.badge} />
           </div>
         }
       </li>

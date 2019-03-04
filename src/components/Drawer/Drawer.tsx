@@ -6,6 +6,7 @@ import Chart from "react-google-charts";
 import { Grid, Icons, ClickableIcon } from '@components';
 import { actions } from '@ducks/doday-app';
 import { dodayApp } from '@lib/constants';
+import { RootState } from '@root/lib/models';
 
 const styles = require('./_drawer.module.scss');
 
@@ -14,12 +15,17 @@ export interface DrawerMenuItem {
   icon: Icons.IconNames;
   actionName: string;
   payload: any;
+  badge?: string | number;
 }
 
 interface DrawerProps {
   match?: match;
   collapsed: boolean;
   toggle: () => void;
+}
+
+interface PropsFromConnect {
+  badge: number;
 }
 
 interface Actions {
@@ -44,7 +50,7 @@ const options = {
   pieSliceText: 'label',
 };
 
-export class DrawerComponent extends React.Component<DrawerProps & Actions> {
+export class DrawerComponent extends React.Component<DrawerProps & PropsFromConnect & Actions> {
   renderDrawerProfileSection = () => {
     if (this.props.collapsed) {
       return (
@@ -104,7 +110,7 @@ export class DrawerComponent extends React.Component<DrawerProps & Actions> {
   }
 
   render() {
-    const { collapsed } = this.props;
+    const { collapsed, badge } = this.props;
     const classNames = classnames({
       [styles.drawerContainerCollapsed]: collapsed,
       [styles.drawerContainer]: !collapsed,
@@ -122,6 +128,7 @@ export class DrawerComponent extends React.Component<DrawerProps & Actions> {
                 icon: 'TodayCalendar',
                 action: 'changePath',
                 payload: '',
+                badge,
               },
               {
                 text: 'Actions',
@@ -152,4 +159,8 @@ export class DrawerComponent extends React.Component<DrawerProps & Actions> {
   }
 }
 
-export default connect(null, { ...actions })(DrawerComponent);
+const mapState = (state: RootState) => ({
+  badge: state.dodayApp.badge,
+});
+
+export default connect(mapState, { ...actions })(DrawerComponent);

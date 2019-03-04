@@ -2,12 +2,27 @@ import { AnyAction } from 'redux';
 import { Doday } from '@root/lib/common-interfaces';
 
 export enum ActionConstants {
+  SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
   FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
   SET_DODAYS_FOR_DATE = '[doday-app] SET_DODAYS_FOR_DATE',
+  SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
+}
+
+/**
+ * Set loading state for doday-app
+ *
+ * @export
+ * @returns {SetLoadingState}
+ */
+export function setLoadingState(value: boolean): SetLoadingState {
+  return {
+    type: ActionConstants.SET_LOADING_STATE,
+    payload: value,
+  };
 }
 
 /**
@@ -77,9 +92,9 @@ export function fetchDodaysForDate(): FetchDodayForDate {
  * Set dodays for chosen date to redux store
  *
  * @export
- * @returns {setDodaysForDate}
+ * @returns {SetDodaysForDate}
  */
-export function setDodaysForDate(dodays: Doday[]): setDodaysForDate {
+export function setDodaysForDate(dodays: Doday[]): SetDodaysForDate {
   return {
     type: ActionConstants.SET_DODAYS_FOR_DATE,
     payload: dodays,
@@ -87,8 +102,26 @@ export function setDodaysForDate(dodays: Doday[]): setDodaysForDate {
 }
 
 /**
+ * Set dodays badge for today
+ *
+ * @export
+ * @returns {SetDodaysBadgeForToday}
+ */
+export function setDodaysBadgeForToday(value: number): SetDodaysBadgeForToday {
+  return {
+    type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
+    payload: value,
+  };
+}
+
+/**
  * Define return types of actions
  */
+
+export interface SetLoadingState extends AnyAction {
+  type: ActionConstants.SET_LOADING_STATE;
+  payload: boolean,
+}
 
 export interface ChangePathAction extends AnyAction {
   type: ActionConstants.CHANGE_PATH;
@@ -113,9 +146,14 @@ export interface FetchDodayForDate extends AnyAction {
   type: ActionConstants.FETCH_DODAYS_FOR_DATE;
 }
 
-export interface setDodaysForDate extends AnyAction {
+export interface SetDodaysForDate extends AnyAction {
   type: ActionConstants.SET_DODAYS_FOR_DATE;
   payload: Doday[],
+}
+
+export interface SetDodaysBadgeForToday extends AnyAction {
+  type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
+  payload: number,
 }
 
 /**
@@ -123,8 +161,10 @@ export interface setDodaysForDate extends AnyAction {
  */
 
 export type ActionTypes = ChangePathAction
+  | SetLoadingState
   | PushToNavigationStackAction
   | PopFromNavigationStackAction
   | ChangeDateAction
   | FetchDodayForDate
-  | setDodaysForDate;
+  | SetDodaysForDate
+  | SetDodaysBadgeForToday;

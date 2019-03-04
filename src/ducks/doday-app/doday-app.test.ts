@@ -1,10 +1,19 @@
 import reducer from './reducer';
-import { changePath, ActionConstants, pushToNavStack, popFromNavStack, fetchDodaysForDate, setDodaysForDate } from './actions';
+import { changePath, ActionConstants, pushToNavStack, popFromNavStack, fetchDodaysForDate, setDodaysForDate, setDodaysBadgeForToday, setLoadingState } from './actions';
 import { Doday } from '@root/lib/common-interfaces';
 
 describe('doday-app duck', () => {
   
   describe('doday-app action creators', () => {
+    it('set loading state action creator', () => {
+      const value = true;
+      const expectedActionObject = {
+        type: ActionConstants.SET_LOADING_STATE,
+        payload: value,
+      };
+      expect(setLoadingState(value)).toEqual(expectedActionObject);
+    });
+
     it('change path action creator', () => {
       const path = 'dodays';
       const expectedActionObject = {
@@ -53,9 +62,23 @@ describe('doday-app duck', () => {
       };
       expect(setDodaysForDate(dodays)).toEqual(expectedActionObject);
     });
+
+    it('set dodays badge for today action creator', () => {
+      const value = 5;
+      const expectedActionObject = {
+        type: ActionConstants.SET_DODAYS_FOR_DATE,
+        payload: value,
+      };
+      expect(setDodaysBadgeForToday(value)).toEqual(expectedActionObject);
+    });
   });
 
   describe('doday-app reducers', () => {
+    it('set loading state reducer', () => {
+      const value = true;
+      expect(reducer(undefined, setLoadingState(value)).loading).toBe(value);
+    });
+
     it('change path reducer', () => {
       const path = 'dodays';
       expect(reducer(undefined, changePath(path)).path).toEqual(path);
@@ -86,7 +109,12 @@ describe('doday-app duck', () => {
         type: 'action',
         name: 'name'
       }];
-      expect(reducer(undefined, setDodaysForDate(dodays)).todayDodays).toEqual(dodays);
+      expect(reducer(undefined, setDodaysForDate(dodays)).dodays).toEqual(dodays);
+    });
+
+    it('set dodays badge for today reducer', () => {
+      const value = 5;
+      expect(reducer(undefined, setDodaysBadgeForToday(5)).badge).toEqual(value);
     });
   });
 

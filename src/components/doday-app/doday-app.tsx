@@ -16,7 +16,8 @@ interface DodayAppProps {
 }
 
 interface PropsFromConnect {
-  todayDodays: Doday[];
+  loading: boolean;
+  dodays: Doday[];
   chosenDate?: Date;
   changeDate?: (date: Date) => ChangeDateAction;
   navStack: Doday[];
@@ -34,12 +35,12 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
     if (navStack.length > 0) {
       return navStack[navStack.length - 1].children || [];
     } else {
-      return this.props.todayDodays || [];
+      return this.props.dodays || [];
     }
   }
 
   renderContent() {
-    const { path, chosenDate, changeDate } = this.props;
+    const { path, chosenDate, changeDate, loading } = this.props;
 
     switch (path) {
       case dodayApp.paths.actions:
@@ -62,7 +63,7 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
               backAction={this.props.popFromNavStack}
               date={chosenDate!}
               changeDate={changeDate!} />
-            <Grid items={this.getDodaysToRender()} />
+            <Grid loading={loading} items={this.getDodaysToRender()} />
           </>
         );
     }
@@ -79,8 +80,9 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
 
 const mapState = ({ dodayApp }) => ({
   path: dodayApp.path,
+  loading: dodayApp.loading,
   chosenDate: dodayApp.chosenDate,
-  todayDodays: dodayApp.todayDodays,
+  dodays: dodayApp.dodays,
   navStack: dodayApp.navStack,
 });
 

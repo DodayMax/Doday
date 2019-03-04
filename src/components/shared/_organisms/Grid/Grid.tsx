@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as cuid from 'cuid';
 import { actions } from '@ducks/doday-app';
+import { Loader } from '@components';
 import { DodayCell } from './doday-cell/doday-cell';
 import { DodayAppMenuCell } from './doday-app-menu-cell/doday-app-menu-cell';
 import { FolderCell } from './folder-cell/folder-cell';
 import { Doday } from '@lib/common-interfaces';
 import { PushToNavigationStackAction } from '@root/ducks/doday-app/actions';
+import { LayoutBlock } from '../../_atoms/layout-block';
 
 const styles = require('./_grid.module.scss');
 
@@ -17,6 +19,7 @@ type GridCellTypes = 'DodayCell'
 
 interface GridProps {
   items: any[];
+  loading?: boolean;
   cellType?: GridCellTypes;
   collapsed: boolean;
   history: any;
@@ -41,6 +44,7 @@ export class GridComponent extends React.Component<GridProps & PropsFromConnect,
 
   static defaultProps = {
     collapsed: false,
+    loading: false,
   }
 
   handleRefresh = () => {
@@ -68,11 +72,16 @@ export class GridComponent extends React.Component<GridProps & PropsFromConnect,
   }
 
   render() {
-    const { items, cellType } = this.props;
-
+    const { items, cellType, loading } = this.props;
+    console.log(loading);
     return (
       <div id="grid" className={styles.gridContainer}>
-        {items.map((item: any, index) => {
+        {loading &&
+          <LayoutBlock align="flex-center" padding="0.6rem 0">
+            <Loader />
+          </LayoutBlock>
+        }
+        {!loading && items.map((item: any, index) => {
           if (cellType) {
             switch(cellType) {
               case 'DodayCell':
