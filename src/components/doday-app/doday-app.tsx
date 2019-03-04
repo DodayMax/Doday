@@ -5,31 +5,36 @@ import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
-import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
+import { ChangeDateAction } from '@root/ducks/doday-app/actions';
 import { Doday } from '@root/lib/common-interfaces';
-import { PopFromNavigationStackAction } from '@root/ducks/doday-app/actions';
+import { PopFromNavigationStackAction, FetchDodayForDate } from '@root/ducks/doday-app/actions';
 
 const styles = require('./_doday-app.module.scss');
 
 interface DodayAppProps {
-  dodays: Doday[];
   path?: string;
 }
 
 interface PropsFromConnect {
+  todayDodays: Doday[];
   chosenDate?: Date;
   changeDate?: (date: Date) => ChangeDateAction;
   navStack: Doday[];
   popFromNavStack: () => PopFromNavigationStackAction;
+  fetchDodaysForDate: () => FetchDodayForDate;
 }
 
 export class DodayAppComponent extends React.Component<DodayAppProps & PropsFromConnect> {
+  componentDidMount() {
+    this.props.fetchDodaysForDate();
+  }
+
   getDodaysToRender = () => {
     const navStack = this.props.navStack;
     if (navStack.length > 0) {
       return navStack[navStack.length - 1].children || [];
     } else {
-      return this.props.dodays || [];
+      return this.props.todayDodays || [];
     }
   }
 
@@ -72,9 +77,10 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
   }
 }
 
-const mapState = ({ dodayApp, heroSettings }) => ({
+const mapState = ({ dodayApp }) => ({
   path: dodayApp.path,
-  chosenDate: heroSettings.chosenDate,
+  chosenDate: dodayApp.chosenDate,
+  todayDodays: dodayApp.todayDodays,
   navStack: dodayApp.navStack,
 });
 

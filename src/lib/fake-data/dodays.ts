@@ -1,6 +1,6 @@
 import { Doday } from '@lib/common-interfaces';
 
-export const fakeDodays: Doday[] = [
+export const dodays: Doday[] = [
   {
     id: '123',
     type: 'action',
@@ -26,9 +26,12 @@ export const fakeDodays: Doday[] = [
     id: '126',
     type: 'action',
     name: 'Third',
-    date: new Date('2019-02-28').getMilliseconds(),
-    completed: true,
+    date: new Date('2019-03-05').getTime(),
+    completed: false,
   },
+];
+
+export const folders = [
   {
     id: '127',
     type: 'folder',

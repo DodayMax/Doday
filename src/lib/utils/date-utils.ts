@@ -20,3 +20,8 @@ export const dateInputFromDate = (date: Date) => {
 export const dateInputStringFromDate = (date: Date) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 };
+
+export const isToday = (date: Date) => {
+  const today = new Date();
+  return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
+}

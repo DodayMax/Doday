@@ -5,7 +5,6 @@ import {
 } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Drawer, DodayApp, Button, Builder } from '@components';
-import { fakeDodays } from '@lib/fake-data/dodays';
 import { RootState } from '@lib/models';
 import { actions } from '@ducks/hero-settings';
 
@@ -36,7 +35,7 @@ class DesktopShell extends React.Component<any, any> {
             <nav>
               <Drawer collapsed={this.props.isDrawerShown} toggle={() => this.toggleMenu()} />
             </nav>
-            <DodayApp dodays={fakeDodays} />
+            <DodayApp />
             <section className={styles.mainLayout}>
               <Route exact path="/" render={() => <div>Store</div>} />
               <Route path="/dodays/:id" render={() => <div>Doday details</div>} />

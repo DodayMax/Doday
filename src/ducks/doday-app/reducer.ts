@@ -3,7 +3,9 @@ import { DodayAppState } from '@lib/models';
 
 export const initialState: DodayAppState = {
   path: '',
+  chosenDate: new Date(),
   navStack: [],
+  todayDodays: [],
 };
 
 export default (
@@ -21,10 +23,20 @@ export default (
         ...state,
         navStack: [...state.navStack, action.payload],
       }
+    case actions.ActionConstants.CHANGE_DATE:
+      return {
+        ...state,
+        chosenDate: action!.payload,
+      }
     case actions.ActionConstants.POP_FROM_NAV_STACK:
       return {
         ...state,
         navStack: state.navStack.slice(0, state.navStack.length-1),
+      }
+    case actions.ActionConstants.SET_DODAYS_FOR_DATE:
+      return {
+        ...state,
+        todayDodays: action.payload,
       }
     default:
       return state;

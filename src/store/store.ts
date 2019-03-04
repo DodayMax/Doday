@@ -5,7 +5,7 @@ import { all } from 'redux-saga/effects';
 import { RootState } from '@lib/models';
 
 //reducers and sagas
-import DodayAppReducer from '@ducks/doday-app';
+import DodayAppReducer, { sagas as DodayAppSagas } from '@ducks/doday-app';
 import HeroSettingsReducer, { sagas as HeroSettingsSagas } from '@ducks/hero-settings';
 
 const rootReducer = combineReducers<RootState>({
@@ -16,6 +16,7 @@ const rootReducer = combineReducers<RootState>({
 function* rootSaga() {
   yield all([
     ...HeroSettingsSagas,
+    ...DodayAppSagas,
   ]);
 }
 

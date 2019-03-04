@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, match } from 'react-router-dom';
 import i18next from 'i18next';
 import Drawer from 'react-drag-drawer';
-import { fakeDodays } from '@lib/fake-data/dodays';
+import { dodays } from '@root/lib/fake-data/dodays';
 
 const { translate } = require('react-i18next');
 
@@ -21,7 +21,7 @@ export class MobileShell extends React.Component<ShellProps & TranslationProps> 
   render() {
     return (
       <>
-        <Route exact path={`/`} render={() => <Grid items={fakeDodays} cellType="DodayCell" />} />
+        <Route exact path={`/`} render={() => <Grid items={dodays} cellType="DodayCell" />} />
         <Route path={`/paths`} render={() => <div>Paths</div>} />
         <Route path={`/store`} render={() => <div>Store</div>} />
         <button

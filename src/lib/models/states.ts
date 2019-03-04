@@ -8,9 +8,10 @@ export interface RootState {
 export interface DodayAppState {
   path: string;
   navStack: Doday[];
+  todayDodays: Doday[];
+  chosenDate: Date;
 }
 
 export interface HeroSettingsState {
   isDrawerShown: boolean;
-  chosenDate: Date;
 }

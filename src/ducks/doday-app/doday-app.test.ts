@@ -1,5 +1,5 @@
 import reducer from './reducer';
-import { changePath, ActionConstants, pushToNavStack, popFromNavStack } from './actions';
+import { changePath, ActionConstants, pushToNavStack, popFromNavStack, fetchDodaysForDate, setDodaysForDate } from './actions';
 import { Doday } from '@root/lib/common-interfaces';
 
 describe('doday-app duck', () => {
@@ -33,6 +33,26 @@ describe('doday-app duck', () => {
       };
       expect(popFromNavStack()).toEqual(expectedActionObject);
     });
+
+    it('fetch dodays for date action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.FETCH_DODAYS_FOR_DATE,
+      };
+      expect(fetchDodaysForDate()).toEqual(expectedActionObject);
+    });
+
+    it('set dodays for date action creator', () => {
+      const dodays: Doday[] = [{
+        id: '123',
+        type: 'action',
+        name: 'name'
+      }];
+      const expectedActionObject = {
+        type: ActionConstants.SET_DODAYS_FOR_DATE,
+        payload: dodays,
+      };
+      expect(setDodaysForDate(dodays)).toEqual(expectedActionObject);
+    });
   });
 
   describe('doday-app reducers', () => {
@@ -58,6 +78,15 @@ describe('doday-app duck', () => {
       };
       expect(reducer(undefined, pushToNavStack(newDoday)).navStack[0].name).toEqual(newDoday.name);
       expect(reducer(undefined, popFromNavStack()).navStack.length).toBe(0);
+    });
+
+    it('set dodays for date reducer', () => {
+      const dodays: Doday[] = [{
+        id: '123',
+        type: 'action',
+        name: 'name'
+      }];
+      expect(reducer(undefined, setDodaysForDate(dodays)).todayDodays).toEqual(dodays);
     });
   });
 

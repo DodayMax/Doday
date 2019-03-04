@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import { ChangeDateAction } from '@root/ducks/hero-settings/actions';
+import { ChangeDateAction } from '@root/ducks/doday-app/actions';
 import { ClickableIcon } from '@root/components/shared/_atoms/clickable-icon/clickable-icon';
 import { Icons } from '@root/components';
 import { AnyAction } from 'redux';

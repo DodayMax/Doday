@@ -1,0 +1,11 @@
+@import "@styles/_config";
+
+.badge-container {
+  composes: flex-center from '@styles/_common';
+
+  width: 1.5rem;
+  height: 1.5rem;
+
+  border-radius: $radius-circle;
+  border: 1px solid $black;
+}

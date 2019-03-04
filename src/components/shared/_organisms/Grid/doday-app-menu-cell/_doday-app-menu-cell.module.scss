@@ -2,6 +2,7 @@
 
 .cell {
   composes: cell pointer from '@styles/_common';
+  position: relative;
   display: flex;
   height: $cell-height;
   align-items: center;

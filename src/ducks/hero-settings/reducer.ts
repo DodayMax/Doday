@@ -3,7 +3,6 @@ import { HeroSettingsState } from '@lib/models';
 
 export const initialState: HeroSettingsState = {
   isDrawerShown: false,
-  chosenDate: new Date(),
 };
 
 export default (
@@ -16,11 +15,6 @@ export default (
         ...state,
         isDrawerShown: !state.isDrawerShown,
       };
-    case actions.ActionConstants.CHANGE_DATE:
-      return {
-        ...state,
-        chosenDate: action!.payload,
-      }
     default:
       return state;
   }
