@@ -10,6 +10,8 @@ export enum ActionConstants {
   FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
   SET_DODAYS_FOR_DATE = '[doday-app] SET_DODAYS_FOR_DATE',
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
+  FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
+  SET_GOALS = '[doday-app] SET_GOALS',
 }
 
 /**
@@ -115,6 +117,31 @@ export function setDodaysBadgeForToday(value: number): SetDodaysBadgeForToday {
 }
 
 /**
+ * Fetch all goals
+ *
+ * @export
+ * @returns {FetchAllGoals}
+ */
+export function fetchAllGoals(): FetchAllGoals {
+  return {
+    type: ActionConstants.FETCH_ALL_GOALS,
+  };
+}
+
+/**
+ * Set goals to redux store
+ *
+ * @export
+ * @returns {SetGoals}
+ */
+export function setGoals(goals: Doday[]): SetGoals {
+  return {
+    type: ActionConstants.SET_GOALS,
+    payload: goals,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -156,6 +183,15 @@ export interface SetDodaysBadgeForToday extends AnyAction {
   payload: number,
 }
 
+export interface FetchAllGoals extends AnyAction {
+  type: ActionConstants.FETCH_ALL_GOALS;
+}
+
+export interface SetGoals extends AnyAction {
+  type: ActionConstants.SET_GOALS;
+  payload: Doday[];
+}
+
 /**
  * Export all action types for reducers
  */
@@ -167,4 +203,5 @@ export type ActionTypes = ChangePathAction
   | ChangeDateAction
   | FetchDodayForDate
   | SetDodaysForDate
-  | SetDodaysBadgeForToday;
+  | SetDodaysBadgeForToday
+  | SetGoals;

@@ -137,7 +137,7 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
                 payload: dodayApp.paths.goals,
               },
               {
-                text: 'Memos',
+                text: 'Memorizer',
                 icon: 'Lighting',
                 action: 'changePath',
                 payload: dodayApp.paths.memos,

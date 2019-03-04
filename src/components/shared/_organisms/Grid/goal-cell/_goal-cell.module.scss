@@ -12,6 +12,10 @@
   }
 }
 
+.cell-title {
+  composes: padding-l-xs from '@styles/_utils.scss';
+}
+
 .active {
   background-color: $white;
 }

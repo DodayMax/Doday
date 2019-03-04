@@ -11,6 +11,7 @@ export interface DodayAppState {
   badge: number;
   navStack: Doday[];
   dodays: Doday[];
+  goals: Doday[];
   chosenDate: Date;
 }
 

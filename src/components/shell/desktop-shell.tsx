@@ -27,7 +27,7 @@ class DesktopShell extends React.Component<any, any> {
             <div>Logo</div>
             <Button
               primary
-              text={'New Doday'}
+              text={'New Activity'}
               to={'/builder'}
               disabled={this.props.history.location.pathname === '/builder'} />
           </nav>

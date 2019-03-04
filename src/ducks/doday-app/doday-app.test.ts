@@ -1,5 +1,5 @@
 import reducer from './reducer';
-import { changePath, ActionConstants, pushToNavStack, popFromNavStack, fetchDodaysForDate, setDodaysForDate, setDodaysBadgeForToday, setLoadingState } from './actions';
+import { changePath, ActionConstants, pushToNavStack, popFromNavStack, fetchDodaysForDate, setDodaysForDate, setDodaysBadgeForToday, setLoadingState, fetchAllGoals, setGoals } from './actions';
 import { Doday } from '@root/lib/common-interfaces';
 
 describe('doday-app duck', () => {
@@ -26,7 +26,7 @@ describe('doday-app duck', () => {
     it('push to nav stack action creator', () => {
       const newDoday: Doday = {
         id: '123',
-        type: 'folder',
+        type: 'goal',
         name: 'name'
       };
       const expectedActionObject = {
@@ -71,6 +71,26 @@ describe('doday-app duck', () => {
       };
       expect(setDodaysBadgeForToday(value)).toEqual(expectedActionObject);
     });
+
+    it('fetch all goals action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.FETCH_ALL_GOALS,
+      };
+      expect(fetchAllGoals()).toEqual(expectedActionObject);
+    });
+
+    it('set goals action creator', () => {
+      const goals: Doday[] = [{
+        id: '123',
+        type: 'goal',
+
+        name: 'name'
+      }];
+      const expectedActionObject = {
+        type: ActionConstants.FETCH_ALL_GOALS,
+      };
+      expect(fetchAllGoals()).toEqual(expectedActionObject);
+    });
   });
 
   describe('doday-app reducers', () => {
@@ -87,7 +107,7 @@ describe('doday-app duck', () => {
     it('push new doday to navigation stack reducer', () => {
       const newDoday: Doday = {
         id: '123',
-        type: 'folder',
+        type: 'goal',
         name: 'name'
       };
       expect(reducer(undefined, pushToNavStack(newDoday)).navStack[0].name).toEqual(newDoday.name);
@@ -96,7 +116,7 @@ describe('doday-app duck', () => {
     it('pop from navigation stack reducer', () => {
       const newDoday: Doday = {
         id: '123',
-        type: 'folder',
+        type: 'goal',
         name: 'name'
       };
       expect(reducer(undefined, pushToNavStack(newDoday)).navStack[0].name).toEqual(newDoday.name);
@@ -110,6 +130,15 @@ describe('doday-app duck', () => {
         name: 'name'
       }];
       expect(reducer(undefined, setDodaysForDate(dodays)).dodays).toEqual(dodays);
+    });
+
+    it('set goals reducer', () => {
+      const goals: Doday[] = [{
+        id: '123',
+        type: 'goal',
+        name: 'name'
+      }];
+      expect(reducer(undefined, setGoals(goals)).dodays).toEqual(goals);
     });
 
     it('set dodays badge for today reducer', () => {

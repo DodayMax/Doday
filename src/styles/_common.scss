@@ -53,3 +53,14 @@ a {
     color: $primary-text;
   }
 }
+
+.top-bar-container {
+  height: $top-bar-height;
+  background: $gray-2;
+  display: flex;
+  color: $primary-text;
+  border-bottom: 1px solid $gray-4;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.4rem;
+}

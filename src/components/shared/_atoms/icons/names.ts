@@ -12,4 +12,5 @@ export type IconNames = 'Checkbox'
   | 'Close'
   | 'PieChart'
   | 'Goal'
-  | 'Idea';
+  | 'Idea'
+  | 'Activities';

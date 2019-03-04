@@ -6,7 +6,7 @@ import { actions } from '@ducks/doday-app';
 import { Loader } from '@components';
 import { DodayCell } from './doday-cell/doday-cell';
 import { DodayAppMenuCell } from './doday-app-menu-cell/doday-app-menu-cell';
-import { FolderCell } from './folder-cell/folder-cell';
+import { GoalCell } from './goal-cell/goal-cell';
 import { Doday } from '@lib/common-interfaces';
 import { PushToNavigationStackAction } from '@root/ducks/doday-app/actions';
 import { LayoutBlock } from '../../_atoms/layout-block';
@@ -15,7 +15,7 @@ const styles = require('./_grid.module.scss');
 
 type GridCellTypes = 'DodayCell'
   | 'DodayAppMenuCell'
-  | 'FolderCell';
+  | 'GoalCell';
 
 interface GridProps {
   items: any[];
@@ -66,9 +66,9 @@ export class GridComponent extends React.Component<GridProps & PropsFromConnect,
     this.props.history.push(route);
   }
 
-  handleFolderCellClick = (folder: Doday) => {
-    // push folder to navigation stack
-    this.props.pushToNavStack(folder);
+  handleGoalCellClick = (goal: Doday) => {
+    // push goal to navigation stack
+    this.props.pushToNavStack(goal);
   }
 
   render() {
@@ -102,8 +102,8 @@ export class GridComponent extends React.Component<GridProps & PropsFromConnect,
             switch(item.type) {
               case 'action':
                 return <DodayCell doday={item} key={cuid()} onClick={this.handleDodayCellClick} />;
-              case 'folder':
-                return <FolderCell doday={item} key={cuid()} onClick={this.handleFolderCellClick} />;
+              case 'goal':
+                return <GoalCell doday={item} key={cuid()} onClick={this.handleGoalCellClick} />;
               default:
                 return <div>Not cell specified for this type of doday.</div>;
             }

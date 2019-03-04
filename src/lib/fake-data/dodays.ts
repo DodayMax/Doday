@@ -31,21 +31,31 @@ export const dodays: Doday[] = [
   },
 ];
 
-export const folders = [
+export const goals = [
   {
     id: '127',
-    type: 'folder',
+    type: 'goal',
     name: 'Health',
     children: [
       {
         id: '129',
-        type: 'folder',
-        name: 'Folder inside folder',
+        type: 'goal',
+        parent: {
+          id: '127',
+          type: 'goal',
+          name: 'Health',
+        },
+        name: 'Goal inside goal',
         children: [
           {
             id: '130',
             type: 'action',
-            name: 'Inside 2 folders',
+            parent: {
+              id: '129',
+              type: 'goal',
+              name: 'Goal inside goal',
+            },
+            name: 'Inside 2 goals',
             date: new Date('2019-03-01').getMilliseconds(),
             completed: false,
           },
@@ -54,7 +64,12 @@ export const folders = [
       {
         id: '128',
         type: 'action',
-        name: 'Inside folder',
+        parent: {
+          id: '127',
+          type: 'goal',
+          name: 'Health',
+        },
+        name: 'Inside goal',
         date: new Date('2019-03-01').getMilliseconds(),
         completed: false,
       },
