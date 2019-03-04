@@ -43,9 +43,9 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
     const { path, chosenDate, changeDate, loading } = this.props;
 
     switch (path) {
-      case dodayApp.paths.compas:
+      case dodayApp.paths.goals:
         return (
-          <div>Compas</div>
+          <div>Goals</div>
         );
       case dodayApp.paths.memos:
         return (

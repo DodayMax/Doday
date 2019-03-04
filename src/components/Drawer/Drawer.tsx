@@ -131,10 +131,10 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
                 badge,
               },
               {
-                text: 'Compas',
-                icon: 'PieChart',
+                text: 'Goals',
+                icon: 'Goal',
                 action: 'changePath',
-                payload: dodayApp.paths.compas,
+                payload: dodayApp.paths.goals,
               },
               {
                 text: 'Memos',
@@ -143,7 +143,7 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
                 payload: dodayApp.paths.memos,
               },
               {
-                text: 'Created by me',
+                text: 'Published by me',
                 icon: 'Apps',
                 action: 'changePath',
                 payload: dodayApp.paths.createdByMe,

@@ -10,5 +10,7 @@ export * from './chevron/chevron';
 export * from './close-circle/close-circle';
 export * from './close/close';
 export * from './pie-chart/pie-chart';
+export * from './goal/goal';
+export * from './idea/idea';
 
 export * from './names';
