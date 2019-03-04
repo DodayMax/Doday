@@ -73,7 +73,6 @@ export class GridComponent extends React.Component<GridProps & PropsFromConnect,
 
   render() {
     const { items, cellType, loading } = this.props;
-    console.log(loading);
     return (
       <div id="grid" className={styles.gridContainer}>
         {loading &&

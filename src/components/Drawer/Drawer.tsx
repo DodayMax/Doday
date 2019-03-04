@@ -131,10 +131,10 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
                 badge,
               },
               {
-                text: 'Actions',
-                icon: 'CheckboxInBox',
+                text: 'Compas',
+                icon: 'PieChart',
                 action: 'changePath',
-                payload: dodayApp.paths.actions,
+                payload: dodayApp.paths.compas,
               },
               {
                 text: 'Memos',

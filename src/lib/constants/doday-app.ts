@@ -1,6 +1,6 @@
 export const dodayApp = {
   paths: {
-    actions: 'actions',
+    compas: 'compas',
     memos: 'memos',
     createdByMe: 'createdByMe',
   }
