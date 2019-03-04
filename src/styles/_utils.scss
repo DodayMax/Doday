@@ -1,3 +1,5 @@
+@import '@styles/_config';
+
 body {
   font-family: $font-regular;
 }
@@ -134,4 +136,42 @@ ul {
   max-width: 300px;
   border-radius: 0;
   left: 0;
+}
+
+// Paddings
+.padding-l-xs {
+  padding-left: $space-xs;
+}
+.padding-l-s {
+  padding-left: $space-s;
+}
+.padding-l-l {
+  padding-left: $space-l;
+}
+.padding-r-xs {
+  padding-right: $space-xs;
+}
+.padding-r-s {
+  padding-right: $space-s;
+}
+.padding-r-l {
+  padding-right: $space-l;
+}
+.padding-t-xs {
+  padding-top: $space-xs;
+}
+.padding-t-s {
+  padding-top: $space-s;
+}
+.padding-t-l {
+  padding-top: $space-l;
+}
+.padding-b-xs {
+  padding-bottom: $space-xs;
+}
+.padding-b-s {
+  padding-bottom: $space-s;
+}
+.padding-b-l {
+  padding-bottom: $space-l;
 }

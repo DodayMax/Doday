@@ -12,10 +12,27 @@
   }
 }
 
+.cell-title {
+  composes: padding-l-xs from '@styles/_utils.scss';
+}
+
 .active {
   background-color: $gray-2;
 }
 
 .center {
   composes: flex-center from '@styles/_common';
+}
+
+.badge-container {
+  position: absolute;
+  top: calc(50% - 1rem);
+  right: 1rem;
+}
+
+.badge-bg {
+  background-color: $red-light;
+  color: $white;
+  background-clip: padding-box;
+  border-radius: $radius-circle;
 }

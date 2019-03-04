@@ -22,11 +22,12 @@ export const Text: React.SFC<TextProps & TypographyProps & React.HTMLAttributes<
     [styles[`text-${size}`]]: !!size,
     [styles[`${color}-text`]]: !!color,
     [styles['text-l']]: !!!size, // default size for text
+    [className || '']: true,
   });
 
   return (
-    <div className={classNames} {...props}>
+    <span className={classNames} {...props}>
       {text}
-    </div>
+    </span>
   );
 };

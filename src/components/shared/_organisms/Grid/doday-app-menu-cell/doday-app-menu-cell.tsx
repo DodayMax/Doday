@@ -1,7 +1,8 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Icons, Badge } from '@components';
+import { Icons, Badge, Text } from '@components';
 import { DrawerMenuItem } from '@root/components/drawer';
+import { TypographySize } from '@root/lib/common-interfaces';
 
 const styles = require('./_doday-app-menu-cell.module.scss');
 
@@ -19,6 +20,10 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
     [styles.active]: active,
     [styles.center]: collapsed,
   });
+  const badgeContainer = classnames({
+    [styles.badgeContainer]: !collapsed,
+    [styles.badgeBg]: true,
+  });
 
   if (collapsed) {
     return (
@@ -26,9 +31,9 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
         className={classNames}
         onClick={onClick}
       >
-        {<Icon />}
+        {item.badge == null && <Icon />}
         {item.badge != null &&
-          <div className={styles.badgeContainer}>
+          <div className={badgeContainer}>
             <Badge value={item.badge} />
           </div>
         }
@@ -41,9 +46,12 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
         onClick={onClick}
       >
         {<Icon />}
-        <span id="#cell-title" className={styles.cellTitle}>{item.text}</span>
+        <Text
+          text={item.text}
+          size={TypographySize.s}
+          className={styles.cellTitle} />
         {item.badge != null &&
-          <div className={styles.badgeContainer}>
+          <div className={badgeContainer}>
             <Badge value={item.badge} />
           </div>
         }
