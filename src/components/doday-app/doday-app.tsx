@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as moment from 'moment';
 import { actions as appActions } from '@ducks/doday-app';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
@@ -73,8 +74,6 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
         return (
           <>
             <TodayTopBar
-              back={this.props.navStack.length > 0}
-              backAction={this.props.popFromNavStack}
               date={chosenDate!}
               changeDate={changeDate!} />
             <Grid loading={loading} items={this.getDodaysToRender()} />

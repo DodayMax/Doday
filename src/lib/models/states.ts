@@ -1,7 +1,8 @@
-import { Doday } from "../common-interfaces";
+import { Doday, ActivityType } from "../common-interfaces";
 
 export interface RootState {
   dodayApp: DodayAppState;
+  builder: BuilderState;
   heroSettings: HeroSettingsState;
 }
 
@@ -13,6 +14,10 @@ export interface DodayAppState {
   dodays: Doday[];
   goals: Doday[];
   chosenDate: Date;
+}
+
+export interface BuilderState {
+  activityTypes: ActivityType[];
 }
 
 export interface HeroSettingsState {

@@ -3,14 +3,11 @@ import * as moment from 'moment';
 import { ChangeDateAction } from '@root/ducks/doday-app/actions';
 import { ClickableIcon } from '@root/components/shared/_atoms/clickable-icon/clickable-icon';
 import { Icons } from '@root/components';
-import { AnyAction } from 'redux';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_today-top-bar.module.scss');
 
 interface TodayTopBarProps {
-  back: boolean;
-  backAction: () => AnyAction;
   date: Date;
   changeDate: (date: Date) => ChangeDateAction;
 }
@@ -39,46 +36,32 @@ export class TodayTopBar extends React.Component<TodayTopBarProps> {
     const today = new Date();
     const isToday = date === moment(today).format('ll');
 
-    if (this.props.back) {
-      return (
-        <>
-          <ClickableIcon
-            border
-            text={'back '}
-            background={vars.gray1}
-            onClick={this.props.backAction}>
-            <Icons.Chevron />
-          </ClickableIcon>
-        </>
-      );
-    } else {
-      return (
-        <>
+    return (
+      <>
+        <ClickableIcon
+          border
+          background={vars.gray1}
+          onClick={this.previousDate}>
+          <Icons.Chevron />
+        </ClickableIcon>
+        <div className={styles.dateContainer}>
+          <span className={styles.date}>{date}</span>
+          {!isToday &&
           <ClickableIcon
             border
             background={vars.gray1}
-            onClick={this.previousDate}>
-            <Icons.Chevron />
-          </ClickableIcon>
-          <div className={styles.dateContainer}>
-            <span className={styles.date}>{date}</span>
-            {!isToday &&
-            <ClickableIcon
-              border
-              background={vars.gray1}
-              onClick={() => this.todayDate(today)}>
-              <Icons.TodayCalendar />
-            </ClickableIcon>}
-          </div>
-          <ClickableIcon
-            border
-            background={vars.gray1}
-            onClick={this.nextDate}>
-            <Icons.Chevron right />
-          </ClickableIcon>
-        </>
-      );
-    }
+            onClick={() => this.todayDate(today)}>
+            <Icons.TodayCalendar />
+          </ClickableIcon>}
+        </div>
+        <ClickableIcon
+          border
+          background={vars.gray1}
+          onClick={this.nextDate}>
+          <Icons.Chevron right />
+        </ClickableIcon>
+      </>
+    );
   }
 
   render() {

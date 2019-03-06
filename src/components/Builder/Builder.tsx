@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Input, LayoutBlock, Text, Icons } from '@components';
 import Select from 'react-virtualized-select';
+import { actions as builderActions } from '@ducks/builder';
 import { ButtonGroup } from '../shared/_molecules/button-group';
-import { TypographyColor, TypographySize } from '@root/lib/common-interfaces';
+import { TypographyColor, TypographySize, ActivityType, Doday } from '@root/lib/common-interfaces';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
+import { RootState } from '@root/lib/models';
+import { FetchActivityTypesAction } from '@root/ducks/builder/actions';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -13,8 +16,38 @@ const styles = require('./_builder.module.scss');
 interface BuilderProps {
 }
 
-export class Builder extends React.Component<BuilderProps & RouteComponentProps, any> {
+interface BuilderState {
+  selectedActivityType?: ActivityType,
+  selectedGoal?: Doday,
+}
+
+interface PropsFromConnect {
+  activityTypes: ActivityType[];
+  fetchActivityTypes: () => FetchActivityTypesAction;
+}
+
+export class Builder extends React.Component<BuilderProps & PropsFromConnect & RouteComponentProps, BuilderState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedActivityType: undefined,
+    }
+  }
+
+  componentDidMount() {
+    this.props.fetchActivityTypes();
+  }
+
+  selectActivityType = (type) => {
+    this.setState({
+      selectedActivityType: type,
+    })
+  }
+
   render() {
+    const { activityTypes } = this.props;
+
     return (
       <section className={styles.builderContainer}>
         <LayoutBlock absolute top='1rem' right='1rem'>
@@ -43,7 +76,9 @@ export class Builder extends React.Component<BuilderProps & RouteComponentProps,
         <LayoutBlock padding="2rem 0">
           <LayoutBlock>
             <Select
-              style={{width: '100%'}}
+              options={activityTypes}
+              value={this.state.selectedActivityType}
+              onChange={this.selectActivityType}
               labelKey='sysname'
               valueKey='id'
               placeholder='Activity type'
@@ -51,7 +86,6 @@ export class Builder extends React.Component<BuilderProps & RouteComponentProps,
           </LayoutBlock>
           <LayoutBlock flex={2} margin="0 0 0 1rem">
             <Select
-              style={{width: '100%'}}
               labelKey='sysname'
               valueKey='id'
               placeholder='Choose folder'
@@ -86,4 +120,8 @@ export class Builder extends React.Component<BuilderProps & RouteComponentProps,
   }
 }
 
-export default withRouter(connect()(Builder) as any);
+const mapState = (state: RootState) => ({
+  activityTypes: state.builder.activityTypes,
+});
+
+export default withRouter(connect(mapState, { ...builderActions })(Builder) as any);

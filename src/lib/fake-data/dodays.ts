@@ -1,4 +1,4 @@
-import { Doday } from '@lib/common-interfaces';
+import { Doday, ActivityType } from '@lib/common-interfaces';
 
 export const dodays: Doday[] = [
   {
@@ -74,5 +74,20 @@ export const goals = [
         completed: false,
       },
     ],
+  }
+];
+
+export const activityTypes: ActivityType[] = [
+  {
+    id: '111',
+    sysname: 'do',
+  },
+  {
+    id: '222',
+    sysname: 'read',
+  },
+  {
+    id: '333',
+    sysname: 'watch',
   }
 ];
