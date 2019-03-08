@@ -6,10 +6,12 @@ import { RootState } from '@lib/models';
 
 //reducers and sagas
 import DodayAppReducer, { sagas as DodayAppSagas } from '@ducks/doday-app';
+import AuthReducer, { sagas as AuthSagas } from '@ducks/auth';
 import BuilderReducer, { sagas as BuilderSagas } from '@ducks/builder';
 import HeroSettingsReducer, { sagas as HeroSettingsSagas } from '@ducks/hero-settings';
 
 const rootReducer = combineReducers<RootState>({
+  auth: AuthReducer,
   dodayApp: DodayAppReducer,
   builder: BuilderReducer,
   heroSettings: HeroSettingsReducer,
@@ -17,6 +19,7 @@ const rootReducer = combineReducers<RootState>({
 
 function* rootSaga() {
   yield all([
+    ...AuthSagas,
     ...HeroSettingsSagas,
     ...DodayAppSagas,
     ...BuilderSagas,

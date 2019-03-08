@@ -50,6 +50,19 @@ export class Builder extends React.Component<BuilderProps & PropsFromConnect & R
 
     return (
       <section className={styles.builderContainer}>
+        <LayoutBlock align="flex-center" padding="0 0 2rem 0">
+          <ButtonGroup>
+            <Button
+              primary
+              text={'Private'}
+              onClick={() => {}}
+            />
+            <Button
+              text={'Public'}
+              onClick={() => {}}
+            />
+          </ButtonGroup>
+        </LayoutBlock>
         <LayoutBlock absolute top='1rem' right='1rem'>
           <ClickableIcon onClick={() => {this.props.history.push('/')}}>
             <Icons.Close color={vars.gray6} width={30} height={30} />
@@ -84,29 +97,28 @@ export class Builder extends React.Component<BuilderProps & PropsFromConnect & R
               placeholder='Activity type'
             />
           </LayoutBlock>
-          <LayoutBlock flex={2} margin="0 0 0 1rem">
+          <LayoutBlock flex={1} margin="0 0 0 1rem">
             <Select
               labelKey='sysname'
               valueKey='id'
-              placeholder='Choose folder'
+              placeholder='Choose goal'
+            />
+          </LayoutBlock>
+          <LayoutBlock flex={1} margin="0 0 0 1rem">
+            <Select
+              labelKey='sysname'
+              valueKey='id'
+              placeholder='Estimate time'
             />
           </LayoutBlock>
         </LayoutBlock>
-        <LayoutBlock align="flex-center" padding="0 0 2rem 0">
-          <ButtonGroup>
-            <Button
-              text={'Draft'}
-              onClick={() => {}}
-            />
-            <Button
-              text={'Private'}
-              onClick={() => {}}
-            />
-            <Button
-              text={'Public'}
-              onClick={() => {}}
-            />
-          </ButtonGroup>
+        <LayoutBlock flex={1} padding="0 0 2rem">
+          <Select
+            labelKey='sysname'
+            valueKey='id'
+            creatable
+            placeholder='Add tags'
+          />
         </LayoutBlock>
         <LayoutBlock align="flex-end">
           <Button

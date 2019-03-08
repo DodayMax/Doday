@@ -29,7 +29,7 @@ export const dodaysForToday = (variables: any) => {
       resolve(dodays.filter(doday => {
         const dodayDate = new Date(doday.date!);
         return today >= dodayDate;
-      }))
+      }).sort((a) => a.completed ? 1 : -1))
     }, 1000)
   })
 }
@@ -41,7 +41,7 @@ export const dodaysForDate = (variables: any) => {
       resolve(dodays.filter(doday => {
         const dodayDate = moment(new Date(doday.date!)).format('ll');
         return chosenDate === dodayDate;
-      }))
+      }).sort((a) => a.completed ? 1 : -1))
     }, 1000)
   })
 }
