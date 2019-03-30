@@ -1,0 +1,142 @@
+directive @isAuthenticated on OBJECT | FIELD_DEFINITION
+
+type Hero {
+  id: ID!
+  name: String
+  friends: [Hero] @relation(name: "FRIENDS", direction: "BOTH")
+  invites: [Hero] @relation(name: "INVITE", direction: "OUT")
+  createdDodays: [Doday] @relation(name: "CREATE", direction: "OUT")
+  tags: [HeroTag] @cypher(
+    statement:
+    """
+    MATCH p = (h: Hero)-[]-()-[:DOING { completed: true }]-()-[tagged:HAS_TAG]-(t: Tag)
+    WHERE h.id = this.id
+    RETURN t { .id, .sysname, .color, weight: sum(tagged.weight) } as HeroTag
+    """
+  )
+  roles: [Role] @relation(name: "HAS_ROLE", direction: "OUT")
+  created: Float
+}
+
+type Doday {
+  id: ID!
+  name: String
+  owner: [Hero] @relation(name: "CREATE", direction: "IN")
+  doing: [Hero] @cypher(statement: "MATCH (this)-[r:DOING { completed: false }]-(p:Progress)-(h:Hero) RETURN h")
+  done: [Hero] @cypher(statement: "MATCH (this)-[r:DOING { completed: true }]-(p:Progress)-(h:Hero) RETURN h")
+  tags: [TaggedDoday]
+  created: Float
+  completed: Boolean
+  tookAt: DateTime
+  date: Date
+  completedAt: Float
+}
+
+type Path {
+  id: ID!
+  name: String
+  dodays: [Doday] @relation(name: "USE", direction: "IN")
+  created: Float
+}
+
+type Role {
+  id: ID!
+  sysname: String
+  members: [Hero] @relation(name: "HAS_ROLE", direction: "IN")
+}
+
+type Tag {
+  id: ID!
+  sysname: String
+  heroes: [Hero] @cypher(statement: "MATCH (this)-[:HAS_TAG]-(h:Hero) RETURN h")
+  dodays: [Doday] @cypher(statement: "MATCH (this)-[:HAS_TAG]-(d:Doday) RETURN d")
+  weight: Float @cypher(statement:
+    """
+    MATCH (this)-[h:HAS_TAG]-()
+    RETURN toFloat(sum(h.weight))
+    """
+  )
+}
+
+type Progress {
+  id: ID!
+  type: String
+  days: [Int]
+  hero: [Hero] @relation(name: "PROGRESS", direction: "IN")
+  path: [Path] @relation(name: "PATH", direction: "OUT")
+  doing: [Doing]
+  currentDoday: [Doday] @cypher(statement: "MATCH (this)-[r:DOING { completed: false }]-(d: Doday) RETURN d")
+  completedDodays: [Doday] @cypher(statement: "MATCH (this)-[r:DOING { completed: true }]-(d: Doday) RETURN d")
+}
+
+type Day {
+  id: ID!
+  date: Date
+  active: Boolean
+}
+
+type TaggedDoday @relation(name: "HAS_TAG") {
+  from: Doday
+  to: Tag
+  weight: Float
+}
+
+type HeroTag {
+  id: ID!
+  sysname: String
+  color: String
+  weight: Float
+}
+
+type Doing @relation(name: "DOING") {
+  from: Progress
+  to: Doday
+  tookAt: DateTime
+  completedAt: Float
+  completed: Boolean
+}
+
+type Counter {
+  id: ID!
+  name: String
+  heroes: Int @cypher(statement: "MATCH (h:Hero) RETURN count(h)")
+}
+
+type Query {
+  dodaysBySubstring(substring: String): [Doday]
+    @cypher(
+      statement: "MATCH (u:Doday) WHERE u.title CONTAINS $substring RETURN u"
+    )
+  activeDodays(heroID: ID, date: String): [Doday]
+    @cypher(
+      statement:
+      """
+      MATCH (d:Doday)-[r:DOING]-()-[]-(h:Hero)
+      WHERE h.id = $heroID AND d.date = date($date)
+      RETURN d { .id, .name, completed: r.completed, completedAt: r.completedAt, tookAt: r.tookAt } as Doday
+      ORDER BY r.completed
+      """
+    )
+  allRoles(sysname: String): [Role]
+    @cypher(
+      statement: "MATCH (n:Role) RETURN n"
+    )
+  allTags(sysname: String): [Tag]
+    @cypher(
+      statement: "MATCH (n:Tag) RETURN n"
+    )
+}
+
+type Mutation {
+  CreateHero(id: ID, name: String): Hero
+  toggleDoday(heroID: ID, dodayID: ID, date: Float, value: Boolean): Doday
+    @cypher(
+      statement: 
+      """
+      MATCH (h:Hero { id: $heroID })-[]-()-[r:DOING]-(d:Doday { id: $dodayID })
+      SET r.completed = $value
+      SET r.completedAt = $date
+      RETURN d
+      """
+    )
+}

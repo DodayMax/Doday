@@ -12,31 +12,29 @@
     "sourceMap": true,
     "allowJs": true,
     "jsx": "react",
-    "moduleResolution": "node",
     "baseUrl": ".",
-    "isolatedModules": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "strictNullChecks": true,
     "experimentalDecorators": true,
     "paths": {
       "@root/*": [
-        "src/*"
+        "client/*"
       ],
       "@lib/*": [
-        "src/lib/*"
+        "client/lib/*"
       ],
       "@services": [
-        "src/services"
+        "client/services"
       ],
       "@components": [
-        "src/components"
+        "client/components"
       ],
       "@styles/*": [
-        "src/styles/*"
+        "client/styles/*"
+      ],
+      "@ducks": [
+        "client/ducks"
       ],
       "@ducks/*": [
-        "src/ducks/*"
+        "client/ducks/*"
       ],
     }
   },
