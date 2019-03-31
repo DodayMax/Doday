@@ -1,0 +1,10 @@
+.topbar {
+  &-container {
+    composes: top-bar-container from '@styles/_common.scss';
+  }
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}

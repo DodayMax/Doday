@@ -1,0 +1,135 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Apps renders correctly without props 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Unknown />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": <g
+        fill="black"
+        fillRule="evenodd"
+      >
+        <path
+          d="M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z"
+        />
+      </g>,
+      "height": 20,
+      "viewBox": "0 0 24 24",
+      "width": 20,
+      "xmlns": "http://www.w3.org/2000/svg",
+    },
+    "ref": null,
+    "rendered": Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <path
+          d="M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z"
+        />,
+        "fill": "black",
+        "fillRule": "evenodd",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "d": "M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z",
+        },
+        "ref": null,
+        "rendered": null,
+        "type": "path",
+      },
+      "type": "g",
+    },
+    "type": "svg",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": <g
+          fill="black"
+          fillRule="evenodd"
+        >
+          <path
+            d="M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z"
+          />
+        </g>,
+        "height": 20,
+        "viewBox": "0 0 24 24",
+        "width": 20,
+        "xmlns": "http://www.w3.org/2000/svg",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": <path
+            d="M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z"
+          />,
+          "fill": "black",
+          "fillRule": "evenodd",
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "d": "M9.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM20.36 2.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5V3.7a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5V3.7h5.5v5.5zM9.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5zM20.36 13.2h-5.5a1.5 1.5 0 0 0-1.5 1.5v5.5a1.5 1.5 0 0 0 1.5 1.5h5.5a1.5 1.5 0 0 0 1.5-1.5v-5.5a1.5 1.5 0 0 0-1.5-1.5zm0 7h-5.5v-5.5h5.5v5.5z",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "path",
+        },
+        "type": "g",
+      },
+      "type": "svg",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "disableLifecycleMethods": true,
+  },
+}
+`;

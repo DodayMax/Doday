@@ -1,0 +1,23 @@
+@import '@styles/_config.scss';
+
+.default {
+  composes: button flex-center from '@styles/_common.scss';
+  background-color: $gray-1;
+
+  &:hover {
+    background-color: $gray-3;
+  }
+}
+
+.primary {
+  composes: button flex-center from '@styles/_common.scss';
+  background-color: $yellow;
+
+  &:hover {
+    background-color: $yellow-light;
+  }
+}
+
+.disabled {
+  composes: disabled from '@styles/_common.scss';
+}

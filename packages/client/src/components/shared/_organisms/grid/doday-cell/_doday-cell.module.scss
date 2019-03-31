@@ -1,0 +1,26 @@
+@import '@styles/_config.scss';
+
+.cell {
+  composes: cell pointer from '@styles/_common.scss';
+  display: flex;
+  height: $cell-height;
+  align-items: center;
+  padding: $space-xs $space-s;
+
+  &:hover,
+  &:active {
+    background-color: $white;
+  }
+}
+
+.cell-title {
+  composes: padding-l-xs from '@styles/_utils.scss';
+}
+
+.active {
+  background-color: $white;
+}
+
+.center {
+  composes: flex-center from '@styles/_common.scss';
+}

@@ -1,0 +1,39 @@
+@import '@styles/_config.scss';
+
+.cell {
+  composes: cell pointer from '@styles/_common.scss';
+  position: relative;
+  display: flex;
+  height: $cell-height;
+  align-items: center;
+
+  &:hover,
+  &:active {
+    background-color: $gray-1;
+  }
+}
+
+.cell-title {
+  composes: padding-l-xs from '@styles/_utils.scss';
+}
+
+.active {
+  background-color: $gray-2;
+}
+
+.center {
+  composes: flex-center from '@styles/_common.scss';
+}
+
+.badge-container {
+  position: absolute;
+  top: calc(50% - 1rem);
+  right: 1rem;
+}
+
+.badge-bg {
+  background-color: $red-light;
+  color: $white;
+  background-clip: padding-box;
+  border-radius: $radius-circle;
+}

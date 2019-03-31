@@ -8,7 +8,10 @@
 
 const path = require('path');
 
-const SRC_PATH = path.join(__dirname, '../src');
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader');
+
+const SRC_PATH = path.join(__dirname, '../packages/client/src');
+const CLIENT_PATH = path.join(__dirname, '../packages/client');
 
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
@@ -50,59 +53,60 @@ const getStyleLoaders = (cssOptions, preProcessor) => {
 };
 
 module.exports = {
-    module: {
-        rules: [
-            {
-                test: /\.tsx?$/,
-                loader: require.resolve('babel-loader'),
-                include: [
-                    SRC_PATH
-                ]
-            },
-            {
-                test: /\.(jpg|png|svg|otf)$/,
-                loader: 'file-loader',
-                include: SRC_PATH
-            },
-            {
-              test: cssRegex,
-              exclude: cssModuleRegex,
-              use: getStyleLoaders({
-                importLoaders: 1,
-              }),
-            },
-            {
-                test: /\.scss$/,
-                use: getStyleLoaders(
-                  {
-                    importLoaders: 2,
-                    modules: true,
-                    camelCase: 'dashes',
-                    getLocalIdent: getCSSModuleLocalIdent,
-                  },
-                  'sass-loader'
-                ),
-                include: SRC_PATH
-            }
-        ]
-    },
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: require.resolve('awesome-typescript-loader'),
+        include: [SRC_PATH],
+        options: {
+          configFileName: CLIENT_PATH + '/tsconfig.json',
+        },
+      },
+      {
+        test: /\.(jpg|png|svg|otf)$/,
+        loader: 'file-loader',
+        include: SRC_PATH,
+      },
+      {
+        test: cssRegex,
+        exclude: cssModuleRegex,
+        use: getStyleLoaders({
+          importLoaders: 1,
+        }),
+      },
+      {
+        test: /\.scss$/,
+        use: getStyleLoaders(
+          {
+            importLoaders: 2,
+            modules: true,
+            camelCase: 'dashes',
+            getLocalIdent: getCSSModuleLocalIdent,
+          },
+          'sass-loader'
+        ),
+        include: SRC_PATH,
+      },
+    ],
+  },
 
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
-        enforceExtension: false,
-        alias: {
-          '@root': SRC_PATH,
-          '@root/*': '@root/*',
-          '@icons': '@root/assets/icons',
-          '@components': '@root/components',
-          '@stores': '@root/stores',
-          '@services': '@root/services',
-          '@styles': '@root/styles',
-          '@styles/*': '@root/styles/*',
-          '@lib': '@root/lib',
-          '@lib/*': '@root/lib/*',
-          '@ducks': '@root/ducks',
-          '@ducks/*': '@root/ducks/*'
-        }
-    }
+  resolve: {
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss'],
+    enforceExtension: false,
+    alias: {
+      '@root': SRC_PATH,
+      '@root/*': '@root/*',
+      '@icons': '@root/assets/icons',
+      '@components': '@root/components',
+      '@stores': '@root/stores',
+      '@services': '@root/services',
+      '@styles': '@root/styles',
+      '@styles/*': '@root/styles/*',
+      '@lib': '@root/lib',
+      '@lib/*': '@root/lib/*',
+      '@ducks': '@root/ducks',
+      '@ducks/*': '@root/ducks/*',
+    },
+  },
 };

@@ -1,0 +1,629 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InlineLoaderIcon renders correctly without props 1`] = `
+ShallowWrapper {
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <Unknown />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "checkPropTypes": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateError": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "host",
+    "props": Object {
+      "children": Array [
+        <rect
+          fill="#333"
+          height="5"
+          width="4"
+          x="0"
+          y="13"
+        >
+          <animate
+            attributeName="height"
+            attributeType="XML"
+            begin="0s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="5;21;5"
+          />
+          <animate
+            attributeName="y"
+            attributeType="XML"
+            begin="0s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="13; 5; 13"
+          />
+        </rect>,
+        <rect
+          fill="#333"
+          height="5"
+          width="4"
+          x="10"
+          y="13"
+        >
+          <animate
+            attributeName="height"
+            attributeType="XML"
+            begin="0.15s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="5;21;5"
+          />
+          <animate
+            attributeName="y"
+            attributeType="XML"
+            begin="0.15s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="13; 5; 13"
+          />
+        </rect>,
+        <rect
+          fill="#333"
+          height="5"
+          width="4"
+          x="20"
+          y="13"
+        >
+          <animate
+            attributeName="height"
+            attributeType="XML"
+            begin="0.3s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="5;21;5"
+          />
+          <animate
+            attributeName="y"
+            attributeType="XML"
+            begin="0.3s"
+            dur="0.6s"
+            repeatCount="indefinite"
+            values="13; 5; 13"
+          />
+        </rect>,
+      ],
+      "height": "24px",
+      "id": "inline-loader",
+      "version": "1.1",
+      "viewBox": "0 0 24 30",
+      "width": "18px",
+      "x": "0px",
+      "xmlSpace": "preserve",
+      "xmlns": "http://www.w3.org/2000/svg",
+      "xmlnsXlink": "http://www.w3.org/1999/xlink",
+      "y": "0px",
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />,
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />,
+          ],
+          "fill": "#333",
+          "height": "5",
+          "width": "4",
+          "x": "0",
+          "y": "13",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "height",
+              "attributeType": "XML",
+              "begin": "0s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "5;21;5",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "y",
+              "attributeType": "XML",
+              "begin": "0s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "13; 5; 13",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+        ],
+        "type": "rect",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0.15s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />,
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0.15s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />,
+          ],
+          "fill": "#333",
+          "height": "5",
+          "width": "4",
+          "x": "10",
+          "y": "13",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "height",
+              "attributeType": "XML",
+              "begin": "0.15s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "5;21;5",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "y",
+              "attributeType": "XML",
+              "begin": "0.15s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "13; 5; 13",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+        ],
+        "type": "rect",
+      },
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "host",
+        "props": Object {
+          "children": Array [
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0.3s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />,
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0.3s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />,
+          ],
+          "fill": "#333",
+          "height": "5",
+          "width": "4",
+          "x": "20",
+          "y": "13",
+        },
+        "ref": null,
+        "rendered": Array [
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "height",
+              "attributeType": "XML",
+              "begin": "0.3s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "5;21;5",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+          Object {
+            "instance": null,
+            "key": undefined,
+            "nodeType": "host",
+            "props": Object {
+              "attributeName": "y",
+              "attributeType": "XML",
+              "begin": "0.3s",
+              "dur": "0.6s",
+              "repeatCount": "indefinite",
+              "values": "13; 5; 13",
+            },
+            "ref": null,
+            "rendered": null,
+            "type": "animate",
+          },
+        ],
+        "type": "rect",
+      },
+    ],
+    "type": "svg",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          <rect
+            fill="#333"
+            height="5"
+            width="4"
+            x="0"
+            y="13"
+          >
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />
+          </rect>,
+          <rect
+            fill="#333"
+            height="5"
+            width="4"
+            x="10"
+            y="13"
+          >
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0.15s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0.15s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />
+          </rect>,
+          <rect
+            fill="#333"
+            height="5"
+            width="4"
+            x="20"
+            y="13"
+          >
+            <animate
+              attributeName="height"
+              attributeType="XML"
+              begin="0.3s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="5;21;5"
+            />
+            <animate
+              attributeName="y"
+              attributeType="XML"
+              begin="0.3s"
+              dur="0.6s"
+              repeatCount="indefinite"
+              values="13; 5; 13"
+            />
+          </rect>,
+        ],
+        "height": "24px",
+        "id": "inline-loader",
+        "version": "1.1",
+        "viewBox": "0 0 24 30",
+        "width": "18px",
+        "x": "0px",
+        "xmlSpace": "preserve",
+        "xmlns": "http://www.w3.org/2000/svg",
+        "xmlnsXlink": "http://www.w3.org/1999/xlink",
+        "y": "0px",
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <animate
+                attributeName="height"
+                attributeType="XML"
+                begin="0s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="5;21;5"
+              />,
+              <animate
+                attributeName="y"
+                attributeType="XML"
+                begin="0s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="13; 5; 13"
+              />,
+            ],
+            "fill": "#333",
+            "height": "5",
+            "width": "4",
+            "x": "0",
+            "y": "13",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "height",
+                "attributeType": "XML",
+                "begin": "0s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "5;21;5",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "y",
+                "attributeType": "XML",
+                "begin": "0s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "13; 5; 13",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+          ],
+          "type": "rect",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <animate
+                attributeName="height"
+                attributeType="XML"
+                begin="0.15s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="5;21;5"
+              />,
+              <animate
+                attributeName="y"
+                attributeType="XML"
+                begin="0.15s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="13; 5; 13"
+              />,
+            ],
+            "fill": "#333",
+            "height": "5",
+            "width": "4",
+            "x": "10",
+            "y": "13",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "height",
+                "attributeType": "XML",
+                "begin": "0.15s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "5;21;5",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "y",
+                "attributeType": "XML",
+                "begin": "0.15s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "13; 5; 13",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+          ],
+          "type": "rect",
+        },
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "children": Array [
+              <animate
+                attributeName="height"
+                attributeType="XML"
+                begin="0.3s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="5;21;5"
+              />,
+              <animate
+                attributeName="y"
+                attributeType="XML"
+                begin="0.3s"
+                dur="0.6s"
+                repeatCount="indefinite"
+                values="13; 5; 13"
+              />,
+            ],
+            "fill": "#333",
+            "height": "5",
+            "width": "4",
+            "x": "20",
+            "y": "13",
+          },
+          "ref": null,
+          "rendered": Array [
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "height",
+                "attributeType": "XML",
+                "begin": "0.3s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "5;21;5",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+            Object {
+              "instance": null,
+              "key": undefined,
+              "nodeType": "host",
+              "props": Object {
+                "attributeName": "y",
+                "attributeType": "XML",
+                "begin": "0.3s",
+                "dur": "0.6s",
+                "repeatCount": "indefinite",
+                "values": "13; 5; 13",
+              },
+              "ref": null,
+              "rendered": null,
+              "type": "animate",
+            },
+          ],
+          "type": "rect",
+        },
+      ],
+      "type": "svg",
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+        "legacyContextMode": "parent",
+        "lifecycles": Object {
+          "componentDidUpdate": Object {
+            "onSetState": true,
+          },
+          "getChildContext": Object {
+            "calledByRenderer": false,
+          },
+          "getDerivedStateFromProps": Object {
+            "hasShouldComponentUpdateBug": false,
+          },
+          "getSnapshotBeforeUpdate": true,
+          "setState": Object {
+            "skipsComponentDidUpdateOnNullish": true,
+          },
+        },
+      },
+    },
+    "disableLifecycleMethods": true,
+  },
+}
+`;

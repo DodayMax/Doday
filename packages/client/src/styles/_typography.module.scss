@@ -1,0 +1,119 @@
+@import '@styles/_config.scss';
+
+.primary-text {
+  color: $primary-text;
+}
+.secondary-text {
+  color: $secondary-text;
+}
+.disabled-text {
+  color: $disabled-text;
+}
+.error-text {
+  color: $error-text;
+}
+.warning-text {
+  color: $warning-text;
+}
+.success-text {
+  color: $success-text;
+}
+.link-text {
+  color: $link-text;
+}
+
+.wordwrap {
+  word-break: break-word;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.ellipsize {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.light {
+  font-family: $font-light;
+}
+
+.regular {
+  font-family: $font-regular;
+}
+
+.bold {
+  font-family: $font-demi;
+}
+
+.heavy {
+  font-family: $font-heavy;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.align-center {
+  text-align: center;
+}
+
+.align-left {
+  text-align: left;
+}
+
+.align-right {
+  text-align: right;
+}
+
+.text-s {
+  composes: wordwrap;
+  font-size: $body-s;
+  line-height: 1.6rem;
+}
+
+.text-m {
+  composes: wordwrap;
+  font-size: $body-m;
+  line-height: 2rem;
+}
+
+.text-l {
+  composes: wordwrap;
+  font-size: $body-l;
+  line-height: 2.4rem;
+}
+
+.title-s {
+  composes: bold wordwrap;
+  font-size: $title-s;
+  line-height: 2.4rem;
+}
+
+.title-m {
+  composes: bold wordwrap;
+  font-size: $title-m;
+  line-height: 3.2rem;
+}
+
+.title-l {
+  composes: bold wordwrap;
+  font-size: $title-l;
+  line-height: 4rem;
+}
