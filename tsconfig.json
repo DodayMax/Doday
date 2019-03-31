@@ -46,7 +46,8 @@
     "webpack",
     "jest",
     "setupTests.ts",
-    "config"
+    "config",
+    "server"
   ],
   "types": [
     "typePatches"

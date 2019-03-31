@@ -10,6 +10,8 @@ coverage
 
 # production
 /build
+dist
+debug.log
 
 # misc
 .DS_Store
