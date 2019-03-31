@@ -28,21 +28,24 @@ passport.serializeUser<any, any>((hero, done) => {
 passport.deserializeUser((did, done) => {
   const session = driver.session();
   const tx = session.beginTransaction();
-  console.log(did, 'did');
 
   tx.run(
     `
-      MATCH (h: Hero { did: $did })
+      MATCH (h: Hero { did: {did} })
       RETURN h
     `,
     { did }
   )
     .then(res => {
+      session.close();
       const hero = singleNodeFromResponse(res);
-      console.log(hero, 'hero');
+      console.log(hero);
       done(undefined, hero);
     })
-    .catch(e => done(e));
+    .catch(e => {
+      session.close();
+      done(e);
+    });
 });
 
 /**
@@ -133,7 +136,8 @@ passport.use(
     {
       clientID: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: 'http://localhost:4040/auth/google/callback',
+      callbackURL: `${process.env.SERVER_BASE_URL ||
+        'http://localhost:5000'}/auth/google/callback`,
       passReqToCallback: true,
     },
     (req, accessToken, refreshToken, profile, done) => {

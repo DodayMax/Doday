@@ -14,7 +14,7 @@ import bluebird from 'bluebird';
 import { SESSION_SECRET } from './util/secrets';
 
 // Load environment variables from .env file, where API keys and passwords are configured
-dotenv.config({ path: '.env.example' });
+dotenv.config({ path: '../.env' });
 
 // Controllers (route handlers)
 import * as userController from './controllers/user';
@@ -28,7 +28,7 @@ import * as passportConfig from './config/passport';
 const app: Express = express();
 
 // Express configuration
-app.set('port', process.env.PORT || 4040);
+app.set('port', process.env.PORT || 5000);
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -91,12 +91,16 @@ app.get(
   }
 );
 
+app.get('/api/currentUser', (req, res) => {
+  res.send(req.user);
+});
+
 app.get(
-  'auth/google',
+  '/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 app.get(
-  'auth/google/callback',
+  '/auth/google/callback',
   passport.authenticate('google', {
     successRedirect: 'http:localhost:3000/',
     failureRedirect: 'http:localhost:3000/login',
