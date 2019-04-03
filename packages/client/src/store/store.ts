@@ -18,6 +18,7 @@ function* rootSaga() {
     ...ducks.builder.builderSagas,
     ...ducks.dodayapp.dodayappSagas,
     ...ducks.herosettings.herosettingsSagas,
+    ...ducks.payments.coinsSagas,
   ]);
 }
 
@@ -25,7 +26,7 @@ const sagaMiddleware = createSagaMiddleware();
 
 const store = createStore(
   rootReducer,
-  composeWithDevTools(applyMiddleware(sagaMiddleware)),
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
 
 sagaMiddleware.run(rootSaga);

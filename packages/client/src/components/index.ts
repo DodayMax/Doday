@@ -11,6 +11,7 @@ export * from './shared/_atoms/loader';
 export * from './shared/_atoms/button';
 export * from './shared/_atoms/checkbox';
 export * from './shared/_atoms/badge';
+export * from './shared/_atoms/stripe-button';
 export * from './shared/_atoms/clickable-icon/clickable-icon';
 export * from './shared/_atoms/layout-block/layout-block';
 export * from './shared/_molecules/button-group/button-group';
@@ -23,12 +24,4 @@ export * from './doday-app';
 export * from './landing';
 export * from './dashboard';
 
-export {
-  Shell,
-  Builder,
-  Drawer,
-  DesktopShell,
-  Icons,
-  Grid,
-  Button
-};
+export { Shell, Builder, Drawer, DesktopShell, Icons, Grid, Button };

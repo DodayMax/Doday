@@ -15,14 +15,6 @@ import { SESSION_SECRET } from './util/secrets';
 // Load environment variables from .env file, where API keys and passwords are configured
 dotenv.config({ path: '../.env' });
 
-// Controllers (route handlers)
-import * as userController from './controllers/user';
-import * as apiController from './controllers/api';
-import * as contactController from './controllers/contact';
-
-// API keys and Passport configuration
-import * as passportConfig from './config/passport';
-
 // Create Express server
 const app: Express = express();
 
@@ -64,58 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get(
-  '/api/facebook',
-  passportConfig.isAuthenticated,
-  passportConfig.isAuthorized,
-  apiController.getFacebook
-);
-
-/**
- * OAuth authentication routes. (Sign in)
- */
-app.get(
-  '/auth/facebook',
-  passport.authenticate('facebook', { scope: ['email', 'public_profile'] })
-);
-app.get(
-  '/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  (req, res) => {
-    res.redirect(req.session.returnTo || '/');
-  }
-);
-
-app.get('/api/currentHero', (req, res) => {
-  console.log(req.user);
-  if (req.user) {
-    res.status(200).send(req.user);
-  } else {
-    res.status(204).send('');
-  }
-});
-
-app.get(
-  '/auth/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-app.get(
-  '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: '/login',
-  }),
-  (req, res) => {
-    res.redirect('/dashboard');
-  }
-);
-
-app.get('/api/logout', (req, res) => {
-  req.logout();
-  res.status(200).redirect('/');
-});
+require('./routes/authRoutes')(app);
+require('./routes/paymentsRoutes')(app);
 
 export default app;
