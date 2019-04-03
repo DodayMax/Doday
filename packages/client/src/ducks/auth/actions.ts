@@ -1,32 +1,33 @@
 import { AnyAction } from 'redux';
+import { Hero } from '@root/lib/models/entities';
 
 export enum ActionConstants {
-  UPDATE_AUTHENTICATED_STATUS = '[auth] UPDATE_AUTHENTICATED_STATUS',
-  SET_AUTHENTICATED_STATUS = '[auth] SET_AUTHENTICATED_STATUS',
+  FETCH_HERO = '[auth] FETCH_HERO',
+  SET_HERO = '[auth] SET_HERO',
 }
 
 /**
- * Update authenticated status
+ * Fetch Hero
  *
  * @export
- * @returns {UpdateAuthenticatedStatus}
+ * @returns {FetchHeroAction}
  */
-export function updateAuthenticatedStatus(): UpdateAuthenticatedStatus {
+export function fetchHero(): FetchHeroAction {
   return {
-    type: ActionConstants.UPDATE_AUTHENTICATED_STATUS,
+    type: ActionConstants.FETCH_HERO,
   };
 }
 
 /**
- * Set authenticated status
+ * Set Hero
  *
  * @export
- * @returns {SetAuthenticatedStatus}
+ * @returns {SetHeroAction}
  */
-export function setAuthenticatedStatus(status: boolean): SetAuthenticatedStatus {
+export function setHero(hero: Hero): SetHeroAction {
   return {
-    type: ActionConstants.SET_AUTHENTICATED_STATUS,
-    payload: status,
+    type: ActionConstants.SET_HERO,
+    payload: hero,
   };
 }
 
@@ -34,17 +35,17 @@ export function setAuthenticatedStatus(status: boolean): SetAuthenticatedStatus 
  * Define return types of actions
  */
 
-export interface SetAuthenticatedStatus extends AnyAction {
-  type: ActionConstants.SET_AUTHENTICATED_STATUS;
+export interface FetchHeroAction extends AnyAction {
+  type: ActionConstants.FETCH_HERO;
 }
 
-export interface UpdateAuthenticatedStatus extends AnyAction {
-  type: ActionConstants.UPDATE_AUTHENTICATED_STATUS;
+export interface SetHeroAction extends AnyAction {
+  type: ActionConstants.SET_HERO;
+  payload: Hero;
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes = SetAuthenticatedStatus
-  | UpdateAuthenticatedStatus;
+export type ActionTypes = FetchHeroAction | SetHeroAction;

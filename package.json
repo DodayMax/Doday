@@ -4,6 +4,11 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook",
+    "dev": "concurrently \"npm run start --prefix packages/client\" \"npm run watch --prefix packages/server\""
+  },
   "devDependencies": {
     "@babel/core": "^7.4.0",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
@@ -21,10 +26,6 @@
     "typescript": "3.4.1"
   },
   "dependencies": {},
-  "scripts": {
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
-  },
   "babel": {
     "presets": [
       "@babel/preset-env",

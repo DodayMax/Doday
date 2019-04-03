@@ -1,23 +1,15 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import {
-  ActionConstants,
-  SetAuthenticatedStatus,
-  setAuthenticatedStatus,
-} from './actions';
+import { ActionConstants, FetchHeroAction, setHero } from './actions';
+import { api } from '@root/services';
 
 /**
- * Set authenticated status when UPDATE_AUTHENTICATED_STATUS called
+ * Fetch Hero
  *
- * @param {SetAuthenticatedStatus} action
+ * @param {FetchHeroAction} action
  */
-function* setAuthenticatedStatusSaga(action: SetAuthenticatedStatus) {
-  // const status = yield call(auth.isAuthenticated);
-  // yield put(setAuthenticatedStatus(status));
+function* fetchHeroSaga(action: FetchHeroAction) {
+  const hero = yield call(api.heroes.queries.fetchCurrentHero);
+  yield put(setHero(hero));
 }
 
-export default [
-  takeLatest(
-    ActionConstants.UPDATE_AUTHENTICATED_STATUS,
-    setAuthenticatedStatusSaga
-  ),
-];
+export default [takeLatest(ActionConstants.FETCH_HERO, fetchHeroSaga)];

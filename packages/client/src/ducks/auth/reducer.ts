@@ -1,19 +1,17 @@
 import * as actions from './actions';
 import { AuthState } from '@lib/models';
 
-export const initialState: AuthState = {
-  isAuthenticated: false,
-};
+export const initialState: AuthState = {};
 
 export default (
   state = initialState,
-  action?: actions.ActionTypes,
+  action?: actions.ActionTypes
 ): AuthState => {
   switch (action && action.type) {
-    case actions.ActionConstants.SET_AUTHENTICATED_STATUS:
+    case actions.ActionConstants.SET_HERO:
       return {
         ...state,
-        isAuthenticated: action!.payload,
+        hero: action.payload || false,
       };
     default:
       return state;

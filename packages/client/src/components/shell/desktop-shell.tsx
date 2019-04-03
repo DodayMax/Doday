@@ -1,18 +1,35 @@
 import * as React from 'react';
-import {
-  BrowserRouter as Router,
-  Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Drawer, DodayApp, Button, Builder } from '@components';
+import { Dashboard, TopBar } from '@components';
 import { RootState } from '@lib/models';
-import { actions } from '@ducks/hero-settings';
+import { actions as settingsActions } from '@ducks/hero-settings';
+import { actions as authActions } from '@ducks/auth';
+import { Hero } from '@root/lib/models/entities';
+import { FetchHeroAction } from '@root/ducks/auth/actions';
+import { Landing } from '../landing';
 
 const styles = require('./_desktop-shell.module.scss');
 
-class DesktopShell extends React.Component<any, any> {
+interface DesktopShellProps extends RouteComponentProps {}
+
+interface PropsFromConnect {
+  isDrawerShown: boolean;
+  hero: Hero;
+  toggleDrawer: () => void;
+  fetchHero: () => FetchHeroAction;
+}
+
+class DesktopShell extends React.Component<
+  DesktopShellProps & PropsFromConnect,
+  any
+> {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount() {
+    this.props.fetchHero();
   }
 
   toggleMenu() {
@@ -20,27 +37,24 @@ class DesktopShell extends React.Component<any, any> {
   }
 
   render() {
+    const { hero, history, toggleDrawer, isDrawerShown } = this.props;
+
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <nav className={styles.navBar}>
-            <div>Logo</div>
-            <Button
-              primary
-              text={'New Activity'}
-              to={'/builder'}
-              disabled={this.props.history.location.pathname === '/builder'} />
-          </nav>
+          <TopBar
+            hero={hero}
+            disabled={history.location.pathname === '/builder'}
+          />
           <section className={styles.contentContainer}>
-            <nav>
-              <Drawer collapsed={this.props.isDrawerShown} toggle={() => this.toggleMenu()} />
-            </nav>
-            <DodayApp />
-            <section className={styles.mainLayout}>
-              <Route exact path="/" render={() => <div>Store</div>} />
-              <Route path="/dodays/:id" render={() => <div>Doday details</div>} />
-              <Route path="/builder" component={Builder} />
-            </section>
+            {hero ? (
+              <Dashboard
+                toggleDrawer={toggleDrawer}
+                isDrawerShown={isDrawerShown}
+              />
+            ) : (
+              <Landing />
+            )}
           </section>
         </div>
       </Router>
@@ -50,6 +64,13 @@ class DesktopShell extends React.Component<any, any> {
 
 const mapState = (state: RootState) => ({
   isDrawerShown: state.heroSettings.isDrawerShown,
+  hero: state.auth.hero,
 });
 
-export default connect(mapState, { toggleDrawer: actions.toggleDrawer })(DesktopShell);
+export default connect(
+  mapState,
+  {
+    toggleDrawer: settingsActions.toggleDrawer,
+    fetchHero: authActions.fetchHero,
+  }
+)(DesktopShell);

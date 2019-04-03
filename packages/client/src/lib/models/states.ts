@@ -1,4 +1,5 @@
-import { Doday, ActivityType } from "../common-interfaces";
+import { Doday, ActivityType } from '../common-interfaces';
+import { Hero } from './entities';
 
 export interface RootState {
   auth: AuthState;
@@ -9,7 +10,7 @@ export interface RootState {
 
 export interface DodayAppState {
   loading: boolean;
-  path: string,
+  path: string;
   badge: number;
   navStack: Doday[];
   dodays: Doday[];
@@ -18,7 +19,7 @@ export interface DodayAppState {
 }
 
 export interface AuthState {
-  isAuthenticated: boolean;
+  hero?: Hero;
 }
 
 export interface BuilderState {

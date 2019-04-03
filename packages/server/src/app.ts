@@ -90,8 +90,13 @@ app.get(
   }
 );
 
-app.get('/api/currentUser', (req, res) => {
-  res.send(req.user);
+app.get('/api/currentHero', (req, res) => {
+  console.log(req.user);
+  if (req.user) {
+    res.status(200).send(req.user);
+  } else {
+    res.status(204).send('');
+  }
 });
 
 app.get(
@@ -101,13 +106,16 @@ app.get(
 app.get(
   '/auth/google/callback',
   passport.authenticate('google', {
-    successRedirect: 'http:localhost:3000/',
-    failureRedirect: 'http:localhost:3000/login',
-  })
+    failureRedirect: '/login',
+  }),
+  (req, res) => {
+    res.redirect('/dashboard');
+  }
 );
 
-app.get('/auth/logout', (req, res) => {
-  req.logout;
+app.get('/api/logout', (req, res) => {
+  req.logout();
+  res.status(200).redirect('/');
 });
 
 export default app;

@@ -7,7 +7,6 @@ export interface Hero {
   nickname?: string;
   displayName: string;
   google: string;
-  tokens: string[];
 }
 
 export default Hero;

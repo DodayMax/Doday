@@ -134,8 +134,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_ID,
       clientSecret: process.env.GOOGLE_SECRET,
-      callbackURL: `${process.env.SERVER_BASE_URL ||
-        'http://localhost:5000'}/auth/google/callback`,
+      callbackURL: `/auth/google/callback`,
       passReqToCallback: true,
     },
     (req, accessToken, refreshToken, profile, done) => {
@@ -173,7 +172,6 @@ passport.use(
               const hero: Hero = {
                 did: cuid(),
                 displayName: profile.displayName,
-                tokens: [accessToken],
                 google: profile.id,
               };
               const resultPromise = session.writeTransaction(tx =>
