@@ -28,8 +28,19 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles.absolute]: !!props.absolute,
   });
   return (
-    <div className={classNames} style={{ flex: props.flex || 1, padding: props.padding, margin: props.margin, top: props.top, left: props.left, right: props.right, bottom: props.bottom }}>
+    <div
+      className={classNames}
+      style={{
+        flex: props.flex || 1,
+        padding: props.padding,
+        margin: props.margin,
+        top: props.top,
+        left: props.left,
+        right: props.right,
+        bottom: props.bottom,
+      }}
+    >
       {props.children}
     </div>
-  )
-}
+  );
+};

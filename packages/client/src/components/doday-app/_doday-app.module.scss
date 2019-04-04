@@ -2,7 +2,7 @@
 
 .dodayapp {
   &-container {
-    width: 28rem;
+    min-width: 28rem;
     background: $gray-1;
   }
 }

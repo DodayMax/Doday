@@ -15,7 +15,16 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-export const ButtonComponent = ({ text, primary = false, isLoading = false, disabled = false, onClick, to, staticContext, ...props }: ButtonProps & any) => {
+export const ButtonComponent = ({
+  text,
+  primary = false,
+  isLoading = false,
+  disabled = false,
+  onClick,
+  to,
+  staticContext,
+  ...props
+}: ButtonProps & RouteComponentProps) => {
   const classNames = classnames({
     [styles.default]: !primary,
     [styles.primary]: primary,
@@ -23,11 +32,15 @@ export const ButtonComponent = ({ text, primary = false, isLoading = false, disa
   });
   if (onClick) {
     return (
-      <button className={classNames} {...props}>{isLoading ? <Icons.InlineLoader /> : text}</button>
+      <button className={classNames} {...props}>
+        {isLoading ? <Icons.InlineLoader /> : text}
+      </button>
     );
   } else {
     return (
-      <Link className={classNames} to={to || '/'}>{isLoading ? <Icons.InlineLoader /> : text}</Link>
+      <Link className={classNames} to={to || '/'}>
+        {isLoading ? <Icons.InlineLoader /> : text}
+      </Link>
     );
   }
 };
