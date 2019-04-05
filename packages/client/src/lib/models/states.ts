@@ -27,5 +27,5 @@ export interface BuilderState {
 }
 
 export interface HeroSettingsState {
-  isDrawerShown: boolean;
+  isDrawerCollapsed: boolean;
 }

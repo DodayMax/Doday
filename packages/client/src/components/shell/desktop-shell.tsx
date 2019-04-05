@@ -14,7 +14,7 @@ const styles = require('./_desktop-shell.module.scss');
 interface DesktopShellProps extends RouteComponentProps {}
 
 interface PropsFromConnect {
-  isDrawerShown: boolean;
+  isDrawerCollapsed: boolean;
   hero: Hero;
   toggleDrawer: () => void;
   fetchHero: () => FetchHeroAction;
@@ -37,7 +37,7 @@ class DesktopShell extends React.Component<
   }
 
   render() {
-    const { hero, history, toggleDrawer, isDrawerShown } = this.props;
+    const { hero, history, toggleDrawer, isDrawerCollapsed } = this.props;
 
     return (
       <Router>
@@ -47,7 +47,7 @@ class DesktopShell extends React.Component<
             {hero ? (
               <Dashboard
                 toggleDrawer={toggleDrawer}
-                isDrawerShown={isDrawerShown}
+                isDrawerCollapsed={isDrawerCollapsed}
               />
             ) : (
               <Landing />
@@ -60,7 +60,7 @@ class DesktopShell extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  isDrawerShown: state.heroSettings.isDrawerShown,
+  isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
   hero: state.auth.hero,
 });
 

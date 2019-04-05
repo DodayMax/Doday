@@ -1,3 +1,4 @@
-import { RootState } from "@lib/models";
+import { RootState } from '@lib/models';
 
-export const isDrawerShown = (state: RootState) => state.heroSettings.isDrawerShown;
+export const isDrawerCollapsed = (state: RootState) =>
+  state.heroSettings.isDrawerCollapsed;
