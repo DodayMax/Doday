@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Drawer, DodayApp, Builder } from '@components';
+import { Drawer, DodayApp, Builder, DodayDetails } from '@components';
 
 const css = require('./_dashboard.module.scss');
 
@@ -58,11 +58,9 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         </nav>
         <DodayApp />
-        <section className={css.mainLayout}>
-          <Route exact path="/" render={() => <div>Store</div>} />
-          <Route path="/dodays/:id" render={() => <div>Doday details</div>} />
-          <Route path="/builder" component={Builder} />
-        </section>
+        <Route exact path="/" render={() => <div>Store</div>} />
+        <Route path="/dodays/:id" component={DodayDetails} />
+        <Route path="/builder" component={Builder} />
       </>
     );
   }

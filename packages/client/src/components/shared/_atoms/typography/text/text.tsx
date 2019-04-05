@@ -2,31 +2,49 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { TypographyProps } from '../index';
 
-const styles = require('@styles/_typography.module.scss');
+const css = require('@styles/_typography.module.scss');
 
 interface TextProps {
   text: string;
 }
 
-export const Text: React.SFC<TextProps & TypographyProps & React.HTMLAttributes<HTMLElement>> = ({ text, color, align, size, bold, italic, uppercase, capitalize, underline, strikethrough, ellipsize, wordwrap, className, ...props }) => {
-  const classNames = classnames({
-    [styles['bold']]: !!bold,
-    [styles['italic']]: !!italic,
-    [styles['uppercase']]: !!uppercase,
-    [styles['capitalize']]: !!capitalize,
-    [styles['underline']]: !!underline,
-    [styles['strikethrough']]: !!strikethrough,
-    [styles['ellipsize']]: !!ellipsize,
-    [styles['wordwrap']]: !!wordwrap,
-    [styles[`${align}`]]: !!align,
-    [styles[`text-${size}`]]: !!size,
-    [styles[`${color}-text`]]: !!color,
-    [styles['text-l']]: !!!size, // default size for text
-    [className || '']: true,
+export const Text: React.SFC<
+  TextProps & TypographyProps & React.HTMLAttributes<HTMLElement>
+> = ({
+  text,
+  color,
+  align,
+  size,
+  bold,
+  italic,
+  uppercase,
+  capitalize,
+  underline,
+  strikethrough,
+  ellipsize,
+  wordwrap,
+  className,
+  ...props
+}) => {
+  const cx = classnames({
+    [css['text-l']]: !!!size, // default size for text
+    [css['bold']]: !!bold,
+    [css['italic']]: !!italic,
+    [css['uppercase']]: !!uppercase,
+    [css['capitalize']]: !!capitalize,
+    [css['underline']]: !!underline,
+    [css['strikethrough']]: !!strikethrough,
+    [css['ellipsize']]: !!ellipsize,
+    [css['wordwrap']]: !!wordwrap,
+    [css[`${align}`]]: !!align,
+    [css[`text-${size}`]]: !!size,
+    [css[`${color}-text`]]: !!color,
   });
 
+  console.log(cx);
+
   return (
-    <span className={classNames} {...props}>
+    <span {...props} className={cx}>
       {text}
     </span>
   );

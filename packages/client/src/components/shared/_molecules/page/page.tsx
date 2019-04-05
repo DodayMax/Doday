@@ -16,7 +16,7 @@ export class Page extends React.Component<PageProps, {}> {
         <LayoutBlock absolute top="1rem" right="1rem">
           <ClickableIcon
             onClick={() => {
-              this.props.history.goBack();
+              this.props.history.push('/');
             }}
           >
             <Icons.Close color={vars.gray6} width={30} height={30} />

@@ -100,20 +100,20 @@
   line-height: 2.4rem;
 }
 
-.title-s {
+.text-h3 {
   composes: bold wordwrap;
   font-size: $title-s;
   line-height: 2.4rem;
 }
 
-.title-m {
-  composes: bold wordwrap;
+.text-h2 {
+  composes: wordwrap;
   font-size: $title-m;
   line-height: 3.2rem;
 }
 
-.title-l {
-  composes: bold wordwrap;
+.text-h1 {
+  composes: wordwrap;
   font-size: $title-l;
   line-height: 4rem;
 }
