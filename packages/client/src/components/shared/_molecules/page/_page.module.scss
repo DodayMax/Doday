@@ -1,0 +1,8 @@
+@import '@styles/_config.scss';
+
+.page {
+  &-container {
+    position: relative;
+    padding: $padding-l;
+  }
+}

@@ -10,6 +10,7 @@ interface LayoutBlockProps {
   direction?: 'row' | 'column';
   flex?: number;
   absolute?: boolean;
+  relative?: boolean;
   top?: string;
   left?: string;
   right?: string;
@@ -26,6 +27,7 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles[props.valign || '']]: !!props.valign,
     [styles[props.direction || '']]: !!props.direction,
     [styles.absolute]: !!props.absolute,
+    [styles.relative]: !!props.relative,
   });
   return (
     <div

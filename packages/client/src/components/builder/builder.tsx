@@ -14,6 +14,7 @@ import {
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { RootState } from '@root/lib/models';
 import { FetchActivityTypesAction } from '@root/ducks/builder/actions';
+import { Page } from '../shared/_molecules/page';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -53,24 +54,15 @@ export class Builder extends React.Component<
   };
 
   render() {
-    const { activityTypes } = this.props;
+    const { activityTypes, history } = this.props;
 
     return (
-      <section className={styles.builderContainer}>
+      <Page history={history}>
         <LayoutBlock align="flex-center" padding="0 0 2rem 0">
           <ButtonGroup>
             <Button primary text={'Private'} onClick={() => {}} />
             <Button text={'Public'} onClick={() => {}} />
           </ButtonGroup>
-        </LayoutBlock>
-        <LayoutBlock absolute top="1rem" right="1rem">
-          <ClickableIcon
-            onClick={() => {
-              this.props.history.push('/');
-            }}
-          >
-            <Icons.Close color={vars.gray6} width={30} height={30} />
-          </ClickableIcon>
         </LayoutBlock>
         <Input autofocus placeholder="Enter name or paste link..." />
         <LayoutBlock direction="column">
@@ -126,7 +118,7 @@ export class Builder extends React.Component<
         <LayoutBlock align="flex-end">
           <Button primary text={'Create'} onClick={() => {}} />
         </LayoutBlock>
-      </section>
+      </Page>
     );
   }
 }

@@ -16,6 +16,7 @@ export * from './shared/_atoms/clickable-icon/clickable-icon';
 export * from './shared/_atoms/layout-block/layout-block';
 export * from './shared/_molecules/button-group/button-group';
 export * from './shared/_molecules/top-bar';
+export * from './shared/_molecules/page';
 import * as Icons from './shared/_atoms/icons';
 export * from './shared/_organisms/grid';
 export * from './main-top-bar';

@@ -43,7 +43,7 @@ class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
         {this.renderContent()}
         <Button
           primary
-          text={'New Activity'}
+          text={'New Doday'}
           to={'/builder'}
           disabled={this.props.pathname === '/builder'}
         />

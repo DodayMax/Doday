@@ -1,12 +1,6 @@
 @import '@styles/_config.scss';
 
 .builder {
-  &-container {
-    position: relative;
-    padding: 0 10%;
-    padding-top: $space-xxl;
-  }
-
   &-footer {
     display: flex;
     justify-content: flex-end;
