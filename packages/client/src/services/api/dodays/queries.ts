@@ -1,47 +1,44 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { dodays } from '@lib/fake-data/dodays';
-import * as moment from 'moment';
 
 // Dodays
 
 export const activeDodaysForHero = (variables: any) => {
-  return client
-    .query({
-      query: gql`
-        query activeDodays($id: ID!, $date: String) {
-          activeDodays(heroID: $id, date: $date) {
-            id
-            name
-            completed
-          }
+  return client.query({
+    query: gql`
+      query activeDodays($id: ID!, $date: String) {
+        activeDodays(heroID: $id, date: $date) {
+          id
+          name
+          completed
         }
-      `,
-      variables,
-      fetchPolicy: 'no-cache'
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+};
+
+export const fetchActiveDodaysForDate = (date: number) => {
+  return fetch(`/api/activeDodaysForDate?date=${String(date)}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    const json = await res.json();
+    const dodays = [];
+    json.map(doday => {
+      doday._fields.map(doday => {
+        const date = doday.date;
+        const jsDate = new Date(
+          `${date.year.low}-${date.month.low}-${date.day.low}`
+        );
+        doday.date = jsDate;
+      });
+      dodays.push(doday._fields[0]);
     });
-}
-
-export const dodaysForToday = (variables: any) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const today = new Date();
-      resolve(dodays.filter(doday => {
-        const dodayDate = new Date(doday.date!);
-        return today >= dodayDate;
-      }).sort((a) => a.completed ? 1 : -1))
-    }, 1000)
-  })
-}
-
-export const dodaysForDate = (variables: any) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const chosenDate = moment(variables.date).format('ll');
-      resolve(dodays.filter(doday => {
-        const dodayDate = moment(new Date(doday.date!)).format('ll');
-        return chosenDate === dodayDate;
-      }).sort((a) => a.completed ? 1 : -1))
-    }, 1000)
-  })
-}
+    console.log(dodays);
+    return dodays;
+  });
+};

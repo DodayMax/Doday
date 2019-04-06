@@ -7,6 +7,7 @@ import {
   setBuilderLoadingState,
   setBuilderSuccessFlag,
 } from './actions';
+import { fetchDodaysForDate } from '@ducks/doday-app/actions';
 import { api } from '@services';
 import { activityTypes } from '@lib/fake-data/dodays';
 
@@ -32,6 +33,7 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
   );
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
+    yield put(fetchDodaysForDate());
   }
   yield put(setBuilderLoadingState(false));
 }

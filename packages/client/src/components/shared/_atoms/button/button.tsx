@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Icons } from '@components';
 
@@ -24,10 +24,7 @@ export interface ButtonProps {
   disabled?: boolean;
 }
 
-@(withRouter as any)
-export class Button extends React.Component<
-  ButtonProps & Partial<RouteComponentProps>
-> {
+export class Button extends React.Component<ButtonProps> {
   static defaultProps = {
     size: ButtonSize.normal,
   };

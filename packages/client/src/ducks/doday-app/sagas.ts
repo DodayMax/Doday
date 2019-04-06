@@ -10,7 +10,6 @@ import {
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
-import { isToday } from '@root/lib/utils';
 import { Doday } from '@root/lib/models/entities/Doday';
 
 /**
@@ -20,19 +19,14 @@ import { Doday } from '@root/lib/models/entities/Doday';
  */
 function* fetchDodayForDateSaga(action: FetchDodayForDate) {
   yield put(setLoadingState(true));
-  const date = yield select(chosenDate);
-  if (isToday(date)) {
-    const dodays = yield call(api.dodays.queries.dodaysForToday, {});
-    yield put(
-      setDodaysBadgeForToday(
-        dodays.filter((doday: Doday) => !doday.completed).length
-      )
-    );
-    yield put(setDodaysForDate(dodays));
-  } else {
-    const dodays = yield call(api.dodays.queries.dodaysForDate, { date });
-    yield put(setDodaysForDate(dodays));
-  }
+  const date: Date = yield select(chosenDate);
+  const dodays = yield call(api.dodays.queries.fetchActiveDodaysForDate, date.getTime());
+  yield put(
+    setDodaysBadgeForToday(
+      dodays && dodays.filter((doday: Doday) => !doday.completed).length
+    )
+  );
+  yield put(setDodaysForDate(dodays));
   yield put(setLoadingState(false));
 }
 

@@ -33,6 +33,7 @@ export interface SerializedDoday {
   name: string;
   public: boolean;
   // Computed props by relations and from Progress node
+  date?: number;
   owner?: Hero;
   doing?: [Hero];
   done?: [Hero];

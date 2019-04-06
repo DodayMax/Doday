@@ -80,7 +80,7 @@ export class Builder extends React.Component<
   };
 
   render() {
-    const { activityTypes } = this.props;
+    const { activityTypes, loading } = this.props;
 
     return (
       <Page header={<PageHeader />}>
@@ -155,12 +155,14 @@ export class Builder extends React.Component<
           </ButtonGroup>
           <Button
             primary
+            isLoading={loading}
             text={'Create'}
             onClick={() => {
               this.props.createAndTakeDoday({
                 did: 'test',
                 type: DodayTypes.Doday,
                 name: this.state.dodayName,
+                date: Date.now(),
                 public: false,
               });
             }}

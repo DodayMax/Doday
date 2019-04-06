@@ -41,8 +41,6 @@ export const Text: React.SFC<
     [css[`${color}-text`]]: !!color,
   });
 
-  console.log(cx);
-
   return (
     <span {...props} className={cx}>
       {text}
