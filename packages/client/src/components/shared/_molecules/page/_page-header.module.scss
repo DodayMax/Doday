@@ -1,0 +1,10 @@
+@import '@styles/_config.scss';
+
+.header {
+  &-container {
+    height: $top-bar-height;
+    border-bottom: 1px solid $gray-4;
+    box-sizing: border-box;
+    padding: 0 $padding-l;
+  }
+}

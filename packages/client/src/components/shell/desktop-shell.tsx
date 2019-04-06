@@ -8,6 +8,10 @@ import { actions as authActions } from '@ducks/auth';
 import { Hero } from '@root/lib/models/entities';
 import { FetchHeroAction } from '@root/ducks/auth/actions';
 import { Landing } from '../landing';
+import {
+  ToggleDrawerAction,
+  ToggleDodayAppAction,
+} from '@root/ducks/hero-settings/actions';
 
 const styles = require('./_desktop-shell.module.scss');
 
@@ -15,8 +19,10 @@ interface DesktopShellProps extends RouteComponentProps {}
 
 interface PropsFromConnect {
   isDrawerCollapsed: boolean;
+  isDodayAppCollapsed: boolean;
   hero: Hero;
-  toggleDrawer: () => void;
+  toggleDrawer: () => ToggleDrawerAction;
+  toggleDodayApp: () => ToggleDodayAppAction;
   fetchHero: () => FetchHeroAction;
 }
 
@@ -37,7 +43,14 @@ class DesktopShell extends React.Component<
   }
 
   render() {
-    const { hero, history, toggleDrawer, isDrawerCollapsed } = this.props;
+    const {
+      hero,
+      history,
+      toggleDrawer,
+      toggleDodayApp,
+      isDrawerCollapsed,
+      isDodayAppCollapsed,
+    } = this.props;
 
     return (
       <Router>
@@ -47,6 +60,8 @@ class DesktopShell extends React.Component<
             {hero ? (
               <Dashboard
                 toggleDrawer={toggleDrawer}
+                toggleDodayApp={toggleDodayApp}
+                isDodayAppCollapsed={isDodayAppCollapsed}
                 isDrawerCollapsed={isDrawerCollapsed}
               />
             ) : (
@@ -61,6 +76,7 @@ class DesktopShell extends React.Component<
 
 const mapState = (state: RootState) => ({
   isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
+  isDodayAppCollapsed: state.heroSettings.isDodayAppCollapsed,
   hero: state.auth.hero,
 });
 
@@ -68,6 +84,7 @@ export default connect(
   mapState,
   {
     toggleDrawer: settingsActions.toggleDrawer,
+    toggleDodayApp: settingsActions.toggleDodayApp,
     fetchHero: authActions.fetchHero,
   }
 )(DesktopShell);

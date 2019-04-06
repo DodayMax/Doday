@@ -1,4 +1,4 @@
-@import "./config";
+@import './config';
 
 .pointer {
   cursor: pointer;
@@ -25,10 +25,14 @@
 .cell {
   border-bottom: 1px solid $border-light;
   padding: 0 $space-s;
-  
+
   &:first-child {
     border-top: 1px solid $border-light;
   }
+}
+
+.cell:first-child {
+  border-top: 0;
 }
 
 .flex-center {
@@ -52,6 +56,10 @@ a {
   :hover {
     color: $primary-text;
   }
+}
+
+.scroll {
+  overflow-y: scroll;
 }
 
 .top-bar-container {

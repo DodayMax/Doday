@@ -1,11 +1,13 @@
 @import '@styles/_config.scss';
 
+.scroll {
+  width: 100%;
+  composes: scroll from '@styles/_common.scss';
+}
+
 .page {
   &-container {
-    width: 100%;
     position: relative;
-    overflow-y: scroll;
     padding: $padding-l;
-    padding-top: 5.8rem;
   }
 }

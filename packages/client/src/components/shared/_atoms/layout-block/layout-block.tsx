@@ -17,6 +17,7 @@ interface LayoutBlockProps {
   bottom?: string;
   padding?: string;
   margin?: string;
+  className?: string;
   children?: React.ReactNode;
 }
 
@@ -28,6 +29,7 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles[props.direction || '']]: !!props.direction,
     [styles.absolute]: !!props.absolute,
     [styles.relative]: !!props.relative,
+    [props.className]: !!props.className,
   });
   return (
     <div

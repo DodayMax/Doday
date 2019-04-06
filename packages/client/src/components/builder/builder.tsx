@@ -14,7 +14,7 @@ import {
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { RootState } from '@root/lib/models';
 import { FetchActivityTypesAction } from '@root/ducks/builder/actions';
-import { Page } from '../shared/_molecules/page';
+import { Page, PageHeader } from '../shared/_molecules/page';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -54,10 +54,10 @@ export class Builder extends React.Component<
   };
 
   render() {
-    const { activityTypes, history } = this.props;
+    const { activityTypes } = this.props;
 
     return (
-      <Page history={history}>
+      <Page header={<PageHeader />}>
         <LayoutBlock align="flex-center" padding="0 0 2rem 0">
           <ButtonGroup>
             <Button primary text={'Private'} onClick={() => {}} />

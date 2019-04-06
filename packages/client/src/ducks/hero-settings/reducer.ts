@@ -3,6 +3,7 @@ import { HeroSettingsState } from '@lib/models';
 
 export const initialState: HeroSettingsState = {
   isDrawerCollapsed: false,
+  isDodayAppCollapsed: false,
 };
 
 export default (

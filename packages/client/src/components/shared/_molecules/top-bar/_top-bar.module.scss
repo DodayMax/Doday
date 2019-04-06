@@ -1,9 +1,9 @@
 @import '~@styles/_config.scss';
 
 .nav-bar {
-  height: $top-bar-height;
+  min-height: $top-bar-height;
   background: $white;
-  border-bottom: 1px solid $gray-4;
+  border-bottom: 1px solid $dark-bg;
   display: flex;
   justify-content: space-between;
   align-items: center;

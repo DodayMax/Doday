@@ -22,4 +22,5 @@
 .content-container {
   display: flex;
   height: calc(100vh - 4.4rem);
+  overflow: hidden;
 }

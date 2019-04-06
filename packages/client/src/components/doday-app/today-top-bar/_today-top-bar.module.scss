@@ -3,6 +3,7 @@
 .topbar {
   &-container {
     composes: top-bar-container from '@styles/_common.scss';
+    box-sizing: border-box;
   }
 }
 

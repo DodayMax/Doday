@@ -1,15 +1,24 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as moment from 'moment';
+import * as cuid from 'cuid';
 import { actions as appActions } from '@ducks/doday-app';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { DefaultTopBar } from './default-top-bar/default-top-bar';
 import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
-import { ChangeDateAction, FetchAllGoals } from '@root/ducks/doday-app/actions';
+import {
+  ChangeDateAction,
+  FetchAllGoals,
+  PushToNavigationStackAction,
+} from '@root/ducks/doday-app/actions';
 import { Doday } from '@root/lib/common-interfaces';
-import { PopFromNavigationStackAction, FetchDodayForDate } from '@root/ducks/doday-app/actions';
+import {
+  PopFromNavigationStackAction,
+  FetchDodayForDate,
+} from '@root/ducks/doday-app/actions';
+import { DodayCell, GoalCell } from '../shared/_organisms/grid';
+import { RouteComponentProps } from 'react-router';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -24,12 +33,15 @@ interface PropsFromConnect {
   chosenDate?: Date;
   changeDate?: (date: Date) => ChangeDateAction;
   navStack: Doday[];
+  pushToNavStack: (doday: Doday) => PushToNavigationStackAction;
   popFromNavStack: () => PopFromNavigationStackAction;
   fetchDodaysForDate: () => FetchDodayForDate;
   fetchAllGoals: () => FetchAllGoals;
 }
 
-export class DodayAppComponent extends React.Component<DodayAppProps & PropsFromConnect> {
+export class DodayAppComponent extends React.Component<
+  DodayAppProps & PropsFromConnect & RouteComponentProps
+> {
   componentDidMount() {
     this.props.fetchDodaysForDate();
     this.props.fetchAllGoals();
@@ -37,7 +49,11 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
 
   getDodaysToRender = () => {
     return this.props.dodays || [];
-  }
+  };
+
+  handleDodayCellClick = (route: string) => {
+    this.props.history.push(route);
+  };
 
   getGoalsToRender = () => {
     const navStack = this.props.navStack;
@@ -46,7 +62,39 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
     } else {
       return this.props.goals || [];
     }
-  }
+  };
+
+  handleGoalCellClick = (goal: Doday) => {
+    // push goal to navigation stack
+    this.props.pushToNavStack(goal);
+  };
+
+  renderCellByDodayType = (item: Doday, index) => {
+    switch (item.type) {
+      case 'action':
+        return (
+          <DodayCell
+            doday={item}
+            key={cuid()}
+            onClick={this.handleDodayCellClick}
+          />
+        );
+      case 'goal':
+        return (
+          <GoalCell
+            doday={item}
+            key={cuid()}
+            onClick={this.handleGoalCellClick}
+          />
+        );
+      default:
+        <DodayCell
+          doday={item}
+          key={cuid()}
+          onClick={this.handleDodayCellClick}
+        />;
+    }
+  };
 
   renderContent() {
     const { path, chosenDate, changeDate, loading, navStack } = this.props;
@@ -56,27 +104,33 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
         return (
           <>
             <DefaultTopBar
-              title={(navStack.length > 0 && navStack[navStack.length - 1].name) || 'Goals'}
+              title={
+                (navStack.length > 0 && navStack[navStack.length - 1].name) ||
+                'Goals'
+              }
               back={navStack.length > 0}
-              backAction={this.props.popFromNavStack} />
-            <Grid loading={loading} items={this.getGoalsToRender()} /> 
+              backAction={this.props.popFromNavStack}
+            />
+            <Grid
+              loading={loading}
+              items={this.getGoalsToRender()}
+              renderCell={this.renderCellByDodayType}
+            />
           </>
         );
       case dodayApp.paths.memos:
-        return (
-          <div>Memos</div>
-        );
+        return <div>Memos</div>;
       case dodayApp.paths.createdByMe:
-        return (
-          <div>CreatedByMe</div>
-        );
+        return <div>CreatedByMe</div>;
       default:
         return (
           <>
-            <TodayTopBar
-              date={chosenDate!}
-              changeDate={changeDate!} />
-            <Grid loading={loading} items={this.getDodaysToRender()} />
+            <TodayTopBar date={chosenDate!} changeDate={changeDate!} />
+            <Grid
+              loading={loading}
+              items={this.getDodaysToRender()}
+              renderCell={this.renderCellByDodayType}
+            />
           </>
         );
     }
@@ -85,7 +139,7 @@ export class DodayAppComponent extends React.Component<DodayAppProps & PropsFrom
   render() {
     return (
       <section className={styles.dodayappContainer}>
-        { this.renderContent() }
+        {this.renderContent()}
       </section>
     );
   }
@@ -100,4 +154,7 @@ const mapState = ({ dodayApp }) => ({
   navStack: dodayApp.navStack,
 });
 
-export default connect(mapState, { ...appActions, ...settingsActions })(DodayAppComponent);
+export default connect(
+  mapState,
+  { ...appActions, ...settingsActions }
+)(DodayAppComponent);

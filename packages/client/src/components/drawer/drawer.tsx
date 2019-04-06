@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import * as cuid from 'cuid';
 import { Link, match } from 'react-router-dom';
-import Chart from "react-google-charts";
+import Chart from 'react-google-charts';
 import { Grid, Icons, ClickableIcon } from '@components';
 import { actions } from '@ducks/doday-app';
 import { dodayApp } from '@lib/constants';
 import { RootState } from '@root/lib/models';
+import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 
 const styles = require('./_drawer.module.scss');
 
@@ -24,6 +26,10 @@ interface DrawerProps {
   toggle: () => void;
 }
 
+interface DrawerState {
+  activeIndex: number;
+}
+
 interface PropsFromConnect {
   badge: number;
 }
@@ -33,13 +39,40 @@ interface Actions {
 }
 
 const data = [
-  ["Task", "Hours per Day"],
-  ["Evolution", 7],
-  ["Family", 2],
-  ["Money", 2],
-  ["Health", 3],
-  ["Career", 11],
-  ["Hobby", 2],
+  ['Task', 'Hours per Day'],
+  ['Evolution', 7],
+  ['Family', 2],
+  ['Money', 2],
+  ['Health', 3],
+  ['Career', 11],
+  ['Hobby', 2],
+];
+
+const items = [
+  {
+    text: 'Today',
+    icon: 'TodayCalendar',
+    action: 'changePath',
+    payload: '',
+  },
+  {
+    text: 'Goals',
+    icon: 'Goal',
+    action: 'changePath',
+    payload: dodayApp.paths.goals,
+  },
+  {
+    text: 'Memorizer',
+    icon: 'Lighting',
+    action: 'changePath',
+    payload: dodayApp.paths.memos,
+  },
+  {
+    text: 'Published by me',
+    icon: 'Apps',
+    action: 'changePath',
+    payload: dodayApp.paths.createdByMe,
+  },
 ];
 
 const options = {
@@ -50,12 +83,22 @@ const options = {
   pieSliceText: 'label',
 };
 
-export class DrawerComponent extends React.Component<DrawerProps & PropsFromConnect & Actions> {
+export class DrawerComponent extends React.Component<
+  DrawerProps & PropsFromConnect & Actions,
+  DrawerState
+> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeIndex: 0,
+    };
+  }
   renderDrawerProfileSection = () => {
     if (this.props.collapsed) {
       return (
         <div className={styles.drawerProfileContainerCollapsed}>
-          <div className={styles.drawerProfileAvatarCollapsed}></div>
+          <div className={styles.drawerProfileAvatarCollapsed} />
         </div>
       );
     } else {
@@ -73,19 +116,23 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
         </div>
       );
     }
-  }
+  };
+
+  handleMenuClick = (item, index) => {
+    const action = this.props[item.action];
+    if (action) {
+      action(item.payload);
+    }
+    this.setState({ activeIndex: index });
+  };
 
   renderDrawerLevel = () => {
     if (this.props.collapsed) {
       return <div className={styles.drawerLevel}>1</div>;
     } else {
-      return (
-        <div className={styles.drawerLevel}>
-          1 Level, Novice
-        </div>
-      );
+      return <div className={styles.drawerLevel}>1 Level, Novice</div>;
     }
-  }
+  };
 
   renderDrawerFooterIcon = () => {
     const { collapsed, toggle } = this.props;
@@ -107,7 +154,7 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
         </div>
       );
     }
-  }
+  };
 
   render() {
     const { collapsed, badge } = this.props;
@@ -118,42 +165,24 @@ export class DrawerComponent extends React.Component<DrawerProps & PropsFromConn
 
     return (
       <div className={classNames}>
-        { this.renderDrawerProfileSection() }
-        { this.renderDrawerLevel() }
+        {this.renderDrawerProfileSection()}
+        {this.renderDrawerLevel()}
         <ul role="navigation" className={styles.drawerMenu}>
           <Grid
-            items={[
-              {
-                text: 'Today',
-                icon: 'TodayCalendar',
-                action: 'changePath',
-                payload: '',
-                badge,
-              },
-              {
-                text: 'Goals',
-                icon: 'Goal',
-                action: 'changePath',
-                payload: dodayApp.paths.goals,
-              },
-              {
-                text: 'Memorizer',
-                icon: 'Lighting',
-                action: 'changePath',
-                payload: dodayApp.paths.memos,
-              },
-              {
-                text: 'Published by me',
-                icon: 'Apps',
-                action: 'changePath',
-                payload: dodayApp.paths.createdByMe,
-              }
-            ]}
-            cellType="DodayAppMenuCell"
+            items={items}
+            renderCell={(item, index) => (
+              <DodayAppMenuCell
+                key={cuid()}
+                collapsed={this.props.collapsed}
+                item={item}
+                active={index === this.state.activeIndex}
+                onClick={() => this.handleMenuClick(item, index)}
+              />
+            )}
             collapsed={collapsed}
           />
         </ul>
-        { this.renderDrawerFooterIcon() }
+        {this.renderDrawerFooterIcon()}
       </div>
     );
   }
@@ -163,4 +192,7 @@ const mapState = (state: RootState) => ({
   badge: state.dodayApp.badge,
 });
 
-export default connect(mapState, { ...actions })(DrawerComponent);
+export default connect(
+  mapState,
+  { ...actions }
+)(DrawerComponent);

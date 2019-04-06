@@ -28,4 +28,5 @@ export interface BuilderState {
 
 export interface HeroSettingsState {
   isDrawerCollapsed: boolean;
+  isDodayAppCollapsed: boolean;
 }

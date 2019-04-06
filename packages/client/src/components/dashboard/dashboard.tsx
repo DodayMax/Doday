@@ -1,33 +1,46 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { Drawer, DodayApp, Builder, DodayDetails } from '@components';
+import {
+  ToggleDrawerAction,
+  ToggleDodayAppAction,
+} from '@root/ducks/hero-settings/actions';
 
 const css = require('./_dashboard.module.scss');
 
 interface DashboardProps {
-  toggleDrawer: () => void;
+  toggleDrawer: () => ToggleDrawerAction;
+  toggleDodayApp: () => ToggleDodayAppAction;
   isDrawerCollapsed: boolean;
+  isDodayAppCollapsed: boolean;
 }
 
 interface DashboardState {
   resizeTaskId?: NodeJS.Timeout;
-  forceCollapseDrawer: boolean;
+  isDrawerCollapsed: boolean;
 }
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
-  constructor(props) {
+  constructor(props: DashboardProps) {
     super(props);
 
+    // Keep in state for forceCollapsing
     this.state = {
-      forceCollapseDrawer: false,
+      isDrawerCollapsed: props.isDrawerCollapsed,
     };
   }
   toggleMenu() {
-    this.props.toggleDrawer();
+    this.setState({
+      isDrawerCollapsed: !this.state.isDrawerCollapsed,
+    });
   }
 
   componentDidMount() {
     const taskID = this.state.resizeTaskId;
+    const documentWidth = document.documentElement.scrollWidth;
+    this.setState({
+      isDrawerCollapsed: documentWidth <= 1100,
+    });
 
     window.addEventListener('resize', evt => {
       if (taskID != null) {
@@ -39,7 +52,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           const documentWidth = document.documentElement.scrollWidth;
           this.setState({
             resizeTaskId: undefined,
-            forceCollapseDrawer: documentWidth <= 1100,
+            isDrawerCollapsed: documentWidth <= 1100,
           });
         }, 100),
       });
@@ -47,17 +60,17 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   render() {
+    const { isDodayAppCollapsed } = this.props;
+
     return (
       <>
         <nav>
           <Drawer
-            collapsed={
-              this.props.isDrawerCollapsed || this.state.forceCollapseDrawer
-            }
+            collapsed={this.state.isDrawerCollapsed}
             toggle={() => this.toggleMenu()}
           />
         </nav>
-        <DodayApp />
+        {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
         <Route exact path="/" render={() => <div>Store</div>} />
         <Route path="/dodays/:id" component={DodayDetails} />
         <Route path="/builder" component={Builder} />
