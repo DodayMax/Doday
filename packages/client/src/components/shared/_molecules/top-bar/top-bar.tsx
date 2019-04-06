@@ -26,7 +26,7 @@ class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
       case undefined:
         return 'Loading';
       case false:
-        return <a href="/auth/google">Login with Google</a>;
+        return <Button href="/auth/google" text="Sign In" />;
       default:
         return (
           <>

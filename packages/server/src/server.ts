@@ -1,6 +1,6 @@
 import errorHandler from 'errorhandler';
 
-import app from './app';
+import app, { apolloServer } from './app';
 
 /**
  * Error Handler. Provides full stack - remove for production
@@ -18,5 +18,11 @@ const server = app.listen(app.get('port'), () => {
   );
   console.log('  Press CTRL-C to stop\n');
 });
+
+apolloServer
+  .listen(process.env.GRAPHQL_LISTEN_PORT || 4040, '0.0.0.0')
+  .then(({ url }) => {
+    console.log(`GraphQL API ready at ${url}`);
+  });
 
 export default server;
