@@ -1,24 +1,26 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Doday, TypographySize } from '@root/lib/common-interfaces';
+import { TypographySize } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { Text } from '@components';
+import { Doday } from '@root/lib/models/entities/Doday';
+import { Goal } from '@root/lib/models/entities/Goal';
 
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
-  dodays: Doday[];
+  dodays: (Doday | Goal)[];
 }
 
 class DodayDetails extends React.Component<
   DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>
 > {
   render() {
-    const { dodays, history, match } = this.props;
+    const { dodays, match } = this.props;
     const doday =
-      dodays.length && dodays.find(doday => doday.id === match.params.id);
+      dodays.length && dodays.find(doday => doday.did === match.params.id);
 
     return (
       <Page header={<PageHeader />}>

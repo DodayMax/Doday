@@ -1,20 +1,15 @@
 import passport from 'passport';
 import passportFacebook from 'passport-facebook';
 import passportGoogle from 'passport-google-oauth';
-import { v1 as neo4j } from 'neo4j-driver';
 import _ from 'lodash';
 import cuid from 'cuid';
+import { driver } from './neo4j-driver';
 import { singleNodeFromResponse } from '../util/graph';
-import { createHero, findHero } from '../queries/heroes';
+import { createHero, findHero } from '../queries-mutations/heroes';
 
 // import { User, UserType } from '../models/User';
 import { Hero } from '../models/Hero';
 import { Request, Response, NextFunction } from 'express';
-
-const driver = neo4j.driver(
-  process.env.NEO4J_URI_LOCAL,
-  neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD)
-);
 
 const FacebookStrategy = passportFacebook.Strategy;
 const GoogleStrategy = passportGoogle.OAuth2Strategy;

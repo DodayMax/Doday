@@ -1,13 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as cuid from 'cuid';
 import { actions } from '@ducks/doday-app';
 import { Loader } from '@components';
-import { DodayCell } from './doday-cell/doday-cell';
-import { GoalCell } from './goal-cell/goal-cell';
-import { Doday } from '@lib/common-interfaces';
-import { PushToNavigationStackAction } from '@root/ducks/doday-app/actions';
 import { LayoutBlock } from '../../_atoms/layout-block';
 
 const styles = require('./_grid.module.scss');

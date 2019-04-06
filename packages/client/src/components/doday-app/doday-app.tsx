@@ -12,13 +12,15 @@ import {
   FetchAllGoals,
   PushToNavigationStackAction,
 } from '@root/ducks/doday-app/actions';
-import { Doday } from '@root/lib/common-interfaces';
 import {
   PopFromNavigationStackAction,
   FetchDodayForDate,
 } from '@root/ducks/doday-app/actions';
 import { DodayCell, GoalCell } from '../shared/_organisms/grid';
 import { RouteComponentProps } from 'react-router';
+import { Doday } from '@root/lib/models/entities/Doday';
+import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
+import { Goal } from '@root/lib/models/entities/Goal';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -28,12 +30,12 @@ interface DodayAppProps {
 
 interface PropsFromConnect {
   loading: boolean;
-  dodays: Doday[];
-  goals: Doday[];
+  dodays: (Doday | Goal)[];
+  goals: Goal[];
   chosenDate?: Date;
   changeDate?: (date: Date) => ChangeDateAction;
-  navStack: Doday[];
-  pushToNavStack: (doday: Doday) => PushToNavigationStackAction;
+  navStack: Goal[];
+  pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   popFromNavStack: () => PopFromNavigationStackAction;
   fetchDodaysForDate: () => FetchDodayForDate;
   fetchAllGoals: () => FetchAllGoals;
@@ -58,20 +60,20 @@ export class DodayAppComponent extends React.Component<
   getGoalsToRender = () => {
     const navStack = this.props.navStack;
     if (navStack.length > 0) {
-      return navStack[navStack.length - 1].children || [];
+      return navStack[navStack.length - 1].dodays || [];
     } else {
       return this.props.goals || [];
     }
   };
 
-  handleGoalCellClick = (goal: Doday) => {
+  handleGoalCellClick = (goal: Goal) => {
     // push goal to navigation stack
     this.props.pushToNavStack(goal);
   };
 
-  renderCellByDodayType = (item: Doday, index) => {
+  renderCellByDodayType = (item: Doday | Goal, index) => {
     switch (item.type) {
-      case 'action':
+      case DodayTypes.Doday:
         return (
           <DodayCell
             doday={item}
@@ -79,10 +81,10 @@ export class DodayAppComponent extends React.Component<
             onClick={this.handleDodayCellClick}
           />
         );
-      case 'goal':
+      case DodayTypes.Goal:
         return (
           <GoalCell
-            doday={item}
+            goal={item}
             key={cuid()}
             onClick={this.handleGoalCellClick}
           />

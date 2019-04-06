@@ -6,3 +6,9 @@ export enum TypographySize {
   h2 = 'h2',
   h3 = 'h3',
 }
+
+export enum StandartSizes {
+  small,
+  medium,
+  large,
+}

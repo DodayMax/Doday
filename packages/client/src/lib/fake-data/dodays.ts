@@ -1,58 +1,64 @@
-import { Doday, ActivityType } from '@lib/common-interfaces';
+import { ActivityType } from '@lib/common-interfaces';
+import { Doday } from '../models/entities/Doday';
+import { DodayTypes } from '../models/entities/dodayTypes';
 
 export const dodays: Doday[] = [
   {
-    id: '123',
-    type: 'action',
+    did: '123',
+    type: 0,
+    public: false,
     name: 'First',
-    date: 1551551594107,
+    date: new Date(1551551594107),
     completed: false,
   },
   {
-    id: '124',
-    type: 'action',
+    did: '124',
+    type: 0,
+    public: false,
     name: 'Second',
-    date: 1551551594107,
+    date: new Date(1551551594107),
     completed: false,
   },
   {
-    id: '125',
-    type: 'action',
+    did: '125',
+    type: 0,
+    public: false,
     name: 'Third',
-    date: 1551551594107,
+    date: new Date(1551551594107),
     completed: true,
   },
   {
-    id: '126',
-    type: 'action',
+    did: '126',
+    type: 0,
+    public: false,
     name: 'Third',
-    date: new Date('2019-03-05').getTime(),
+    date: new Date('2019-03-05'),
     completed: false,
   },
 ];
 
 export const goals = [
   {
-    id: '127',
-    type: 'goal',
+    did: '127',
+    type: 1,
     name: 'Health',
-    children: [
+    dodays: [
       {
-        id: '129',
-        type: 'goal',
+        did: '129',
+        type: 1,
         parent: {
-          id: '127',
-          type: 'goal',
+          did: '127',
+          type: 1,
           name: 'Health',
         },
         name: 'Goal inside goal',
-        children: [
+        dodays: [
           {
-            id: '130',
-            type: 'action',
+            did: '130',
+            type: 0,
             parent: {
-              id: '129',
-              type: 'goal',
+              did: '129',
+              type: 1,
               name: 'Goal inside goal',
             },
             name: 'Inside 2 goals',
@@ -62,19 +68,19 @@ export const goals = [
         ],
       },
       {
-        id: '128',
-        type: 'action',
+        did: '128',
+        type: 0,
         parent: {
-          id: '127',
-          type: 'goal',
+          did: '127',
+          type: 1,
           name: 'Health',
         },
         name: 'Inside goal',
-        date: new Date('2019-03-01').getMilliseconds(),
+        date: new Date('2019-03-01'),
         completed: false,
       },
     ],
-  }
+  },
 ];
 
 export const activityTypes: ActivityType[] = [
@@ -89,5 +95,5 @@ export const activityTypes: ActivityType[] = [
   {
     id: '333',
     sysname: 'watch',
-  }
+  },
 ];

@@ -1,9 +1,17 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { ActionConstants, setDodaysForDate, FetchDodayForDate, ChangeDateAction, setDodaysBadgeForToday, setLoadingState, FetchAllGoals, setGoals } from './actions';
+import {
+  ActionConstants,
+  setDodaysForDate,
+  FetchDodayForDate,
+  setDodaysBadgeForToday,
+  setLoadingState,
+  FetchAllGoals,
+  setGoals,
+} from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
 import { isToday } from '@root/lib/utils';
-import { Doday } from '@root/lib/common-interfaces';
+import { Doday } from '@root/lib/models/entities/Doday';
 
 /**
  * Fetch dodays for chosen date saga
@@ -15,7 +23,11 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
   const date = yield select(chosenDate);
   if (isToday(date)) {
     const dodays = yield call(api.dodays.queries.dodaysForToday, {});
-    yield put(setDodaysBadgeForToday(dodays.filter((doday: Doday) => !doday.completed).length));
+    yield put(
+      setDodaysBadgeForToday(
+        dodays.filter((doday: Doday) => !doday.completed).length
+      )
+    );
     yield put(setDodaysForDate(dodays));
   } else {
     const dodays = yield call(api.dodays.queries.dodaysForDate, { date });

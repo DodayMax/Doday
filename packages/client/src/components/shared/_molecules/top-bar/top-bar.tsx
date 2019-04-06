@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, ACLGuard } from '@components';
 import { StripeButton } from '../../_atoms/stripe-button';
-import { Hero } from '@root/lib/models/entities';
+import { Hero } from '@root/lib/models/entities/Hero';
 import { RootState } from '@root/lib/models';
 import { actions as coinActions } from '@root/ducks/payments';
 import { Token } from 'react-stripe-checkout';

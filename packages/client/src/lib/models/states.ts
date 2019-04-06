@@ -1,5 +1,6 @@
-import { Doday, ActivityType } from '../common-interfaces';
-import { Hero } from './entities';
+import { ActivityType } from '../common-interfaces';
+import { Hero } from './entities/Hero';
+import { Doday } from './entities/Doday';
 
 export interface RootState {
   auth: AuthState;
@@ -23,6 +24,8 @@ export interface AuthState {
 }
 
 export interface BuilderState {
+  loading?: boolean;
+  success?: boolean;
   activityTypes: ActivityType[];
 }
 

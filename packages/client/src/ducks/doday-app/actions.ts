@@ -1,5 +1,6 @@
 import { AnyAction } from 'redux';
-import { Doday } from '@root/lib/common-interfaces';
+import { Goal } from '@root/lib/models/entities/Goal';
+import { Doday } from '@root/lib/models/entities/Doday';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
@@ -46,7 +47,7 @@ export function changePath(path: string): ChangePathAction {
  * @export
  * @returns {PushToNavigationStackAction}
  */
-export function pushToNavStack(doday: Doday): PushToNavigationStackAction {
+export function pushToNavStack(doday: Goal): PushToNavigationStackAction {
   return {
     type: ActionConstants.PUSH_TO_NAV_STACK,
     payload: doday,
@@ -134,7 +135,7 @@ export function fetchAllGoals(): FetchAllGoals {
  * @export
  * @returns {SetGoals}
  */
-export function setGoals(goals: Doday[]): SetGoals {
+export function setGoals(goals: Goal[]): SetGoals {
   return {
     type: ActionConstants.SET_GOALS,
     payload: goals,
@@ -147,7 +148,7 @@ export function setGoals(goals: Doday[]): SetGoals {
 
 export interface SetLoadingState extends AnyAction {
   type: ActionConstants.SET_LOADING_STATE;
-  payload: boolean,
+  payload: boolean;
 }
 
 export interface ChangePathAction extends AnyAction {
@@ -157,7 +158,7 @@ export interface ChangePathAction extends AnyAction {
 
 export interface PushToNavigationStackAction extends AnyAction {
   type: ActionConstants.PUSH_TO_NAV_STACK;
-  payload: Doday,
+  payload: Goal;
 }
 
 export interface PopFromNavigationStackAction extends AnyAction {
@@ -175,12 +176,12 @@ export interface FetchDodayForDate extends AnyAction {
 
 export interface SetDodaysForDate extends AnyAction {
   type: ActionConstants.SET_DODAYS_FOR_DATE;
-  payload: Doday[],
+  payload: Doday[];
 }
 
 export interface SetDodaysBadgeForToday extends AnyAction {
   type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
-  payload: number,
+  payload: number;
 }
 
 export interface FetchAllGoals extends AnyAction {
@@ -189,14 +190,15 @@ export interface FetchAllGoals extends AnyAction {
 
 export interface SetGoals extends AnyAction {
   type: ActionConstants.SET_GOALS;
-  payload: Doday[];
+  payload: Goal[];
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes = ChangePathAction
+export type ActionTypes =
+  | ChangePathAction
   | SetLoadingState
   | PushToNavigationStackAction
   | PopFromNavigationStackAction

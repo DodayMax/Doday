@@ -1,17 +1,22 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Doday, TypographySize } from '@lib/common-interfaces';
+import { TypographySize } from '@lib/common-interfaces';
 import { Icons, Text } from '@components';
+import { Goal } from '@root/lib/models/entities/Goal';
 
 const styles = require('./_goal-cell.module.scss');
 
 interface GoalCellProps {
-  doday: Doday;
+  goal: Goal;
   active?: boolean;
-  onClick?: (goal: Doday) => void;
+  onClick?: (goal: Goal) => void;
 }
 
-export const GoalCell: React.SFC<GoalCellProps> = ({ doday, active = false, onClick }) => {
+export const GoalCell: React.SFC<GoalCellProps> = ({
+  goal,
+  active = false,
+  onClick,
+}) => {
   const classNames = classnames({
     [styles.cell]: true,
     [styles.active]: active,
@@ -20,13 +25,13 @@ export const GoalCell: React.SFC<GoalCellProps> = ({ doday, active = false, onCl
   return (
     <li
       className={classNames}
-      key={doday.id}
-      onClick={() => onClick && onClick(doday)}
+      key={goal.did}
+      onClick={() => onClick && onClick(goal)}
     >
       {<Icons.Goal width={30} height={30} />}
       <Text
         ellipsize
-        text={doday.name}
+        text={goal.name}
         size={TypographySize.s}
         className={styles.cellTitle}
       />

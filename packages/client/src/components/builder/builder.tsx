@@ -9,13 +9,19 @@ import {
   TypographyColor,
   TypographySize,
   ActivityType,
-  Doday,
+  StandartSizes,
 } from '@root/lib/common-interfaces';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { RootState } from '@root/lib/models';
-import { FetchActivityTypesAction } from '@root/ducks/builder/actions';
+import {
+  FetchActivityTypesAction,
+  CreateAndTakeDodayAction,
+  SetBuilderSuccessFlagAction,
+} from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { ButtonSize } from '../shared/_atoms/button';
+import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
+import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -25,11 +31,16 @@ interface BuilderProps {}
 interface BuilderState {
   selectedActivityType?: ActivityType;
   selectedGoal?: Doday;
+  dodayName: string;
 }
 
 interface PropsFromConnect {
   activityTypes: ActivityType[];
+  loading?: boolean;
+  success?: boolean;
   fetchActivityTypes: () => FetchActivityTypesAction;
+  createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
+  setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
 }
 
 export class Builder extends React.Component<
@@ -41,12 +52,26 @@ export class Builder extends React.Component<
 
     this.state = {
       selectedActivityType: undefined,
+      dodayName: '',
     };
   }
 
   componentDidMount() {
     this.props.fetchActivityTypes();
   }
+
+  componentWillUpdate() {
+    if (this.props.success) {
+      this.props.history.push('/');
+      this.props.setBuilderSuccessFlag(undefined);
+    }
+  }
+
+  onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({
+      dodayName: e.target.value,
+    });
+  };
 
   selectActivityType = type => {
     this.setState({
@@ -59,7 +84,12 @@ export class Builder extends React.Component<
 
     return (
       <Page header={<PageHeader />}>
-        <Input autofocus placeholder="Enter name or paste link..." />
+        <Input
+          size={StandartSizes.large}
+          autofocus
+          onChange={this.onChangeInput}
+          placeholder="Enter name or paste link..."
+        />
         <LayoutBlock direction="column">
           <div className={styles.builderAttachmentContainer}>
             <div className={styles.builderAttachmentCloseIconContainer}>
@@ -123,7 +153,18 @@ export class Builder extends React.Component<
               onClick={() => {}}
             />
           </ButtonGroup>
-          <Button primary text={'Create'} onClick={() => {}} />
+          <Button
+            primary
+            text={'Create'}
+            onClick={() => {
+              this.props.createAndTakeDoday({
+                did: 'test',
+                type: DodayTypes.Doday,
+                name: this.state.dodayName,
+                public: false,
+              });
+            }}
+          />
         </LayoutBlock>
       </Page>
     );
@@ -132,6 +173,8 @@ export class Builder extends React.Component<
 
 const mapState = (state: RootState) => ({
   activityTypes: state.builder.activityTypes,
+  loading: state.builder.loading,
+  success: state.builder.success,
 });
 
 export default withRouter(connect(

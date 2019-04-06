@@ -7,11 +7,8 @@
 .input {
   width: calc(100% - 4rem);
   margin: 1rem;
-  height: 3rem;
-  line-height: 2rem;
   border: 0;
   padding: 1rem;
-  font-size: 1.5rem;
   border-bottom: 1px solid #f1f1f1;
 
   &::placeholder {
@@ -27,4 +24,34 @@
   right: 3rem;
   top: 2rem;
   bottom: 0;
+}
+
+.small {
+  font-size: $title-s;
+  height: 3rem;
+  line-height: 2rem;
+
+  &::placeholder {
+    font-size: $body-l;
+  }
+}
+
+.medium {
+  font-size: $title-m;
+  height: 3rem;
+  line-height: 2rem;
+
+  &::placeholder {
+    font-size: $title-s;
+  }
+}
+
+.large {
+  font-size: $title-l;
+  height: 3rem;
+  line-height: 2rem;
+
+  &::placeholder {
+    font-size: $title-m;
+  }
 }

@@ -6,11 +6,11 @@ import client from '../apollo-client';
 /////////////////////////////////////////////////////////////////
 
 export const createHeroNode = async (variables: any) => {
-  return fetch('http://localhost:8080/heroes', {
-    method: "POST",
+  return fetch('/api/heroes', {
+    method: 'POST',
     headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": 'true',
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
     },
     body: JSON.stringify(variables), // body data type must match "Content-Type" header
   });
@@ -19,90 +19,89 @@ export const createHeroNode = async (variables: any) => {
 /////////////////////////////////////////////////////////////////
 
 export const addHeroDodays = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation AddHeroDodays($from: _HeroInput!, $to: _DodayInput!, $data: _DoingInput!) {
-            AddHeroDodays(from: $from, to: $to, data: $data) {
-              from {
-                name
-              }
-            }
+  return client.mutate({
+    mutation: gql`
+      mutation AddHeroDodays(
+        $from: _HeroInput!
+        $to: _DodayInput!
+        $data: _DoingInput!
+      ) {
+        AddHeroDodays(from: $from, to: $to, data: $data) {
+          from {
+            name
           }
-      `,
-      variables
-    });
+        }
+      }
+    `,
+    variables,
+  });
 };
 
 /////////////////////////////////////////////////////////////////
 
 export const removeHeroDodays = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation RemoveHeroDodays($from: _HeroInput!, $to: _DodayInput!) {
-            RemoveHeroDodays(from: $from, to: $to) {
-              from {
-                name
-              }
-            }
+  return client.mutate({
+    mutation: gql`
+      mutation RemoveHeroDodays($from: _HeroInput!, $to: _DodayInput!) {
+        RemoveHeroDodays(from: $from, to: $to) {
+          from {
+            name
           }
-      `,
-      variables
-    });
+        }
+      }
+    `,
+    variables,
+  });
 };
 
 /////////////////////////////////////////////////////////////////
 
 export const addHeroRoles = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation AddHeroRoles($from: _HeroInput!, $to: _RoleInput!) {
-            AddHeroRoles(from: $from, to: $to) {
-              to {
-                sysname
-              }
-            }
+  return client.mutate({
+    mutation: gql`
+      mutation AddHeroRoles($from: _HeroInput!, $to: _RoleInput!) {
+        AddHeroRoles(from: $from, to: $to) {
+          to {
+            sysname
           }
-      `,
-      variables
-    })
-}
+        }
+      }
+    `,
+    variables,
+  });
+};
 
 /////////////////////////////////////////////////////////////////
 
 export const addHeroTag = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation AddHeroTags($from: _HeroInput!, $to: _TagInput!) {
-            AddHeroTags(from: $from, to: $to) {
-              from {
-                id
-                name
-              }
-            }
+  return client.mutate({
+    mutation: gql`
+      mutation AddHeroTags($from: _HeroInput!, $to: _TagInput!) {
+        AddHeroTags(from: $from, to: $to) {
+          from {
+            id
+            name
           }
-      `,
-      variables
-    })
-}
+        }
+      }
+    `,
+    variables,
+  });
+};
 
 /////////////////////////////////////////////////////////////////
 
 export const addHeroInvites = (variables: any) => {
-  return client
-    .mutate({
-      mutation: gql`
-        mutation AddHeroInvites($from: _HeroInput!, $to: _HeroInput!) {
-            AddHeroInvites(from: $from, to: $to) {
-              to {
-                name
-              }
-            }
+  return client.mutate({
+    mutation: gql`
+      mutation AddHeroInvites($from: _HeroInput!, $to: _HeroInput!) {
+        AddHeroInvites(from: $from, to: $to) {
+          to {
+            name
           }
-      `,
-      variables
-    })
-}
+        }
+      }
+    `,
+    variables,
+  });
+};
