@@ -21,3 +21,21 @@
 .disabled {
   composes: disabled from '@styles/_common.scss';
 }
+
+.small {
+  border: 1px solid $border-dark;
+  font-size: $body-s;
+  height: 2.6rem;
+}
+
+.normal {
+  border: 2px solid $border-dark;
+  font-size: $body-m;
+  height: 4rem;
+}
+
+.large {
+  border: 2px solid $border-dark;
+  font-size: $body-l;
+  height: 5rem;
+}

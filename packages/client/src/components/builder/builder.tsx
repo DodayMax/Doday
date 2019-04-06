@@ -15,6 +15,7 @@ import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { RootState } from '@root/lib/models';
 import { FetchActivityTypesAction } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
+import { ButtonSize } from '../shared/_atoms/button';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -58,12 +59,6 @@ export class Builder extends React.Component<
 
     return (
       <Page header={<PageHeader />}>
-        <LayoutBlock align="flex-center" padding="0 0 2rem 0">
-          <ButtonGroup>
-            <Button primary text={'Private'} onClick={() => {}} />
-            <Button text={'Public'} onClick={() => {}} />
-          </ButtonGroup>
-        </LayoutBlock>
         <Input autofocus placeholder="Enter name or paste link..." />
         <LayoutBlock direction="column">
           <div className={styles.builderAttachmentContainer}>
@@ -115,7 +110,19 @@ export class Builder extends React.Component<
         <LayoutBlock flex={1} padding="0 0 2rem">
           <Select labelKey="sysname" valueKey="id" placeholder="Add tags" />
         </LayoutBlock>
-        <LayoutBlock align="flex-end">
+        <LayoutBlock align="flex-end" valign="flex-center">
+          <ButtonGroup>
+            <Button
+              size={ButtonSize.small}
+              text={'Private'}
+              onClick={() => {}}
+            />
+            <Button
+              size={ButtonSize.small}
+              text={'Public'}
+              onClick={() => {}}
+            />
+          </ButtonGroup>
           <Button primary text={'Create'} onClick={() => {}} />
         </LayoutBlock>
       </Page>

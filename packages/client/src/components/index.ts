@@ -2,7 +2,6 @@ import DesktopShell from './shell/desktop-shell';
 import Shell from './shell/shell';
 import Builder from './builder/builder';
 import { Drawer } from './drawer';
-import Button from './shared/_atoms/button/button';
 import Grid from './shared/_organisms/grid/grid';
 
 export * from './shared/_atoms/typography';
@@ -11,6 +10,7 @@ export * from './shared/_atoms/loader';
 export * from './shared/_atoms/button';
 export * from './shared/_atoms/checkbox';
 export * from './shared/_atoms/badge';
+export * from './shared/_atoms/button';
 export * from './shared/_atoms/stripe-button';
 export * from './shared/_atoms/clickable-icon/clickable-icon';
 export * from './shared/_atoms/layout-block/layout-block';
@@ -26,4 +26,4 @@ export * from './landing';
 export * from './dashboard';
 export * from './doday-details';
 
-export { Shell, Builder, Drawer, DesktopShell, Icons, Grid, Button };
+export { Shell, Builder, Drawer, DesktopShell, Icons, Grid };

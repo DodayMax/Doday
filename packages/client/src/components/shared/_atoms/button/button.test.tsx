@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Button from './button';
+import { Button } from './button';
 
 describe('Button', () => {
   it('renders correctly without props', () => {
@@ -36,7 +36,8 @@ describe('Button', () => {
     const button = mount(
       <Router>
         <Button text={text} onClick={onClick} isLoading={true} />
-      </Router>);
+      </Router>
+    );
 
     expect(button.find('svg')).toHaveLength(1);
   });
