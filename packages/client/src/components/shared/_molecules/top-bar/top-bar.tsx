@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button } from '@components';
+import { Button, ACLGuard } from '@components';
 import { StripeButton } from '../../_atoms/stripe-button';
 import { Hero } from '@root/lib/models/entities';
 import { RootState } from '@root/lib/models';
@@ -9,6 +9,7 @@ import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 
 const css = require('./_top-bar.module.scss');
+const logo = require('@root/assets/png/app-icon-96x96.png');
 
 interface TopBarProps {
   pathname: string;
@@ -39,13 +40,19 @@ class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
   render() {
     return (
       <nav className={css.navBar}>
-        <div>Logo</div>
+        <div>
+          <img className={css.logo} src={logo} />
+        </div>
         {this.renderContent()}
-        <Button
-          primary
-          text={'New Doday'}
-          to={'/builder'}
-          disabled={this.props.pathname === '/builder'}
+        <ACLGuard
+          allowed={
+            <Button
+              primary
+              text={'New Doday'}
+              to={'/builder'}
+              disabled={this.props.pathname === '/builder'}
+            />
+          }
         />
       </nav>
     );

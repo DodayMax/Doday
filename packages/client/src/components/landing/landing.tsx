@@ -1,11 +1,10 @@
 import * as React from 'react';
+import { LayoutBlock } from '../shared/_atoms/layout-block';
 
 const css = require('./_landing.module.scss');
 
 export class Landing extends React.Component {
   render() {
-    return (
-      <div>Landing</div>
-    )
+    return <LayoutBlock className={css.landingContainer} />;
   }
 }

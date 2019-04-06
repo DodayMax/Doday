@@ -6,6 +6,7 @@ import Grid from './shared/_organisms/grid/grid';
 
 export * from './shared/_atoms/typography';
 export * from './shared/_atoms/input';
+export * from './shared/_atoms/acl-guard';
 export * from './shared/_atoms/loader';
 export * from './shared/_atoms/button';
 export * from './shared/_atoms/checkbox';
