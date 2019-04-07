@@ -1,17 +1,12 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
-import {
-  BrowserRouter as Router,
-  Route
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { DodayTopBar } from '@components';
-import 'react-select/dist/react-select.css';
-import 'react-virtualized-select/styles.css';
 
 const LoadableComponent = Loadable({
   loader: () => import('./mobile-shell'),
   loading: () => <div>Loading...</div>,
-})
+});
 
 export class Shell extends React.Component {
   render() {

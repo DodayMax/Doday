@@ -3,13 +3,15 @@ import { Doday } from './Doday';
 
 export interface Tag {
   did: string;
-  sysname: string;
-  heroes: [Hero];
-  dodays: [Doday];
-  weight: number;
+  label: string;
+  value: string;
+  heroes?: [Hero];
+  dodays?: [Doday];
+  weight?: number;
 }
 
 export interface SerializedTag {
   did: string;
-  sysname: string;
+  label: string;
+  value: string;
 }

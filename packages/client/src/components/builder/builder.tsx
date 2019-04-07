@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Input, LayoutBlock } from '@components';
-import Select from 'react-virtualized-select';
+import Select from 'react-select';
+import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import { actions as builderActions } from '@ducks/builder';
 import { ButtonGroup } from '../shared/_molecules/button-group';
 import { ActivityType, StandartSizes } from '@root/lib/common-interfaces';
@@ -21,6 +22,8 @@ import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { detectURL } from '@root/lib/utils/regexp';
 import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
+import { ValueType } from 'react-select/lib/types';
+import { Tag } from '@root/lib/models/entities/Tag';
 
 const styles = require('./_builder.module.scss');
 
@@ -30,6 +33,8 @@ interface BuilderState {
   selectedActivityType?: ActivityType;
   selectedGoal?: Doday;
   dodayName: string;
+  selectedTags?: Tag[];
+  parsingFinished?: string;
 }
 
 interface PropsFromConnect {
@@ -44,6 +49,13 @@ interface PropsFromConnect {
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
 }
+
+const goals = [
+  {
+    label: 'Goal 1',
+    value: 'qwje12kj3k1j23',
+  },
+];
 
 export class Builder extends React.Component<
   BuilderProps & PropsFromConnect & RouteComponentProps,
@@ -62,12 +74,34 @@ export class Builder extends React.Component<
     this.props.fetchActivityTypes();
   }
 
-  componentWillUpdate() {
+  componentDidUpdate(prevProps) {
     if (this.props.success) {
       this.props.history.push('/');
       this.props.setBuilderSuccessFlag(undefined);
     }
   }
+
+  shouldComponentUpdate(nextProps): boolean {
+    if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
+      const parsedTags =
+        nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
+      const mappedTags = parsedTags.map(tag => ({ label: tag, value: tag }));
+      if (parsedTags) {
+        this.setState({
+          selectedTags: mappedTags,
+        });
+      }
+    }
+
+    return true;
+  }
+
+  promiseOptions = inputValue =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        resolve([]);
+      }, 1000);
+    });
 
   onChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = String(e.target.value);
@@ -119,33 +153,32 @@ export class Builder extends React.Component<
           parsedMetadata={parsedMetadata}
         />
         <LayoutBlock padding="2rem 0">
-          <LayoutBlock>
-            <Select
-              options={activityTypes}
-              value={this.state.selectedActivityType}
-              onChange={this.selectActivityType}
-              labelKey="sysname"
-              valueKey="id"
-              placeholder="Activity type"
-            />
-          </LayoutBlock>
-          <LayoutBlock flex={1} margin="0 0 0 1rem">
+          <LayoutBlock flex={1}>
             <Select
               labelKey="sysname"
               valueKey="id"
               placeholder="Choose goal"
+              options={goals}
             />
           </LayoutBlock>
           <LayoutBlock flex={1} margin="0 0 0 1rem">
-            <Select
-              labelKey="sysname"
-              valueKey="id"
-              placeholder="Estimate time"
-            />
+            <Select labelKey="sysname" valueKey="id" placeholder="Date" />
           </LayoutBlock>
         </LayoutBlock>
         <LayoutBlock flex={1} padding="0 0 2rem">
-          <Select labelKey="sysname" valueKey="id" placeholder="Add tags" />
+          <div>
+            <AsyncCreatableSelect
+              value={this.state.selectedTags}
+              onChange={(value: Tag[]) => {
+                this.setState({ selectedTags: value });
+              }}
+              placeholder="Add tags describing your doday"
+              isMulti
+              cacheOptions
+              defaultOptions
+              loadOptions={this.promiseOptions}
+            />
+          </div>
         </LayoutBlock>
         <LayoutBlock align="flex-end" valign="vflex-center">
           <ButtonGroup>
@@ -165,7 +198,7 @@ export class Builder extends React.Component<
             isLoading={loading}
             text={'Create'}
             onClick={() => {
-              if (this.state.dodayName) {
+              if (this.state.dodayName || parsedMetadata) {
                 this.props.createAndTakeDoday({
                   did: cuid(),
                   type: DodayTypes.Doday,
