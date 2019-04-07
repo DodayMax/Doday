@@ -2,7 +2,6 @@ import reducer, { initialState } from './reducer';
 import {
   ActionConstants,
   fetchActivityTypes,
-  setActivityTypes,
   createAndTakeDoday,
   setBuilderLoadingState,
   setBuilderSuccessFlag,
@@ -11,8 +10,9 @@ import {
   setParsedUrlMetadataObjectActionCreator,
   clearParsedMetadataActionCreator,
   clearBuilderActionCreator,
+  setActivityTypeActionCreator,
 } from './actions';
-import { ActivityType } from '@root/lib/common-interfaces';
+import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 
@@ -25,18 +25,13 @@ describe('builder duck', () => {
       expect(fetchActivityTypes()).toEqual(expectedActionObject);
     });
 
-    it('set activity types action creator', () => {
-      const types: ActivityType[] = [
-        {
-          id: '123',
-          sysname: 'read',
-        },
-      ];
+    it('set activity type action creator', () => {
+      const type: Activity = 'read';
       const expectedActionObject = {
-        type: ActionConstants.SET_ACTIVITY_TYPES,
-        payload: types,
+        type: ActionConstants.SET_ACTIVITY_TYPE,
+        payload: type,
       };
-      expect(setActivityTypes(types)).toEqual(expectedActionObject);
+      expect(setActivityTypeActionCreator(type)).toEqual(expectedActionObject);
     });
 
     it('create doday and progress action creator', () => {
@@ -135,14 +130,9 @@ describe('builder duck', () => {
 
   describe('builder reducer', () => {
     it('set activity types reducer', () => {
-      const types: ActivityType[] = [
-        {
-          id: '123',
-          sysname: 'read',
-        },
-      ];
+      const types: Activity = 'read';
       expect(
-        reducer(initialState, setActivityTypes(types)).activityTypes
+        reducer(initialState, setActivityTypeActionCreator(types))
       ).toEqual(types);
     });
 

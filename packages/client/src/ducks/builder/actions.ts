@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
-import { ActivityType } from '@root/lib/common-interfaces';
+import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
-  SET_ACTIVITY_TYPES = '[builder] SET_ACTIVITY_TYPES',
+  SET_ACTIVITY_TYPE = '[builder] SET_ACTIVITY_TYPE',
   CREATE_AND_TAKE_DODAY = '[builder] CREATE_AND_TAKE_DODAY',
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
   SET_BUILDER_SUCCESS_FLAG = '[builder] SET_BUILDER_SUCCESS_FLAG',
@@ -43,17 +43,17 @@ export function createAndTakeDoday(
 }
 
 /**
- * Set activity types to store
+ * Set activity type to store
  *
  * @export
- * @returns {SetActivityTypesAction}
+ * @returns {SetActivityTypeAction}
  */
-export function setActivityTypes(
-  types: ActivityType[]
-): SetActivityTypesAction {
+export function setActivityTypeActionCreator(
+  type: Activity
+): SetActivityTypeAction {
   return {
-    type: ActionConstants.SET_ACTIVITY_TYPES,
-    payload: types,
+    type: ActionConstants.SET_ACTIVITY_TYPE,
+    payload: type,
   };
 }
 
@@ -164,9 +164,9 @@ export interface FetchActivityTypesAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITY_TYPES;
 }
 
-export interface SetActivityTypesAction extends AnyAction {
-  type: ActionConstants.SET_ACTIVITY_TYPES;
-  payload: ActivityType[];
+export interface SetActivityTypeAction extends AnyAction {
+  type: ActionConstants.SET_ACTIVITY_TYPE;
+  payload: Activity;
 }
 
 export interface CreateAndTakeDodayAction extends AnyAction {
@@ -213,7 +213,7 @@ export interface ClearBuilderAction extends AnyAction {
 
 export type ActionTypes =
   | FetchActivityTypesAction
-  | SetActivityTypesAction
+  | SetActivityTypeAction
   | CreateAndTakeDodayAction
   | SetBuilderLoadingStateAction
   | SetBuilderSuccessFlagAction

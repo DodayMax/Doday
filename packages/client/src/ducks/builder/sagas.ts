@@ -1,27 +1,17 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   ActionConstants,
-  FetchActivityTypesAction,
-  setActivityTypes,
   CreateAndTakeDodayAction,
   setBuilderLoadingState,
   setBuilderSuccessFlag,
   ParseUrlMetadataAction,
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
+  setActivityTypeActionCreator,
 } from './actions';
 import { fetchDodaysForDate } from '@ducks/doday-app/actions';
 import { api } from '@services';
-import { activityTypes } from '@lib/fake-data/dodays';
-
-/**
- * Fetch activity types for builder saga
- *
- * @param {FetchActivityTypesAction} action
- */
-function* fetchActivityTypesSaga(action: FetchActivityTypesAction) {
-  yield put(setActivityTypes(activityTypes));
-}
+import { detectActivityType } from '@root/lib/utils/regexp';
 
 /**
  * Create Doday and Progress node saga
@@ -52,14 +42,15 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
     api.utils.queries.parseMetadataFromUrl,
     action.payload
   );
+  const activityType = detectActivityType(metadata);
   if (metadata) {
     yield put(setParsedUrlMetadataObjectActionCreator(metadata));
+    yield put(setActivityTypeActionCreator(activityType));
   }
   yield put(setUrlParsingProgressActionCreator(false));
 }
 
 export default [
-  takeLatest(ActionConstants.FETCH_ACTIVITY_TYPES, fetchActivityTypesSaga),
   takeLatest(ActionConstants.CREATE_AND_TAKE_DODAY, createAndTakeDodaySaga),
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
 ];

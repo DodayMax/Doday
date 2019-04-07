@@ -1,19 +1,17 @@
 import * as actions from './actions';
 import { BuilderState } from '@lib/models';
 
-export const initialState: BuilderState = {
-  activityTypes: [],
-};
+export const initialState: BuilderState = {};
 
 export default (
   state = initialState,
   action?: actions.ActionTypes
 ): BuilderState => {
   switch (action && action.type) {
-    case actions.ActionConstants.SET_ACTIVITY_TYPES:
+    case actions.ActionConstants.SET_ACTIVITY_TYPE:
       return {
         ...state,
-        activityTypes: action!.payload,
+        activityType: action!.payload,
       };
     case actions.ActionConstants.SET_BUILDER_LOADING_STATE:
       return {
@@ -39,6 +37,7 @@ export default (
       return {
         ...state,
         parsedMetadata: undefined,
+        activityType: undefined,
       };
     case actions.ActionConstants.CLEAR_BUILDER:
       return initialState;

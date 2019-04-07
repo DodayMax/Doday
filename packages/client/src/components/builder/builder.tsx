@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Input, LayoutBlock } from '@components';
+import { Button, Input, LayoutBlock, Text } from '@components';
 import Select from 'react-select';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import { actions as builderActions } from '@ducks/builder';
 import { ButtonGroup } from '../shared/_molecules/button-group';
-import { ActivityType, StandartSizes } from '@root/lib/common-interfaces';
+import { StandartSizes, Activity } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import {
   FetchActivityTypesAction,
@@ -31,7 +31,6 @@ const styles = require('./_builder.module.scss');
 interface BuilderProps {}
 
 interface BuilderState {
-  selectedActivityType?: ActivityType;
   selectedGoal?: Doday;
   dodayName: string;
   selectedTags?: Tag[];
@@ -40,7 +39,7 @@ interface BuilderState {
 }
 
 interface PropsFromConnect {
-  activityTypes: ActivityType[];
+  activityType: Activity;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
   loading?: boolean;
@@ -61,21 +60,18 @@ const goals = [
 ];
 
 export class Builder extends React.Component<
-  BuilderProps & PropsFromConnect & RouteComponentProps,
+  BuilderProps & PropsFromConnect & Partial<RouteComponentProps>,
   BuilderState
 > {
-  constructor(props) {
+  constructor(
+    props: BuilderProps & PropsFromConnect & Partial<RouteComponentProps>
+  ) {
     super(props);
 
     this.state = {
-      selectedActivityType: undefined,
       dodayName: '',
       date: new Date(),
     };
-  }
-
-  componentDidMount() {
-    this.props.fetchActivityTypes();
   }
 
   componentDidUpdate(prevProps) {
@@ -89,11 +85,13 @@ export class Builder extends React.Component<
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
       const parsedTags =
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
-      const mappedTags = parsedTags.map(tag => ({
-        label: tag,
-        value: tag,
-      }));
-      if (parsedTags) {
+      const mappedTags =
+        parsedTags &&
+        parsedTags.map(tag => ({
+          label: tag,
+          value: tag,
+        }));
+      if (mappedTags) {
         this.setState({
           selectedTags: mappedTags,
         });
@@ -124,12 +122,6 @@ export class Builder extends React.Component<
     });
   };
 
-  selectActivityType = type => {
-    this.setState({
-      selectedActivityType: type,
-    });
-  };
-
   handleChangeDate = date => {
     this.setState({
       date,
@@ -142,7 +134,6 @@ export class Builder extends React.Component<
 
   render() {
     const {
-      activityTypes,
       loading,
       isUrlParsing,
       parsedMetadata,
@@ -151,6 +142,7 @@ export class Builder extends React.Component<
 
     return (
       <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
+        <Text text={this.props.activityType || 'do'} />
         <Input
           size={StandartSizes.large}
           autofocus
@@ -237,7 +229,7 @@ export class Builder extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  activityTypes: state.builder.activityTypes,
+  activityType: state.builder.activityType,
   isUrlParsing: state.builder.isUrlParsing,
   parsedMetadata: state.builder.parsedMetadata,
   loading: state.builder.loading,

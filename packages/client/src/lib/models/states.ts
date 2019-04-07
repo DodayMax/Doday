@@ -1,4 +1,4 @@
-import { ActivityType } from '../common-interfaces';
+import { Activity } from '../common-interfaces';
 import { Hero } from './entities/Hero';
 import { Doday } from './entities/Doday';
 
@@ -28,7 +28,7 @@ export interface BuilderState {
   isUrlParsing?: boolean;
   parsedMetadata?: any;
   success?: boolean;
-  activityTypes: ActivityType[];
+  activityType?: Activity;
 }
 
 export interface HeroSettingsState {

@@ -1,4 +1,1 @@
-export interface ActivityType {
-  id: string;
-  sysname: string;
-}
+export type Activity = 'do' | 'read' | 'watch';
