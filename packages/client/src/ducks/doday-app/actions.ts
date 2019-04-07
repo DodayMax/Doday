@@ -5,6 +5,8 @@ import { Doday } from '@root/lib/models/entities/Doday';
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
+  TOGGLE_DODAY = '[doday-app] TOGGLE_DODAY',
+  DELETE_DODAY = '[doday-app] DELETE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
@@ -21,7 +23,7 @@ export enum ActionConstants {
  * @export
  * @returns {SetLoadingState}
  */
-export function setLoadingState(value: boolean): SetLoadingState {
+export function setAppLoadingState(value: boolean): SetLoadingState {
   return {
     type: ActionConstants.SET_LOADING_STATE,
     payload: value,
@@ -101,6 +103,32 @@ export function setDodaysForDate(dodays: Doday[]): SetDodaysForDate {
   return {
     type: ActionConstants.SET_DODAYS_FOR_DATE,
     payload: dodays,
+  };
+}
+
+/**
+ * Toggle doday
+ *
+ * @export
+ * @returns {ToggleDodayAction}
+ */
+export function toggleDoday(doday: Doday): ToggleDodayAction {
+  return {
+    type: ActionConstants.TOGGLE_DODAY,
+    payload: doday,
+  };
+}
+
+/**
+ * Completely delete Doday from app and from created section
+ *
+ * @export
+ * @returns {DeleteDodayAction}
+ */
+export function deleteDodayActionCreator(doday: Doday): DeleteDodayAction {
+  return {
+    type: ActionConstants.DELETE_DODAY,
+    payload: doday,
   };
 }
 
@@ -193,6 +221,16 @@ export interface SetGoals extends AnyAction {
   payload: Goal[];
 }
 
+export interface ToggleDodayAction extends AnyAction {
+  type: ActionConstants.TOGGLE_DODAY;
+  payload: Doday;
+}
+
+export interface DeleteDodayAction extends AnyAction {
+  type: ActionConstants.DELETE_DODAY;
+  payload: Doday;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -206,4 +244,5 @@ export type ActionTypes =
   | FetchDodayForDate
   | SetDodaysForDate
   | SetDodaysBadgeForToday
-  | SetGoals;
+  | SetGoals
+  | ToggleDodayAction;

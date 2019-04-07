@@ -5,17 +5,21 @@ import { withRouter, RouteComponentProps } from 'react-router';
 const vars = require('@styles/_config.scss');
 const css = require('./_page-header.module.scss');
 
-interface PageHeaderProps extends Partial<RouteComponentProps> {}
+interface PageHeaderProps extends Partial<RouteComponentProps> {
+  actions?: React.ReactElement<any>[];
+}
 
 @(withRouter as any)
 export class PageHeader extends React.Component<PageHeaderProps> {
   render() {
+    const { actions } = this.props;
     return (
       <LayoutBlock
         align="flex-end"
-        valign="flex-center"
+        valign="vflex-center"
         className={css.headerContainer}
       >
+        {actions}
         <ClickableIcon
           onClick={() => {
             this.props.history.push('/');

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as cuid from 'cuid';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { Button, Input, LayoutBlock, Text, Icons } from '@components';
 import Select from 'react-virtualized-select';
@@ -140,7 +141,7 @@ export class Builder extends React.Component<
         <LayoutBlock flex={1} padding="0 0 2rem">
           <Select labelKey="sysname" valueKey="id" placeholder="Add tags" />
         </LayoutBlock>
-        <LayoutBlock align="flex-end" valign="flex-center">
+        <LayoutBlock align="flex-end" valign="vflex-center">
           <ButtonGroup>
             <Button
               size={ButtonSize.small}
@@ -158,13 +159,15 @@ export class Builder extends React.Component<
             isLoading={loading}
             text={'Create'}
             onClick={() => {
-              this.props.createAndTakeDoday({
-                did: 'test',
-                type: DodayTypes.Doday,
-                name: this.state.dodayName,
-                date: Date.now(),
-                public: false,
-              });
+              if (this.state.dodayName) {
+                this.props.createAndTakeDoday({
+                  did: cuid(),
+                  type: DodayTypes.Doday,
+                  name: this.state.dodayName,
+                  date: Date.now(),
+                  public: false,
+                });
+              }
             }}
           />
         </LayoutBlock>

@@ -11,6 +11,7 @@ import {
   ChangeDateAction,
   FetchAllGoals,
   PushToNavigationStackAction,
+  ToggleDodayAction,
 } from '@root/ducks/doday-app/actions';
 import {
   PopFromNavigationStackAction,
@@ -39,6 +40,7 @@ interface PropsFromConnect {
   popFromNavStack: () => PopFromNavigationStackAction;
   fetchDodaysForDate: () => FetchDodayForDate;
   fetchAllGoals: () => FetchAllGoals;
+  toggleDoday: (doday: Doday) => ToggleDodayAction;
 }
 
 export class DodayAppComponent extends React.Component<
@@ -79,6 +81,7 @@ export class DodayAppComponent extends React.Component<
             doday={item}
             key={cuid()}
             onClick={this.handleDodayCellClick}
+            onComplete={(doday: Doday) => this.props.toggleDoday(doday)}
           />
         );
       case DodayTypes.Goal:

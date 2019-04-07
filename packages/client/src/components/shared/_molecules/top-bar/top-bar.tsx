@@ -7,6 +7,7 @@ import { RootState } from '@root/lib/models';
 import { actions as coinActions } from '@root/ducks/payments';
 import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
+import { Link } from 'react-router-dom';
 
 const css = require('./_top-bar.module.scss');
 const logo = require('@root/assets/png/app-icon-96x96.png');
@@ -41,7 +42,9 @@ class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
     return (
       <nav className={css.navBar}>
         <div>
-          <img className={css.logo} src={logo} />
+          <Link to="/">
+            <img className={css.logo} src={logo} />
+          </Link>
         </div>
         {this.renderContent()}
         <ACLGuard

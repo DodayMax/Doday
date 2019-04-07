@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { TypographySize } from '@lib/common-interfaces';
 import { Checkbox, Text } from '@components';
 import { Doday } from '@root/lib/models/entities/Doday';
+import { AnyAction } from 'redux';
 
 const styles = require('./_doday-cell.module.scss');
 
@@ -10,12 +11,14 @@ interface DodayCellProps {
   doday: Doday;
   active?: boolean;
   onClick?: (route: string) => void;
+  onComplete?: (doday: Doday) => AnyAction;
 }
 
 export const DodayCell: React.SFC<DodayCellProps> = ({
   doday,
   active = false,
   onClick,
+  onComplete,
 }) => {
   const classNames = classnames({
     [styles.cell]: true,
@@ -30,7 +33,12 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
     >
       {
         <Checkbox
-          onClick={e => console.log('complete')}
+          onClick={e => {
+            e.stopPropagation();
+            if (onComplete) {
+              onComplete(doday);
+            }
+          }}
           checked={doday.completed}
         />
       }

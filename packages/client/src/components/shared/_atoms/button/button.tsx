@@ -17,7 +17,7 @@ export interface ButtonProps {
   size?: ButtonSize;
   primary?: boolean;
   isLoading?: boolean;
-  onClick?: () => void;
+  onClick?: (...args: any) => any;
   type?: string;
   href?: string;
   to?: string;

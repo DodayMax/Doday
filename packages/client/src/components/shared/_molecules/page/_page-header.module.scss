@@ -5,5 +5,10 @@
     height: $top-bar-height;
     box-sizing: border-box;
     padding: 0 $padding-l;
+
+    > * {
+      margin-left: $space-s;
+      margin-right: $space-s;
+    }
   }
 }
