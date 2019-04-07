@@ -2,31 +2,26 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { Button, Input, LayoutBlock, Text, Icons } from '@components';
+import { Button, Input, LayoutBlock } from '@components';
 import Select from 'react-virtualized-select';
 import { actions as builderActions } from '@ducks/builder';
 import { ButtonGroup } from '../shared/_molecules/button-group';
-import {
-  TypographyColor,
-  TypographySize,
-  ActivityType,
-  StandartSizes,
-} from '@root/lib/common-interfaces';
-import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
+import { ActivityType, StandartSizes } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import {
   FetchActivityTypesAction,
   CreateAndTakeDodayAction,
   SetBuilderSuccessFlagAction,
   ParseUrlMetadataAction,
+  ClearParsedMetadataAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { ButtonSize } from '../shared/_atoms/button';
 import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { detectURL } from '@root/lib/utils/regexp';
+import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
 
-const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
 
 interface BuilderProps {}
@@ -47,6 +42,7 @@ interface PropsFromConnect {
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
+  clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
 }
 
 export class Builder extends React.Component<
@@ -94,7 +90,13 @@ export class Builder extends React.Component<
   };
 
   render() {
-    const { activityTypes, loading, isUrlParsing, parsedMetadata } = this.props;
+    const {
+      activityTypes,
+      loading,
+      isUrlParsing,
+      parsedMetadata,
+      clearParsedMetadataActionCreator,
+    } = this.props;
 
     return (
       <Page header={<PageHeader />}>
@@ -105,34 +107,17 @@ export class Builder extends React.Component<
           onChange={this.onChangeInput}
           placeholder="Enter name or paste link..."
         />
-        {isUrlParsing && (
-          <LayoutBlock align="flex-center" valign="vflex-center" padding="1rem">
-            <Icons.InlineLoader />
-          </LayoutBlock>
-        )}
-        {!isUrlParsing && parsedMetadata && (
-          <LayoutBlock direction="column">
-            <div className={styles.builderAttachmentContainer}>
-              <div className={styles.builderAttachmentCloseIconContainer}>
-                <ClickableIcon backdrop onClick={() => {}}>
-                  <Icons.CloseCircle color={vars.gray5} />
-                </ClickableIcon>
-              </div>
-              <img
-                className={styles.builderAttachmentImage}
-                src="https://i.imgur.com/59YOCv5.jpg"
-              />
-              <div className={styles.builderAttachmentTextContainer}>
-                <Text text="Sample title" />
-                <Text
-                  text="link"
-                  color={TypographyColor.Disabled}
-                  size={TypographySize.s}
-                />
-              </div>
-            </div>
-          </LayoutBlock>
-        )}
+        <ParsedUrlView
+          onClose={() => {
+            this.setState({
+              // TODO: replace only removed parsed link from text
+              dodayName: '',
+            });
+            clearParsedMetadataActionCreator();
+          }}
+          loading={isUrlParsing}
+          parsedMetadata={parsedMetadata}
+        />
         <LayoutBlock padding="2rem 0">
           <LayoutBlock>
             <Select

@@ -43,6 +43,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
         />
       }
       <Text
+        wordwrap
         text={doday.name}
         size={TypographySize.s}
         className={styles.cellTitle}

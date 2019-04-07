@@ -35,6 +35,11 @@ export default (
         ...state,
         parsedMetadata: action.payload,
       };
+    case actions.ActionConstants.CLEAR_PARSED_METADATA:
+      return {
+        ...state,
+        parsedMetadata: undefined,
+      };
     default:
       return state;
   }
