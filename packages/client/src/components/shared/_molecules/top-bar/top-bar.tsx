@@ -7,21 +7,23 @@ import { RootState } from '@root/lib/models';
 import { actions as coinActions } from '@root/ducks/payments';
 import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 const css = require('./_top-bar.module.scss');
 const logo = require('@root/assets/png/app-icon-96x96.png');
 
-interface TopBarProps {
-  pathname: string;
-}
+interface TopBarProps {}
 
 interface PropsFromConnect {
   hero?: Hero | false;
   handleStripeToken: (token: Token) => HandleTokenAction;
 }
 
-class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
+@(withRouter as any)
+class TopBar extends React.Component<
+  TopBarProps & PropsFromConnect & Partial<RouteComponentProps>,
+  any
+> {
   renderContent() {
     switch (this.props.hero) {
       case undefined:
@@ -53,7 +55,7 @@ class TopBar extends React.Component<TopBarProps & PropsFromConnect, any> {
               primary
               text={'New Doday'}
               to={'/builder'}
-              disabled={this.props.pathname === '/builder'}
+              disabled={this.props.location.pathname === '/builder'}
             />
           }
         />

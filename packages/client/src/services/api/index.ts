@@ -5,6 +5,17 @@ import * as tags from './tags';
 import * as days from './days';
 import * as payments from './payments';
 import * as constants from './constants';
+import * as utils from './utils';
 import client from './apollo-client';
 
-export { client, dodays, goals, heroes, tags, days, payments, constants };
+export {
+  client,
+  dodays,
+  goals,
+  heroes,
+  tags,
+  days,
+  payments,
+  constants,
+  utils,
+};

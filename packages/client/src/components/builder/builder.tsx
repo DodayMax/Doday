@@ -18,11 +18,13 @@ import {
   FetchActivityTypesAction,
   CreateAndTakeDodayAction,
   SetBuilderSuccessFlagAction,
+  ParseUrlMetadataAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { ButtonSize } from '../shared/_atoms/button';
 import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
+import { detectURL } from '@root/lib/utils/regexp';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_builder.module.scss');
@@ -37,11 +39,14 @@ interface BuilderState {
 
 interface PropsFromConnect {
   activityTypes: ActivityType[];
+  isUrlParsing?: boolean;
+  parsedMetadata?: any;
   loading?: boolean;
   success?: boolean;
   fetchActivityTypes: () => FetchActivityTypesAction;
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
+  parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
 }
 
 export class Builder extends React.Component<
@@ -68,9 +73,17 @@ export class Builder extends React.Component<
     }
   }
 
-  onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  onChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = String(e.target.value);
+    const matches = detectURL(value);
+
+    if (matches) {
+      // parse meta of the link on server
+      matches.map(url => this.props.parseUrlMetadataActionCreator(url));
+    }
+
     this.setState({
-      dodayName: e.target.value,
+      dodayName: value,
     });
   };
 
@@ -81,37 +94,45 @@ export class Builder extends React.Component<
   };
 
   render() {
-    const { activityTypes, loading } = this.props;
+    const { activityTypes, loading, isUrlParsing, parsedMetadata } = this.props;
 
     return (
       <Page header={<PageHeader />}>
         <Input
           size={StandartSizes.large}
           autofocus
+          value={this.state.dodayName}
           onChange={this.onChangeInput}
           placeholder="Enter name or paste link..."
         />
-        <LayoutBlock direction="column">
-          <div className={styles.builderAttachmentContainer}>
-            <div className={styles.builderAttachmentCloseIconContainer}>
-              <ClickableIcon backdrop onClick={() => {}}>
-                <Icons.CloseCircle color={vars.gray5} />
-              </ClickableIcon>
-            </div>
-            <img
-              className={styles.builderAttachmentImage}
-              src="https://i.imgur.com/59YOCv5.jpg"
-            />
-            <div className={styles.builderAttachmentTextContainer}>
-              <Text text="Sample title" />
-              <Text
-                text="link"
-                color={TypographyColor.Disabled}
-                size={TypographySize.s}
+        {isUrlParsing && (
+          <LayoutBlock align="flex-center" valign="vflex-center" padding="1rem">
+            <Icons.InlineLoader />
+          </LayoutBlock>
+        )}
+        {!isUrlParsing && parsedMetadata && (
+          <LayoutBlock direction="column">
+            <div className={styles.builderAttachmentContainer}>
+              <div className={styles.builderAttachmentCloseIconContainer}>
+                <ClickableIcon backdrop onClick={() => {}}>
+                  <Icons.CloseCircle color={vars.gray5} />
+                </ClickableIcon>
+              </div>
+              <img
+                className={styles.builderAttachmentImage}
+                src="https://i.imgur.com/59YOCv5.jpg"
               />
+              <div className={styles.builderAttachmentTextContainer}>
+                <Text text="Sample title" />
+                <Text
+                  text="link"
+                  color={TypographyColor.Disabled}
+                  size={TypographySize.s}
+                />
+              </div>
             </div>
-          </div>
-        </LayoutBlock>
+          </LayoutBlock>
+        )}
         <LayoutBlock padding="2rem 0">
           <LayoutBlock>
             <Select
@@ -178,6 +199,8 @@ export class Builder extends React.Component<
 
 const mapState = (state: RootState) => ({
   activityTypes: state.builder.activityTypes,
+  isUrlParsing: state.builder.isUrlParsing,
+  parsedMetadata: state.builder.parsedMetadata,
   loading: state.builder.loading,
   success: state.builder.success,
 });

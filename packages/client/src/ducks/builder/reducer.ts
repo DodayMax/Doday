@@ -25,6 +25,16 @@ export default (
         ...state,
         success: action.payload,
       };
+    case actions.ActionConstants.SET_URL_PARSING_PROGRESS:
+      return {
+        ...state,
+        isUrlParsing: action.payload,
+      };
+    case actions.ActionConstants.SET_PARSED_URL_METADATA_OBJECT:
+      return {
+        ...state,
+        parsedMetadata: action.payload,
+      };
     default:
       return state;
   }

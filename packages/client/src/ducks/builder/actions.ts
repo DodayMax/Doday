@@ -8,6 +8,9 @@ export enum ActionConstants {
   CREATE_AND_TAKE_DODAY = '[builder] CREATE_AND_TAKE_DODAY',
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
   SET_BUILDER_SUCCESS_FLAG = '[builder] SET_BUILDER_SUCCESS_FLAG',
+  PARSE_URL = '[builder] PARSE_URL',
+  SET_URL_PARSING_PROGRESS = '[builder] SET_URL_PARSING_PROGRESS',
+  SET_PARSED_URL_METADATA_OBJECT = '[builder] SET_PARSED_URL_METADATA_OBJECT',
 }
 
 /**
@@ -83,6 +86,51 @@ export function setBuilderSuccessFlag(
 }
 
 /**
+ * Set url parsing progress state
+ *
+ * @export
+ * @returns {ParseUrlMetadataProgressAction}
+ */
+export function setUrlParsingProgressActionCreator(
+  state?: boolean
+): ParseUrlMetadataProgressAction {
+  return {
+    type: ActionConstants.SET_URL_PARSING_PROGRESS,
+    payload: state,
+  };
+}
+
+/**
+ * Set parsed url object
+ *
+ * @export
+ * @returns {SetParsedUrlMetadataObjectAction}
+ */
+export function setParsedUrlMetadataObjectActionCreator(
+  metadata: any
+): SetParsedUrlMetadataObjectAction {
+  return {
+    type: ActionConstants.SET_PARSED_URL_METADATA_OBJECT,
+    payload: metadata,
+  };
+}
+
+/**
+ * Parse url metadata
+ *
+ * @export
+ * @returns {ParseUrlMetadataAction}
+ */
+export function parseUrlMetadataActionCreator(
+  url: string
+): ParseUrlMetadataAction {
+  return {
+    type: ActionConstants.PARSE_URL,
+    payload: url,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -110,6 +158,21 @@ export interface SetBuilderSuccessFlagAction extends AnyAction {
   payload?: boolean;
 }
 
+export interface ParseUrlMetadataAction extends AnyAction {
+  type: ActionConstants.PARSE_URL;
+  payload: string;
+}
+
+export interface ParseUrlMetadataProgressAction extends AnyAction {
+  type: ActionConstants.SET_URL_PARSING_PROGRESS;
+  payload?: boolean;
+}
+
+export interface SetParsedUrlMetadataObjectAction extends AnyAction {
+  type: ActionConstants.SET_PARSED_URL_METADATA_OBJECT;
+  payload: any;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -119,4 +182,7 @@ export type ActionTypes =
   | SetActivityTypesAction
   | CreateAndTakeDodayAction
   | SetBuilderLoadingStateAction
-  | SetBuilderSuccessFlagAction;
+  | SetBuilderSuccessFlagAction
+  | ParseUrlMetadataAction
+  | ParseUrlMetadataProgressAction
+  | SetParsedUrlMetadataObjectAction;

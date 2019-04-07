@@ -55,7 +55,7 @@ class DesktopShell extends React.Component<
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <TopBar pathname={history.location.pathname} />
+          <TopBar />
           <section className={styles.contentContainer}>
             {hero ? (
               <Dashboard

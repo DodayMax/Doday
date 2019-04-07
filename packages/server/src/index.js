@@ -1,9 +1,9 @@
-import { typeDefs } from "./graphql-schema";
-import { ApolloServer } from "apollo-server";
-import { v1 as neo4j } from "neo4j-driver";
-import { makeAugmentedSchema } from "neo4j-graphql-js";
-import { IsAuthenticatedDirective, HasRoleDirective } from "./directives";
-import dotenv from "dotenv";
+import { typeDefs } from './graphql-schema';
+import { ApolloServer } from 'apollo-server';
+import { v1 as neo4j } from 'neo4j-driver';
+import { makeAugmentedSchema } from 'neo4j-graphql-js';
+import { IsAuthenticatedDirective, HasRoleDirective } from './directives';
+import dotenv from 'dotenv';
 import transactions from './transactions';
 const fetch = require('node-fetch');
 const { getMetadata } = require('page-metadata-parser');
@@ -16,9 +16,9 @@ async function parseURL(url) {
   return await getMetadata(doc, url);
 }
 
-const metadata = parseURL('https://www.youtube.com/watch?v=9ptNxUH-lfY&list=PLNG6BIg2XJxBPMDNpPW8RBLRhJ9ZUIEtM');
+const metadata = parseURL('https://youtu.be/9ptNxUH-lfY');
 
-console.log(metadata.then((value) => console.log(value)));
+console.log(metadata.then(value => console.log(value)));
 
 const express = require('express');
 
@@ -42,8 +42,8 @@ const schema = makeAugmentedSchema({
   typeDefs,
   schemaDirectives: {
     isAuthenticated: IsAuthenticatedDirective,
-    hasRole: HasRoleDirective
-  }
+    hasRole: HasRoleDirective,
+  },
 });
 
 /*
@@ -52,16 +52,11 @@ const schema = makeAugmentedSchema({
  * with fallback to defaults
  */
 const driver = neo4j.driver(
-  process.env.NEO4J_URI || "bolt://localhost:7687",
-  neo4j.auth.basic(
-    "doday",
-    "doday"
-  )
+  process.env.NEO4J_URI || 'bolt://localhost:7687',
+  neo4j.auth.basic('doday', 'doday')
 );
 
-app.get('/', (req, res) => {
-
-});
+app.get('/', (req, res) => {});
 
 app.post('/heroes', (req, res) => {
   const session = driver.session(neo4j.WRITE);
@@ -86,12 +81,14 @@ const server = new ApolloServer({
   context: ({ req }) => {
     return {
       headers: req.headers,
-      driver
-    }
+      driver,
+    };
   },
-  schema
+  schema,
 });
 
-server.listen(process.env.GRAPHQL_LISTEN_PORT || 4040, "0.0.0.0").then(({ url }) => {
-  console.log(`GraphQL API ready at ${url}`);
-});
+server
+  .listen(process.env.GRAPHQL_LISTEN_PORT || 4040, '0.0.0.0')
+  .then(({ url }) => {
+    console.log(`GraphQL API ready at ${url}`);
+  });

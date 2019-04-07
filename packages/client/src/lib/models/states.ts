@@ -25,6 +25,8 @@ export interface AuthState {
 
 export interface BuilderState {
   loading?: boolean;
+  isUrlParsing?: boolean;
+  parsedMetadata?: any;
   success?: boolean;
   activityTypes: ActivityType[];
 }
