@@ -7,7 +7,13 @@ import Select from 'react-select';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import { actions as builderActions } from '@ducks/builder';
 import { ButtonGroup } from '../shared/_molecules/button-group';
-import { StandartSizes, Activity } from '@root/lib/common-interfaces';
+import {
+  StandartSizes,
+  Activity,
+  TypographySize,
+  TypographyColor,
+  DodayColors,
+} from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import {
   FetchActivityTypesAction,
@@ -25,6 +31,7 @@ import { detectURL } from '@root/lib/utils/regexp';
 import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
 import { Tag } from '@root/lib/models/entities/Tag';
 import DatePicker from 'react-datepicker';
+import { Marker } from '../shared/_atoms/marker';
 
 const styles = require('./_builder.module.scss');
 
@@ -132,6 +139,17 @@ export class Builder extends React.Component<
     this.props.clearBuilderActionCreator();
   };
 
+  activityTypeColor = (type: Activity) => {
+    switch (type) {
+      case 'read':
+        return DodayColors.gray3;
+      case 'watch':
+        return DodayColors.redLight;
+      default:
+        return DodayColors.yellowLight;
+    }
+  };
+
   render() {
     const {
       loading,
@@ -142,7 +160,17 @@ export class Builder extends React.Component<
 
     return (
       <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
-        <Text text={this.props.activityType || 'do'} />
+        <LayoutBlock valign="vflex-end">
+          <Text
+            size={TypographySize.s}
+            color={TypographyColor.Disabled}
+            text={'activity type:'}
+          />
+          <Marker
+            color={this.activityTypeColor(this.props.activityType)}
+            text={this.props.activityType || 'do'}
+          />
+        </LayoutBlock>
         <Input
           size={StandartSizes.large}
           autofocus
@@ -172,6 +200,7 @@ export class Builder extends React.Component<
           </LayoutBlock>
           <LayoutBlock flex={1} margin="0 0 0 1rem">
             <DatePicker
+              minDate={new Date()}
               selected={this.state.date}
               onChange={this.handleChangeDate}
               className={styles.datePickerInput}

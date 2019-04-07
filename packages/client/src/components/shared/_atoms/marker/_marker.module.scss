@@ -1,0 +1,9 @@
+@import '@styles/_config.scss';
+
+.marker {
+  &-container {
+    padding: 0.2rem 0.6rem;
+    border-radius: $radius-4;
+    margin: 0 0.8rem;
+  }
+}

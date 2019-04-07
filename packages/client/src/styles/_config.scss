@@ -145,12 +145,30 @@ $radius-circle: 100%;
   mediumScreen: $medium-screen;
   largeScreen: $large-screen;
 
+  // primary
   yellow: $yellow;
   yellowLight: $yellow-light;
+  yellowDark: $yellow-dark;
+
+  // secondary
+  blue: $blue;
+  blueLight: $blue-light;
+  blueDark: $blue-dark;
+
+  // secondary
+  violet: $violet;
+  violetLight: $violet-light;
+  violetDark: $violet-dark;
+
+  // error
   red: $red;
   redLight: $red-light;
+  redDark: $red-dark;
+
+  // success
   green: $green;
   greenLight: $green-light;
+  greenDark: $green-dark;
 
   black: $black;
 

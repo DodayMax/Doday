@@ -39,6 +39,7 @@ export const Text: React.SFC<
     [css[`${align}`]]: !!align,
     [css[`text-${size}`]]: !!size,
     [css[`${color}-text`]]: !!color,
+    [className]: !!className,
   });
 
   return (
