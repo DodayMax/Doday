@@ -10,6 +10,7 @@ import {
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
   clearParsedMetadataActionCreator,
+  clearBuilderActionCreator,
 } from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
@@ -123,6 +124,13 @@ describe('builder duck', () => {
       };
       expect(clearParsedMetadataActionCreator()).toEqual(expectedActionObject);
     });
+
+    it('clear all data in builder action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.CLEAR_BUILDER,
+      };
+      expect(clearBuilderActionCreator()).toEqual(expectedActionObject);
+    });
   });
 
   describe('builder reducer', () => {
@@ -209,6 +217,33 @@ describe('builder duck', () => {
       expect(
         reducer(state, clearParsedMetadataActionCreator()).parsedMetadata
       ).toBe(undefined);
+    });
+
+    it('clear all data in builder reducer', () => {
+      const parsedMetadata = {
+        description:
+          'In this video we will set up a quick application that uses the Neo4j driver for Node.js. neo4j is a graph database that is used for storing data that is dyna...',
+        icon: 'https://www.youtube.com/yts/img/favicon_144-vfliLAfaB.png',
+        image: 'https://i.ytimg.com/vi/snjnJCZhXUM/maxresdefault.jpg',
+        keywords: [
+          'node.js neo4j',
+          'neo4j nodejs',
+          'neo4j driver',
+          'node.js cypher',
+        ],
+        language: 'ru',
+        provider: 'YouTube',
+        title: 'Node.js With Neo4j - Freestyle Coding [2]',
+        type: 'video.other',
+        url: 'https://www.youtube.com/watch?v=snjnJCZhXUM',
+      };
+      const state = {
+        ...initialState,
+        parsedMetadata,
+      };
+      expect(reducer(state, clearBuilderActionCreator()).parsedMetadata).toBe(
+        undefined
+      );
     });
   });
 });

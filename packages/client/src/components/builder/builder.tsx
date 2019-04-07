@@ -15,6 +15,7 @@ import {
   SetBuilderSuccessFlagAction,
   ParseUrlMetadataAction,
   ClearParsedMetadataAction,
+  ClearBuilderAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { ButtonSize } from '../shared/_atoms/button';
@@ -22,8 +23,8 @@ import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { detectURL } from '@root/lib/utils/regexp';
 import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
-import { ValueType } from 'react-select/lib/types';
 import { Tag } from '@root/lib/models/entities/Tag';
+import DatePicker from 'react-datepicker';
 
 const styles = require('./_builder.module.scss');
 
@@ -35,6 +36,7 @@ interface BuilderState {
   dodayName: string;
   selectedTags?: Tag[];
   parsingFinished?: string;
+  date: Date;
 }
 
 interface PropsFromConnect {
@@ -48,6 +50,7 @@ interface PropsFromConnect {
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
+  clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
 const goals = [
@@ -67,6 +70,7 @@ export class Builder extends React.Component<
     this.state = {
       selectedActivityType: undefined,
       dodayName: '',
+      date: new Date(),
     };
   }
 
@@ -85,7 +89,10 @@ export class Builder extends React.Component<
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
       const parsedTags =
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
-      const mappedTags = parsedTags.map(tag => ({ label: tag, value: tag }));
+      const mappedTags = parsedTags.map(tag => ({
+        label: tag,
+        value: tag,
+      }));
       if (parsedTags) {
         this.setState({
           selectedTags: mappedTags,
@@ -123,6 +130,16 @@ export class Builder extends React.Component<
     });
   };
 
+  handleChangeDate = date => {
+    this.setState({
+      date,
+    });
+  };
+
+  onCloseBuidler = () => {
+    this.props.clearBuilderActionCreator();
+  };
+
   render() {
     const {
       activityTypes,
@@ -133,7 +150,7 @@ export class Builder extends React.Component<
     } = this.props;
 
     return (
-      <Page header={<PageHeader />}>
+      <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
         <Input
           size={StandartSizes.large}
           autofocus
@@ -162,7 +179,11 @@ export class Builder extends React.Component<
             />
           </LayoutBlock>
           <LayoutBlock flex={1} margin="0 0 0 1rem">
-            <Select labelKey="sysname" valueKey="id" placeholder="Date" />
+            <DatePicker
+              selected={this.state.date}
+              onChange={this.handleChangeDate}
+              className={styles.datePickerInput}
+            />
           </LayoutBlock>
         </LayoutBlock>
         <LayoutBlock flex={1} padding="0 0 2rem">
@@ -172,7 +193,7 @@ export class Builder extends React.Component<
               onChange={(value: Tag[]) => {
                 this.setState({ selectedTags: value });
               }}
-              placeholder="Add tags describing your doday"
+              placeholder="Add tags to describe your doday"
               isMulti
               cacheOptions
               defaultOptions

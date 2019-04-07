@@ -12,6 +12,7 @@ export enum ActionConstants {
   SET_URL_PARSING_PROGRESS = '[builder] SET_URL_PARSING_PROGRESS',
   SET_PARSED_URL_METADATA_OBJECT = '[builder] SET_PARSED_URL_METADATA_OBJECT',
   CLEAR_PARSED_METADATA = '[builder] CLEAR_PARSED_METADATA',
+  CLEAR_BUILDER = '[builder] CLEAR_BUILDER',
 }
 
 /**
@@ -144,6 +145,18 @@ export function clearParsedMetadataActionCreator(): ClearParsedMetadataAction {
 }
 
 /**
+ * Clear all data in builder
+ *
+ * @export
+ * @returns {ClearBuilderAction}
+ */
+export function clearBuilderActionCreator(): ClearBuilderAction {
+  return {
+    type: ActionConstants.CLEAR_BUILDER,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -190,6 +203,10 @@ export interface ClearParsedMetadataAction extends AnyAction {
   type: ActionConstants.CLEAR_PARSED_METADATA;
 }
 
+export interface ClearBuilderAction extends AnyAction {
+  type: ActionConstants.CLEAR_BUILDER;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -203,4 +220,5 @@ export type ActionTypes =
   | ParseUrlMetadataAction
   | ParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
-  | ClearParsedMetadataAction;
+  | ClearParsedMetadataAction
+  | ClearBuilderAction;

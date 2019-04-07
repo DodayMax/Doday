@@ -40,6 +40,8 @@ export default (
         ...state,
         parsedMetadata: undefined,
       };
+    case actions.ActionConstants.CLEAR_BUILDER:
+      return initialState;
     default:
       return state;
   }

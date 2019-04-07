@@ -32,3 +32,23 @@
     border: 2px solid #222;
   }
 }
+
+.date-picker-input {
+  align-items: center;
+  text-align: center;
+  font-family: $font-regular;
+  background-color: hsl(0, 0%, 100%);
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  min-height: 38px;
+  outline: 0 !important;
+  position: relative;
+  transition: all 100ms;
+  box-sizing: border-box;
+}
