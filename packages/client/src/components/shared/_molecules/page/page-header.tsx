@@ -22,6 +22,7 @@ export class PageHeader extends React.Component<PageHeaderProps> {
       >
         {actions}
         <ClickableIcon
+          hover
           onClick={() => {
             this.props.history.push('/');
             if (onClose) {

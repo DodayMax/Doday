@@ -1,40 +1,5 @@
 import { Doday } from '../models/entities/Doday';
 
-export const dodays: Doday[] = [
-  {
-    did: '123',
-    type: 0,
-    public: false,
-    name: 'First',
-    date: new Date(1551551594107),
-    completed: false,
-  },
-  {
-    did: '124',
-    type: 0,
-    public: false,
-    name: 'Second',
-    date: new Date(1551551594107),
-    completed: false,
-  },
-  {
-    did: '125',
-    type: 0,
-    public: false,
-    name: 'Third',
-    date: new Date(1551551594107),
-    completed: true,
-  },
-  {
-    did: '126',
-    type: 0,
-    public: false,
-    name: 'Third',
-    date: new Date('2019-03-05'),
-    completed: false,
-  },
-];
-
 export const goals = [
   {
     did: '127',

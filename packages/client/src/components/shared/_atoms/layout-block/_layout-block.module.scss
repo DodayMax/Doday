@@ -53,3 +53,9 @@
 .column {
   flex-direction: column;
 }
+
+.inside-elements-margin {
+  > div {
+    margin: 0 1rem;
+  }
+}

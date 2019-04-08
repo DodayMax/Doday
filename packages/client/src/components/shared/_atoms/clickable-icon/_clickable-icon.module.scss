@@ -6,8 +6,9 @@
   justify-content: center;
   align-items: center;
   border: 0;
-  border-radius: $radius-4;
+  border-radius: $radius-circle;
   padding: 0.4rem;
+  transition: all 0.3s;
 
   &:focus {
     outline: 0;
@@ -15,7 +16,7 @@
   &.hover {
     &:hover,
     &:active {
-      background-color: $white !important;
+      background-color: $gray-3 !important;
     }
   }
 }

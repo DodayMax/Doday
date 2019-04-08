@@ -34,15 +34,17 @@ export const createAndTakeDodayTransaction = (
 ) => {
   return tx.run(
     `
-      CREATE (d:Doday { did: {did}, type: {type}, name: {name}, public: {public} })
+      CREATE (d:Doday { did: {did}, activityType: {activityType}, type: {type}, name: {name}, tags: {tags}, public: {public} })
       CREATE (p:Progress { did: {did}, ${
         props.doday.date ? 'date: date({date}),' : ''
       } completed: {completed}, tookAt: {tookAt} })
-      WITH d, p
+      ${props.doday.resource ? ' CREATE (r:Resource {resource})' : ''}
+      WITH d, p ${props.doday.resource ? ', r' : ''}
       MATCH (h:Hero { did: {heroDID} })
       CREATE (h)-[:CREATE]->(d)
       CREATE (h)-[:DOING]->(p)
       CREATE (p)-[:ORIGIN]->(d)
+      ${props.doday.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
       ${
         props.doday.goalDID
           ? `
@@ -96,8 +98,9 @@ export const deleteDodayTransaction = (
       MATCH (p:Progress {did: $did})
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
-      MATCH (h)-[r:CREATE]->(d)<-[r1:ORIGIN]-(p)<-[r2:DOING]-(h)
-      DELETE r, r1, r2, d, p
+      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      MATCH (d)-[r4:RESOURCE]-(r:Resource)
+      DELETE r1, r2, r3, r4, r, d, p
     `,
     {
       heroDID: props.heroDID,

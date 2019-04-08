@@ -100,6 +100,7 @@ export class Builder extends React.Component<
         }));
       if (mappedTags) {
         this.setState({
+          dodayName: '',
           selectedTags: mappedTags,
         });
       }
@@ -156,6 +157,7 @@ export class Builder extends React.Component<
       isUrlParsing,
       parsedMetadata,
       clearParsedMetadataActionCreator,
+      activityType = 'do',
     } = this.props;
 
     return (
@@ -168,7 +170,7 @@ export class Builder extends React.Component<
           />
           <Marker
             color={this.activityTypeColor(this.props.activityType)}
-            text={this.props.activityType || 'do'}
+            text={activityType}
           />
         </LayoutBlock>
         <Input
@@ -194,7 +196,7 @@ export class Builder extends React.Component<
             <Select
               labelKey="sysname"
               valueKey="id"
-              placeholder="Choose goal"
+              placeholder="Related to goal"
               options={goals}
             />
           </LayoutBlock>
@@ -214,7 +216,7 @@ export class Builder extends React.Component<
               onChange={(value: Tag[]) => {
                 this.setState({ selectedTags: value });
               }}
-              placeholder="Add tags to describe your doday"
+              placeholder="Add tags that other people can easily find your doday"
               isMulti
               cacheOptions
               defaultOptions
@@ -222,7 +224,11 @@ export class Builder extends React.Component<
             />
           </div>
         </LayoutBlock>
-        <LayoutBlock align="flex-end" valign="vflex-center">
+        <LayoutBlock
+          insideElementsMargin
+          align="flex-end"
+          valign="vflex-center"
+        >
           <ButtonGroup>
             <Button
               size={ButtonSize.small}
@@ -241,11 +247,18 @@ export class Builder extends React.Component<
             text={'Create'}
             onClick={() => {
               if (this.state.dodayName || parsedMetadata) {
+                const resource = parsedMetadata && {
+                  ...parsedMetadata,
+                  did: cuid(),
+                };
                 this.props.createAndTakeDoday({
                   did: cuid(),
+                  activityType,
                   type: DodayTypes.Doday,
-                  name: this.state.dodayName,
-                  date: Date.now(),
+                  name: this.state.dodayName || parsedMetadata.title,
+                  tags: this.state.selectedTags.map(tag => tag.value),
+                  date: this.state.date.getTime(),
+                  resource: resource,
                   public: false,
                 });
               }
