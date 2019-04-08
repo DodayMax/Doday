@@ -153,13 +153,14 @@ export class Builder extends React.Component<
 
     return (
       <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
-        <LayoutBlock valign="vflex-end">
+        <LayoutBlock insideElementsMargin valign="vflex-end">
           <Text
             size={TypographySize.s}
             color={TypographyColor.Disabled}
             text={'activity type:'}
           />
           <Marker
+            rounded
             color={activityTypeColor(this.props.activityType)}
             text={activityType}
           />

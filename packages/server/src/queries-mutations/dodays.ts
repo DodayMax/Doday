@@ -104,8 +104,8 @@ export const deleteDodayTransaction = (
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
-      MATCH (d)-[r4:RESOURCE]-(r:Resource)
-      DELETE r1, r2, r3, r4, r, d, p
+      OPTIONAL MATCH (d)-[r4:RESOURCE]-(:Resource)
+      DELETE r1, r2, r3, r4, d, p
     `,
     {
       heroDID: props.heroDID,
