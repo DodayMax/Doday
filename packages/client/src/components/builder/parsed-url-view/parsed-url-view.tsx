@@ -28,7 +28,7 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
               {onClose && (
                 <div className={css.builderAttachmentCloseIconContainer}>
                   <ClickableIcon backdrop onClick={onClose}>
-                    <Icons.CloseCircle color={vars.gray5} />
+                    <Icons.CloseCircle color={vars.gray3} />
                   </ClickableIcon>
                 </div>
               )}

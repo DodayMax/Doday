@@ -8,6 +8,7 @@ import {
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
   setActivityTypeActionCreator,
+  clearBuilderActionCreator,
 } from './actions';
 import { fetchDodaysForDate } from '@ducks/doday-app/actions';
 import { api } from '@services';
@@ -29,6 +30,7 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
     yield put(fetchDodaysForDate());
   }
   yield put(setBuilderLoadingState(false));
+  yield put(clearBuilderActionCreator());
 }
 
 /**

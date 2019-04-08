@@ -98,12 +98,13 @@ export class Builder extends React.Component<
           label: tag,
           value: tag,
         }));
-      if (mappedTags) {
-        this.setState({
-          dodayName: '',
-          selectedTags: mappedTags,
-        });
-      }
+      this.setState({
+        dodayName: '',
+        selectedTags: this.state.selectedTags
+          ? (mappedTags && this.state.selectedTags.concat(mappedTags)) ||
+            this.state.selectedTags
+          : [],
+      });
     }
 
     return true;
@@ -256,7 +257,9 @@ export class Builder extends React.Component<
                   activityType,
                   type: DodayTypes.Doday,
                   name: this.state.dodayName || parsedMetadata.title,
-                  tags: this.state.selectedTags.map(tag => tag.value),
+                  tags:
+                    this.state.selectedTags &&
+                    this.state.selectedTags.map(tag => tag.value),
                   date: this.state.date.getTime(),
                   resource: resource,
                   public: false,

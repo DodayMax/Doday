@@ -14,7 +14,10 @@ export const activeDodaysForDateQuery = (
       MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
       WHERE h.did = $heroDID AND p.date ${
         isToday(new Date(props.date)) ? '<=' : '='
-      } date($date)
+      } date($date) AND p.completed = false
+      RETURN d { .did, .name, .type, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
+      UNION ALL MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
+      WHERE h.did = $heroDID AND p.completedAt = date($date) AND p.completed = true
       RETURN d { .did, .name, .type, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
       ORDER BY p.completed
     `,
@@ -34,7 +37,9 @@ export const createAndTakeDodayTransaction = (
 ) => {
   return tx.run(
     `
-      CREATE (d:Doday { did: {did}, activityType: {activityType}, type: {type}, name: {name}, tags: {tags}, public: {public} })
+      CREATE (d:Doday { did: {did}, activityType: {activityType}, type: {type}, name: {name} ${
+        props.doday.tags ? ', tags: {tags}' : ''
+      }, public: {public} })
       CREATE (p:Progress { did: {did}, ${
         props.doday.date ? 'date: date({date}),' : ''
       } completed: {completed}, tookAt: {tookAt} })
