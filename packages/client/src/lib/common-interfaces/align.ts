@@ -11,3 +11,8 @@ export type AlignTypes =
   | 'space-between'
   | 'space-around';
 export type vAlignTypes = 'vflex-center' | 'vflex-start' | 'vflex-end';
+
+export type AlignSelf =
+  | 'align-self-center'
+  | 'align-self-start'
+  | 'align-self-end';

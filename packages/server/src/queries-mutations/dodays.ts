@@ -15,10 +15,10 @@ export const activeDodaysForDateQuery = (
       WHERE h.did = $heroDID AND p.date ${
         isToday(new Date(props.date)) ? '<=' : '='
       } date($date) AND p.completed = false
-      RETURN d { .did, .name, .type, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
+      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
       UNION ALL MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
       WHERE h.did = $heroDID AND p.completedAt = date($date) AND p.completed = true
-      RETURN d { .did, .name, .type, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
+      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt } as Doday
       ORDER BY p.completed
     `,
     {

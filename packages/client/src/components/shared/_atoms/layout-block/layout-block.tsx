@@ -1,12 +1,13 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { AlignTypes, vAlignTypes } from '@lib/common-interfaces';
+import { AlignTypes, vAlignTypes, AlignSelf } from '@lib/common-interfaces';
 
 const styles = require('./_layout-block.module.scss');
 
 interface LayoutBlockProps {
   align?: AlignTypes;
   valign?: vAlignTypes;
+  alignSelf?: AlignSelf;
   direction?: 'row' | 'column';
   flex?: number;
   absolute?: boolean;
@@ -27,6 +28,7 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles.layoutBlock]: true,
     [styles[props.align || '']]: !!props.align,
     [styles[props.valign || '']]: !!props.valign,
+    [styles[props.alignSelf || '']]: !!props.alignSelf,
     [styles[props.direction || '']]: !!props.direction,
     [styles.absolute]: !!props.absolute,
     [styles.relative]: !!props.relative,

@@ -35,7 +35,7 @@ export const Text: React.SFC<
     [css['underline']]: !!underline,
     [css['strikethrough']]: !!strikethrough,
     [css['ellipsize']]: !!ellipsize,
-    [css['wordwrap']]: !!wordwrap,
+    [css['wordwrap']]: wordwrap,
     [css[`${align}`]]: !!align,
     [css[`text-${size}`]]: !!size,
     [css[`${color}-text`]]: !!color,

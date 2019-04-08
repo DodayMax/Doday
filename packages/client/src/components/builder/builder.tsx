@@ -32,6 +32,7 @@ import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
 import { Tag } from '@root/lib/models/entities/Tag';
 import DatePicker from 'react-datepicker';
 import { Marker } from '../shared/_atoms/marker';
+import { activityTypeColor } from '@root/lib/utils';
 
 const styles = require('./_builder.module.scss');
 
@@ -141,17 +142,6 @@ export class Builder extends React.Component<
     this.props.clearBuilderActionCreator();
   };
 
-  activityTypeColor = (type: Activity) => {
-    switch (type) {
-      case 'read':
-        return DodayColors.gray3;
-      case 'watch':
-        return DodayColors.redLight;
-      default:
-        return DodayColors.yellowLight;
-    }
-  };
-
   render() {
     const {
       loading,
@@ -170,7 +160,7 @@ export class Builder extends React.Component<
             text={'activity type:'}
           />
           <Marker
-            color={this.activityTypeColor(this.props.activityType)}
+            color={activityTypeColor(this.props.activityType)}
             text={activityType}
           />
         </LayoutBlock>

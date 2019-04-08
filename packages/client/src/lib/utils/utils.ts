@@ -1,4 +1,4 @@
-import { DodayColors } from '../common-interfaces';
+import { DodayColors, Activity } from '../common-interfaces';
 
 const vars = require('@styles/_config.scss');
 
@@ -58,5 +58,16 @@ export const detectColor: (color?: DodayColors) => string = color => {
       default:
         return undefined;
     }
+  }
+};
+
+export const activityTypeColor = (type: Activity) => {
+  switch (type) {
+    case 'read':
+      return DodayColors.gray3;
+    case 'watch':
+      return DodayColors.redLight;
+    default:
+      return DodayColors.yellowLight;
   }
 };

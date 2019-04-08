@@ -38,6 +38,21 @@
   align-items: flex-end;
 }
 
+.align-self-center {
+  align-self: center;
+  justify-self: center;
+}
+
+.align-self-start {
+  align-self: flex-start;
+  justify-self: flex-start;
+}
+
+.align-self-end {
+  align-self: flex-end;
+  justify-self: flex-end;
+}
+
 .space-between {
   justify-content: space-between;
 }

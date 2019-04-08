@@ -83,37 +83,31 @@
 }
 
 .text-s {
-  composes: wordwrap;
   font-size: $body-s;
   line-height: 1.6rem;
 }
 
 .text-m {
-  composes: wordwrap;
   font-size: $body-m;
   line-height: 2rem;
 }
 
 .text-l {
-  composes: wordwrap;
   font-size: $body-l;
   line-height: 2.4rem;
 }
 
 .text-h3 {
-  composes: bold wordwrap;
   font-size: $title-s;
   line-height: 2.4rem;
 }
 
 .text-h2 {
-  composes: wordwrap;
   font-size: $title-m;
   line-height: 3.2rem;
 }
 
 .text-h1 {
-  composes: wordwrap;
   font-size: $title-l;
   line-height: 4rem;
 }

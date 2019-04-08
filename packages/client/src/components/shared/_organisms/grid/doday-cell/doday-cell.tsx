@@ -1,11 +1,14 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { TypographySize } from '@lib/common-interfaces';
+import { TypographySize, DodayColors } from '@lib/common-interfaces';
 import { Checkbox, Text } from '@components';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { AnyAction } from 'redux';
+import { Marker } from '@root/components/shared/_atoms/marker';
+import { activityTypeColor } from '@root/lib/utils';
+import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 
-const styles = require('./_doday-cell.module.scss');
+const css = require('./_doday-cell.module.scss');
 
 interface DodayCellProps {
   doday: Doday;
@@ -21,8 +24,9 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
   onComplete,
 }) => {
   const classNames = classnames({
-    [styles.cell]: true,
-    [styles.active]: active,
+    [css.cell]: true,
+    [css.padded]: true,
+    [css.active]: active,
   });
 
   return (
@@ -46,8 +50,15 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
         wordwrap
         text={doday.name}
         size={TypographySize.s}
-        className={styles.cellTitle}
+        className={css.cellTitle}
       />
+      <LayoutBlock absolute top="0" right="0">
+        <Marker
+          color={DodayColors.gray4}
+          text={doday.activityType}
+          size={TypographySize.s}
+        />
+      </LayoutBlock>
     </li>
   );
 };
