@@ -17,6 +17,7 @@ export interface DodayAppState {
   dodays: Doday[];
   goals: Doday[];
   chosenDate: Date;
+  selectedDoday?: Doday;
 }
 
 export interface AuthState {

@@ -4,15 +4,15 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-client';
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000',
+  uri: 'http://localhost:4040',
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('id_token');
+  //const token = localStorage.getItem('id_token');
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : '',
+      //authorization: token ? `Bearer ${token}` : '',
     },
   };
 });

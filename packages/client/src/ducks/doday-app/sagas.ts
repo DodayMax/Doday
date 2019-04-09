@@ -9,6 +9,8 @@ import {
   setGoals,
   ToggleDodayAction,
   fetchDodaysForDate,
+  FetchSelectedDodayAction,
+  SetSelectedDodayActionCreator,
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -33,6 +35,18 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
   );
   yield put(setDodaysForDate(dodays));
   yield put(setAppLoadingState(false));
+}
+
+/**
+ * Fetch selected doday saga
+ *
+ * @param {FetchSelectedDodayAction} action
+ */
+function* FetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
+  const progress = yield call(api.dodays.queries.dodayProgressByID, {
+    did: action.payload,
+  });
+  yield put(SetSelectedDodayActionCreator(progress));
 }
 
 /**
@@ -78,4 +92,5 @@ export default [
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
   takeLatest(ActionConstants.TOGGLE_DODAY, toggleDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),
+  takeLatest(ActionConstants.FETCH_SELECTED_DODAY, FetchSelectedDodaySaga),
 ];

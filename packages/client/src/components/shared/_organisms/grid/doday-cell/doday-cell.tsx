@@ -13,7 +13,7 @@ const css = require('./_doday-cell.module.scss');
 interface DodayCellProps {
   doday: Doday;
   active?: boolean;
-  onClick?: (route: string) => void;
+  onClick?: (route: string, did: string) => void;
   onComplete?: (doday: Doday) => AnyAction;
 }
 
@@ -33,7 +33,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
     <li
       className={classNames}
       key={doday.did}
-      onClick={() => onClick && onClick(`/dodays/${doday.did}`)}
+      onClick={() => onClick && onClick(`/dodays/${doday.did}`, doday.did)}
     >
       {
         <Checkbox
@@ -46,12 +46,9 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
           checked={doday.completed}
         />
       }
-      <Text
-        wordwrap
-        text={doday.name}
-        size={TypographySize.s}
-        className={css.cellTitle}
-      />
+      <Text wordwrap size={TypographySize.s} className={css.cellTitle}>
+        {doday.name}
+      </Text>
       <LayoutBlock absolute top="0" right="0">
         <Marker
           color={DodayColors.gray4}

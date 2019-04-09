@@ -7,10 +7,11 @@ import {
   fetchDodaysForDate,
   setDodaysForDate,
   setDodaysBadgeForToday,
-  setLoadingState,
+  setAppLoadingState,
   fetchAllGoals,
   setGoals,
   toggleDoday,
+  SetSelectedDodayActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -24,7 +25,7 @@ describe('doday-app duck', () => {
         type: ActionConstants.SET_LOADING_STATE,
         payload: value,
       };
-      expect(setLoadingState(value)).toEqual(expectedActionObject);
+      expect(setAppLoadingState(value)).toEqual(expectedActionObject);
     });
 
     it('change path action creator', () => {
@@ -41,7 +42,7 @@ describe('doday-app duck', () => {
         did: '123',
         type: DodayTypes.Goal,
         name: 'name',
-        dodays: [],
+        children: [],
       };
       const expectedActionObject = {
         type: ActionConstants.PUSH_TO_NAV_STACK,
@@ -68,6 +69,7 @@ describe('doday-app duck', () => {
       const dodays: Doday[] = [
         {
           did: '123',
+          activityType: 'do',
           type: DodayTypes.Doday,
           name: 'name',
           public: false,
@@ -102,7 +104,7 @@ describe('doday-app duck', () => {
           did: '123',
           type: DodayTypes.Goal,
           name: 'name',
-          dodays: [],
+          children: [],
         },
       ];
       const expectedActionObject = {
@@ -114,6 +116,7 @@ describe('doday-app duck', () => {
     it('toggle doday action creator', () => {
       const doday: Doday = {
         did: '123',
+        activityType: 'do',
         type: DodayTypes.Doday,
         name: 'name',
         public: false,
@@ -128,6 +131,7 @@ describe('doday-app duck', () => {
     it('delete doday action creator', () => {
       const doday: Doday = {
         did: '123',
+        activityType: 'do',
         type: DodayTypes.Doday,
         name: 'name',
         public: false,
@@ -138,12 +142,42 @@ describe('doday-app duck', () => {
       };
       expect(toggleDoday(doday)).toEqual(expectedActionObject);
     });
+
+    it('fetch selected doday action creator', () => {
+      const selectedDid = 'test did';
+      const expectedActionObject = {
+        type: ActionConstants.FETCH_SELECTED_DODAY,
+        payload: selectedDid,
+      };
+      expect(SelectDodayActionCreator(selectedDid)).toEqual(
+        expectedActionObject
+      );
+    });
+
+    it('set selected doday action creator', () => {
+      const fetchedProgressNode = {
+        did: 'test did',
+        completed: false,
+        tookAt: new Date(),
+        date: new Date(),
+        completedAt: new Date(),
+        hero: [],
+        origin: [],
+      };
+      const expectedActionObject = {
+        type: ActionConstants.SET_SELECTED_DODAY,
+        payload: fetchedProgressNode,
+      };
+      expect(SelectDodayActionCreator(fetchedProgressNode)).toEqual(
+        expectedActionObject
+      );
+    });
   });
 
   describe('doday-app reducers', () => {
     it('set loading state reducer', () => {
       const value = true;
-      expect(reducer(undefined, setLoadingState(value)).loading).toBe(value);
+      expect(reducer(undefined, setAppLoadingState(value)).loading).toBe(value);
     });
 
     it('change path reducer', () => {
@@ -156,7 +190,7 @@ describe('doday-app duck', () => {
         did: '123',
         type: DodayTypes.Goal,
         name: 'name',
-        dodays: [],
+        children: [],
       };
       expect(
         reducer(undefined, pushToNavStack(newDoday)).navStack[0].name
@@ -168,7 +202,7 @@ describe('doday-app duck', () => {
         did: '123',
         type: DodayTypes.Goal,
         name: 'name',
-        dodays: [],
+        children: [],
       };
       expect(
         reducer(undefined, pushToNavStack(newDoday)).navStack[0].name
@@ -180,6 +214,7 @@ describe('doday-app duck', () => {
       const dodays: Doday[] = [
         {
           did: '123',
+          activityType: 'do',
           type: DodayTypes.Doday,
           name: 'name',
           public: false,
@@ -196,7 +231,7 @@ describe('doday-app duck', () => {
           did: '123',
           type: DodayTypes.Goal,
           name: 'name',
-          dodays: [],
+          children: [],
         },
       ];
       expect(reducer(undefined, setGoals(goals)).dodays).toEqual(goals);
@@ -207,6 +242,22 @@ describe('doday-app duck', () => {
       expect(reducer(undefined, setDodaysBadgeForToday(5)).badge).toEqual(
         value
       );
+    });
+
+    it('set select doday reducer', () => {
+      const fetchedProgressNode = {
+        did: 'test did',
+        completed: false,
+        tookAt: new Date(),
+        date: new Date(),
+        completedAt: new Date(),
+        hero: [],
+        origin: [],
+      };
+      expect(
+        reducer(undefined, SetSelectedDodayActionCreator(fetchedProgressNode))
+          .selectedDoday.did
+      ).toEqual(fetchedProgressNode.did);
     });
   });
 });

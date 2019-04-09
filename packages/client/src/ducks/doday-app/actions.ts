@@ -15,6 +15,8 @@ export enum ActionConstants {
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
   FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
   SET_GOALS = '[doday-app] SET_GOALS',
+  FETCH_SELECTED_DODAY = '[doday-app] FETCH_SELECTED_DODAY',
+  SET_SELECTED_DODAY = '[doday-app] SET_SELECTED_DODAY',
 }
 
 /**
@@ -171,6 +173,36 @@ export function setGoals(goals: Goal[]): SetGoals {
 }
 
 /**
+ * Select doday and show details page
+ *
+ * @export
+ * @returns {FetchSelectedDodayAction}
+ */
+export function fetchSelectedDodayActionCreator(
+  did: string
+): FetchSelectedDodayAction {
+  return {
+    type: ActionConstants.FETCH_SELECTED_DODAY,
+    payload: did,
+  };
+}
+
+/**
+ * Set selected doday to store action
+ *
+ * @export
+ * @returns {SetSelectedDodayAction}
+ */
+export function SetSelectedDodayActionCreator(
+  progress: Doday
+): SetSelectedDodayAction {
+  return {
+    type: ActionConstants.SET_SELECTED_DODAY,
+    payload: progress,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -231,6 +263,16 @@ export interface DeleteDodayAction extends AnyAction {
   payload: Doday;
 }
 
+export interface FetchSelectedDodayAction extends AnyAction {
+  type: ActionConstants.FETCH_SELECTED_DODAY;
+  payload: string;
+}
+
+export interface SetSelectedDodayAction extends AnyAction {
+  type: ActionConstants.SET_SELECTED_DODAY;
+  payload: Doday;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -245,4 +287,6 @@ export type ActionTypes =
   | SetDodaysForDate
   | SetDodaysBadgeForToday
   | SetGoals
-  | ToggleDodayAction;
+  | ToggleDodayAction
+  | FetchSelectedDodayAction
+  | SetSelectedDodayAction;

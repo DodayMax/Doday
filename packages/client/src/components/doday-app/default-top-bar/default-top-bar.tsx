@@ -31,7 +31,7 @@ export class DefaultTopBar extends React.Component<DefaultTopBarProps> {
           )}
         </LayoutBlock>
         <LayoutBlock flex={2} align="flex-center">
-          <Text text={this.props.title} size={TypographySize.s} />
+          <Text size={TypographySize.s}>{this.props.title}</Text>
         </LayoutBlock>
         <LayoutBlock flex={1} />
       </>

@@ -29,12 +29,9 @@ export const GoalCell: React.SFC<GoalCellProps> = ({
       onClick={() => onClick && onClick(goal)}
     >
       {<Icons.Goal width={30} height={30} />}
-      <Text
-        ellipsize
-        text={goal.name}
-        size={TypographySize.s}
-        className={styles.cellTitle}
-      />
+      <Text ellipsize size={TypographySize.s} className={styles.cellTitle}>
+        {goal.name}
+      </Text>
     </li>
   );
 };

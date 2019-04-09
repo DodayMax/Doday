@@ -4,14 +4,6 @@ import { DodayTypes } from './dodayTypes';
 import { Resource } from './Resource';
 import { Activity } from '@root/lib/common-interfaces';
 
-export interface Progress {
-  origin: SerializedDoday;
-  completed: boolean;
-  date?: number;
-  tookAt?: number;
-  completedAt?: number;
-}
-
 export interface Doday {
   did: string;
   activityType: Activity;

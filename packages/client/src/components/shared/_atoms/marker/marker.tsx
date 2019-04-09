@@ -28,9 +28,10 @@ export const Marker: React.SFC<MarkerProps> = ({
     <Text
       wordwrap={false}
       className={cx}
-      text={text}
       {...props}
       style={{ backgroundColor: bgColor }}
-    />
+    >
+      {text}
+    </Text>
   );
 };

@@ -43,7 +43,14 @@ export const createAndTakeDodayTransaction = (
       CREATE (p:Progress { did: {did}, ${
         props.doday.date ? 'date: date({date}),' : ''
       } completed: {completed}, tookAt: {tookAt} })
-      ${props.doday.resource ? ' CREATE (r:Resource {resource})' : ''}
+      ${
+        props.doday.resource
+          ? `
+            MERGE (r:Resource {url: {resourceURL}})
+            ON CREATE SET r = {resource}
+          `
+          : ''
+      }
       WITH d, p ${props.doday.resource ? ', r' : ''}
       MATCH (h:Hero { did: {heroDID} })
       CREATE (h)-[:CREATE]->(d)
@@ -61,6 +68,7 @@ export const createAndTakeDodayTransaction = (
     `,
     {
       ...props.doday,
+      resourceURL: props.doday.resource && props.doday.resource.url,
       heroDID: props.heroDID,
       date:
         props.doday.date && dateInputStringFromDate(new Date(props.doday.date)),

@@ -5,10 +5,13 @@
     height: $top-bar-height;
     box-sizing: border-box;
     padding: 0 $padding-l;
+  }
 
-    > * {
-      margin-left: $space-s;
-      margin-right: $space-s;
-    }
+  &-status {
+    composes: margin-children from '@styles/_utils.scss';
+  }
+
+  &-actions {
+    composes: margin-children from '@styles/_utils.scss';
   }
 }

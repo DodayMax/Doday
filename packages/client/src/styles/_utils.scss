@@ -20,6 +20,15 @@ ul {
   list-style: none;
 }
 
+.margin-children {
+  > * {
+    margin-right: $space-xs;
+  }
+  > *:last-child {
+    margin-right: 0;
+  }
+}
+
 .control_panel {
   position: absolute;
   height: 5rem;

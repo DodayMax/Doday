@@ -13,6 +13,7 @@ import {
 import { fetchDodaysForDate } from '@ducks/doday-app/actions';
 import { api } from '@services';
 import { detectActivityType } from '@root/lib/utils/regexp';
+import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
 
 /**
  * Create Doday and Progress node saga
@@ -40,10 +41,7 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
  */
 function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
   yield put(setUrlParsingProgressActionCreator(true));
-  const metadata = yield call(
-    api.utils.queries.parseMetadataFromUrl,
-    action.payload
-  );
+  const metadata = yield call(parseMetadataFromUrl, action.payload);
   const activityType = detectActivityType(metadata);
   if (metadata) {
     yield put(setParsedUrlMetadataObjectActionCreator(metadata));

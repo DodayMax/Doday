@@ -1,4 +1,6 @@
-export const dateTimeInputFromDate = (date: Date) => {
+import { Neo4jDateTime, Neo4jDate } from '../models/entities/Progress';
+
+export const neo4jDateTimeFromDate = (date: Date) => {
   return {
     year: date.getFullYear(),
     month: date.getMonth() + 1,
@@ -9,12 +11,34 @@ export const dateTimeInputFromDate = (date: Date) => {
   };
 };
 
-export const dateInputFromDate = (date: Date) => {
+export const dateFromNeo4jDateTime = (datetime: Neo4jDateTime) => {
+  const date = new Date();
+  date.setFullYear(datetime.year);
+  date.setMonth(datetime.month);
+  date.setDate(datetime.day);
+  date.setHours(datetime.hour);
+  date.setMinutes(datetime.minute);
+  date.setSeconds(datetime.second || 0);
+  date.setMilliseconds(datetime.millisecond || 0);
+
+  return date;
+};
+
+export const neo4jDateFromDate = (date: Date) => {
   return {
     year: date.getFullYear(),
     month: date.getMonth() + 1,
-    day: date.getDate()
+    day: date.getDate(),
   };
+};
+
+export const dateFromNeo4jDate = (date: Neo4jDate) => {
+  const newDate = new Date();
+  newDate.setFullYear(date.year);
+  newDate.setMonth(date.month);
+  newDate.setDate(date.day);
+
+  return newDate;
 };
 
 export const dateInputStringFromDate = (date: Date) => {
@@ -23,5 +47,9 @@ export const dateInputStringFromDate = (date: Date) => {
 
 export const isToday = (date: Date) => {
   const today = new Date();
-  return date.getFullYear() === today.getFullYear() && date.getMonth() === today.getMonth() && date.getDate() === today.getDate();
-}
+  return (
+    date.getFullYear() === today.getFullYear() &&
+    date.getMonth() === today.getMonth() &&
+    date.getDate() === today.getDate()
+  );
+};

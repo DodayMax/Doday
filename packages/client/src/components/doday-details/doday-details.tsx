@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import { TypographySize } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -9,12 +11,17 @@ import { actions as dodaysActions } from '@ducks/doday-app';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { Button, ButtonSize } from '../shared/_atoms/button';
-import { DeleteDodayAction } from '@root/ducks/doday-app/actions';
+import {
+  DeleteDodayAction,
+  FetchSelectedDodayAction,
+} from '@root/ducks/doday-app/actions';
+import { Marker } from '../shared/_atoms/marker';
+import { activityTypeColor, isGoal } from '@root/lib/utils';
 
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
-  dodays: (Doday | Goal)[];
+  selectedDoday: Doday;
   deleteDoday: (doday: Doday) => DeleteDodayAction;
 }
 
@@ -23,12 +30,10 @@ class DodayDetails extends React.Component<
   DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>
 > {
   render() {
-    const { dodays, history, match } = this.props;
-    const doday =
-      dodays.length && dodays.find(doday => doday.did === match.params.id);
+    const { history, selectedDoday } = this.props;
 
-    if (!doday) {
-      history.push('/');
+    if (!selectedDoday) {
+      return 'Loading...';
     }
 
     const actions = [
@@ -36,20 +41,29 @@ class DodayDetails extends React.Component<
         key={1}
         size={ButtonSize.small}
         text={'Delete'}
-        onClick={() => this.props.deleteDoday(doday as Doday)}
+        // onClick={() => this.props.deleteDoday(selectedDoday)}
+      />,
+    ];
+
+    const status = [
+      <Marker
+        key={1}
+        rounded
+        color={activityTypeColor(selectedDoday.activityType)}
+        text={selectedDoday.activityType}
       />,
     ];
 
     return (
-      <Page header={<PageHeader actions={actions} />}>
-        {doday ? <Text text={doday.name} size={TypographySize.h1} /> : null}
+      <Page header={<PageHeader status={status} actions={actions} />}>
+        <Text>{selectedDoday.name}</Text>
       </Page>
     );
   }
 }
 
 const mapState = (state: RootState) => ({
-  dodays: state.dodayApp.dodays,
+  selectedDoday: state.dodayApp.selectedDoday,
 });
 
 export default connect(

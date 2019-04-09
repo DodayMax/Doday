@@ -13,7 +13,12 @@ interface DodayAppMenuCellProps {
   collapsed: boolean;
 }
 
-export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onClick, active, collapsed }) => {
+export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
+  item,
+  onClick,
+  active,
+  collapsed,
+}) => {
   const Icon = Icons[item.icon];
   const classNames = classnames({
     [styles.cell]: true,
@@ -27,34 +32,27 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({ item, onCli
 
   if (collapsed) {
     return (
-      <li
-        className={classNames}
-        onClick={onClick}
-      >
+      <li className={classNames} onClick={onClick}>
         {item.badge == null && <Icon />}
-        {item.badge != null &&
+        {item.badge != null && (
           <div className={badgeContainer}>
             <Badge value={item.badge} />
           </div>
-        }
+        )}
       </li>
     );
   } else {
     return (
-      <li
-        className={classNames}
-        onClick={onClick}
-      >
+      <li className={classNames} onClick={onClick}>
         {<Icon />}
-        <Text
-          text={item.text}
-          size={TypographySize.s}
-          className={styles.cellTitle} />
-        {item.badge != null &&
+        <Text size={TypographySize.s} className={styles.cellTitle}>
+          {item.text}
+        </Text>
+        {item.badge != null && (
           <div className={badgeContainer}>
             <Badge value={item.badge} />
           </div>
-        }
+        )}
       </li>
     );
   }

@@ -37,12 +37,10 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
                 src={parsedMetadata ? parsedMetadata.image || '' : ''}
               />
               <div className={css.builderAttachmentTextContainer}>
-                <Text text={parsedMetadata ? parsedMetadata.title || '' : ''} />
-                <Text
-                  text={parsedMetadata ? parsedMetadata.url || '' : ''}
-                  color={TypographyColor.Disabled}
-                  size={TypographySize.s}
-                />
+                <Text>{parsedMetadata ? parsedMetadata.title || '' : ''}</Text>
+                <Text color={TypographyColor.Disabled} size={TypographySize.s}>
+                  {parsedMetadata ? parsedMetadata.url || '' : ''}
+                </Text>
               </div>
             </div>
           </LayoutBlock>

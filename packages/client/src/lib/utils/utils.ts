@@ -1,4 +1,7 @@
 import { DodayColors, Activity } from '../common-interfaces';
+import { Doday } from '../models/entities/Doday';
+import { Goal } from '../models/entities/Goal';
+import { DodayTypes } from '../models/entities/dodayTypes';
 
 const vars = require('@styles/_config.scss');
 
@@ -71,3 +74,9 @@ export const activityTypeColor = (type: Activity) => {
       return DodayColors.yellowLight;
   }
 };
+
+export function isGoal(doday: Doday | Goal): doday is Goal {
+  return doday.type === DodayTypes.Goal;
+}
+
+export const firstItem = (arr: any[]) => arr.length && arr[0];

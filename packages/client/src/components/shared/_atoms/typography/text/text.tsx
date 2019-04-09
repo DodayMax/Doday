@@ -4,14 +4,11 @@ import { TypographyProps } from '../index';
 
 const css = require('@styles/_typography.module.scss');
 
-interface TextProps {
-  text: string;
-}
+interface TextProps {}
 
 export const Text: React.SFC<
   TextProps & TypographyProps & React.HTMLAttributes<HTMLElement>
 > = ({
-  text,
   color,
   align,
   size,
@@ -44,7 +41,7 @@ export const Text: React.SFC<
 
   return (
     <span {...props} className={cx}>
-      {text}
+      {props.children}
     </span>
   );
 };
