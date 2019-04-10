@@ -9,7 +9,7 @@ import { DefaultTopBar } from './default-top-bar/default-top-bar';
 import { Grid } from '@components';
 import { dodayApp } from '@lib/constants';
 import {
-  ChangeDateAction,
+  ChangeDodayAppDateAction,
   FetchAllGoals,
   PushToNavigationStackAction,
   ToggleDodayAction,
@@ -36,7 +36,7 @@ interface PropsFromConnect {
   dodays: (Doday | Goal)[];
   goals: Goal[];
   chosenDate?: Date;
-  changeDate?: (date: Date) => ChangeDateAction;
+  changeDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
   navStack: Goal[];
   pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   popFromNavStack: () => PopFromNavigationStackAction;
@@ -106,7 +106,13 @@ export class DodayAppComponent extends React.Component<
   };
 
   renderContent() {
-    const { path, chosenDate, changeDate, loading, navStack } = this.props;
+    const {
+      path,
+      chosenDate,
+      changeDateActionCreator,
+      loading,
+      navStack,
+    } = this.props;
 
     switch (path) {
       case dodayApp.paths.goals:
@@ -134,7 +140,10 @@ export class DodayAppComponent extends React.Component<
       default:
         return (
           <>
-            <TodayTopBar date={chosenDate!} changeDate={changeDate!} />
+            <TodayTopBar
+              date={chosenDate!}
+              changeDate={changeDateActionCreator!}
+            />
             <Grid
               loading={loading}
               items={this.getDodaysToRender()}

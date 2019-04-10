@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as moment from 'moment';
-import { ChangeDateAction } from '@root/ducks/doday-app/actions';
+import { ChangeDodayAppDateAction } from '@root/ducks/doday-app/actions';
 import { ClickableIcon } from '@root/components/shared/_atoms/clickable-icon/clickable-icon';
 import { Icons } from '@root/components';
 
@@ -9,7 +9,7 @@ const styles = require('./_today-top-bar.module.scss');
 
 interface TodayTopBarProps {
   date: Date;
-  changeDate: (date: Date) => ChangeDateAction;
+  changeDate: (date: Date) => ChangeDodayAppDateAction;
 }
 
 export class TodayTopBar extends React.Component<TodayTopBarProps> {

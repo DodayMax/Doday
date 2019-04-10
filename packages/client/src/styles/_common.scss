@@ -43,6 +43,12 @@
   align-items: center;
 }
 
+.child-flex {
+  > div {
+    flex: 1;
+  }
+}
+
 .flip {
   transform: rotate(180deg);
 }

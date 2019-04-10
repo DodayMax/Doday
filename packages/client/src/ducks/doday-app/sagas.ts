@@ -11,6 +11,7 @@ import {
   fetchDodaysForDate,
   RemoveDodayAction,
   UpdateDodayAction,
+  changeDateActionCreator,
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -97,6 +98,9 @@ function* updateDodaySaga(action: UpdateDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.updateDoday, action.payload);
   yield put(fetchDodaysForDate());
+  if (action.payload.updates.date) {
+    yield put(changeDateActionCreator(new Date(action.payload.updates.date)));
+  }
   yield put(setDodayDetailsLoadingStateActionCreator(false));
   yield put(setAppLoadingState(false));
 }

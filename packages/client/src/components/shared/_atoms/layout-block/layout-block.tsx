@@ -8,6 +8,7 @@ interface LayoutBlockProps {
   align?: AlignTypes;
   valign?: vAlignTypes;
   alignSelf?: AlignSelf;
+  childFlex?: boolean;
   fullHeight?: boolean;
   direction?: 'row' | 'column';
   flex?: number;
@@ -27,6 +28,7 @@ interface LayoutBlockProps {
 export const LayoutBlock = (props: LayoutBlockProps) => {
   const classNames = classnames({
     [styles.layoutBlock]: true,
+    [styles.childFlex]: !!props.childFlex,
     [styles[props.align || '']]: !!props.align,
     [styles[props.valign || '']]: !!props.valign,
     [styles[props.alignSelf || '']]: !!props.alignSelf,

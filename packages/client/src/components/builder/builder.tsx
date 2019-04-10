@@ -181,8 +181,8 @@ export class Builder extends React.Component<
           loading={isUrlParsing}
           parsedMetadata={parsedMetadata}
         />
-        <LayoutBlock padding="2rem 0">
-          <LayoutBlock flex={1}>
+        <LayoutBlock childFlex padding="2rem 0">
+          <LayoutBlock childFlex flex={1}>
             <Select
               labelKey="sysname"
               valueKey="id"
@@ -190,7 +190,7 @@ export class Builder extends React.Component<
               options={goals}
             />
           </LayoutBlock>
-          <LayoutBlock flex={1} margin="0 0 0 1rem">
+          <LayoutBlock childFlex flex={1} margin="0 0 0 1rem">
             <DatePicker
               minDate={new Date()}
               selected={this.state.date}
@@ -199,7 +199,7 @@ export class Builder extends React.Component<
             />
           </LayoutBlock>
         </LayoutBlock>
-        <LayoutBlock flex={1} padding="0 0 2rem">
+        <LayoutBlock childFlex flex={1} padding="0 0 2rem">
           <div>
             <AsyncCreatableSelect
               value={this.state.selectedTags}

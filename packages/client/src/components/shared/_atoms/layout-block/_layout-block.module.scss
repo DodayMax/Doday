@@ -1,9 +1,9 @@
 .layout-block {
   display: flex;
+}
 
-  & > div {
-    flex: 1;
-  }
+.child-flex {
+  composes: child-flex from '@styles/_common.scss';
 }
 
 .absolute {

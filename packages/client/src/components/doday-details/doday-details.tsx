@@ -126,7 +126,7 @@ class DodayDetails extends React.Component<
     ];
 
     // Add owner actions
-    if (IAMOwner) {
+    if (IAMOwner && dirty) {
       actions.unshift(
         <Button
           primary
@@ -181,7 +181,7 @@ class DodayDetails extends React.Component<
             }
           />
           {youtubeLink && (
-            <LayoutBlock insideElementsMargin>
+            <LayoutBlock insideElementsMargin valign="vflex-center">
               <Icons.Goal width={16} height={16} />
               <Text size={TypographySize.s}>25m 27s</Text>
               <Text size={TypographySize.s} color={TypographyColor.Disabled}>

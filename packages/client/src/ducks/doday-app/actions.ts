@@ -71,12 +71,12 @@ export function popFromNavStack(): PopFromNavigationStackAction {
 }
 
 /**
- * Change date in doday app today section
+ * Change selected date in doday app today section
  *
  * @export
- * @returns {ChangeDateAction}
+ * @returns {ChangeDodayAppDateAction}
  */
-export function changeDate(date: Date): ChangeDateAction {
+export function changeDateActionCreator(date: Date): ChangeDodayAppDateAction {
   return {
     type: ActionConstants.CHANGE_DATE,
     payload: date,
@@ -227,7 +227,7 @@ export interface PopFromNavigationStackAction extends AnyAction {
   type: ActionConstants.POP_FROM_NAV_STACK;
 }
 
-export interface ChangeDateAction extends AnyAction {
+export interface ChangeDodayAppDateAction extends AnyAction {
   type: ActionConstants.CHANGE_DATE;
   payload: Date;
 }
@@ -287,7 +287,7 @@ export type ActionTypes =
   | SetLoadingState
   | PushToNavigationStackAction
   | PopFromNavigationStackAction
-  | ChangeDateAction
+  | ChangeDodayAppDateAction
   | FetchDodayForDate
   | SetDodaysForDate
   | SetDodaysBadgeForToday
