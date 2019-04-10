@@ -5,6 +5,7 @@ import {
   toggleDodayTransaction,
   activeDodaysForDateQuery,
   deleteDodayTransaction,
+  removeDodayTransaction,
 } from '../queries-mutations/dodays';
 
 export const getActiveDodaysForDate = (req: Request, res: Response) => {
@@ -68,12 +69,33 @@ export const toggleDoday = (req: Request, res: Response) => {
     });
 };
 
+// Completely delete doday from app
+
 export const deleteDoday = (req: Request, res: Response) => {
   const session = driver.session();
 
   session
     .writeTransaction(tx =>
       deleteDodayTransaction(tx, { heroDID: req.user.did, did: req.params.did })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send({ success: true });
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+// Just remove doday from Hero that taken it
+
+export const removeDoday = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  session
+    .writeTransaction(tx =>
+      removeDodayTransaction(tx, { heroDID: req.user.did, did: req.params.did })
     )
     .then(result => {
       session.close();

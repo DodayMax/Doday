@@ -80,3 +80,8 @@ export function isGoal(doday: Doday | Goal): doday is Goal {
 }
 
 export const firstItem = (arr: any[]) => arr.length && arr[0];
+
+export const youtubeIDFromURL = (url: string) => {
+  const splitted = url.split('v=');
+  return splitted.length > 0 ? splitted[1] : undefined;
+};

@@ -121,3 +121,25 @@ export const deleteDodayTransaction = (
     }
   );
 };
+
+export const removeDodayTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    did: string;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (p:Progress {did: $did})
+      MATCH (d:Doday {did: $did})
+      MATCH (h:Hero {did: $heroDID})
+      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      DELETE r2, r3, p
+    `,
+    {
+      heroDID: props.heroDID,
+      did: props.did,
+    }
+  );
+};

@@ -11,6 +11,7 @@ import {
   fetchDodaysForDate,
   FetchSelectedDodayAction,
   SetSelectedDodayActionCreator,
+  RemoveDodayAction,
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -86,11 +87,24 @@ function* deleteDodaySaga(action: ToggleDodayAction) {
   yield put(setAppLoadingState(false));
 }
 
+/**
+ * Remove doday from app saga
+ *
+ * @param {RemoveDodayAction} action
+ */
+function* removeDodaySaga(action: RemoveDodayAction) {
+  yield put(setAppLoadingState(true));
+  yield call(api.dodays.mutations.removeDoday, action.payload.did);
+  yield put(fetchDodaysForDate());
+  yield put(setAppLoadingState(false));
+}
+
 export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
   takeLatest(ActionConstants.TOGGLE_DODAY, toggleDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),
+  takeLatest(ActionConstants.REMOVE_DODAY, removeDodaySaga),
   takeLatest(ActionConstants.FETCH_SELECTED_DODAY, FetchSelectedDodaySaga),
 ];

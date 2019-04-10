@@ -14,6 +14,7 @@ import {
   SetSelectedDodayActionCreator,
   fetchSelectedDodayActionCreator,
   clearSelectedDodayActionCreator,
+  removeDodayActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -178,6 +179,21 @@ describe('doday-app duck', () => {
         type: ActionConstants.CLEAR_SELECTED_DODAY,
       };
       expect(clearSelectedDodayActionCreator()).toEqual(expectedActionObject);
+    });
+
+    it('remove doday from my app action creator', () => {
+      const doday: Doday = {
+        did: '123',
+        activityType: 'do',
+        type: DodayTypes.Doday,
+        name: 'name',
+        public: false,
+      };
+      const expectedActionObject = {
+        type: ActionConstants.REMOVE_DODAY,
+        payload: doday,
+      };
+      expect(removeDodayActionCreator(doday)).toEqual(expectedActionObject);
     });
   });
 

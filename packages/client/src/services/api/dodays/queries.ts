@@ -25,7 +25,13 @@ export const dodayProgressByID = async (variables: any) => {
             type
             public
             resource {
-              title
+              description
+              image
+              provider
+              url
+            }
+            owner {
+              did
             }
           }
         }

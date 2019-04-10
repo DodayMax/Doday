@@ -27,7 +27,9 @@ export function parseProgressToDoday(progress: SerializedProgress): Doday {
     public: deserializedProgress.origin.public,
     // Computed props by relations and from Progress node
     resource: firstItem(deserializedProgress.origin.resource),
-    owner: deserializedProgress.origin.owner,
+    owner:
+      deserializedProgress.origin.owner &&
+      firstItem(deserializedProgress.origin.owner),
     doing: deserializedProgress.origin.doing,
     done: deserializedProgress.origin.done,
     created: deserializedProgress.origin.created,

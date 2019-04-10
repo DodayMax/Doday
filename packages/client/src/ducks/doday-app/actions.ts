@@ -7,6 +7,7 @@ export enum ActionConstants {
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
   TOGGLE_DODAY = '[doday-app] TOGGLE_DODAY',
   DELETE_DODAY = '[doday-app] DELETE_DODAY',
+  REMOVE_DODAY = '[doday-app] REMOVE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
@@ -216,6 +217,19 @@ export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
 }
 
 /**
+ * Remove doday from my app
+ *
+ * @export
+ * @returns {RemoveDodayAction}
+ */
+export function removeDodayActionCreator(doday: Doday): RemoveDodayAction {
+  return {
+    type: ActionConstants.REMOVE_DODAY,
+    payload: doday,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -290,6 +304,11 @@ export interface ClearSelectedDodayAction extends AnyAction {
   type: ActionConstants.CLEAR_SELECTED_DODAY;
 }
 
+export interface RemoveDodayAction extends AnyAction {
+  type: ActionConstants.REMOVE_DODAY;
+  payload: Doday;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -307,4 +326,5 @@ export type ActionTypes =
   | ToggleDodayAction
   | FetchSelectedDodayAction
   | SetSelectedDodayAction
-  | ClearSelectedDodayAction;
+  | ClearSelectedDodayAction
+  | RemoveDodayAction;

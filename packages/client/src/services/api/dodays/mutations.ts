@@ -48,7 +48,17 @@ export const toggleDoday = ({
 };
 
 export const deleteDoday = (did: string) => {
-  return fetch(`/api/dodays/${did}`, {
+  return fetch(`/api/dodays/delete/${did}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
+    },
+  });
+};
+
+export const removeDoday = (did: string) => {
+  return fetch(`/api/dodays/remove/${did}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
