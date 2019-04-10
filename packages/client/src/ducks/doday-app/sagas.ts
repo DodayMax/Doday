@@ -9,13 +9,13 @@ import {
   setGoals,
   ToggleDodayAction,
   fetchDodaysForDate,
-  FetchSelectedDodayAction,
-  SetSelectedDodayActionCreator,
   RemoveDodayAction,
+  UpdateDodayAction,
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
 import { Doday } from '@root/lib/models/entities/Doday';
+import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actions';
 
 /**
  * Fetch dodays for chosen date saga
@@ -36,18 +36,6 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
   );
   yield put(setDodaysForDate(dodays));
   yield put(setAppLoadingState(false));
-}
-
-/**
- * Fetch selected doday saga
- *
- * @param {FetchSelectedDodayAction} action
- */
-function* FetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
-  const progress = yield call(api.dodays.queries.dodayProgressByID, {
-    did: action.payload,
-  });
-  yield put(SetSelectedDodayActionCreator(progress));
 }
 
 /**
@@ -99,12 +87,26 @@ function* removeDodaySaga(action: RemoveDodayAction) {
   yield put(setAppLoadingState(false));
 }
 
+/**
+ * Update doday saga
+ *
+ * @param {UpdateDodayAction} action
+ */
+function* updateDodaySaga(action: UpdateDodayAction) {
+  yield put(setAppLoadingState(true));
+  yield put(setDodayDetailsLoadingStateActionCreator(true));
+  yield call(api.dodays.mutations.updateDoday, action.payload);
+  yield put(fetchDodaysForDate());
+  yield put(setDodayDetailsLoadingStateActionCreator(false));
+  yield put(setAppLoadingState(false));
+}
+
 export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
   takeLatest(ActionConstants.TOGGLE_DODAY, toggleDodaySaga),
+  takeLatest(ActionConstants.UPDATE_DODAY, updateDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),
   takeLatest(ActionConstants.REMOVE_DODAY, removeDodaySaga),
-  takeLatest(ActionConstants.FETCH_SELECTED_DODAY, FetchSelectedDodaySaga),
 ];

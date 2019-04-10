@@ -143,3 +143,29 @@ export const removeDodayTransaction = (
     }
   );
 };
+
+export const updateDodayTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    did: string;
+    updates: Partial<SerializedDoday>;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (p:Progress {did: $did})
+      MATCH (d:Doday {did: $did})
+      MATCH (h:Hero {did: $heroDID})
+      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      ${props.updates.date ? 'SET p.date = date($date)' : ''}
+    `,
+    {
+      heroDID: props.heroDID,
+      did: props.did,
+      date:
+        props.updates.date &&
+        dateInputStringFromDate(new Date(props.updates.date)),
+    }
+  );
+};

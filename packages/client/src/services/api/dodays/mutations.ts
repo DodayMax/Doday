@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { SerializedDoday } from '@root/lib/models/entities/Doday';
+import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
 
 type Neo4jDateTimeInput = {
   year: number;
@@ -64,6 +64,23 @@ export const removeDoday = (did: string) => {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'true',
     },
+  });
+};
+
+export const updateDoday = ({
+  did,
+  updates,
+}: {
+  did: string;
+  updates: Partial<SerializedDoday>;
+}) => {
+  return fetch(`/api/dodays/${did}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
+    },
+    body: JSON.stringify(updates),
   });
 };
 

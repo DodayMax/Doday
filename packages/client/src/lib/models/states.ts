@@ -5,6 +5,7 @@ import { Doday } from './entities/Doday';
 export interface RootState {
   auth: AuthState;
   dodayApp: DodayAppState;
+  dodayDetails: DodayDetailsState;
   builder: BuilderState;
   heroSettings: HeroSettingsState;
 }
@@ -17,7 +18,6 @@ export interface DodayAppState {
   dodays: Doday[];
   goals: Doday[];
   chosenDate: Date;
-  selectedDoday?: Doday;
 }
 
 export interface AuthState {
@@ -35,4 +35,9 @@ export interface BuilderState {
 export interface HeroSettingsState {
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
+}
+
+export interface DodayDetailsState {
+  loading: boolean;
+  selectedDoday?: Doday;
 }

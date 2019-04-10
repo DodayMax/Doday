@@ -5,38 +5,75 @@ import { TypographySize, TypographyColor } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Text, Icons } from '@components';
+import { Text, Icons, EditableDatePicker } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
-import { Doday } from '@root/lib/models/entities/Doday';
+import { actions as dodayDetailsActions } from '@ducks/doday-details';
+import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { Button, ButtonSize } from '../shared/_atoms/button';
 import {
   DeleteDodayAction,
   RemoveDodayAction,
-  FetchSelectedDodayAction,
-  ClearSelectedDodayAction,
+  UpdateDodayAction,
 } from '@root/ducks/doday-app/actions';
 import { Marker } from '../shared/_atoms/marker';
 import { activityTypeColor, youtubeIDFromURL } from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/Resource';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
+import {
+  FetchSelectedDodayAction,
+  ClearSelectedDodayAction,
+  UpdateSelectedDodayAction,
+} from '@root/ducks/doday-details/actions';
 
 const css = require('./doday-details.module.scss');
 
+const initialState: DodayDetailsState = {
+  updates: {},
+  dirty: false,
+};
+
 interface DodayDetailsProps {}
 
+interface DodayDetailsState {
+  updates: {
+    name?: string;
+    date?: Date;
+  };
+  dirty: boolean;
+}
+
 interface PropsFromConnect {
+  loading: boolean;
   myDID?: string;
   selectedDoday: Doday;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
+  updateDodayActionCreator: (
+    did: string,
+    updates: Partial<SerializedDoday>
+  ) => UpdateDodayAction;
   deleteDoday: (doday: Doday) => DeleteDodayAction;
   removeDoday: (doday: Doday) => RemoveDodayAction;
+  updateSelectedDodayActionCreator: (
+    did: string,
+    updates: Partial<Doday>
+  ) => UpdateSelectedDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
 @(withRouter as any)
 class DodayDetails extends React.Component<
-  DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>
+  DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>,
+  DodayDetailsState
 > {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      updates: {},
+      dirty: false,
+    };
+  }
+
   componentDidMount() {
     //fetch selected doday with graphQL
     const did = this.props.match.params.did;
@@ -54,11 +91,16 @@ class DodayDetails extends React.Component<
 
   render() {
     const {
+      loading,
       history,
       selectedDoday,
+      updateSelectedDodayActionCreator,
       clearSelectedDodayActionCreator,
+      updateDodayActionCreator,
       myDID,
     } = this.props;
+
+    const { dirty, updates } = this.state;
 
     if (!selectedDoday) {
       return 'Loading...';
@@ -83,6 +125,26 @@ class DodayDetails extends React.Component<
       />,
     ];
 
+    // Add owner actions
+    if (IAMOwner) {
+      actions.unshift(
+        <Button
+          primary
+          key={2}
+          disabled={!dirty}
+          size={ButtonSize.small}
+          text={loading ? 'Saving...' : 'Save'}
+          onClick={() => {
+            updateDodayActionCreator(selectedDoday.did, {
+              date: updates.date.getTime(),
+            });
+            updateSelectedDodayActionCreator(selectedDoday.did, updates);
+            this.setState(initialState);
+          }}
+        />
+      );
+    }
+
     const status = [
       <Marker
         key={1}
@@ -90,7 +152,6 @@ class DodayDetails extends React.Component<
         color={activityTypeColor(selectedDoday.activityType)}
         text={selectedDoday.activityType}
       />,
-      <Text>{IAMOwner ? 'I am owner' : ''}</Text>,
     ];
 
     const resource = selectedDoday.resource;
@@ -108,9 +169,17 @@ class DodayDetails extends React.Component<
         }
       >
         <LayoutBlock insideElementsMargin>
-          <Text size={TypographySize.s}>
-            {moment(selectedDoday.date).format('ll')}
-          </Text>
+          <EditableDatePicker
+            selectedDate={updates.date || selectedDoday.date}
+            onChange={date =>
+              this.setState({
+                dirty:
+                  moment(date).format('ll') !==
+                  moment(selectedDoday.date).format('ll'),
+                updates: { date },
+              })
+            }
+          />
           {youtubeLink && (
             <LayoutBlock insideElementsMargin>
               <Icons.Goal width={16} height={16} />
@@ -145,13 +214,15 @@ class DodayDetails extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
+  loading: state.dodayDetails.loading,
   myDID: state.auth.hero && state.auth.hero.did,
-  selectedDoday: state.dodayApp.selectedDoday,
+  selectedDoday: state.dodayDetails.selectedDoday,
 });
 
 export default connect(
   mapState,
   {
     ...dodaysActions,
+    ...dodayDetailsActions,
   }
 )(DodayDetails);

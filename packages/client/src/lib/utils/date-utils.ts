@@ -14,7 +14,7 @@ export const neo4jDateTimeFromDate = (date: Date) => {
 export const dateFromNeo4jDateTime = (datetime: Neo4jDateTime) => {
   const date = new Date();
   date.setFullYear(datetime.year);
-  date.setMonth(datetime.month);
+  date.setMonth(datetime.month - 1);
   date.setDate(datetime.day);
   date.setHours(datetime.hour);
   date.setMinutes(datetime.minute);
@@ -35,7 +35,7 @@ export const neo4jDateFromDate = (date: Date) => {
 export const dateFromNeo4jDate = (date: Neo4jDate) => {
   const newDate = new Date();
   newDate.setFullYear(date.year);
-  newDate.setMonth(date.month);
+  newDate.setMonth(date.month - 1);
   newDate.setDate(date.day);
 
   return newDate;

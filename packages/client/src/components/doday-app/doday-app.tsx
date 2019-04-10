@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import { actions as appActions } from '@ducks/doday-app';
+import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { DefaultTopBar } from './default-top-bar/default-top-bar';
@@ -12,7 +13,6 @@ import {
   FetchAllGoals,
   PushToNavigationStackAction,
   ToggleDodayAction,
-  FetchSelectedDodayAction,
 } from '@root/ducks/doday-app/actions';
 import {
   PopFromNavigationStackAction,
@@ -23,6 +23,7 @@ import { RouteComponentProps } from 'react-router';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
+import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 
 const styles = require('./_doday-app.module.scss');
 
@@ -164,5 +165,5 @@ const mapState = ({ dodayApp }) => ({
 
 export default connect(
   mapState,
-  { ...appActions, ...settingsActions }
+  { ...appActions, ...settingsActions, ...dodayDetailsActions }
 )(DodayAppComponent);

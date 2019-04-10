@@ -8,6 +8,7 @@ import { RootState } from '@lib/models';
 const rootReducer = combineReducers<RootState>({
   auth: ducks.auth.default,
   dodayApp: ducks.dodayapp.default,
+  dodayDetails: ducks.dodayDetails.default,
   builder: ducks.builder.default,
   heroSettings: ducks.herosettings.default,
 });
@@ -17,6 +18,7 @@ function* rootSaga() {
     ...ducks.auth.authSagas,
     ...ducks.builder.builderSagas,
     ...ducks.dodayapp.dodayappSagas,
+    ...ducks.dodayDetails.dodayDetailsSagas,
     ...ducks.herosettings.herosettingsSagas,
     ...ducks.payments.coinsSagas,
   ]);

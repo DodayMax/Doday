@@ -11,10 +11,8 @@ import {
   fetchAllGoals,
   setGoals,
   toggleDoday,
-  SetSelectedDodayActionCreator,
-  fetchSelectedDodayActionCreator,
-  clearSelectedDodayActionCreator,
   removeDodayActionCreator,
+  updateDodayActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -146,41 +144,6 @@ describe('doday-app duck', () => {
       expect(toggleDoday(doday)).toEqual(expectedActionObject);
     });
 
-    it('fetch selected doday action creator', () => {
-      const selectedDid = 'test did';
-      const expectedActionObject = {
-        type: ActionConstants.FETCH_SELECTED_DODAY,
-        payload: selectedDid,
-      };
-      expect(fetchSelectedDodayActionCreator(selectedDid)).toEqual(
-        expectedActionObject
-      );
-    });
-
-    it('set selected doday action creator', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
-      const expectedActionObject = {
-        type: ActionConstants.SET_SELECTED_DODAY,
-        payload: doday,
-      };
-      expect(SetSelectedDodayActionCreator(doday)).toEqual(
-        expectedActionObject
-      );
-    });
-
-    it('clear selected doday action creator', () => {
-      const expectedActionObject = {
-        type: ActionConstants.CLEAR_SELECTED_DODAY,
-      };
-      expect(clearSelectedDodayActionCreator()).toEqual(expectedActionObject);
-    });
-
     it('remove doday from my app action creator', () => {
       const doday: Doday = {
         did: '123',
@@ -194,6 +157,23 @@ describe('doday-app duck', () => {
         payload: doday,
       };
       expect(removeDodayActionCreator(doday)).toEqual(expectedActionObject);
+    });
+    it('remove doday from my app action creator', () => {
+      const did = 'test did';
+      const updates = {
+        date: Date.now(),
+        name: 'new name',
+      };
+      const expectedActionObject = {
+        type: ActionConstants.UPDATE_DODAY,
+        payload: {
+          did,
+          updates,
+        },
+      };
+      expect(updateDodayActionCreator(did, updates)).toEqual(
+        expectedActionObject
+      );
     });
   });
 
@@ -265,37 +245,6 @@ describe('doday-app duck', () => {
       expect(reducer(undefined, setDodaysBadgeForToday(5)).badge).toEqual(
         value
       );
-    });
-
-    it('set select doday reducer', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
-      expect(
-        reducer(undefined, SetSelectedDodayActionCreator(doday)).selectedDoday
-          .did
-      ).toEqual(doday.did);
-    });
-
-    it('clear select doday reducer', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
-      const state = {
-        ...initialState,
-        selectedDoday: doday,
-      };
-      expect(
-        reducer(state, clearSelectedDodayActionCreator()).selectedDoday
-      ).toEqual(undefined);
     });
   });
 });

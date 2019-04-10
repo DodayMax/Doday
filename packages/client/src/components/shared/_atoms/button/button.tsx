@@ -22,6 +22,8 @@ export interface ButtonProps {
   href?: string;
   to?: string;
   disabled?: boolean;
+  borderless?: boolean;
+  className?: string;
 }
 
 export class Button extends React.Component<ButtonProps> {
@@ -37,6 +39,9 @@ export class Button extends React.Component<ButtonProps> {
       text,
       type,
       size,
+      disabled,
+      borderless,
+      className,
       ...passthrough
     } = this.props;
 
@@ -44,9 +49,11 @@ export class Button extends React.Component<ButtonProps> {
       {
         [styles.default]: !primary,
         [styles.primary]: primary,
-        [styles.disabled]: location.pathname === to,
+        [styles.disabled]: location.pathname === to || disabled,
+        [styles.borderless]: borderless,
       },
-      styles[ButtonSize[size]]
+      styles[ButtonSize[size]],
+      className
     );
 
     if (to) {

@@ -56,16 +56,6 @@ export default (
         ...state,
         goals: action.payload,
       };
-    case actions.ActionConstants.SET_SELECTED_DODAY:
-      return {
-        ...state,
-        selectedDoday: action.payload,
-      };
-    case actions.ActionConstants.CLEAR_SELECTED_DODAY:
-      return {
-        ...state,
-        selectedDoday: undefined,
-      };
     default:
       return state;
   }

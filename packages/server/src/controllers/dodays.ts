@@ -6,6 +6,7 @@ import {
   activeDodaysForDateQuery,
   deleteDodayTransaction,
   removeDodayTransaction,
+  updateDodayTransaction,
 } from '../queries-mutations/dodays';
 
 export const getActiveDodaysForDate = (req: Request, res: Response) => {
@@ -96,6 +97,29 @@ export const removeDoday = (req: Request, res: Response) => {
   session
     .writeTransaction(tx =>
       removeDodayTransaction(tx, { heroDID: req.user.did, did: req.params.did })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send({ success: true });
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const updateDoday = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  const body = req.body;
+
+  session
+    .writeTransaction(tx =>
+      updateDodayTransaction(tx, {
+        heroDID: req.user.did,
+        did: req.params.did,
+        updates: body,
+      })
     )
     .then(result => {
       session.close();

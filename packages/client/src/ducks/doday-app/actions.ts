@@ -1,11 +1,12 @@
 import { AnyAction } from 'redux';
 import { Goal } from '@root/lib/models/entities/Goal';
-import { Doday } from '@root/lib/models/entities/Doday';
+import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
   TOGGLE_DODAY = '[doday-app] TOGGLE_DODAY',
+  UPDATE_DODAY = '[doday-app] UPDATE_DODAY',
   DELETE_DODAY = '[doday-app] DELETE_DODAY',
   REMOVE_DODAY = '[doday-app] REMOVE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
@@ -16,9 +17,6 @@ export enum ActionConstants {
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
   FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
   SET_GOALS = '[doday-app] SET_GOALS',
-  FETCH_SELECTED_DODAY = '[doday-app] FETCH_SELECTED_DODAY',
-  SET_SELECTED_DODAY = '[doday-app] SET_SELECTED_DODAY',
-  CLEAR_SELECTED_DODAY = '[doday-app] CLEAR_SELECTED_DODAY',
 }
 
 /**
@@ -124,6 +122,25 @@ export function toggleDoday(doday: Doday): ToggleDodayAction {
 }
 
 /**
+ * Update doday
+ *
+ * @export
+ * @returns {UpdateDodayAction}
+ */
+export function updateDodayActionCreator(
+  did: string,
+  updates: Partial<SerializedDoday>
+): UpdateDodayAction {
+  return {
+    type: ActionConstants.UPDATE_DODAY,
+    payload: {
+      did,
+      updates,
+    },
+  };
+}
+
+/**
  * Completely delete Doday from app and from created section
  *
  * @export
@@ -171,48 +188,6 @@ export function setGoals(goals: Goal[]): SetGoals {
   return {
     type: ActionConstants.SET_GOALS,
     payload: goals,
-  };
-}
-
-/**
- * Select doday and show details page
- *
- * @export
- * @returns {FetchSelectedDodayAction}
- */
-export function fetchSelectedDodayActionCreator(
-  did: string
-): FetchSelectedDodayAction {
-  return {
-    type: ActionConstants.FETCH_SELECTED_DODAY,
-    payload: did,
-  };
-}
-
-/**
- * Set selected doday to store action
- *
- * @export
- * @returns {SetSelectedDodayAction}
- */
-export function SetSelectedDodayActionCreator(
-  progress: Doday
-): SetSelectedDodayAction {
-  return {
-    type: ActionConstants.SET_SELECTED_DODAY,
-    payload: progress,
-  };
-}
-
-/**
- * Clear selected doday
- *
- * @export
- * @returns {ClearSelectedDodayAction}
- */
-export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
-  return {
-    type: ActionConstants.CLEAR_SELECTED_DODAY,
   };
 }
 
@@ -285,23 +260,17 @@ export interface ToggleDodayAction extends AnyAction {
   payload: Doday;
 }
 
+export interface UpdateDodayAction extends AnyAction {
+  type: ActionConstants.UPDATE_DODAY;
+  payload: {
+    did: string;
+    updates: Partial<SerializedDoday>;
+  };
+}
+
 export interface DeleteDodayAction extends AnyAction {
   type: ActionConstants.DELETE_DODAY;
   payload: Doday;
-}
-
-export interface FetchSelectedDodayAction extends AnyAction {
-  type: ActionConstants.FETCH_SELECTED_DODAY;
-  payload: string;
-}
-
-export interface SetSelectedDodayAction extends AnyAction {
-  type: ActionConstants.SET_SELECTED_DODAY;
-  payload: Doday;
-}
-
-export interface ClearSelectedDodayAction extends AnyAction {
-  type: ActionConstants.CLEAR_SELECTED_DODAY;
 }
 
 export interface RemoveDodayAction extends AnyAction {
@@ -324,7 +293,4 @@ export type ActionTypes =
   | SetDodaysBadgeForToday
   | SetGoals
   | ToggleDodayAction
-  | FetchSelectedDodayAction
-  | SetSelectedDodayAction
-  | ClearSelectedDodayAction
   | RemoveDodayAction;

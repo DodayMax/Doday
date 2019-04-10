@@ -5,6 +5,7 @@
 }
 
 .button {
+  box-sizing: border-box;
   cursor: pointer;
   outline: none;
   border-radius: $radius-4;
@@ -17,6 +18,11 @@
   background-color: $gray-1 !important;
   border-color: $disabled-text !important;
   color: $disabled-text !important;
+}
+
+.borderless {
+  background-color: transparent !important;
+  border: 1px solid transparent !important;
 }
 
 .cell {
