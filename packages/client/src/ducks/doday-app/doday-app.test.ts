@@ -1,4 +1,4 @@
-import reducer from './reducer';
+import reducer, { initialState } from './reducer';
 import {
   changePath,
   ActionConstants,
@@ -12,6 +12,8 @@ import {
   setGoals,
   toggleDoday,
   SetSelectedDodayActionCreator,
+  fetchSelectedDodayActionCreator,
+  clearSelectedDodayActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -149,28 +151,33 @@ describe('doday-app duck', () => {
         type: ActionConstants.FETCH_SELECTED_DODAY,
         payload: selectedDid,
       };
-      expect(SelectDodayActionCreator(selectedDid)).toEqual(
+      expect(fetchSelectedDodayActionCreator(selectedDid)).toEqual(
         expectedActionObject
       );
     });
 
     it('set selected doday action creator', () => {
-      const fetchedProgressNode = {
-        did: 'test did',
-        completed: false,
-        tookAt: new Date(),
-        date: new Date(),
-        completedAt: new Date(),
-        hero: [],
-        origin: [],
+      const doday: Doday = {
+        did: '123',
+        activityType: 'do',
+        type: DodayTypes.Doday,
+        name: 'name',
+        public: false,
       };
       const expectedActionObject = {
         type: ActionConstants.SET_SELECTED_DODAY,
-        payload: fetchedProgressNode,
+        payload: doday,
       };
-      expect(SelectDodayActionCreator(fetchedProgressNode)).toEqual(
+      expect(SetSelectedDodayActionCreator(doday)).toEqual(
         expectedActionObject
       );
+    });
+
+    it('clear selected doday action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.CLEAR_SELECTED_DODAY,
+      };
+      expect(clearSelectedDodayActionCreator()).toEqual(expectedActionObject);
     });
   });
 
@@ -245,19 +252,34 @@ describe('doday-app duck', () => {
     });
 
     it('set select doday reducer', () => {
-      const fetchedProgressNode = {
-        did: 'test did',
-        completed: false,
-        tookAt: new Date(),
-        date: new Date(),
-        completedAt: new Date(),
-        hero: [],
-        origin: [],
+      const doday: Doday = {
+        did: '123',
+        activityType: 'do',
+        type: DodayTypes.Doday,
+        name: 'name',
+        public: false,
       };
       expect(
-        reducer(undefined, SetSelectedDodayActionCreator(fetchedProgressNode))
-          .selectedDoday.did
-      ).toEqual(fetchedProgressNode.did);
+        reducer(undefined, SetSelectedDodayActionCreator(doday)).selectedDoday
+          .did
+      ).toEqual(doday.did);
+    });
+
+    it('clear select doday reducer', () => {
+      const doday: Doday = {
+        did: '123',
+        activityType: 'do',
+        type: DodayTypes.Doday,
+        name: 'name',
+        public: false,
+      };
+      const state = {
+        ...initialState,
+        selectedDoday: doday,
+      };
+      expect(
+        reducer(state, clearSelectedDodayActionCreator()).selectedDoday
+      ).toEqual(undefined);
     });
   });
 });

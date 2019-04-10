@@ -61,6 +61,11 @@ export default (
         ...state,
         selectedDoday: action.payload,
       };
+    case actions.ActionConstants.CLEAR_SELECTED_DODAY:
+      return {
+        ...state,
+        selectedDoday: undefined,
+      };
     default:
       return state;
   }

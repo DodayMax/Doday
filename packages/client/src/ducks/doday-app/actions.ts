@@ -17,6 +17,7 @@ export enum ActionConstants {
   SET_GOALS = '[doday-app] SET_GOALS',
   FETCH_SELECTED_DODAY = '[doday-app] FETCH_SELECTED_DODAY',
   SET_SELECTED_DODAY = '[doday-app] SET_SELECTED_DODAY',
+  CLEAR_SELECTED_DODAY = '[doday-app] CLEAR_SELECTED_DODAY',
 }
 
 /**
@@ -203,6 +204,18 @@ export function SetSelectedDodayActionCreator(
 }
 
 /**
+ * Clear selected doday
+ *
+ * @export
+ * @returns {ClearSelectedDodayAction}
+ */
+export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
+  return {
+    type: ActionConstants.CLEAR_SELECTED_DODAY,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -273,6 +286,10 @@ export interface SetSelectedDodayAction extends AnyAction {
   payload: Doday;
 }
 
+export interface ClearSelectedDodayAction extends AnyAction {
+  type: ActionConstants.CLEAR_SELECTED_DODAY;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -289,4 +306,5 @@ export type ActionTypes =
   | SetGoals
   | ToggleDodayAction
   | FetchSelectedDodayAction
-  | SetSelectedDodayAction;
+  | SetSelectedDodayAction
+  | ClearSelectedDodayAction;

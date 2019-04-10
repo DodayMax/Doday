@@ -8,6 +8,7 @@ interface LayoutBlockProps {
   align?: AlignTypes;
   valign?: vAlignTypes;
   alignSelf?: AlignSelf;
+  fullHeight?: boolean;
   direction?: 'row' | 'column';
   flex?: number;
   absolute?: boolean;
@@ -33,6 +34,7 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     [styles.absolute]: !!props.absolute,
     [styles.relative]: !!props.relative,
     [styles.insideElementsMargin]: !!props.insideElementsMargin,
+    [styles.fullHeight]: !!props.fullHeight,
     [props.className]: !!props.className,
   });
   return (

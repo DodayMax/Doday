@@ -22,6 +22,7 @@ export class DefaultTopBar extends React.Component<DefaultTopBarProps> {
           {this.props.back && (
             <ClickableIcon
               border
+              rounded
               text={'back '}
               background={vars.gray1}
               onClick={this.props.backAction}

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import * as moment from 'moment';
 import { TypographySize } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -9,28 +8,40 @@ import { RootState } from '@root/lib/models';
 import { Text } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { Doday } from '@root/lib/models/entities/Doday';
-import { Goal } from '@root/lib/models/entities/Goal';
 import { Button, ButtonSize } from '../shared/_atoms/button';
 import {
   DeleteDodayAction,
   FetchSelectedDodayAction,
+  ClearSelectedDodayAction,
 } from '@root/ducks/doday-app/actions';
 import { Marker } from '../shared/_atoms/marker';
-import { activityTypeColor, isGoal } from '@root/lib/utils';
+import { activityTypeColor } from '@root/lib/utils';
 
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
   selectedDoday: Doday;
+  fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   deleteDoday: (doday: Doday) => DeleteDodayAction;
+  clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
 @(withRouter as any)
 class DodayDetails extends React.Component<
   DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>
 > {
+  componentDidMount() {
+    //fetch selected doday with graphQL
+    const did = this.props.match.params.did;
+    this.props.fetchSelectedDodayActionCreator(did);
+  }
+
   render() {
-    const { history, selectedDoday } = this.props;
+    const {
+      history,
+      selectedDoday,
+      clearSelectedDodayActionCreator,
+    } = this.props;
 
     if (!selectedDoday) {
       return 'Loading...';
@@ -41,7 +52,10 @@ class DodayDetails extends React.Component<
         key={1}
         size={ButtonSize.small}
         text={'Delete'}
-        // onClick={() => this.props.deleteDoday(selectedDoday)}
+        onClick={() => {
+          this.props.deleteDoday(selectedDoday);
+          history.push('/');
+        }}
       />,
     ];
 
@@ -55,8 +69,19 @@ class DodayDetails extends React.Component<
     ];
 
     return (
-      <Page header={<PageHeader status={status} actions={actions} />}>
-        <Text>{selectedDoday.name}</Text>
+      <Page
+        header={
+          <PageHeader
+            status={status}
+            actions={actions}
+            onClose={clearSelectedDodayActionCreator}
+          />
+        }
+      >
+        <Text size={TypographySize.s}>
+          {moment(selectedDoday.date).format('ll')}
+        </Text>
+        <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
       </Page>
     );
   }
@@ -69,6 +94,6 @@ const mapState = (state: RootState) => ({
 export default connect(
   mapState,
   {
-    deleteDoday: dodaysActions.deleteDodayActionCreator,
+    ...dodaysActions,
   }
 )(DodayDetails);

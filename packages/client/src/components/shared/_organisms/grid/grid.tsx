@@ -45,7 +45,7 @@ export class GridComponent extends React.Component<
   render() {
     const { items, loading, renderCell } = this.props;
     return (
-      <div id="grid" className={styles.gridContainer}>
+      <ul id="grid" className={styles.gridContainer}>
         {loading && (
           <LayoutBlock align="flex-center" padding="0.6rem 0">
             <Loader />
@@ -53,9 +53,10 @@ export class GridComponent extends React.Component<
         )}
         {!loading &&
           items.map((item: any, index) => {
+            console.log(item.name);
             return renderCell && renderCell(item, index);
           })}
-      </div>
+      </ul>
     );
   }
 }

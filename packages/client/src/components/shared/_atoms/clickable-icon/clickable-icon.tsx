@@ -10,6 +10,8 @@ interface ClickableIconProps {
   border?: boolean;
   background?: string;
   hover?: boolean;
+  // Become rounded rect
+  rounded?: boolean;
 }
 
 export const ClickableIcon: React.SFC<
@@ -23,6 +25,7 @@ export const ClickableIcon: React.SFC<
   border = false,
   background,
   hover = false,
+  rounded = false,
   ...props
 }) => {
   const classNames = classnames({
@@ -30,6 +33,7 @@ export const ClickableIcon: React.SFC<
     [styles.backdrop]: !!backdrop,
     [styles.border]: !!border,
     [styles.hover]: !!hover || background,
+    [styles.rounded]: !!rounded,
     [className || '']: true,
   });
 
