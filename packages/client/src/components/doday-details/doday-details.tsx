@@ -36,7 +36,6 @@ interface DodayDetailsProps {}
 
 interface DodayDetailsState {
   updates: {
-    name?: string;
     date?: Date;
   };
   dirty: boolean;
@@ -51,8 +50,8 @@ interface PropsFromConnect {
     did: string,
     updates: Partial<SerializedDoday>
   ) => UpdateDodayAction;
-  deleteDoday: (doday: Doday) => DeleteDodayAction;
-  removeDoday: (doday: Doday) => RemoveDodayAction;
+  deleteDodayActionCreator: (doday: Doday) => DeleteDodayAction;
+  removeDodayActionCreator: (doday: Doday) => RemoveDodayAction;
   updateSelectedDodayActionCreator: (
     did: string,
     updates: Partial<Doday>
@@ -116,9 +115,9 @@ class DodayDetails extends React.Component<
         text={'Delete'}
         onClick={() => {
           if (IAMOwner) {
-            this.props.deleteDoday(selectedDoday);
+            this.props.deleteDodayActionCreator(selectedDoday);
           } else {
-            this.props.removeDoday(selectedDoday);
+            this.props.removeDodayActionCreator(selectedDoday);
           }
           history.push('/');
         }}

@@ -50,10 +50,12 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
       this.setState({
         resizeTaskId: setTimeout(() => {
           const documentWidth = document.documentElement.scrollWidth;
-          this.setState({
-            resizeTaskId: undefined,
-            isDrawerCollapsed: documentWidth <= 1100,
-          });
+          if (!this.state.isDrawerCollapsed) {
+            this.setState({
+              resizeTaskId: undefined,
+              isDrawerCollapsed: documentWidth <= 1100,
+            });
+          }
         }, 100),
       });
     });

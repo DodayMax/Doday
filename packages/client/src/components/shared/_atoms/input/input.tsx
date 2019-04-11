@@ -14,7 +14,7 @@ interface InputProps {
 
 export class Input extends React.Component<
   InputProps & React.InputHTMLAttributes<HTMLInputElement>
-> {
+  > {
   input: HTMLInputElement | null;
 
   constructor(props) {

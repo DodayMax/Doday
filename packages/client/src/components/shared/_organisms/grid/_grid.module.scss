@@ -1,6 +1,6 @@
 .grid {
   &-container {
-    height: calc(100vh - 50px);
+    height: 100%;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
   }

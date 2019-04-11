@@ -138,8 +138,38 @@ export class Builder extends React.Component<
     });
   };
 
+  handleCreateDoday = () => {
+    const { parsedMetadata, activityType = 'do' } = this.props;
+
+    if (this.state.dodayName || parsedMetadata) {
+      const resource = parsedMetadata && {
+        ...parsedMetadata,
+        did: cuid(),
+      };
+      this.props.createAndTakeDoday({
+        did: cuid(),
+        activityType,
+        type: DodayTypes.Doday,
+        name: this.state.dodayName || parsedMetadata.title,
+        tags:
+          this.state.selectedTags &&
+          this.state.selectedTags.map(tag => tag.value),
+        date: this.state.date.getTime(),
+        resource: resource,
+        public: false,
+      });
+    }
+  };
+
   onCloseBuidler = () => {
     this.props.clearBuilderActionCreator();
+  };
+
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.keyCode);
+    if (e.keyCode === 13) {
+      this.handleCreateDoday();
+    }
   };
 
   render() {
@@ -168,6 +198,7 @@ export class Builder extends React.Component<
           autofocus
           value={this.state.dodayName}
           onChange={this.onChangeInput}
+          onKeyDown={this.onKeyDown}
           placeholder="Enter name or paste link..."
         />
         <ParsedUrlView
@@ -235,26 +266,7 @@ export class Builder extends React.Component<
             primary
             isLoading={loading}
             text={'Create'}
-            onClick={() => {
-              if (this.state.dodayName || parsedMetadata) {
-                const resource = parsedMetadata && {
-                  ...parsedMetadata,
-                  did: cuid(),
-                };
-                this.props.createAndTakeDoday({
-                  did: cuid(),
-                  activityType,
-                  type: DodayTypes.Doday,
-                  name: this.state.dodayName || parsedMetadata.title,
-                  tags:
-                    this.state.selectedTags &&
-                    this.state.selectedTags.map(tag => tag.value),
-                  date: this.state.date.getTime(),
-                  resource: resource,
-                  public: false,
-                });
-              }
-            }}
+            onClick={this.handleCreateDoday}
           />
         </LayoutBlock>
       </Page>
