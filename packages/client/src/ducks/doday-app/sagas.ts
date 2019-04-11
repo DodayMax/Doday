@@ -5,13 +5,13 @@ import {
   FetchDodayForDate,
   setDodaysBadgeForToday,
   setAppLoadingState,
-  FetchAllGoals,
   setGoals,
   ToggleDodayAction,
   fetchDodaysForDate,
   RemoveDodayAction,
   UpdateDodayAction,
   changeDateActionCreator,
+  FetchAllGoalsAction,
 } from './actions';
 import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -44,9 +44,9 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
  *
  * @param {FetchAllGoals} action
  */
-function* fetchAllGoalsSaga(action: FetchAllGoals) {
+function* fetchAllGoalsSaga(action: FetchAllGoalsAction) {
   yield put(setAppLoadingState(true));
-  const goals = yield call(api.goals.queries.allGoals, {});
+  const goals = yield call(api.goals.queries.fetchAllGoals);
   yield put(setGoals(goals));
   yield put(setAppLoadingState(false));
 }

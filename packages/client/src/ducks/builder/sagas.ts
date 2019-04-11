@@ -11,7 +11,10 @@ import {
   clearBuilderActionCreator,
   CreateGoalAction,
 } from './actions';
-import { fetchDodaysForDate } from '@ducks/doday-app/actions';
+import {
+  fetchDodaysForDate,
+  fetchAllGoalsActionCreator,
+} from '@ducks/doday-app/actions';
 import { api } from '@services';
 import { detectActivityType } from '@root/lib/utils/regexp';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
@@ -45,6 +48,7 @@ function* createGoalSaga(action: CreateGoalAction) {
   const res = yield call(api.dodays.mutations.createGoal, action.payload);
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
+    yield put(fetchAllGoalsActionCreator());
   }
   yield put(setBuilderLoadingState(false));
   yield put(clearBuilderActionCreator());

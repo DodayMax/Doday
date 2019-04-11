@@ -53,7 +53,6 @@ export class GridComponent extends React.Component<
         )}
         {!loading &&
           items.map((item: any, index) => {
-            console.log(item.name);
             return renderCell && renderCell(item, index);
           })}
       </ul>

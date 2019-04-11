@@ -1,4 +1,5 @@
-import { Neo4jDateTime, Neo4jDate } from '../models/entities/Progress';
+import { Neo4jDateTime, Neo4jDate } from '@lib/common-interfaces';
+import { Neo4jResponseDate } from '../common-interfaces/neo4j';
 
 export const neo4jDateTimeFromDate = (date: Date) => {
   return {
@@ -40,6 +41,9 @@ export const dateFromNeo4jDate = (date: Neo4jDate) => {
 
   return newDate;
 };
+
+export const neo4jResponseDateToJSDate = (date: Neo4jResponseDate) =>
+  new Date(`${date.year.low}-${date.month.low}-${date.day.low}`);
 
 export const dateInputStringFromDate = (date: Date) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;

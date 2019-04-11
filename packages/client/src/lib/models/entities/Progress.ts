@@ -1,5 +1,6 @@
 import { Hero } from './Hero';
 import { Doday } from './Doday';
+import { Neo4jDateTime, Neo4jDate } from '@root/lib/common-interfaces/neo4j';
 
 /**
  * When we fetch doday with graphQL, we actually
@@ -14,25 +15,4 @@ export interface SerializedProgress {
   completedAt: Neo4jDateTime;
   hero: Hero[];
   origin: Doday[];
-}
-
-export interface Neo4jDate {
-  year: number;
-  month: number;
-  day: number;
-  formatted?: string;
-}
-
-export interface Neo4jDateTime {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second?: number;
-  millisecond?: number;
-  microsecond?: number;
-  nanosecond?: number;
-  timezone?: string;
-  formatted?: string;
 }

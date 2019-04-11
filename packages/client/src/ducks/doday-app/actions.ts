@@ -170,9 +170,9 @@ export function setDodaysBadgeForToday(value: number): SetDodaysBadgeForToday {
  * Fetch all goals
  *
  * @export
- * @returns {FetchAllGoals}
+ * @returns {FetchAllGoalsAction}
  */
-export function fetchAllGoals(): FetchAllGoals {
+export function fetchAllGoalsActionCreator(): FetchAllGoalsAction {
   return {
     type: ActionConstants.FETCH_ALL_GOALS,
   };
@@ -246,7 +246,7 @@ export interface SetDodaysBadgeForToday extends AnyAction {
   payload: number;
 }
 
-export interface FetchAllGoals extends AnyAction {
+export interface FetchAllGoalsAction extends AnyAction {
   type: ActionConstants.FETCH_ALL_GOALS;
 }
 

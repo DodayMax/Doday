@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
 import { Doday } from '@root/lib/models/entities/Doday';
-import { firstItem } from '@root/lib/utils';
+import { firstItem, neo4jResponseDateToJSDate } from '@root/lib/utils';
 import { SerializedProgress } from '@root/lib/models/entities/Progress';
 import { parseProgressToDoday } from '@root/lib/utils/api-utils';
 
@@ -62,10 +62,7 @@ export const parseDodaysResponse = async (res): Promise<Doday[]> => {
   json.map(doday => {
     doday._fields.map(doday => {
       const date = doday.date;
-      const jsDate = new Date(
-        `${date.year.low}-${date.month.low}-${date.day.low}`
-      );
-      doday.date = jsDate;
+      doday.date = neo4jResponseDateToJSDate(date);
     });
     dodays.push(doday._fields[0]);
   });
