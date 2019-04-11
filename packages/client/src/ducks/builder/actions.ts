@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
 import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
-import { SerializedGoal } from '@root/lib/models/entities/Goal';
+import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
 
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
@@ -15,6 +15,7 @@ export enum ActionConstants {
   SET_PARSED_URL_METADATA_OBJECT = '[builder] SET_PARSED_URL_METADATA_OBJECT',
   CLEAR_PARSED_METADATA = '[builder] CLEAR_PARSED_METADATA',
   CLEAR_BUILDER = '[builder] CLEAR_BUILDER',
+  SELECT_GOAL = '[builder] SELECT_GOAL',
 }
 
 /**
@@ -174,6 +175,19 @@ export function clearBuilderActionCreator(): ClearBuilderAction {
 }
 
 /**
+ * Select goal in builder
+ *
+ * @export
+ * @returns {SelectGoalAction}
+ */
+export function selectGoalActionCreator(goal: Goal): SelectGoalAction {
+  return {
+    type: ActionConstants.SELECT_GOAL,
+    payload: goal,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -229,6 +243,10 @@ export interface ClearBuilderAction extends AnyAction {
   type: ActionConstants.CLEAR_BUILDER;
 }
 
+export interface SelectGoalAction extends AnyAction {
+  type: ActionConstants.SELECT_GOAL;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -243,4 +261,5 @@ export type ActionTypes =
   | ParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
   | ClearParsedMetadataAction
-  | ClearBuilderAction;
+  | ClearBuilderAction
+  | SelectGoalAction;

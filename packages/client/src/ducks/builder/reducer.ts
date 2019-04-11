@@ -41,6 +41,11 @@ export default (
       };
     case actions.ActionConstants.CLEAR_BUILDER:
       return initialState;
+    case actions.ActionConstants.SELECT_GOAL:
+      return {
+        ...state,
+        selectedGoal: action.payload,
+      };
     default:
       return state;
   }

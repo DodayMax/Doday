@@ -7,7 +7,7 @@ export interface Goal {
   name: string;
   startDate?: Date;
   endDate?: Date;
-  children: Doday[];
+  children?: Doday[];
 }
 
 export interface SerializedGoal {

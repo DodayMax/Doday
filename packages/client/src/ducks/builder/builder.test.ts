@@ -12,11 +12,12 @@ import {
   clearBuilderActionCreator,
   setActivityTypeActionCreator,
   createGoalActionCreator,
+  selectGoalActionCreator,
 } from './actions';
 import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { SerializedGoal } from '@root/lib/models/entities/Goal';
+import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
 
 describe('builder duck', () => {
   describe('builder action creators', () => {
@@ -142,6 +143,19 @@ describe('builder duck', () => {
       };
       expect(clearBuilderActionCreator()).toEqual(expectedActionObject);
     });
+
+    it('select goal in builder action creator', () => {
+      const goal: Goal = {
+        did: 'test did',
+        name: 'name',
+        type: DodayTypes.Goal,
+      };
+      const expectedActionObject = {
+        type: ActionConstants.SELECT_GOAL,
+        payload: goal,
+      };
+      expect(selectGoalActionCreator(goal)).toEqual(expectedActionObject);
+    });
   });
 
   describe('builder reducer', () => {
@@ -250,6 +264,17 @@ describe('builder duck', () => {
       expect(reducer(state, clearBuilderActionCreator()).parsedMetadata).toBe(
         undefined
       );
+    });
+
+    it('select goal in builder reducer', () => {
+      const goal: Goal = {
+        did: 'test did',
+        name: 'name',
+        type: DodayTypes.Goal,
+      };
+      expect(
+        reducer(initialState, selectGoalActionCreator(goal)).selectedGoal.did
+      ).toEqual(goal.did);
     });
   });
 });

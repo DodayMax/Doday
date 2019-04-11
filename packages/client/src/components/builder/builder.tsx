@@ -13,6 +13,7 @@ import {
   ClearParsedMetadataAction,
   ClearBuilderAction,
   CreateGoalAction,
+  SelectGoalAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
@@ -36,6 +37,7 @@ interface PropsFromConnect {
   fetchActivityTypes: () => FetchActivityTypesAction;
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   createGoalActionCreator: (goal: SerializedGoal) => CreateGoalAction;
+  selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
@@ -78,6 +80,7 @@ export class Builder extends React.Component<
       createAndTakeDoday,
       clearParsedMetadataActionCreator,
       createGoalActionCreator,
+      selectGoalActionCreator,
       activityType = 'do',
       location,
     } = this.props;
@@ -92,6 +95,7 @@ export class Builder extends React.Component<
           isUrlParsing={isUrlParsing}
           parsedMetadata={parsedMetadata}
           createAndTakeDoday={createAndTakeDoday}
+          selectGoalActionCreator={selectGoalActionCreator}
           parseUrlMetadataActionCreator={parseUrlMetadataActionCreator}
           clearParsedMetadataActionCreator={clearParsedMetadataActionCreator}
           activityType={activityType}
@@ -118,6 +122,7 @@ export class Builder extends React.Component<
 
 const mapState = (state: RootState) => ({
   activityType: state.builder.activityType,
+  goals: state.dodayApp.goals,
   isUrlParsing: state.builder.isUrlParsing,
   parsedMetadata: state.builder.parsedMetadata,
   loading: state.builder.loading,
