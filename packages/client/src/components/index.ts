@@ -12,6 +12,7 @@ export * from './shared/_atoms/button';
 export * from './shared/_atoms/checkbox';
 export * from './shared/_atoms/badge';
 export * from './shared/_atoms/button';
+export * from './shared/_atoms/marker';
 export * from './shared/_atoms/stripe-button';
 export * from './shared/_atoms/editable-datepicker';
 export * from './shared/_atoms/clickable-icon/clickable-icon';

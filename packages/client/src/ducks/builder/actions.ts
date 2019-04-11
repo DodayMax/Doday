@@ -1,11 +1,13 @@
 import { AnyAction } from 'redux';
 import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
+import { SerializedGoal } from '@root/lib/models/entities/Goal';
 
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
   SET_ACTIVITY_TYPE = '[builder] SET_ACTIVITY_TYPE',
   CREATE_AND_TAKE_DODAY = '[builder] CREATE_AND_TAKE_DODAY',
+  CREATE_GOAL = '[builder] CREATE_GOAL',
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
   SET_BUILDER_SUCCESS_FLAG = '[builder] SET_BUILDER_SUCCESS_FLAG',
   PARSE_URL = '[builder] PARSE_URL',
@@ -39,6 +41,21 @@ export function createAndTakeDoday(
   return {
     type: ActionConstants.CREATE_AND_TAKE_DODAY,
     payload: doday,
+  };
+}
+
+/**
+ * Create new Goal node and connect it to Hero
+ *
+ * @export
+ * @returns {CreateGoalAction}
+ */
+export function createGoalActionCreator(
+  goal: SerializedGoal
+): CreateGoalAction {
+  return {
+    type: ActionConstants.CREATE_GOAL,
+    payload: goal,
   };
 }
 
@@ -172,6 +189,11 @@ export interface SetActivityTypeAction extends AnyAction {
 export interface CreateAndTakeDodayAction extends AnyAction {
   type: ActionConstants.CREATE_AND_TAKE_DODAY;
   payload: SerializedDoday;
+}
+
+export interface CreateGoalAction extends AnyAction {
+  type: ActionConstants.CREATE_GOAL;
+  payload: SerializedGoal;
 }
 
 export interface SetBuilderLoadingStateAction extends AnyAction {

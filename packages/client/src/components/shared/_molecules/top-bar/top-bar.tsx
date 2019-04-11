@@ -8,6 +8,7 @@ import { actions as coinActions } from '@root/ducks/payments';
 import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+import { LayoutBlock } from '../../_atoms/layout-block';
 
 const css = require('./_top-bar.module.scss');
 const logo = require('@root/assets/png/app-icon-96x96.png');
@@ -32,10 +33,10 @@ class TopBar extends React.Component<
         return <Button href="/auth/google" text="Sign In" />;
       default:
         return (
-          <>
+          <LayoutBlock>
             <StripeButton handleToken={this.props.handleStripeToken} />
             <a href="/api/logout">Logout</a>
-          </>
+          </LayoutBlock>
         );
     }
   }
@@ -51,12 +52,19 @@ class TopBar extends React.Component<
         {this.renderContent()}
         <ACLGuard
           allowed={
-            <Button
-              primary
-              text={'New Doday'}
-              to={'/builder'}
-              disabled={this.props.location.pathname === '/builder'}
-            />
+            <LayoutBlock insideElementsMargin align="flex-end">
+              <Button
+                text={'New Goal'}
+                to={'/builder?type=1'}
+                disabled={this.props.location.pathname === '/builder'}
+              />
+              <Button
+                primary
+                text={'New Doday'}
+                to={'/builder?type=0'}
+                disabled={this.props.location.pathname === '/builder'}
+              />
+            </LayoutBlock>
           }
         />
       </nav>

@@ -5,7 +5,8 @@ export interface Goal {
   did: string;
   type: DodayTypes.Goal;
   name: string;
-  date?: Date;
+  startDate?: Date;
+  endDate?: Date;
   children: Doday[];
 }
 
@@ -13,6 +14,7 @@ export interface SerializedGoal {
   did: string;
   type: number;
   name: string;
-  date?: number;
+  startDate?: number;
+  endDate?: number;
   children?: string[];
 }

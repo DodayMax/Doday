@@ -64,6 +64,7 @@ app.use((req, res, next) => {
 require('./routes/authRoutes')(app);
 require('./routes/paymentsRoutes')(app);
 require('./routes/dodaysRoutes')(app);
+require('./routes/goalsRoutes')(app);
 require('./routes/utilsRoutes')(app);
 
 /*

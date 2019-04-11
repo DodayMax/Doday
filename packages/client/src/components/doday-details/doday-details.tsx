@@ -169,7 +169,7 @@ class DodayDetails extends React.Component<
       >
         <LayoutBlock insideElementsMargin>
           <EditableDatePicker
-            selectedDate={updates.date || selectedDoday.date}
+            selected={updates.date || selectedDoday.date}
             onChange={date =>
               this.setState({
                 dirty:

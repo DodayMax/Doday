@@ -11,10 +11,12 @@ import {
   clearParsedMetadataActionCreator,
   clearBuilderActionCreator,
   setActivityTypeActionCreator,
+  createGoalActionCreator,
 } from './actions';
 import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
+import { SerializedGoal } from '@root/lib/models/entities/Goal';
 
 describe('builder duck', () => {
   describe('builder action creators', () => {
@@ -37,6 +39,7 @@ describe('builder duck', () => {
     it('create doday and progress action creator', () => {
       const doday: SerializedDoday = {
         did: 'test',
+        activityType: 'do',
         type: DodayTypes.Doday,
         name: 'test',
         public: false,
@@ -46,6 +49,19 @@ describe('builder duck', () => {
         payload: doday,
       };
       expect(createAndTakeDoday(doday)).toEqual(expectedActionObject);
+    });
+
+    it('create goal node action creator', () => {
+      const goal: SerializedGoal = {
+        did: 'test',
+        type: DodayTypes.Goal,
+        name: 'test',
+      };
+      const expectedActionObject = {
+        type: ActionConstants.CREATE_GOAL,
+        payload: goal,
+      };
+      expect(createGoalActionCreator(goal)).toEqual(expectedActionObject);
     });
 
     it('set builder loading state action creator', () => {

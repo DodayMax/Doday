@@ -9,12 +9,13 @@ interface InputProps {
   size?: StandartSizes;
   isLoading?: boolean;
   autofocus?: boolean;
+  onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   setRef?: (node: HTMLInputElement | null) => void;
 }
 
 export class Input extends React.Component<
   InputProps & React.InputHTMLAttributes<HTMLInputElement>
-  > {
+> {
   input: HTMLInputElement | null;
 
   constructor(props) {
@@ -32,6 +33,16 @@ export class Input extends React.Component<
     }
   }
 
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.keyCode);
+    if (e.keyCode === 13) {
+      // enter
+      if (this.props.onPressEnter) {
+        this.props.onPressEnter(e);
+      }
+    }
+  };
+
   render() {
     const {
       value,
@@ -39,6 +50,7 @@ export class Input extends React.Component<
       autofocus,
       isLoading = false,
       size = StandartSizes.medium,
+      onPressEnter,
       ...props
     } = this.props;
     const classNames = classnames(
@@ -56,6 +68,7 @@ export class Input extends React.Component<
           ref={node => (this.input = node)}
           value={value}
           onChange={onChange}
+          onKeyDown={this.onKeyDown}
           {...props}
         />
         {isLoading ? <Icons.InlineLoader className={styles.loader} /> : null}

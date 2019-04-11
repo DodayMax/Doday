@@ -9,6 +9,7 @@ import {
   setParsedUrlMetadataObjectActionCreator,
   setActivityTypeActionCreator,
   clearBuilderActionCreator,
+  CreateGoalAction,
 } from './actions';
 import { fetchDodaysForDate } from '@ducks/doday-app/actions';
 import { api } from '@services';
@@ -35,6 +36,21 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
 }
 
 /**
+ * Create Goal node saga
+ *
+ * @param {CreateGoalAction} action
+ */
+function* createGoalSaga(action: CreateGoalAction) {
+  yield put(setBuilderLoadingState(true));
+  const res = yield call(api.dodays.mutations.createGoal, action.payload);
+  if (res.status === 200) {
+    yield put(setBuilderSuccessFlag(true));
+  }
+  yield put(setBuilderLoadingState(false));
+  yield put(clearBuilderActionCreator());
+}
+
+/**
  * Fetch activity types for builder saga
  *
  * @param {ParseUrlMetadataAction} action
@@ -52,5 +68,6 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 
 export default [
   takeLatest(ActionConstants.CREATE_AND_TAKE_DODAY, createAndTakeDodaySaga),
+  takeLatest(ActionConstants.CREATE_GOAL, createGoalSaga),
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
 ];

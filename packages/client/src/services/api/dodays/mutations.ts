@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
 import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
+import { SerializedGoal } from '@root/lib/models/entities/Goal';
 
 type Neo4jDateTimeInput = {
   year: number;
@@ -27,6 +28,17 @@ export const createAndTakeDodayNode = async (doday: SerializedDoday) => {
       'Access-Control-Allow-Origin': 'true',
     },
     body: JSON.stringify(doday),
+  });
+};
+
+export const createGoal = async (goal: SerializedGoal) => {
+  return fetch('/api/goals', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
+    },
+    body: JSON.stringify(goal),
   });
 };
 

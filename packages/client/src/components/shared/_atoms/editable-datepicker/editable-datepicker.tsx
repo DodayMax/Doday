@@ -1,34 +1,31 @@
 import * as React from 'react';
-import DatePicker from 'react-datepicker';
+import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import * as moment from 'moment';
 import { Button } from '../button';
 
 const css = require('./editable-datepicker.scss');
 
 interface EditableDatePickerProps {
-  selectedDate: Date;
-  onChange: (date: Date) => void;
   onClick?: () => void;
 }
 
 export const EditableDatePicker = ({
-  selectedDate,
-  onChange,
   onClick,
-}: EditableDatePickerProps) => {
+  ...props
+}: EditableDatePickerProps & ReactDatePickerProps) => {
   return (
     <DatePicker
-      minDate={new Date()}
       customInput={
         <Button
           borderless
-          text={moment(selectedDate).format('ll')}
+          text={moment(props.selected).format('ll')}
           onClick={onClick}
           className={css.editableDatepicker}
         />
       }
-      selected={selectedDate}
-      onChange={onChange}
+      selected={props.selected}
+      onChange={props.onChange}
+      {...props}
     />
   );
 };
