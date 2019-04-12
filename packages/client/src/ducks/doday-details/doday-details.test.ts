@@ -5,9 +5,9 @@ import {
   setSelectedDodayActionCreator,
   clearSelectedDodayActionCreator,
   updateSelectedDodayActionCreator,
+  setSelectedGoalActionCreator,
 } from './actions';
-import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { Doday } from '@root/lib/models/entities/Doday';
+import { testDoday, testGoal } from '@root/lib/common-interfaces/fake-data';
 
 describe('doday details page duck', () => {
   describe('action creators', () => {
@@ -22,19 +22,43 @@ describe('doday details page duck', () => {
       );
     });
 
-    it('set selected doday action creator', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
+    it('fetch selected goal action creator', () => {
+      const selectedDid = 'test did';
+      const expectedActionObject = {
+        type: ActionConstants.FETCH_SELECTED_GOAL,
+        payload: selectedDid,
       };
+      expect(fetchSelectedDodayActionCreator(selectedDid)).toEqual(
+        expectedActionObject
+      );
+    });
+
+    it('set selected doday action creator', () => {
       const expectedActionObject = {
         type: ActionConstants.SET_SELECTED_DODAY,
-        payload: doday,
+        payload: testDoday,
       };
-      expect(setSelectedDodayActionCreator(doday)).toEqual(
+      expect(setSelectedDodayActionCreator(testDoday)).toEqual(
+        expectedActionObject
+      );
+    });
+
+    it('set selected goal action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.SET_SELECTED_GOAL,
+        payload: testGoal,
+      };
+      expect(setSelectedGoalActionCreator(testGoal)).toEqual(
+        expectedActionObject
+      );
+    });
+
+    it('set selected doday action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.SET_SELECTED_DODAY,
+        payload: testDoday,
+      };
+      expect(setSelectedDodayActionCreator(testDoday)).toEqual(
         expectedActionObject
       );
     });
@@ -66,47 +90,35 @@ describe('doday details page duck', () => {
 
   describe('doday detaila reducers', () => {
     it('set selected doday reducer', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       expect(
-        reducer(undefined, setSelectedDodayActionCreator(doday)).selectedDoday
+        reducer(undefined, setSelectedDodayActionCreator(testDoday))
+          .selectedDoday.did
+      ).toEqual(testDoday.did);
+    });
+
+    it('set selected goal reducer', () => {
+      expect(
+        reducer(undefined, setSelectedGoalActionCreator(testGoal)).selectedDoday
           .did
-      ).toEqual(doday.did);
+      ).toEqual(testDoday.did);
     });
 
     it('update selected doday reducer', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       const updates = {
         name: 'new name',
       };
       expect(
-        reducer(undefined, updateSelectedDodayActionCreator(doday.did, updates))
-          .selectedDoday.name
+        reducer(
+          undefined,
+          updateSelectedDodayActionCreator(testDoday.did, updates)
+        ).selectedDoday.name
       ).toEqual(updates.name);
     });
 
     it('clear selected doday reducer', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       const state = {
         ...initialState,
-        selectedDoday: doday,
+        selectedDoday: testDoday,
       };
       expect(
         reducer(state, clearSelectedDodayActionCreator()).selectedDoday

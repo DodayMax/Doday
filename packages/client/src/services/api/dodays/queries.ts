@@ -7,7 +7,7 @@ import { parseProgressToDoday } from '@root/lib/utils/api-utils';
 
 // Dodays
 
-export const dodayProgressByID = async (variables: any) => {
+export const dodayProgressByDID = async (variables: any) => {
   const res = await client.query({
     query: gql`
       query Progress($did: String) {

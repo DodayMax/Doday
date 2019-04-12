@@ -19,21 +19,7 @@ import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { deleteDoday } from '@root/services/api/dodays/mutations';
-
-const testDoday: Doday = {
-  did: 'test did',
-  activityType: 'do',
-  type: DodayTypes.Doday,
-  name: 'name',
-  public: false,
-};
-const testGoal: Goal = {
-  did: 'test did',
-  type: DodayTypes.Goal,
-  name: 'name',
-  ownerDID: 'qweq12g3123guh',
-  children: [],
-};
+import { testGoal, testDoday } from '@root/lib/common-interfaces/fake-data';
 
 describe('doday-app duck', () => {
   describe('doday-app action creators', () => {

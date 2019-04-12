@@ -6,7 +6,7 @@ import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { DefaultTopBar } from './default-top-bar/default-top-bar';
-import { Grid } from '@components';
+import { Grid, Icons } from '@components';
 import { dodayApp } from '@lib/constants';
 import {
   ChangeDodayAppDateAction,
@@ -24,7 +24,9 @@ import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
+import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 
+const vars = require('@styles/_config.scss');
 const styles = require('./_doday-app.module.scss');
 
 interface DodayAppProps {
@@ -109,7 +111,9 @@ export class DodayAppComponent extends React.Component<
     const {
       path,
       chosenDate,
+      history,
       changeDateActionCreator,
+      popFromNavStack,
       loading,
       navStack,
     } = this.props;
@@ -123,8 +127,33 @@ export class DodayAppComponent extends React.Component<
                 (navStack.length > 0 && navStack[navStack.length - 1].name) ||
                 'Goals'
               }
-              back={navStack.length > 0}
-              backAction={this.props.popFromNavStack}
+              leftAction={
+                !!navStack.length && (
+                  <ClickableIcon
+                    border
+                    rounded
+                    text={'back '}
+                    background={vars.gray1}
+                    onClick={popFromNavStack}
+                  >
+                    <Icons.Chevron />
+                  </ClickableIcon>
+                )
+              }
+              rightAction={
+                !!navStack.length && (
+                  <ClickableIcon
+                    background={vars.gray1}
+                    onClick={() =>
+                      history.push(
+                        `/goals/${navStack[navStack.length - 1].did}`
+                      )
+                    }
+                  >
+                    <Icons.Settings />
+                  </ClickableIcon>
+                )
+              }
             />
             <Grid
               loading={loading}

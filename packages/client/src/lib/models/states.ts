@@ -42,4 +42,5 @@ export interface HeroSettingsState {
 export interface DodayDetailsState {
   loading: boolean;
   selectedDoday?: Doday;
+  selectedGoal?: Goal;
 }

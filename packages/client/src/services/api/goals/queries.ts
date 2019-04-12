@@ -52,6 +52,49 @@ export const fetchGoals = async (variables: any) => {
   return parseGoalGraphQLResponseGoal(goal);
 };
 
+export const goalByDID = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Goal($did: String) {
+        Goal(did: $did) {
+          did
+          type
+          name
+          startDate {
+            year
+            month
+            day
+          }
+          endDate {
+            year
+            month
+            day
+          }
+          children {
+            did
+            date {
+              year
+              month
+              day
+            }
+            completed
+            origin {
+              name
+              type
+              activityType
+            }
+          }
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  const goals = res.data.Goal;
+
+  return firstItem(parseGoalGraphQLResponseGoal(goals));
+};
+
 export const parseGoalGraphQLResponseGoal = res => {
   return res.map(goal => ({
     ...goal,

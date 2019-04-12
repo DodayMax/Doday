@@ -1,6 +1,12 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Drawer, DodayApp, Builder, DodayDetails } from '@components';
+import {
+  Drawer,
+  DodayApp,
+  Builder,
+  DodayDetails,
+  GoalDetails,
+} from '@components';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
@@ -75,6 +81,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
         <Route exact path="/" render={() => <div>Store</div>} />
         <Route path="/dodays/:did" component={DodayDetails} />
+        <Route path="/goals/:did" component={GoalDetails} />
         <Route path="/builder" component={Builder} />
       </>
     );

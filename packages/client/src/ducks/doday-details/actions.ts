@@ -1,16 +1,19 @@
 import { AnyAction } from 'redux';
 import { Doday } from '@root/lib/models/entities/Doday';
+import { Goal } from '@root/lib/models/entities/Goal';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
   FETCH_SELECTED_DODAY = '[doday-app] FETCH_SELECTED_DODAY',
+  FETCH_SELECTED_GOAL = '[doday-app] FETCH_SELECTED_GOAL',
   SET_SELECTED_DODAY = '[doday-app] SET_SELECTED_DODAY',
+  SET_SELECTED_GOAL = '[doday-app] SET_SELECTED_GOAL',
   UPDATE_SELECTED_DODAY = '[doday-app] UPDATE_SELECTED_DODAY',
   CLEAR_SELECTED_DODAY = '[doday-app] CLEAR_SELECTED_DODAY',
 }
 
 /**
- * Toggle drawer
+ * Set loading state for doday details peace of state
  *
  * @export
  * @returns {SetDodayDetailsLoadingStateAction}
@@ -40,6 +43,21 @@ export function fetchSelectedDodayActionCreator(
 }
 
 /**
+ * Select goal and set to the store
+ *
+ * @export
+ * @returns {FetchSelectedGoalAction}
+ */
+export function fetchSelectedGoalActionCreator(
+  did: string
+): FetchSelectedGoalAction {
+  return {
+    type: ActionConstants.FETCH_SELECTED_GOAL,
+    payload: did,
+  };
+}
+
+/**
  * Set selected doday to store action
  *
  * @export
@@ -51,6 +69,21 @@ export function setSelectedDodayActionCreator(
   return {
     type: ActionConstants.SET_SELECTED_DODAY,
     payload: progress,
+  };
+}
+
+/**
+ * Set selected goal to store action
+ *
+ * @export
+ * @returns {SetSelectedGoalAction}
+ */
+export function setSelectedGoalActionCreator(
+  goal: Goal
+): SetSelectedGoalAction {
+  return {
+    type: ActionConstants.SET_SELECTED_GOAL,
+    payload: goal,
   };
 }
 
@@ -99,9 +132,19 @@ export interface FetchSelectedDodayAction extends AnyAction {
   payload: string;
 }
 
+export interface FetchSelectedGoalAction extends AnyAction {
+  type: ActionConstants.FETCH_SELECTED_GOAL;
+  payload: string;
+}
+
 export interface SetSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_SELECTED_DODAY;
   payload: Doday;
+}
+
+export interface SetSelectedGoalAction extends AnyAction {
+  type: ActionConstants.SET_SELECTED_GOAL;
+  payload: Goal;
 }
 
 export interface UpdateSelectedDodayAction extends AnyAction {
@@ -123,6 +166,8 @@ export interface ClearSelectedDodayAction extends AnyAction {
 export type ActionTypes =
   | SetDodayDetailsLoadingStateAction
   | FetchSelectedDodayAction
+  | FetchSelectedGoalAction
   | SetSelectedDodayAction
+  | SetSelectedGoalAction
   | UpdateSelectedDodayAction
   | ClearSelectedDodayAction;

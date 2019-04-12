@@ -5,36 +5,25 @@ import { AnyAction } from 'redux';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { TypographySize } from '@root/lib/common-interfaces';
 
-const vars = require('@styles/_config.scss');
 const styles = require('./_default-top-bar.module.scss');
 
 interface DefaultTopBarProps {
   title: string;
-  back: boolean;
-  backAction: () => AnyAction;
+  leftAction: React.ReactElement<any>;
+  rightAction: React.ReactElement<any>;
 }
 
 export class DefaultTopBar extends React.Component<DefaultTopBarProps> {
   renderContent = () => {
     return (
       <>
-        <LayoutBlock flex={1}>
-          {this.props.back && (
-            <ClickableIcon
-              border
-              rounded
-              text={'back '}
-              background={vars.gray1}
-              onClick={this.props.backAction}
-            >
-              <Icons.Chevron />
-            </ClickableIcon>
-          )}
-        </LayoutBlock>
+        <LayoutBlock flex={1}>{this.props.leftAction}</LayoutBlock>
         <LayoutBlock flex={2} align="flex-center">
           <Text size={TypographySize.s}>{this.props.title}</Text>
         </LayoutBlock>
-        <LayoutBlock flex={1} />
+        <LayoutBlock align="flex-end" flex={1}>
+          {this.props.rightAction}
+        </LayoutBlock>
       </>
     );
   };

@@ -28,5 +28,6 @@ export * from './doday-app';
 export * from './landing';
 export * from './dashboard';
 export * from './doday-details';
+export * from './goal-details';
 
 export { Shell, Builder, Drawer, DesktopShell, Icons, Grid };

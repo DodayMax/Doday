@@ -34,11 +34,8 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
     const stack = yield select(navStack);
-    if (stack.length) {
-      yield put(fetchAllGoalsActionCreator());
-    } else {
-      yield put(fetchDodaysForDate());
-    }
+    yield put(fetchDodaysForDate());
+    yield put(fetchAllGoalsActionCreator());
   }
   yield put(setBuilderLoadingState(false));
   yield put(clearBuilderActionCreator());
