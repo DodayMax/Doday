@@ -8,7 +8,7 @@ export interface SerializedDoday {
   tags: string[];
   public: boolean;
   resource?: Resource;
-  goalDID?: string;
   date?: number;
   created?: number;
+  relatedGoal?: string;
 }

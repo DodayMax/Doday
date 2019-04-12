@@ -12,7 +12,13 @@ export interface SerializedProgress {
   completed: boolean;
   tookAt: Neo4jDateTime;
   date: Neo4jDate;
-  completedAt: Neo4jDateTime;
+  completedAt?: Neo4jDateTime;
+  relatedGoal?: {
+    did: string;
+    name: string;
+    startDate: Neo4jDate;
+    endDate: Neo4jDate;
+  }[];
   hero: Hero[];
   origin: Doday[];
 }

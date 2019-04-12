@@ -190,6 +190,11 @@ class DodayDetails extends React.Component<
           )}
         </LayoutBlock>
         <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
+        {selectedDoday.relatedGoal && (
+          <Text color={TypographyColor.Disabled} size={TypographySize.m}>
+            {selectedDoday.relatedGoal.name}
+          </Text>
+        )}
         {youtubeLink && (
           <div
             className={css.videoWrapper}

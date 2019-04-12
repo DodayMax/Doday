@@ -19,6 +19,20 @@ export const dodayProgressByID = async (variables: any) => {
             day
           }
           completed
+          relatedGoal {
+            did
+            name
+            startDate {
+              year
+              month
+              day
+            }
+            endDate {
+              year
+              month
+              day
+            }
+          }
           origin {
             name
             activityType

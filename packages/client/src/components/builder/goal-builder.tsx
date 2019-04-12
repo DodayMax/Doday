@@ -15,6 +15,7 @@ const css = require('./_builder.module.scss');
 
 interface GoalBuilderProps {
   loading: boolean;
+  ownerDID: string;
   createGoalActionCreator: (goal: SerializedGoal) => CreateGoalAction;
 }
 
@@ -44,6 +45,7 @@ export class GoalBuilder extends React.Component<
         did: cuid(),
         type: DodayTypes.Goal,
         name: this.state.goalName,
+        ownerDID: this.props.ownerDID,
         startDate: this.state.startDate.getTime(),
         endDate: this.state.endDate.getTime(),
       });

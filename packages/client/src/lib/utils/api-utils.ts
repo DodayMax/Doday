@@ -26,6 +26,7 @@ export function parseProgressToDoday(progress: SerializedProgress): Doday {
     name: deserializedProgress.origin.name,
     public: deserializedProgress.origin.public,
     // Computed props by relations and from Progress node
+    relatedGoal: parseGoal(firstItem(deserializedProgress.relatedGoal)),
     resource: firstItem(deserializedProgress.origin.resource),
     owner:
       deserializedProgress.origin.owner &&
@@ -39,3 +40,13 @@ export function parseProgressToDoday(progress: SerializedProgress): Doday {
     completedAt: deserializedProgress.completedAt,
   };
 }
+
+const parseGoal = goal => {
+  if (!goal) return;
+
+  return {
+    ...goal,
+    startDate: dateFromNeo4jDate(goal.startDate),
+    endDate: dateFromNeo4jDate(goal.endDate),
+  };
+};

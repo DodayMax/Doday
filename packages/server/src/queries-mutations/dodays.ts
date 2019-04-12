@@ -58,9 +58,10 @@ export const createAndTakeDodayTransaction = (
       CREATE (p)-[:ORIGIN]->(d)
       ${props.doday.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
       ${
-        props.doday.goalDID
+        props.doday.relatedGoal
           ? `
-          MATCH (g:Goal { did: {goalDID} })
+          WITH p
+          MATCH (g:Goal { did: {relatedGoal} })
           CREATE (p)-[:INSIDE]->(g)
         `
           : ''
@@ -113,7 +114,8 @@ export const deleteDodayTransaction = (
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
       OPTIONAL MATCH (d)-[r4:RESOURCE]-(:Resource)
-      DELETE r1, r2, r3, r4, d, p
+      OPTIONAL MATCH (p)-[r5:INSIDE]-(:Goal)
+      DELETE r1, r2, r3, r4, r5, d, p
     `,
     {
       heroDID: props.heroDID,
@@ -135,7 +137,8 @@ export const removeDodayTransaction = (
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
-      DELETE r2, r3, p
+      OPTIONAL MATCH (p)-[r4:INSIDE]-(:Goal)
+      DELETE r2, r3, r4, p
     `,
     {
       heroDID: props.heroDID,

@@ -116,13 +116,14 @@ export class DodayBuilder extends React.Component<
   };
 
   handleCreateDoday = () => {
-    const { parsedMetadata, activityType = 'do' } = this.props;
+    const { parsedMetadata, activityType = 'do', selectedGoal } = this.props;
 
     if (this.state.dodayName || parsedMetadata) {
       const resource = parsedMetadata && {
         ...parsedMetadata,
         did: cuid(),
       };
+      console.log(selectedGoal && selectedGoal.did);
       this.props.createAndTakeDoday({
         did: cuid(),
         activityType,
@@ -134,6 +135,7 @@ export class DodayBuilder extends React.Component<
         date: this.state.date.getTime(),
         resource: resource,
         public: false,
+        relatedGoal: selectedGoal && selectedGoal.did,
       });
     }
   };

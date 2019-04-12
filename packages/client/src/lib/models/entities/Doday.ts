@@ -3,6 +3,7 @@ import { Tag } from './Tag';
 import { DodayTypes } from './dodayTypes';
 import { Resource } from './Resource';
 import { Activity } from '@root/lib/common-interfaces';
+import { Goal } from './Goal';
 
 export interface Doday {
   did: string;
@@ -21,6 +22,7 @@ export interface Doday {
   tookAt?: Date;
   date?: Date;
   completedAt?: Date;
+  relatedGoal?: Goal;
 }
 
 export interface SerializedDoday {
@@ -37,4 +39,5 @@ export interface SerializedDoday {
   done?: Hero[];
   tags?: string[];
   created?: number;
+  relatedGoal?: string;
 }

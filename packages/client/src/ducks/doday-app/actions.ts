@@ -11,6 +11,7 @@ export enum ActionConstants {
   REMOVE_DODAY = '[doday-app] REMOVE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
+  SET_NAV_STACK = '[doday-app] SET_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
   FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
   SET_DODAYS_FOR_DATE = '[doday-app] SET_DODAYS_FOR_DATE',
@@ -46,15 +47,28 @@ export function changePath(path: string): ChangePathAction {
 }
 
 /**
- * Push Doday with children to navigation stack
+ * Set Goal[] as nav stack
+ *
+ * @export
+ * @returns {SetNavStackAction}
+ */
+export function setToNavStackActionCreator(goals: Goal[]): SetNavStackAction {
+  return {
+    type: ActionConstants.SET_NAV_STACK,
+    payload: goals,
+  };
+}
+
+/**
+ * Push Goal to navigation stack
  *
  * @export
  * @returns {PushToNavigationStackAction}
  */
-export function pushToNavStack(doday: Goal): PushToNavigationStackAction {
+export function pushToNavStack(goal: Goal): PushToNavigationStackAction {
   return {
     type: ActionConstants.PUSH_TO_NAV_STACK,
-    payload: doday,
+    payload: goal,
   };
 }
 
@@ -182,9 +196,9 @@ export function fetchAllGoalsActionCreator(): FetchAllGoalsAction {
  * Set goals to redux store
  *
  * @export
- * @returns {SetGoals}
+ * @returns {SetGoalsAction}
  */
-export function setGoals(goals: Goal[]): SetGoals {
+export function setGoalsActionCreator(goals: Goal[]): SetGoalsAction {
   return {
     type: ActionConstants.SET_GOALS,
     payload: goals,
@@ -250,7 +264,7 @@ export interface FetchAllGoalsAction extends AnyAction {
   type: ActionConstants.FETCH_ALL_GOALS;
 }
 
-export interface SetGoals extends AnyAction {
+export interface SetGoalsAction extends AnyAction {
   type: ActionConstants.SET_GOALS;
   payload: Goal[];
 }
@@ -278,6 +292,11 @@ export interface RemoveDodayAction extends AnyAction {
   payload: Doday;
 }
 
+export interface SetNavStackAction extends AnyAction {
+  type: ActionConstants.SET_NAV_STACK;
+  payload: Goal[];
+}
+
 /**
  * Export all action types for reducers
  */
@@ -287,10 +306,11 @@ export type ActionTypes =
   | SetLoadingState
   | PushToNavigationStackAction
   | PopFromNavigationStackAction
+  | SetNavStackAction
   | ChangeDodayAppDateAction
   | FetchDodayForDate
   | SetDodaysForDate
   | SetDodaysBadgeForToday
-  | SetGoals
+  | SetGoalsAction
   | ToggleDodayAction
   | RemoveDodayAction;

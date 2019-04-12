@@ -2,9 +2,12 @@ directive @isAuthenticated on OBJECT | FIELD_DEFINITION
 
 type Hero {
   id: ID!
-  name: String
+  did: String
+  nickname: String
+  displayName: String
+  google: String
   friends: [Hero] @relation(name: "FRIENDS", direction: "BOTH")
-  invites: [Hero] @relation(name: "INVITE", direction: "OUT")
+  invitedByMe: [Hero] @relation(name: "INVITE", direction: "OUT")
   createdDodays: [Doday] @relation(name: "CREATE", direction: "OUT")
   tags: [HeroTag] @cypher(
     statement:
@@ -18,18 +21,42 @@ type Hero {
   created: Float
 }
 
-type Doday {
+type Progress {
   id: ID!
-  name: String
-  owner: [Hero] @relation(name: "CREATE", direction: "IN")
-  doing: [Hero] @cypher(statement: "MATCH (this)-[r:DOING { completed: false }]-(p:Progress)-(h:Hero) RETURN h")
-  done: [Hero] @cypher(statement: "MATCH (this)-[r:DOING { completed: true }]-(p:Progress)-(h:Hero) RETURN h")
-  tags: [TaggedDoday]
-  created: Float
+  did: String
   completed: Boolean
   tookAt: DateTime
   date: Date
-  completedAt: Float
+  completedAt: DateTime
+  hero: [Hero] @relation(name: "DOING", direction: "IN")
+  origin: [Doday] @relation(name: "ORIGIN", direction: "OUT")
+  relatedGoal: [Goal] @relation(name: "INSIDE", direction: "OUT")
+}
+
+type Doday {
+  id: ID!
+  did: String
+  activityType: String
+  type: Int
+  name: String
+  public: Boolean
+  resource: [Resource] @relation(name: "RESOURCE", direction: "OUT")
+  owner: [Hero] @relation(name: "CREATE", direction: "IN")
+  doing: [Hero] @cypher(statement: "MATCH (this)<-[r:ORIGIN]-(p:Progress { completed: false })-[:DOING]-(h:Hero) RETURN h")
+  done: [Hero] @cypher(statement: "MATCH (this)<-[r:ORIGIN]-(p:Progress { completed: true })-[:DOING]-(h:Hero) RETURN h")
+  tags: [TaggedDoday]
+  created: Float
+}
+
+type Goal {
+  id: ID!
+  did: String
+  type: Int
+  name: String
+  startDate: Date
+  endDate: Date
+  ownerDID: String
+  children: [Progress] @relation(name: "INSIDE", direction: "IN")
 }
 
 type Path {
@@ -37,6 +64,19 @@ type Path {
   name: String
   dodays: [Doday] @relation(name: "USE", direction: "IN")
   created: Float
+}
+
+type Resource {
+  id: ID!
+  did: String
+  description: String
+  icon: String
+  image: String
+  keywords: [String]
+  provider: String
+  title: String
+  type: String
+  url: String
 }
 
 type Role {
@@ -58,17 +98,6 @@ type Tag {
   )
 }
 
-type Progress {
-  id: ID!
-  type: String
-  days: [Int]
-  hero: [Hero] @relation(name: "PROGRESS", direction: "IN")
-  path: [Path] @relation(name: "PATH", direction: "OUT")
-  doing: [Doing]
-  currentDoday: [Doday] @cypher(statement: "MATCH (this)-[r:DOING { completed: false }]-(d: Doday) RETURN d")
-  completedDodays: [Doday] @cypher(statement: "MATCH (this)-[r:DOING { completed: true }]-(d: Doday) RETURN d")
-}
-
 type Day {
   id: ID!
   date: Date
@@ -86,14 +115,6 @@ type HeroTag {
   sysname: String
   color: String
   weight: Float
-}
-
-type Doing @relation(name: "DOING") {
-  from: Progress
-  to: Doday
-  tookAt: DateTime
-  completedAt: Float
-  completed: Boolean
 }
 
 type Counter {

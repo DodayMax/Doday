@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import {
   ActionConstants,
   CreateAndTakeDodayAction,
@@ -18,6 +18,7 @@ import {
 import { api } from '@services';
 import { detectActivityType } from '@root/lib/utils/regexp';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
+import { navStack } from '../doday-app/selectors';
 
 /**
  * Create Doday and Progress node saga
@@ -32,7 +33,12 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
   );
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
-    yield put(fetchDodaysForDate());
+    const stack = yield select(navStack);
+    if (stack.length) {
+      yield put(fetchAllGoalsActionCreator());
+    } else {
+      yield put(fetchDodaysForDate());
+    }
   }
   yield put(setBuilderLoadingState(false));
   yield put(clearBuilderActionCreator());

@@ -8,15 +8,32 @@ import {
   setDodaysForDate,
   setDodaysBadgeForToday,
   setAppLoadingState,
-  fetchAllGoals,
-  setGoals,
   toggleDoday,
   removeDodayActionCreator,
   updateDodayActionCreator,
+  setToNavStackActionCreator,
+  setGoalsActionCreator,
+  fetchAllGoalsActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
+import { deleteDoday } from '@root/services/api/dodays/mutations';
+
+const testDoday: Doday = {
+  did: 'test did',
+  activityType: 'do',
+  type: DodayTypes.Doday,
+  name: 'name',
+  public: false,
+};
+const testGoal: Goal = {
+  did: 'test did',
+  type: DodayTypes.Goal,
+  name: 'name',
+  ownerDID: 'qweq12g3123guh',
+  children: [],
+};
 
 describe('doday-app duck', () => {
   describe('doday-app action creators', () => {
@@ -38,18 +55,21 @@ describe('doday-app duck', () => {
       expect(changePath(path)).toEqual(expectedActionObject);
     });
 
-    it('push to nav stack action creator', () => {
-      const newDoday: Goal = {
-        did: '123',
-        type: DodayTypes.Goal,
-        name: 'name',
-        children: [],
+    it('set Goal[] to nav stack action creator', () => {
+      const goals: Goal[] = [testGoal];
+      const expectedActionObject = {
+        type: ActionConstants.SET_NAV_STACK,
+        payload: goals,
       };
+      expect(setToNavStackActionCreator(goals)).toEqual(expectedActionObject);
+    });
+
+    it('push to nav stack action creator', () => {
       const expectedActionObject = {
         type: ActionConstants.PUSH_TO_NAV_STACK,
-        payload: newDoday,
+        payload: testGoal,
       };
-      expect(pushToNavStack(newDoday)).toEqual(expectedActionObject);
+      expect(pushToNavStack(testGoal)).toEqual(expectedActionObject);
     });
 
     it('pop from nav stack action creator', () => {
@@ -96,22 +116,15 @@ describe('doday-app duck', () => {
       const expectedActionObject = {
         type: ActionConstants.FETCH_ALL_GOALS,
       };
-      expect(fetchAllGoals()).toEqual(expectedActionObject);
+      expect(fetchAllGoalsActionCreator()).toEqual(expectedActionObject);
     });
 
     it('set goals action creator', () => {
-      const goals: Goal[] = [
-        {
-          did: '123',
-          type: DodayTypes.Goal,
-          name: 'name',
-          children: [],
-        },
-      ];
+      const goals: Goal[] = [testGoal];
       const expectedActionObject = {
-        type: ActionConstants.FETCH_ALL_GOALS,
+        type: ActionConstants.SET_GOALS,
       };
-      expect(fetchAllGoals()).toEqual(expectedActionObject);
+      expect(setGoalsActionCreator(goals)).toEqual(expectedActionObject);
     });
 
     it('toggle doday action creator', () => {
@@ -130,18 +143,11 @@ describe('doday-app duck', () => {
     });
 
     it('delete doday action creator', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       const expectedActionObject = {
         type: ActionConstants.DELETE_DODAY,
-        payload: doday,
+        payload: testDoday.did,
       };
-      expect(toggleDoday(doday)).toEqual(expectedActionObject);
+      expect(deleteDoday(testDoday.did)).toEqual(expectedActionObject);
     });
 
     it('remove doday from my app action creator', () => {
@@ -189,55 +195,37 @@ describe('doday-app duck', () => {
     });
 
     it('push new doday to navigation stack reducer', () => {
-      const newDoday: Goal = {
-        did: '123',
-        type: DodayTypes.Goal,
-        name: 'name',
-        children: [],
-      };
       expect(
-        reducer(undefined, pushToNavStack(newDoday)).navStack[0].name
-      ).toEqual(newDoday.name);
+        reducer(undefined, pushToNavStack(testGoal)).navStack[0].name
+      ).toEqual(testGoal.name);
     });
 
     it('pop from navigation stack reducer', () => {
-      const newDoday: Goal = {
-        did: '123',
-        type: DodayTypes.Goal,
-        name: 'name',
-        children: [],
-      };
       expect(
-        reducer(undefined, pushToNavStack(newDoday)).navStack[0].name
-      ).toEqual(newDoday.name);
+        reducer(undefined, pushToNavStack(testGoal)).navStack[0].name
+      ).toEqual(testGoal.name);
       expect(reducer(undefined, popFromNavStack()).navStack.length).toBe(0);
     });
 
+    it('set goals to navigation stack reducer', () => {
+      expect(
+        reducer(undefined, setToNavStackActionCreator([testGoal])).navStack[0]
+          .name
+      ).toEqual(testGoal.name);
+    });
+
     it('set dodays for date reducer', () => {
-      const dodays: Doday[] = [
-        {
-          did: '123',
-          activityType: 'do',
-          type: DodayTypes.Doday,
-          name: 'name',
-          public: false,
-        },
-      ];
+      const dodays: Doday[] = [testDoday];
       expect(reducer(undefined, setDodaysForDate(dodays)).dodays).toEqual(
         dodays
       );
     });
 
     it('set goals reducer', () => {
-      const goals: Goal[] = [
-        {
-          did: '123',
-          type: DodayTypes.Goal,
-          name: 'name',
-          children: [],
-        },
-      ];
-      expect(reducer(undefined, setGoals(goals)).dodays).toEqual(goals);
+      const goals: Goal[] = [testGoal];
+      expect(reducer(undefined, setGoalsActionCreator(goals)).dodays).toEqual(
+        goals
+      );
     });
 
     it('set dodays badge for today reducer', () => {

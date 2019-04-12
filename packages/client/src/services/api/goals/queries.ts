@@ -1,7 +1,74 @@
+import gql from 'graphql-tag';
+import client from '../apollo-client';
 import { Goal } from '@root/lib/models/entities/Goal';
-import { neo4jResponseDateToJSDate } from '@root/lib/utils';
+import {
+  neo4jResponseDateToJSDate,
+  dateFromNeo4jDate,
+  firstItem,
+} from '@root/lib/utils';
 
 // Goals
+
+export const fetchGoals = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Goal($ownerDID: String) {
+        Goal(ownerDID: $ownerDID) {
+          did
+          type
+          name
+          startDate {
+            year
+            month
+            day
+          }
+          endDate {
+            year
+            month
+            day
+          }
+          children {
+            did
+            date {
+              year
+              month
+              day
+            }
+            completed
+            origin {
+              name
+              type
+              activityType
+            }
+          }
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  const goal = res.data.Goal;
+
+  return parseGoalGraphQLResponseGoal(goal);
+};
+
+export const parseGoalGraphQLResponseGoal = res => {
+  return res.map(goal => ({
+    ...goal,
+    startDate: dateFromNeo4jDate(goal.startDate),
+    endDate: dateFromNeo4jDate(goal.endDate),
+    children:
+      goal.children &&
+      goal.children.map(progress => ({
+        ...progress,
+        date: dateFromNeo4jDate(progress.date),
+        ...firstItem(progress.origin),
+        origin: undefined,
+      })),
+  }));
+};
+
+// uses actual API don't needed for now
 
 export const fetchAllGoals = () => {
   return fetch(`/api/goals`, {

@@ -5,18 +5,22 @@ import {
   FetchDodayForDate,
   setDodaysBadgeForToday,
   setAppLoadingState,
-  setGoals,
   ToggleDodayAction,
   fetchDodaysForDate,
   RemoveDodayAction,
   UpdateDodayAction,
   changeDateActionCreator,
   FetchAllGoalsAction,
+  setGoalsActionCreator,
+  SetGoalsAction,
+  setToNavStackActionCreator,
+  fetchAllGoalsActionCreator,
 } from './actions';
-import { chosenDate } from '@ducks/all-selectors';
+import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actions';
+import { navStack } from './selectors';
 
 /**
  * Fetch dodays for chosen date saga
@@ -46,9 +50,27 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
  */
 function* fetchAllGoalsSaga(action: FetchAllGoalsAction) {
   yield put(setAppLoadingState(true));
-  const goals = yield call(api.goals.queries.fetchAllGoals);
-  yield put(setGoals(goals));
+  const did = yield select(myDID);
+  const goals = yield call(api.goals.queries.fetchGoals, { ownerDID: did });
+  yield put(setGoalsActionCreator(goals));
   yield put(setAppLoadingState(false));
+}
+
+/**
+ * When new goals updates here = update navStack as well
+ * @param {SetGoalsAction} action
+ */
+function* setGoalsSaga(action: SetGoalsAction) {
+  const stack = yield select(navStack);
+  const newGoals = action.payload;
+  const stackDIDs = stack.map(goal => goal.did);
+  yield put(
+    setToNavStackActionCreator(
+      newGoals.filter(
+        goal => stackDIDs.filter(did => did === goal.did).length > 0
+      )
+    )
+  );
 }
 
 /**
@@ -73,6 +95,7 @@ function* deleteDodaySaga(action: ToggleDodayAction) {
   yield put(setAppLoadingState(true));
   yield call(api.dodays.mutations.deleteDoday, action.payload.did);
   yield put(fetchDodaysForDate());
+  yield put(fetchAllGoalsActionCreator());
   yield put(setAppLoadingState(false));
 }
 
@@ -98,6 +121,7 @@ function* updateDodaySaga(action: UpdateDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.updateDoday, action.payload);
   yield put(fetchDodaysForDate());
+  yield put(fetchAllGoalsActionCreator());
   if (action.payload.updates.date) {
     yield put(changeDateActionCreator(new Date(action.payload.updates.date)));
   }
@@ -109,6 +133,7 @@ export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
+  takeLatest(ActionConstants.SET_GOALS, setGoalsSaga),
   takeLatest(ActionConstants.TOGGLE_DODAY, toggleDodaySaga),
   takeLatest(ActionConstants.UPDATE_DODAY, updateDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),

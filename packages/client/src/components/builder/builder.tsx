@@ -28,7 +28,9 @@ interface BuilderProps {}
 interface BuilderState {}
 
 interface PropsFromConnect {
+  ownerDID?: string;
   goals: Goal[];
+  selectedGoal?: Goal;
   activityType: Activity;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
@@ -72,7 +74,9 @@ export class Builder extends React.Component<
 
   renderBuilder = () => {
     const {
+      ownerDID,
       goals,
+      selectedGoal,
       loading,
       isUrlParsing,
       parsedMetadata,
@@ -91,6 +95,7 @@ export class Builder extends React.Component<
       return (
         <DodayBuilder
           goals={goals}
+          selectedGoal={selectedGoal}
           loading={loading}
           isUrlParsing={isUrlParsing}
           parsedMetadata={parsedMetadata}
@@ -104,6 +109,7 @@ export class Builder extends React.Component<
     } else if (Number(queryParams.type) === DodayTypes.Goal) {
       return (
         <GoalBuilder
+          ownerDID={ownerDID}
           createGoalActionCreator={createGoalActionCreator}
           loading={loading}
         />
@@ -121,7 +127,9 @@ export class Builder extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
+  ownerDID: state.auth.hero && state.auth.hero.did,
   activityType: state.builder.activityType,
+  selectedGoal: state.builder.selectedGoal,
   goals: state.dodayApp.goals,
   isUrlParsing: state.builder.isUrlParsing,
   parsedMetadata: state.builder.parsedMetadata,
