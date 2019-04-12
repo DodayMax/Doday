@@ -18,6 +18,7 @@ export enum ActionConstants {
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
   FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
   SET_GOALS = '[doday-app] SET_GOALS',
+  DELETE_GOAL = '[doday-app] DELETE_GOAL',
 }
 
 /**
@@ -219,6 +220,19 @@ export function removeDodayActionCreator(doday: Doday): RemoveDodayAction {
 }
 
 /**
+ * Delete goal and remove relations from dodays
+ *
+ * @export
+ * @returns {DeleteGoalAction}
+ */
+export function deleteGoalActionCreator(did: string): DeleteGoalAction {
+  return {
+    type: ActionConstants.DELETE_GOAL,
+    payload: did,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -297,6 +311,11 @@ export interface SetNavStackAction extends AnyAction {
   payload: Goal[];
 }
 
+export interface DeleteGoalAction extends AnyAction {
+  type: ActionConstants.DELETE_GOAL;
+  payload: string;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -313,4 +332,5 @@ export type ActionTypes =
   | SetDodaysBadgeForToday
   | SetGoalsAction
   | ToggleDodayAction
-  | RemoveDodayAction;
+  | RemoveDodayAction
+  | DeleteGoalAction;

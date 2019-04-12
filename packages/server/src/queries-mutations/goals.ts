@@ -41,3 +41,23 @@ export const createGoalMutation = (
     }
   );
 };
+
+export const deleteGoalTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    did: SerializedGoal;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (h:Hero {did: $heroDID})-[r1:GOAL]-(g:Goal {did: $did})
+      OPTIONAL MATCH (g)-[r2:INSIDE]-(:Progress)
+      DELETE r1, r2, g
+    `,
+    {
+      did: props.did,
+      heroDID: props.heroDID,
+    }
+  );
+};

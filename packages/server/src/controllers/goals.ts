@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import {
   getAllGoalsQuery,
   createGoalMutation,
+  deleteGoalTransaction,
 } from '../queries-mutations/goals';
 
 export const getAllGoalsTransaction = (req: Request, res: Response) => {
@@ -39,6 +40,25 @@ export const createGoalTransaction = (req: Request, res: Response) => {
     .then(result => {
       session.close();
       res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+// Completely delete goal from app and remove all relations
+
+export const deleteGoal = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  session
+    .writeTransaction(tx =>
+      deleteGoalTransaction(tx, { heroDID: req.user.did, did: req.params.did })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send({ success: true });
     })
     .catch(e => {
       console.error(e);

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { Button, ButtonSize } from '../shared/_atoms/button';
@@ -11,10 +12,12 @@ import { TypographySize } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { FetchSelectedGoalAction } from '@root/ducks/doday-details/actions';
 import { Goal } from '@root/lib/models/entities/Goal';
+import { DeleteGoalAction } from '@root/ducks/doday-app/actions';
 
 interface GoalDetailsProps {}
 interface PropsFromConnect {
   selectedGoal: Goal;
+  deleteGoalActionCreator: (did: string) => DeleteGoalAction;
   fetchSelectedGoalActionCreator: (did: string) => FetchSelectedGoalAction;
 }
 interface GoalDetailsState {}
@@ -38,6 +41,7 @@ class GoalDetails extends React.Component<
         size={ButtonSize.small}
         text={'Delete'}
         onClick={() => {
+          this.props.deleteGoalActionCreator(selectedGoal && selectedGoal.did);
           history.push('/');
         }}
       />,
@@ -78,6 +82,7 @@ const mapState = (state: RootState) => ({
 export default connect(
   mapState,
   {
+    ...dodaysActions,
     ...dodayDetailsActions,
   }
 )(GoalDetails);

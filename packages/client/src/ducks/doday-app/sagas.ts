@@ -15,6 +15,7 @@ import {
   SetGoalsAction,
   setToNavStackActionCreator,
   fetchAllGoalsActionCreator,
+  DeleteGoalAction,
 } from './actions';
 import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -100,6 +101,19 @@ function* deleteDodaySaga(action: ToggleDodayAction) {
 }
 
 /**
+ * Delete goal saga
+ *
+ * @param {DeleteGoalAction} action
+ */
+function* deleteGoalSaga(action: DeleteGoalAction) {
+  yield put(setAppLoadingState(true));
+  yield call(api.goals.mutations.deleteGoal, action.payload);
+  yield put(fetchDodaysForDate());
+  yield put(fetchAllGoalsActionCreator());
+  yield put(setAppLoadingState(false));
+}
+
+/**
  * Remove doday from app saga
  *
  * @param {RemoveDodayAction} action
@@ -138,4 +152,5 @@ export default [
   takeLatest(ActionConstants.UPDATE_DODAY, updateDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),
   takeLatest(ActionConstants.REMOVE_DODAY, removeDodaySaga),
+  takeLatest(ActionConstants.DELETE_GOAL, deleteGoalSaga),
 ];
