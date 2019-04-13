@@ -32,6 +32,15 @@ export const GoalCell: React.SFC<GoalCellProps> = ({
       <Text ellipsize size={TypographySize.s} className={styles.cellTitle}>
         {goal.name}
       </Text>
+      <div
+        style={{
+          position: 'absolute',
+          right: 0,
+          width: '.6rem',
+          height: '100%',
+          backgroundColor: goal.color,
+        }}
+      />
     </li>
   );
 };

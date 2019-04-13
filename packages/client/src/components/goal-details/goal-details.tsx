@@ -39,7 +39,7 @@ class GoalDetails extends React.Component<
       <Button
         key={1}
         size={ButtonSize.small}
-        text={'Delete'}
+        text={'Delete goal'}
         onClick={() => {
           this.props.deleteGoalActionCreator(selectedGoal && selectedGoal.did);
           history.push('/');

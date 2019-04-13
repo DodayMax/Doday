@@ -6,6 +6,7 @@
   height: $cell-height;
   align-items: center;
   padding: $space-xs;
+  position: relative;
 
   &:hover,
   &:active {

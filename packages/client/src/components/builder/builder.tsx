@@ -112,6 +112,7 @@ export class Builder extends React.Component<
           ownerDID={ownerDID}
           createGoalActionCreator={createGoalActionCreator}
           loading={loading}
+          goalNumber={goals.length}
         />
       );
     }

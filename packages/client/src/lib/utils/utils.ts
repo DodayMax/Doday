@@ -85,3 +85,24 @@ export const youtubeIDFromURL = (url: string) => {
   const splitted = url.split('v=');
   return splitted.length > 0 ? splitted[1] : undefined;
 };
+
+export const getRandomColor = index => {
+  if (index != null && index < standartColorsForGoalsChart.length) {
+    return standartColorsForGoalsChart[index];
+  } else {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+};
+
+const standartColorsForGoalsChart = [
+  vars.yellow,
+  vars.green,
+  vars.blue,
+  vars.violet,
+  vars.red,
+];

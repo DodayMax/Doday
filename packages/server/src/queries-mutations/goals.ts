@@ -46,7 +46,7 @@ export const deleteGoalTransaction = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
-    did: SerializedGoal;
+    did: string;
   }
 ) => {
   return tx.run(

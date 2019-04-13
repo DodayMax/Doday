@@ -17,6 +17,7 @@ export const fetchGoals = async (variables: any) => {
           did
           type
           name
+          color
           startDate {
             year
             month
@@ -60,6 +61,7 @@ export const goalByDID = async (variables: any) => {
           did
           type
           name
+          color
           startDate {
             year
             month

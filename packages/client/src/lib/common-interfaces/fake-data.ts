@@ -15,5 +15,6 @@ export const testGoal: Goal = {
   type: DodayTypes.Goal,
   name: 'name',
   ownerDID: 'qweq12g3123guh',
+  color: '#123j12',
   children: [],
 };

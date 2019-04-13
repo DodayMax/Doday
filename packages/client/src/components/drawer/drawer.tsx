@@ -2,13 +2,14 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as cuid from 'cuid';
-import { Link, match } from 'react-router-dom';
-import Chart from 'react-google-charts';
+import { match } from 'react-router-dom';
+import PieChart from 'react-minimal-pie-chart';
 import { Grid, Icons, ClickableIcon } from '@components';
 import { actions } from '@ducks/doday-app';
 import { dodayApp } from '@lib/constants';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
+import { Goal } from '@root/lib/models/entities/Goal';
 
 const styles = require('./_drawer.module.scss');
 
@@ -32,21 +33,12 @@ interface DrawerState {
 
 interface PropsFromConnect {
   badge: number;
+  goals: Goal[];
 }
 
 interface Actions {
   changePath: (path: string) => void;
 }
-
-const data = [
-  ['Task', 'Hours per Day'],
-  ['Evolution', 7],
-  ['Family', 2],
-  ['Money', 2],
-  ['Health', 3],
-  ['Career', 11],
-  ['Hobby', 2],
-];
 
 const items = [
   {
@@ -75,14 +67,6 @@ const items = [
   },
 ];
 
-const options = {
-  backgroundColor: { fill: 'transparent' } as any,
-  pieHole: 0.4,
-  is3D: false,
-  legend: 'none',
-  pieSliceText: 'label',
-};
-
 export class DrawerComponent extends React.Component<
   DrawerProps & PropsFromConnect & Actions,
   DrawerState
@@ -105,13 +89,23 @@ export class DrawerComponent extends React.Component<
       return (
         <div className={styles.drawerProfileContainer}>
           <div>
-            <Chart
-              chartType="PieChart"
-              width="28rem"
-              height="28rem"
-              data={data}
-              options={options}
-            />
+            {this.pieGoalsData && (
+              <PieChart
+                lineWidth={20}
+                paddingAngle={5}
+                data={this.pieGoalsData}
+                onClick={(event, data, index) => {
+                  console.log(event, data, index);
+                  console.log(this.pieGoalsData[index]);
+                }}
+                style={{
+                  width: '20rem',
+                  height: '20rem',
+                  color: '#222',
+                  cursor: 'pointer',
+                }}
+              />
+            )}
           </div>
         </div>
       );
@@ -156,6 +150,19 @@ export class DrawerComponent extends React.Component<
     }
   };
 
+  private get pieGoalsData() {
+    const { goals } = this.props;
+    const pieData: any = [];
+    goals.map((goal, index) => {
+      pieData.push({
+        title: goal.name,
+        value: (goal.children && goal.children.length) || 1,
+        color: goal.color,
+      });
+    });
+    return pieData.length ? pieData : undefined;
+  }
+
   render() {
     const { collapsed, badge } = this.props;
     const classNames = classnames({
@@ -190,6 +197,7 @@ export class DrawerComponent extends React.Component<
 
 const mapState = (state: RootState) => ({
   badge: state.dodayApp.badge,
+  goals: state.dodayApp.goals,
 });
 
 export default connect(
