@@ -28,7 +28,7 @@ export const fetchGoals = async (variables: any) => {
             month
             day
           }
-          children {
+          children(orderBy: completed_asc) {
             did
             date {
               year
@@ -72,7 +72,7 @@ export const goalByDID = async (variables: any) => {
             month
             day
           }
-          children {
+          children(orderBy: completed_asc) {
             did
             date {
               year

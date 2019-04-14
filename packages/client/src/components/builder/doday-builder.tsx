@@ -52,6 +52,7 @@ interface DodayBuilderState {
   selectedTags?: Tag[];
   parsingFinished?: string;
   date: Date;
+  isPublic: boolean;
 }
 
 export class DodayBuilder extends React.Component<
@@ -64,6 +65,7 @@ export class DodayBuilder extends React.Component<
     this.state = {
       dodayName: '',
       date: new Date(),
+      isPublic: false,
     };
   }
 
@@ -124,7 +126,7 @@ export class DodayBuilder extends React.Component<
         ...parsedMetadata,
         did: cuid(),
       };
-      console.log(selectedGoal && selectedGoal.did);
+
       this.props.createAndTakeDoday({
         did: cuid(),
         activityType,
@@ -135,7 +137,7 @@ export class DodayBuilder extends React.Component<
           this.state.selectedTags.map(tag => tag.value),
         date: this.state.date.getTime(),
         resource: resource,
-        public: false,
+        public: this.state.isPublic,
         relatedGoal: selectedGoal && selectedGoal.did,
       });
     }
@@ -158,6 +160,8 @@ export class DodayBuilder extends React.Component<
       selectedGoal,
       parsedMetadata,
     } = this.props;
+
+    const { isPublic } = this.state;
 
     const goalsForSelect = goals.map(goal => ({
       label: goal.name,
@@ -236,14 +240,16 @@ export class DodayBuilder extends React.Component<
         >
           <ButtonGroup>
             <Button
+              active={!isPublic}
               size={ButtonSize.small}
               text={'Private'}
-              onClick={() => {}}
+              onClick={() => this.setState({ isPublic: false })}
             />
             <Button
+              active={isPublic}
               size={ButtonSize.small}
               text={'Public'}
-              onClick={() => {}}
+              onClick={() => this.setState({ isPublic: true })}
             />
           </ButtonGroup>
           <Button

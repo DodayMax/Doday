@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Icons, Badge, Text } from '@components';
 import { TypographySize, DrawerMenuItem } from '@root/lib/common-interfaces';
 
-const styles = require('./_doday-app-menu-cell.module.scss');
+const css = require('./_doday-app-menu-cell.module.scss');
 
 interface DodayAppMenuCellProps {
   item: DrawerMenuItem;
@@ -20,13 +20,14 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
 }) => {
   const Icon = Icons[item.icon];
   const classNames = classnames({
-    [styles.cell]: true,
-    [styles.active]: active,
-    [styles.center]: collapsed,
+    [css.cell]: true,
+    [css.active]: active,
+    [css.center]: collapsed,
+    [css.paddingLeft]: !collapsed,
   });
   const badgeContainer = classnames({
-    [styles.badgeContainer]: !collapsed,
-    [styles.badgeBg]: true,
+    [css.badgeContainer]: !collapsed,
+    [css.badgeBg]: true,
   });
 
   if (collapsed) {
@@ -44,7 +45,7 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
     return (
       <li className={classNames} onClick={onClick}>
         {<Icon />}
-        <Text size={TypographySize.s} className={styles.cellTitle}>
+        <Text size={TypographySize.s} className={css.cellTitle}>
           {item.text}
         </Text>
         {item.badge != null && (

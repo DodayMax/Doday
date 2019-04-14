@@ -13,6 +13,10 @@
   }
 }
 
+.padding-left {
+  padding-left: $space-s;
+}
+
 .cell-title {
   composes: padding-l-xs from '@styles/_utils.scss';
 }

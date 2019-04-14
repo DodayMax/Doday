@@ -1,16 +1,16 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
-import { LayoutBlock, Button, Text, Input } from '@components';
+import { LayoutBlock, Button, Text, Input, Icons } from '@components';
 import {
   TypographySize,
   TypographyColor,
   StandartSizes,
 } from '@root/lib/common-interfaces';
-import ReactDatePicker from 'react-datepicker';
 import { SerializedGoal } from '@root/lib/models/entities/Goal';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { CreateGoalAction } from '@root/ducks/builder/actions';
 import { getRandomColor } from '@root/lib/utils';
+import { CustomDatePicker } from '../shared/_atoms/custom-datepicker';
 
 const css = require('./_builder.module.scss');
 
@@ -77,7 +77,8 @@ export class GoalBuilder extends React.Component<
           placeholder="Enter name or paste link..."
         />
         <LayoutBlock align="space-between" padding="2rem 0">
-          <ReactDatePicker
+          <CustomDatePicker
+            icon={<Icons.Clock />}
             minDate={new Date()}
             selected={this.state.startDate}
             onChange={date => {
@@ -87,7 +88,8 @@ export class GoalBuilder extends React.Component<
             }}
             className={css.datePickerInput}
           />
-          <ReactDatePicker
+          <CustomDatePicker
+            icon={<Icons.Clock />}
             minDate={new Date()}
             selected={this.state.endDate}
             onChange={date => {
