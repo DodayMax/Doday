@@ -5,7 +5,6 @@ import { Checkbox, Text } from '@components';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { AnyAction } from 'redux';
 import { Marker } from '@root/components/shared/_atoms/marker';
-import { activityTypeColor } from '@root/lib/utils';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 
 const css = require('./_doday-cell.module.scss');
@@ -25,6 +24,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
 }) => {
   const classNames = classnames({
     [css.cell]: true,
+    [css.completed]: doday.completed,
     [css.padded]: true,
     [css.active]: active,
   });

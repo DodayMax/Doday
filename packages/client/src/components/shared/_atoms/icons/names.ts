@@ -1,4 +1,5 @@
-export type IconNames = 'Checkbox'
+export type IconNames =
+  | 'Checkbox'
   | 'DoubleChevron'
   | 'InlineLoader'
   | 'TodayCalendar'
@@ -13,4 +14,6 @@ export type IconNames = 'Checkbox'
   | 'PieChart'
   | 'Goal'
   | 'Idea'
-  | 'Activities';
+  | 'Activities'
+  | 'Clock'
+  | 'Settings';

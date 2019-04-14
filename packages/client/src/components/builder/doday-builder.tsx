@@ -9,6 +9,7 @@ import {
   Button,
   ButtonSize,
   ButtonGroup,
+  Icons,
 } from '@components';
 import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
 import Select from 'react-select';
@@ -29,7 +30,7 @@ import { Tag } from '@root/lib/models/entities/Tag';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import ReactDatePicker from 'react-datepicker';
+import { CustomDatePicker } from '../shared/_atoms/custom-datepicker';
 
 const css = require('./_builder.module.scss');
 
@@ -204,7 +205,8 @@ export class DodayBuilder extends React.Component<
             />
           </LayoutBlock>
           <LayoutBlock childFlex flex={1} margin="0 0 0 1rem">
-            <ReactDatePicker
+            <CustomDatePicker
+              icon={<Icons.Clock />}
               minDate={new Date()}
               selected={this.state.date}
               onChange={this.handleChangeDate}

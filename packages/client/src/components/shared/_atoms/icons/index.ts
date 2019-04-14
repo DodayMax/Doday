@@ -14,5 +14,6 @@ export * from './goal/goal';
 export * from './idea/idea';
 export * from './activities/activities';
 export * from './settings/settings';
+export * from './clock/clock';
 
 export * from './names';

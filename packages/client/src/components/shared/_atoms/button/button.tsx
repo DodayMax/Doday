@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { Icons } from '@components';
 
-const styles = require('./_button.module.scss');
+const css = require('./_button.module.scss');
 
 export enum ButtonSize {
   small,
@@ -15,6 +15,7 @@ export enum ButtonSize {
 export interface ButtonProps {
   text: string;
   size?: ButtonSize;
+  icon?: React.ReactElement<any>;
   primary?: boolean;
   isLoading?: boolean;
   onClick?: (...args: any) => any;
@@ -35,6 +36,7 @@ export class Button extends React.Component<ButtonProps> {
     const {
       primary,
       to,
+      icon,
       isLoading,
       text,
       type,
@@ -47,18 +49,20 @@ export class Button extends React.Component<ButtonProps> {
 
     const classNames = classnames(
       {
-        [styles.default]: !primary,
-        [styles.primary]: primary,
-        [styles.disabled]: location.pathname === to || disabled,
-        [styles.borderless]: borderless,
+        [css.default]: !primary,
+        [css.primary]: primary,
+        [css.disabled]: location.pathname === to || disabled,
+        [css.borderless]: borderless,
+        [css.withIcon]: !!icon,
       },
-      styles[ButtonSize[size]],
+      css[ButtonSize[size]],
       className
     );
 
     if (to) {
       return (
         <Link className={classNames} to={to}>
+          {icon}
           {isLoading ? <Icons.InlineLoader /> : text}
         </Link>
       );
@@ -66,12 +70,14 @@ export class Button extends React.Component<ButtonProps> {
     if (this.props.onClick || (type && type.toLowerCase() === 'submit')) {
       return (
         <button className={classNames} {...passthrough}>
+          {icon}
           {isLoading ? <Icons.InlineLoader /> : text}
         </button>
       );
     } else {
       return (
         <a className={classNames} {...passthrough}>
+          {icon}
           {isLoading ? <Icons.InlineLoader /> : text}
         </a>
       );

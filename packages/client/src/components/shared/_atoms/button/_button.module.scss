@@ -29,6 +29,12 @@
   }
 }
 
+.with-icon {
+  > *:first-child {
+    margin-right: 1rem;
+  }
+}
+
 .small {
   border: 1px solid $border-dark;
   font-size: $body-s;

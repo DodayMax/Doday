@@ -6,7 +6,6 @@ import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { Button, ButtonSize } from '../shared/_atoms/button';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
-import { EditableDatePicker } from '../shared/_atoms/editable-datepicker';
 import { Text } from '../shared/_atoms/typography';
 import { TypographySize } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';

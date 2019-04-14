@@ -5,7 +5,7 @@ import { TypographySize, TypographyColor } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Text, Icons, EditableDatePicker } from '@components';
+import { Text, Icons, CustomDatePicker } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
@@ -168,7 +168,9 @@ class DodayDetails extends React.Component<
         }
       >
         <LayoutBlock insideElementsMargin>
-          <EditableDatePicker
+          <CustomDatePicker
+            borderless
+            icon={<Icons.Clock />}
             selected={updates.date || selectedDoday.date}
             onChange={date =>
               this.setState({

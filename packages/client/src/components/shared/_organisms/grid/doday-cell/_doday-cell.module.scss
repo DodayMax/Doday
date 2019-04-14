@@ -13,6 +13,10 @@
   }
 }
 
+.completed {
+  opacity: 0.6;
+}
+
 .padded {
   padding: $space-xs $space-l $space-xs $space-xs;
 }

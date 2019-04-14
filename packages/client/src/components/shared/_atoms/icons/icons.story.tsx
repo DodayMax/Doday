@@ -10,9 +10,6 @@ storiesOf('Icons', module)
       <Icons.DoubleChevronIcon right />
     </>
   ))
-  .add('InlineLoader', () => (
-    <Icons.InlineLoader />
-  ))
-  .add('TodayCalendar', () => (
-    <Icons.TodayCalendar />
-  ));
+  .add('InlineLoader', () => <Icons.InlineLoader />)
+  .add('TodayCalendar', () => <Icons.TodayCalendar />)
+  .add('Clock', () => <Icons.Clock />);
