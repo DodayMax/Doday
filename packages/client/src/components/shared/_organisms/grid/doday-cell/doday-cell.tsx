@@ -37,6 +37,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
     >
       {
         <Checkbox
+          colorMarker={doday.relatedGoal && doday.relatedGoal.color}
           onClick={e => {
             e.stopPropagation();
             if (onComplete) {
