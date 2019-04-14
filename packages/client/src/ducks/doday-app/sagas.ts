@@ -16,12 +16,14 @@ import {
   setToNavStackActionCreator,
   fetchAllGoalsActionCreator,
   DeleteGoalAction,
+  PushToNavigationStackByDIDAction,
+  changePath,
 } from './actions';
 import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actions';
-import { navStack } from './selectors';
+import { navStack, goalByDIDFromStore } from './selectors';
 
 /**
  * Fetch dodays for chosen date saga
@@ -143,11 +145,25 @@ function* updateDodaySaga(action: UpdateDodayAction) {
   yield put(setAppLoadingState(false));
 }
 
+/**
+ * Find goal by DID and push it to nav stack saga
+ *
+ * @param {PushToNavigationStackByDIDAction} action
+ */
+function* pushToNavStackByDIDSaga(action: PushToNavigationStackByDIDAction) {
+  const goal = yield select(goalByDIDFromStore, action.payload);
+  if (goal) {
+    yield put(changePath('goals'));
+    yield put(setToNavStackActionCreator([goal]));
+  }
+}
+
 export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
   takeLatest(ActionConstants.SET_GOALS, setGoalsSaga),
+  takeLatest(ActionConstants.PUSH_TO_NAV_STACK_BY_DID, pushToNavStackByDIDSaga),
   takeLatest(ActionConstants.TOGGLE_DODAY, toggleDodaySaga),
   takeLatest(ActionConstants.UPDATE_DODAY, updateDodaySaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),

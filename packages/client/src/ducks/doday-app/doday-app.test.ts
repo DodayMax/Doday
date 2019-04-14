@@ -15,6 +15,7 @@ import {
   setGoalsActionCreator,
   fetchAllGoalsActionCreator,
   deleteGoalActionCreator,
+  pushToNavStackByDIDActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -57,6 +58,16 @@ describe('doday-app duck', () => {
         payload: testGoal,
       };
       expect(pushToNavStack(testGoal)).toEqual(expectedActionObject);
+    });
+
+    it('push to nav stack by DID action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.PUSH_TO_NAV_STACK_BY_DID,
+        payload: testGoal.did,
+      };
+      expect(pushToNavStackByDIDActionCreator(testGoal.did)).toEqual(
+        expectedActionObject
+      );
     });
 
     it('pop from nav stack action creator', () => {

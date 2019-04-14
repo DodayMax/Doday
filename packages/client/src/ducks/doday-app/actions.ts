@@ -1,6 +1,7 @@
 import { AnyAction } from 'redux';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
+import { DodayAppPaths } from '@root/lib/common-interfaces';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
@@ -10,6 +11,7 @@ export enum ActionConstants {
   DELETE_DODAY = '[doday-app] DELETE_DODAY',
   REMOVE_DODAY = '[doday-app] REMOVE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
+  PUSH_TO_NAV_STACK_BY_DID = '[doday-app] PUSH_TO_NAV_STACK_BY_DID',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   SET_NAV_STACK = '[doday-app] SET_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
@@ -40,7 +42,7 @@ export function setAppLoadingState(value: boolean): SetLoadingState {
  * @export
  * @returns {ChangePathAction}
  */
-export function changePath(path: string): ChangePathAction {
+export function changePath(path: DodayAppPaths): ChangePathAction {
   return {
     type: ActionConstants.CHANGE_PATH,
     payload: path,
@@ -70,6 +72,21 @@ export function pushToNavStack(goal: Goal): PushToNavigationStackAction {
   return {
     type: ActionConstants.PUSH_TO_NAV_STACK,
     payload: goal,
+  };
+}
+
+/**
+ * Push Goal to navigation stack by its DID
+ *
+ * @export
+ * @returns {PushToNavigationStackByDIDAction}
+ */
+export function pushToNavStackByDIDActionCreator(
+  did: string
+): PushToNavigationStackByDIDAction {
+  return {
+    type: ActionConstants.PUSH_TO_NAV_STACK_BY_DID,
+    payload: did,
   };
 }
 
@@ -243,12 +260,17 @@ export interface SetLoadingState extends AnyAction {
 
 export interface ChangePathAction extends AnyAction {
   type: ActionConstants.CHANGE_PATH;
-  payload: string;
+  payload: DodayAppPaths;
 }
 
 export interface PushToNavigationStackAction extends AnyAction {
   type: ActionConstants.PUSH_TO_NAV_STACK;
   payload: Goal;
+}
+
+export interface PushToNavigationStackByDIDAction extends AnyAction {
+  type: ActionConstants.PUSH_TO_NAV_STACK_BY_DID;
+  payload: string;
 }
 
 export interface PopFromNavigationStackAction extends AnyAction {
@@ -324,6 +346,7 @@ export type ActionTypes =
   | ChangePathAction
   | SetLoadingState
   | PushToNavigationStackAction
+  | PushToNavigationStackByDIDAction
   | PopFromNavigationStackAction
   | SetNavStackAction
   | ChangeDodayAppDateAction

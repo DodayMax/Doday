@@ -1,8 +1,7 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Icons, Badge, Text } from '@components';
-import { DrawerMenuItem } from '@root/components/drawer';
-import { TypographySize } from '@root/lib/common-interfaces';
+import { TypographySize, DrawerMenuItem } from '@root/lib/common-interfaces';
 
 const styles = require('./_doday-app-menu-cell.module.scss');
 

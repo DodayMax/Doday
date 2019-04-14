@@ -6,20 +6,13 @@ import { match } from 'react-router-dom';
 import PieChart from 'react-minimal-pie-chart';
 import { Grid, Icons, ClickableIcon } from '@components';
 import { actions } from '@ducks/doday-app';
-import { dodayApp } from '@lib/constants';
+import { DodayAppPaths, DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import { Goal } from '@root/lib/models/entities/Goal';
+import { PushToNavigationStackByDIDAction } from '@root/ducks/doday-app/actions';
 
 const styles = require('./_drawer.module.scss');
-
-export interface DrawerMenuItem {
-  text: string;
-  icon: Icons.IconNames;
-  actionName: string;
-  payload: any;
-  badge?: string | number;
-}
 
 interface DrawerProps {
   match?: match;
@@ -27,49 +20,49 @@ interface DrawerProps {
   toggle: () => void;
 }
 
-interface DrawerState {
-  activeIndex: number;
-}
-
 interface PropsFromConnect {
   badge: number;
+  path: DodayAppPaths;
   goals: Goal[];
+  pushToNavStackByDIDActionCreator?: (
+    did: string
+  ) => PushToNavigationStackByDIDAction;
 }
 
 interface Actions {
   changePath: (path: string) => void;
 }
 
-const items = [
+const items: DrawerMenuItem[] = [
   {
     text: 'Today',
     icon: 'TodayCalendar',
     action: 'changePath',
-    payload: '',
+    path: '/',
   },
   {
     text: 'Goals',
     icon: 'Goal',
     action: 'changePath',
-    payload: dodayApp.paths.goals,
+    path: 'goals',
   },
   {
     text: 'Memorizer',
     icon: 'Lighting',
     action: 'changePath',
-    payload: dodayApp.paths.memos,
+    path: 'memos',
   },
   {
     text: 'Published by me',
     icon: 'Apps',
     action: 'changePath',
-    payload: dodayApp.paths.createdByMe,
+    path: 'createdByMe',
   },
 ];
 
 export class DrawerComponent extends React.Component<
   DrawerProps & PropsFromConnect & Actions,
-  DrawerState
+  {}
 > {
   constructor(props) {
     super(props);
@@ -95,8 +88,7 @@ export class DrawerComponent extends React.Component<
                 paddingAngle={5}
                 data={this.pieGoalsData}
                 onClick={(event, data, index) => {
-                  console.log(event, data, index);
-                  console.log(this.pieGoalsData[index]);
+                  this.props.pushToNavStackByDIDActionCreator(data[index].did);
                 }}
                 style={{
                   width: '20rem',
@@ -115,7 +107,7 @@ export class DrawerComponent extends React.Component<
   handleMenuClick = (item, index) => {
     const action = this.props[item.action];
     if (action) {
-      action(item.payload);
+      action(item.path);
     }
     this.setState({ activeIndex: index });
   };
@@ -155,6 +147,7 @@ export class DrawerComponent extends React.Component<
     const pieData: any = [];
     goals.map((goal, index) => {
       pieData.push({
+        did: goal.did,
         title: goal.name,
         value: (goal.children && goal.children.length) || 1,
         color: goal.color,
@@ -164,7 +157,7 @@ export class DrawerComponent extends React.Component<
   }
 
   render() {
-    const { collapsed, badge } = this.props;
+    const { collapsed, path } = this.props;
     const classNames = classnames({
       [styles.drawerContainerCollapsed]: collapsed,
       [styles.drawerContainer]: !collapsed,
@@ -177,12 +170,12 @@ export class DrawerComponent extends React.Component<
         <ul role="navigation" className={styles.drawerMenu}>
           <Grid
             items={items}
-            renderCell={(item, index) => (
+            renderCell={(item: DrawerMenuItem, index) => (
               <DodayAppMenuCell
                 key={cuid()}
                 collapsed={this.props.collapsed}
                 item={item}
-                active={index === this.state.activeIndex}
+                active={item.path === path}
                 onClick={() => this.handleMenuClick(item, index)}
               />
             )}
@@ -197,6 +190,7 @@ export class DrawerComponent extends React.Component<
 
 const mapState = (state: RootState) => ({
   badge: state.dodayApp.badge,
+  path: state.dodayApp.path,
   goals: state.dodayApp.goals,
 });
 

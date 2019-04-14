@@ -7,7 +7,6 @@ import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { DefaultTopBar } from './default-top-bar/default-top-bar';
 import { Grid, Icons } from '@components';
-import { dodayApp } from '@lib/constants';
 import {
   ChangeDodayAppDateAction,
   FetchAllGoalsAction,
@@ -25,12 +24,13 @@ import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
+import { DodayAppPaths } from '@root/lib/common-interfaces';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_doday-app.module.scss');
 
 interface DodayAppProps {
-  path?: string;
+  path?: DodayAppPaths;
 }
 
 interface PropsFromConnect {
@@ -119,7 +119,7 @@ export class DodayAppComponent extends React.Component<
     } = this.props;
 
     switch (path) {
-      case dodayApp.paths.goals:
+      case 'goals':
         return (
           <>
             <DefaultTopBar
@@ -162,9 +162,9 @@ export class DodayAppComponent extends React.Component<
             />
           </>
         );
-      case dodayApp.paths.memos:
+      case 'memos':
         return <div>Memos</div>;
-      case dodayApp.paths.createdByMe:
+      case 'createdByMe':
         return <div>CreatedByMe</div>;
       default:
         return (
