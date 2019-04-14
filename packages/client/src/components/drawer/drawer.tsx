@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import * as cuid from 'cuid';
-import { match } from 'react-router-dom';
+import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import PieChart from 'react-minimal-pie-chart';
 import { Grid, Icons, ClickableIcon } from '@components';
 import { actions } from '@ducks/doday-app';
@@ -11,8 +11,10 @@ import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { PushToNavigationStackByDIDAction } from '@root/ducks/doday-app/actions';
+import Media from 'react-media';
 
-const styles = require('./_drawer.module.scss');
+const css = require('./_drawer.module.scss');
+const dodayman = require('@root/assets/svg/dodayman.svg');
 
 interface DrawerProps {
   match?: match;
@@ -61,7 +63,7 @@ const items: DrawerMenuItem[] = [
 ];
 
 export class DrawerComponent extends React.Component<
-  DrawerProps & PropsFromConnect & Actions,
+  DrawerProps & PropsFromConnect & RouteComponentProps & Actions,
   {}
 > {
   constructor(props) {
@@ -74,31 +76,32 @@ export class DrawerComponent extends React.Component<
   renderDrawerProfileSection = () => {
     if (this.props.collapsed) {
       return (
-        <div className={styles.drawerProfileContainerCollapsed}>
-          <div className={styles.drawerProfileAvatarCollapsed} />
+        <div className={css.drawerProfileContainerCollapsed}>
+          <div className={css.drawerProfileAvatarCollapsed} />
         </div>
       );
     } else {
       return (
-        <div className={styles.drawerProfileContainer}>
-          <div>
-            {this.pieGoalsData && (
-              <PieChart
-                lineWidth={20}
-                paddingAngle={5}
-                data={this.pieGoalsData}
-                onClick={(event, data, index) => {
-                  this.props.pushToNavStackByDIDActionCreator(data[index].did);
-                }}
-                style={{
-                  width: '20rem',
-                  height: '20rem',
-                  color: '#222',
-                  cursor: 'pointer',
-                }}
-              />
-            )}
+        <div className={css.drawerProfileContainer}>
+          <div className={css.drawerProfileAvatar}>
+            <img src={dodayman} />
           </div>
+          {this.pieGoalsData && (
+            <PieChart
+              lineWidth={20}
+              paddingAngle={5}
+              data={this.pieGoalsData}
+              onClick={(event, data, index) => {
+                this.props.pushToNavStackByDIDActionCreator(data[index].did);
+              }}
+              style={{
+                width: '20rem',
+                height: '20rem',
+                color: '#222',
+                cursor: 'pointer',
+              }}
+            />
+          )}
         </div>
       );
     }
@@ -114,9 +117,21 @@ export class DrawerComponent extends React.Component<
 
   renderDrawerLevel = () => {
     if (this.props.collapsed) {
-      return <div className={styles.drawerLevel}>1</div>;
+      return <div className={css.drawerLevel}>1</div>;
     } else {
-      return <div className={styles.drawerLevel}>1 Level, Novice</div>;
+      return (
+        <div
+          onClick={() => this.props.history.push('/profile')}
+          className={css.drawerLevel}
+        >
+          <span className={css.drawerLevelLabel}>1 Level, Novice</span>
+          <div
+            className={css.drawerLevelProgress}
+            style={{ width: `${42}%` }}
+          />
+          <div className={css.drawerLevelProgressBg} />
+        </div>
+      );
     }
   };
 
@@ -125,16 +140,16 @@ export class DrawerComponent extends React.Component<
 
     if (collapsed) {
       return (
-        <div className={styles.drawerFooter}>
-          <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
+        <div className={css.drawerFooter}>
+          <ClickableIcon className={css.drawerToggleButton} onClick={toggle}>
             <Icons.DoubleChevronIcon right />
           </ClickableIcon>
         </div>
       );
     } else {
       return (
-        <div className={styles.drawerFooter}>
-          <ClickableIcon className={styles.drawerToggleButton} onClick={toggle}>
+        <div className={css.drawerFooter}>
+          <ClickableIcon className={css.drawerToggleButton} onClick={toggle}>
             <Icons.DoubleChevronIcon left />
           </ClickableIcon>
         </div>
@@ -159,15 +174,15 @@ export class DrawerComponent extends React.Component<
   render() {
     const { collapsed, path } = this.props;
     const classNames = classnames({
-      [styles.drawerContainerCollapsed]: collapsed,
-      [styles.drawerContainer]: !collapsed,
+      [css.drawerContainerCollapsed]: collapsed,
+      [css.drawerContainer]: !collapsed,
     });
 
     return (
       <div className={classNames}>
         {this.renderDrawerProfileSection()}
         {this.renderDrawerLevel()}
-        <ul role="navigation" className={styles.drawerMenu}>
+        <ul role="navigation" className={css.drawerMenu}>
           <Grid
             items={items}
             renderCell={(item: DrawerMenuItem, index) => (
@@ -182,7 +197,9 @@ export class DrawerComponent extends React.Component<
             collapsed={collapsed}
           />
         </ul>
-        {this.renderDrawerFooterIcon()}
+        <Media query="(min-width: 1100px)">
+          {this.renderDrawerFooterIcon()}
+        </Media>
       </div>
     );
   }
@@ -194,7 +211,9 @@ const mapState = (state: RootState) => ({
   goals: state.dodayApp.goals,
 });
 
-export default connect(
-  mapState,
-  { ...actions }
-)(DrawerComponent);
+export default withRouter(
+  connect(
+    mapState,
+    { ...actions }
+  )(DrawerComponent)
+);

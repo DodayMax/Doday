@@ -83,6 +83,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/goals/:did" component={GoalDetails} />
         <Route path="/builder" component={Builder} />
+        <Route path="/profile" component={() => <div>Profile</div>} />
       </>
     );
   }

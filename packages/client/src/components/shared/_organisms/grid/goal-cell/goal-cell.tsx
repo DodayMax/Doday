@@ -4,7 +4,7 @@ import { TypographySize } from '@lib/common-interfaces';
 import { Icons, Text } from '@components';
 import { Goal } from '@root/lib/models/entities/Goal';
 
-const styles = require('./_goal-cell.module.scss');
+const css = require('./_goal-cell.module.scss');
 
 interface GoalCellProps {
   goal: Goal;
@@ -18,8 +18,8 @@ export const GoalCell: React.SFC<GoalCellProps> = ({
   onClick,
 }) => {
   const classNames = classnames({
-    [styles.cell]: true,
-    [styles.active]: active,
+    [css.cell]: true,
+    [css.active]: active,
   });
 
   return (
@@ -29,9 +29,16 @@ export const GoalCell: React.SFC<GoalCellProps> = ({
       onClick={() => onClick && onClick(goal)}
     >
       {<Icons.Goal width={30} height={30} />}
-      <Text ellipsize size={TypographySize.s} className={styles.cellTitle}>
+      <Text ellipsize size={TypographySize.s} className={css.cellTitle}>
         {goal.name}
       </Text>
+      <div className={css.goalStatsContainer}>
+        <span>{`${Math.round(
+          (goal.children.filter(goal => goal.completed).length /
+            goal.children.length) *
+            100
+        )}%`}</span>
+      </div>
       <div
         style={{
           position: 'absolute',

@@ -16,6 +16,7 @@
 
 .cell-title {
   composes: padding-l-xs from '@styles/_utils.scss';
+  flex: 1;
 }
 
 .active {
@@ -24,4 +25,18 @@
 
 .center {
   composes: flex-center from '@styles/_common.scss';
+}
+
+.goal-stats-container {
+  border: 1px solid $gray-5;
+  padding: $space-xxs 0;
+  margin-right: $space-xs;
+  box-sizing: border-box;
+  border-radius: $radius-4;
+  > span:first-child {
+    border-right: 1px solid $gray-5;
+  }
+  > span {
+    padding: $space-xxs $space-xs;
+  }
 }
