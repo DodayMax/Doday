@@ -1,5 +1,7 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
+import Tooltip from 'rc-tooltip';
+import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import {
   LayoutBlock,
@@ -54,6 +56,25 @@ interface DodayBuilderState {
   date: Date;
   isPublic: boolean;
 }
+
+const handle = props => {
+  const { value, dragging, index, ...restProps } = props;
+  const hours = Math.floor(value / 60);
+  const minutes = value % 60;
+  const time = hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+  return (
+    <Tooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={time}
+      visible={dragging}
+      placement="top"
+      key={index}
+      overlayClassName={css.timeTooltip}
+    >
+      <Handle value={time} {...restProps} />
+    </Tooltip>
+  );
+};
 
 export class DodayBuilder extends React.Component<
   DodayBuilderProps,
@@ -217,6 +238,16 @@ export class DodayBuilder extends React.Component<
               className={css.datePickerInput}
             />
           </LayoutBlock>
+        </LayoutBlock>
+        <LayoutBlock margin="0 0 2rem 0" direction="column">
+          <Text>Estimate time:</Text>
+          <Slider
+            min={0}
+            max={8 * 60}
+            defaultValue={3}
+            handle={handle}
+            step={10}
+          />
         </LayoutBlock>
         <LayoutBlock childFlex flex={'1'} padding="0 0 2rem">
           <div>

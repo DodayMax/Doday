@@ -8,6 +8,8 @@ import { I18nextProvider } from 'react-i18next';
 import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
 import store from '@root/store';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 import '@styles/_fonts.scss';
 
 interface TranslationProps {
