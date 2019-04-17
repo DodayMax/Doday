@@ -98,7 +98,10 @@ class DodayDetails extends React.Component<
       this.props.goals &&
       this.props.goals.find(goal => goal.did === selected.value);
     this.setState({
-      dirty: goal.did !== this.props.selectedDoday.relatedGoal.did,
+      dirty:
+        goal.did !==
+        (this.props.selectedDoday.relatedGoal &&
+          this.props.selectedDoday.relatedGoal.did),
       updates: { relatedGoal: goal },
     });
   };
@@ -173,7 +176,7 @@ class DodayDetails extends React.Component<
     ];
 
     const resource = selectedDoday.resource;
-    const videoPreview = resource && resource.image;
+    const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
 
     const goalsForSelect = goals.map(goal => ({
@@ -216,34 +219,28 @@ class DodayDetails extends React.Component<
           )}
         </LayoutBlock>
         <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
-        {selectedDoday.relatedGoal && (
-          <LayoutBlock
-            margin="1rem 0"
-            insideElementsMargin
-            valign="vflex-center"
-          >
-            <Text color={TypographyColor.Disabled} size={TypographySize.m}>
-              {'Related goal: '}
-            </Text>
-            <Select
-              className={css.goalSelect}
-              value={
-                (this.state.updates.relatedGoal &&
-                  selectedValueFromGoal(this.state.updates.relatedGoal)) ||
-                (selectedDoday.relatedGoal &&
-                  selectedValueFromGoal(selectedDoday.relatedGoal))
-              }
-              onChange={this.handleChangeGoal}
-              placeholder="Related to goal"
-              options={goalsForSelect}
-            />
-          </LayoutBlock>
-        )}
-        {youtubeLink && (
+        <LayoutBlock margin="1rem 0" insideElementsMargin valign="vflex-center">
+          <Text color={TypographyColor.Disabled} size={TypographySize.m}>
+            {'Related goal: '}
+          </Text>
+          <Select
+            className={css.goalSelect}
+            value={
+              (this.state.updates.relatedGoal &&
+                selectedValueFromGoal(this.state.updates.relatedGoal)) ||
+              (selectedDoday.relatedGoal &&
+                selectedValueFromGoal(selectedDoday.relatedGoal))
+            }
+            onChange={this.handleChangeGoal}
+            placeholder="Choose goal"
+            options={goalsForSelect}
+          />
+        </LayoutBlock>
+        {youtubeLink ? (
           <div
             className={css.videoWrapper}
             style={{
-              background: `url(${videoPreview})`,
+              background: `url(${preview})`,
               backgroundSize: 'contain',
             }}
           >
@@ -254,12 +251,20 @@ class DodayDetails extends React.Component<
               allowFullScreen
             />
           </div>
-        )}
+        ) : preview ? (
+          <div
+            className={css.videoWrapper}
+            style={{
+              background: `url(${preview})`,
+              backgroundSize: 'contain',
+            }}
+          />
+        ) : null}
         <Text>{resource.description}</Text>
         {selectedDoday.activityType === 'read' ? (
           <LayoutBlock margin="2rem 0" align="flex-center">
             <Button primary href={resource.url} target="_blank">
-              Read article
+              Read full article
             </Button>
           </LayoutBlock>
         ) : null}

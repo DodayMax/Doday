@@ -11,7 +11,7 @@ interface LayoutBlockProps {
   childFlex?: boolean;
   fullHeight?: boolean;
   direction?: 'row' | 'column';
-  flex?: number;
+  flex?: string;
   absolute?: boolean;
   relative?: boolean;
   top?: string;
@@ -43,7 +43,7 @@ export const LayoutBlock = (props: LayoutBlockProps) => {
     <div
       className={classNames}
       style={{
-        flex: props.flex || 1,
+        flex: props.flex || 'none',
         padding: props.padding,
         margin: props.margin,
         top: props.top,

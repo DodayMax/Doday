@@ -25,6 +25,7 @@ export class PageHeader extends React.Component<PageHeaderProps> {
           {status}
         </LayoutBlock>
         <LayoutBlock
+          flex="1"
           align="flex-end"
           valign="vflex-center"
           className={css.headerActions}

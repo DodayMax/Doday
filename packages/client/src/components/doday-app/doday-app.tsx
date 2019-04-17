@@ -25,9 +25,12 @@ import { Goal } from '@root/lib/models/entities/Goal';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { DodayAppPaths } from '@root/lib/common-interfaces';
+import { LayoutBlock } from '../shared/_atoms/layout-block';
+import { Text } from '../shared/_atoms/typography';
+import { Button, ButtonSize } from '../shared/_atoms/button';
 
 const vars = require('@styles/_config.scss');
-const styles = require('./_doday-app.module.scss');
+const css = require('./_doday-app.module.scss');
 
 interface DodayAppProps {
   path?: DodayAppPaths;
@@ -173,6 +176,19 @@ export class DodayAppComponent extends React.Component<
               date={chosenDate!}
               changeDate={changeDateActionCreator!}
             />
+            {this.getDodaysToRender().length > 8 ? (
+              <LayoutBlock
+                className={css.bannerContainer}
+                margin="1rem 0 0 0"
+                direction="column"
+                valign="vflex-center"
+              >
+                <Text>Your day is overloading!</Text>
+                <Button primary size={ButtonSize.small}>
+                  Plan out!
+                </Button>
+              </LayoutBlock>
+            ) : null}
             <Grid
               loading={loading}
               items={this.getDodaysToRender()}
@@ -185,7 +201,7 @@ export class DodayAppComponent extends React.Component<
 
   render() {
     return (
-      <section className={styles.dodayappContainer}>
+      <section className={css.dodayappContainer}>
         {this.renderContent()}
       </section>
     );

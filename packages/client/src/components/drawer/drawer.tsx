@@ -12,9 +12,9 @@ import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/
 import { Goal } from '@root/lib/models/entities/Goal';
 import { PushToNavigationStackByDIDAction } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
+import { LayoutBlock } from '../shared/_atoms/layout-block';
 
 const css = require('./_drawer.module.scss');
-const dodayman = require('@root/assets/svg/dodayman.svg');
 
 interface DrawerProps {
   match?: match;
@@ -77,15 +77,26 @@ export class DrawerComponent extends React.Component<
     if (this.props.collapsed) {
       return (
         <div className={css.drawerProfileContainerCollapsed}>
-          <div className={css.drawerProfileAvatarCollapsed} />
+          <LayoutBlock
+            align="flex-center"
+            valign="vflex-center"
+            childFlex={false}
+            className={css.drawerProfileAvatarCollapsed}
+          >
+            <Icons.Dodayman width={30} height={30} />
+          </LayoutBlock>
         </div>
       );
     } else {
       return (
         <div className={css.drawerProfileContainer}>
-          <div className={css.drawerProfileAvatar}>
-            <img src={dodayman} />
-          </div>
+          <LayoutBlock
+            align="flex-center"
+            valign="vflex-center"
+            className={css.drawerProfileAvatar}
+          >
+            <Icons.Dodayman width={60} height={60} />
+          </LayoutBlock>
           {this.pieGoalsData && (
             <PieChart
               lineWidth={20}

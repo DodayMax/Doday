@@ -200,7 +200,7 @@ export class DodayBuilder extends React.Component<
           parsedMetadata={parsedMetadata}
         />
         <LayoutBlock childFlex padding="2rem 0">
-          <LayoutBlock childFlex flex={1}>
+          <LayoutBlock childFlex flex={'1'}>
             <Select
               value={selectedGoal && selectedValueFromGoal(selectedGoal)}
               onChange={this.handleGoalSelect}
@@ -208,7 +208,7 @@ export class DodayBuilder extends React.Component<
               options={goalsForSelect}
             />
           </LayoutBlock>
-          <LayoutBlock childFlex flex={1} margin="0 0 0 1rem">
+          <LayoutBlock childFlex flex={'1'} margin="0 0 0 1rem">
             <CustomDatePicker
               icon={<Icons.Clock />}
               minDate={new Date()}
@@ -218,7 +218,7 @@ export class DodayBuilder extends React.Component<
             />
           </LayoutBlock>
         </LayoutBlock>
-        <LayoutBlock childFlex flex={1} padding="0 0 2rem">
+        <LayoutBlock childFlex flex={'1'} padding="0 0 2rem">
           <div>
             <AsyncCreatableSelect
               value={this.state.selectedTags}
@@ -243,18 +243,20 @@ export class DodayBuilder extends React.Component<
               active={!isPublic}
               size={ButtonSize.small}
               onClick={() => this.setState({ isPublic: false })}
-            >Private</Button>
+            >
+              Private
+            </Button>
             <Button
               active={isPublic}
               size={ButtonSize.small}
               onClick={() => this.setState({ isPublic: true })}
-            >Public</Button>
+            >
+              Public
+            </Button>
           </ButtonGroup>
-          <Button
-            primary
-            isLoading={loading}
-            onClick={this.handleCreateDoday}
-          >Create</Button>
+          <Button primary isLoading={loading} onClick={this.handleCreateDoday}>
+            Create
+          </Button>
         </LayoutBlock>
       </>
     );

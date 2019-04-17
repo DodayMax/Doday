@@ -17,4 +17,5 @@ export type IconNames =
   | 'Activities'
   | 'Clock'
   | 'Settings'
-  | 'Silver';
+  | 'Silver'
+  | 'Dodayman';
