@@ -28,7 +28,7 @@ export const createGoalMutation = (
 ) => {
   return tx.run(
     `
-      CREATE (g: Goal { did: $did, type: $type, name: $name, ownerDID: $heroDID, startDate: date($startDate), endDate: date($endDate) })
+      CREATE (g: Goal { did: $did, type: $type, name: $name, ownerDID: $heroDID, color: $color, startDate: date($startDate), endDate: date($endDate) })
       with g
       MATCH (h:Hero {did: $heroDID})
       CREATE (h)-[:GOAL]->(g)

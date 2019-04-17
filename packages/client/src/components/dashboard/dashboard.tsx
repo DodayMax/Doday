@@ -79,7 +79,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         </nav>
         {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
-        <Route exact path="/" render={() => <div>Store</div>} />
+        <Route exact path="/" render={() => <div>Dashboard</div>} />
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/goals/:did" component={GoalDetails} />
         <Route path="/builder" component={Builder} />

@@ -33,11 +33,15 @@ export const GoalCell: React.SFC<GoalCellProps> = ({
         {goal.name}
       </Text>
       <div className={css.goalStatsContainer}>
-        <span>{`${Math.round(
-          (goal.children.filter(goal => goal.completed).length /
-            goal.children.length) *
-            100
-        )}%`}</span>
+        <span>{`${
+          goal.children.length
+            ? Math.round(
+                (goal.children.filter(goal => goal.completed).length /
+                  goal.children.length) *
+                  100
+              )
+            : 0
+        }%`}</span>
       </div>
       <div
         style={{

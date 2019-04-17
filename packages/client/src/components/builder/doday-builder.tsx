@@ -264,7 +264,7 @@ export class DodayBuilder extends React.Component<
   }
 }
 
-const selectedValueFromGoal = (goal: Goal) => ({
+export const selectedValueFromGoal = (goal: Goal) => ({
   label: goal.name,
   value: goal.did,
 });

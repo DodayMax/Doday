@@ -24,6 +24,9 @@ import {
   ClearSelectedDodayAction,
   UpdateSelectedDodayAction,
 } from '@root/ducks/doday-details/actions';
+import Select from 'react-select';
+import { Goal } from '@root/lib/models/entities/Goal';
+import { selectedValueFromGoal } from '../builder/doday-builder';
 
 const css = require('./doday-details.module.scss');
 
@@ -37,6 +40,7 @@ interface DodayDetailsProps {}
 interface DodayDetailsState {
   updates: {
     date?: Date;
+    relatedGoal?: Goal;
   };
   dirty: boolean;
 }
@@ -44,6 +48,7 @@ interface DodayDetailsState {
 interface PropsFromConnect {
   loading: boolean;
   myDID?: string;
+  goals: Goal[];
   selectedDoday: Doday;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator: (
@@ -88,6 +93,16 @@ class DodayDetails extends React.Component<
     }
   };
 
+  handleChangeGoal = (selected) => {
+    const goal =
+      this.props.goals &&
+      this.props.goals.find(goal => goal.did === selected.value);
+    this.setState({
+      dirty: goal.did !== this.props.selectedDoday.relatedGoal.did,
+      updates: { relatedGoal: goal },
+    });
+  }
+
   render() {
     const {
       loading,
@@ -97,6 +112,7 @@ class DodayDetails extends React.Component<
       clearSelectedDodayActionCreator,
       updateDodayActionCreator,
       myDID,
+      goals,
     } = this.props;
 
     const { dirty, updates } = this.state;
@@ -135,7 +151,8 @@ class DodayDetails extends React.Component<
           text={loading ? 'Saving...' : 'Save'}
           onClick={() => {
             updateDodayActionCreator(selectedDoday.did, {
-              date: updates.date.getTime(),
+              date: updates.date && updates.date.getTime(),
+              relatedGoal: updates.relatedGoal && updates.relatedGoal.did,
             });
             updateSelectedDodayActionCreator(selectedDoday.did, updates);
             this.setState(initialState);
@@ -156,6 +173,11 @@ class DodayDetails extends React.Component<
     const resource = selectedDoday.resource;
     const videoPreview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
+
+    const goalsForSelect = goals.map(goal => ({
+      label: goal.name,
+      value: goal.did,
+    }));
 
     return (
       <Page
@@ -193,9 +215,18 @@ class DodayDetails extends React.Component<
         </LayoutBlock>
         <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
         {selectedDoday.relatedGoal && (
-          <Text color={TypographyColor.Disabled} size={TypographySize.m}>
-            {selectedDoday.relatedGoal.name}
-          </Text>
+          <LayoutBlock insideElementsMargin valign='vflex-center'>
+            <Text color={TypographyColor.Disabled} size={TypographySize.m}>
+              {'Related goal: '}
+            </Text>
+            <Select
+              className={css.goalSelect}
+              value={(this.state.updates.relatedGoal && selectedValueFromGoal(this.state.updates.relatedGoal)) || (selectedDoday.relatedGoal && selectedValueFromGoal(selectedDoday.relatedGoal))}
+              onChange={this.handleChangeGoal}
+              placeholder="Related to goal"
+              options={goalsForSelect}
+            />
+          </LayoutBlock>
         )}
         {youtubeLink && (
           <div
@@ -223,6 +254,7 @@ const mapState = (state: RootState) => ({
   loading: state.dodayDetails.loading,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
+  goals: state.dodayApp.goals,
 });
 
 export default connect(

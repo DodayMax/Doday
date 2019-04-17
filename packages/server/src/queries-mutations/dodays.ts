@@ -163,6 +163,12 @@ export const updateDodayTransaction = (
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      ${props.updates.relatedGoal ? `
+      MATCH (g:Goal {did: $relatedGoal})
+      OPTIONAL MATCH (p)-[r4:INSIDE]-(:Goal)
+      DELETE r4
+      CREATE (p)-[:INSIDE]->(g)
+      ` : ''}
       ${props.updates.date ? 'SET p.date = date($date)' : ''}
     `,
     {
@@ -171,6 +177,7 @@ export const updateDodayTransaction = (
       date:
         props.updates.date &&
         dateInputStringFromDate(new Date(props.updates.date)),
+      relatedGoal: props.updates.relatedGoal
     }
   );
 };
