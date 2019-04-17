@@ -7,6 +7,7 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   underline?: boolean;
   strikethrough?: boolean;
   bold?: boolean;
+  heavy?: boolean;
   italic?: boolean;
   uppercase?: boolean;
   capitalize?: boolean;

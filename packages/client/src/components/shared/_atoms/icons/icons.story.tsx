@@ -12,4 +12,5 @@ storiesOf('Icons', module)
   ))
   .add('InlineLoader', () => <Icons.InlineLoader />)
   .add('TodayCalendar', () => <Icons.TodayCalendar />)
-  .add('Clock', () => <Icons.Clock />);
+  .add('Clock', () => <Icons.Clock />)
+  .add('Silver', () => <Icons.Silver />);

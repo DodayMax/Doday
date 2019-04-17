@@ -93,7 +93,7 @@ class DodayDetails extends React.Component<
     }
   };
 
-  handleChangeGoal = (selected) => {
+  handleChangeGoal = selected => {
     const goal =
       this.props.goals &&
       this.props.goals.find(goal => goal.did === selected.value);
@@ -101,7 +101,7 @@ class DodayDetails extends React.Component<
       dirty: goal.did !== this.props.selectedDoday.relatedGoal.did,
       updates: { relatedGoal: goal },
     });
-  }
+  };
 
   render() {
     const {
@@ -128,7 +128,6 @@ class DodayDetails extends React.Component<
       <Button
         key={1}
         size={ButtonSize.small}
-        text={'Delete'}
         onClick={() => {
           if (IAMOwner) {
             this.props.deleteDodayActionCreator(selectedDoday);
@@ -137,7 +136,9 @@ class DodayDetails extends React.Component<
           }
           history.push('/');
         }}
-      />,
+      >
+        Delete
+      </Button>,
     ];
 
     // Add owner actions
@@ -148,7 +149,6 @@ class DodayDetails extends React.Component<
           key={2}
           disabled={!dirty}
           size={ButtonSize.small}
-          text={loading ? 'Saving...' : 'Save'}
           onClick={() => {
             updateDodayActionCreator(selectedDoday.did, {
               date: updates.date && updates.date.getTime(),
@@ -157,7 +157,9 @@ class DodayDetails extends React.Component<
             updateSelectedDodayActionCreator(selectedDoday.did, updates);
             this.setState(initialState);
           }}
-        />
+        >
+          {loading ? 'Saving...' : 'Save'}
+        </Button>
       );
     }
 
@@ -215,13 +217,22 @@ class DodayDetails extends React.Component<
         </LayoutBlock>
         <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
         {selectedDoday.relatedGoal && (
-          <LayoutBlock insideElementsMargin valign='vflex-center'>
+          <LayoutBlock
+            margin="1rem 0"
+            insideElementsMargin
+            valign="vflex-center"
+          >
             <Text color={TypographyColor.Disabled} size={TypographySize.m}>
               {'Related goal: '}
             </Text>
             <Select
               className={css.goalSelect}
-              value={(this.state.updates.relatedGoal && selectedValueFromGoal(this.state.updates.relatedGoal)) || (selectedDoday.relatedGoal && selectedValueFromGoal(selectedDoday.relatedGoal))}
+              value={
+                (this.state.updates.relatedGoal &&
+                  selectedValueFromGoal(this.state.updates.relatedGoal)) ||
+                (selectedDoday.relatedGoal &&
+                  selectedValueFromGoal(selectedDoday.relatedGoal))
+              }
               onChange={this.handleChangeGoal}
               placeholder="Related to goal"
               options={goalsForSelect}
@@ -245,6 +256,13 @@ class DodayDetails extends React.Component<
           </div>
         )}
         <Text>{resource.description}</Text>
+        {selectedDoday.activityType === 'read' ? (
+          <LayoutBlock margin="2rem 0" align="flex-center">
+            <Button primary href={resource.url} target="_blank">
+              Read article
+            </Button>
+          </LayoutBlock>
+        ) : null}
       </Page>
     );
   }

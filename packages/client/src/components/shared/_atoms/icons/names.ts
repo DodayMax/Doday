@@ -16,4 +16,5 @@ export type IconNames =
   | 'Idea'
   | 'Activities'
   | 'Clock'
-  | 'Settings';
+  | 'Settings'
+  | 'Silver';

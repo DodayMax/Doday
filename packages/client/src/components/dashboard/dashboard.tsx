@@ -11,6 +11,7 @@ import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
+import { Profile } from '../profile';
 
 const css = require('./_dashboard.module.scss');
 
@@ -83,7 +84,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/goals/:did" component={GoalDetails} />
         <Route path="/builder" component={Builder} />
-        <Route path="/profile" component={() => <div>Profile</div>} />
+        <Route path="/profile" component={Profile} />
       </>
     );
   }

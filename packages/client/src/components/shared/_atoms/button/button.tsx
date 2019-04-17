@@ -16,7 +16,6 @@ export enum ButtonSize {
 }
 
 export interface ButtonProps {
-  text: string;
   active?: boolean;
   activeColor?: DodayColors;
   size?: ButtonSize;
@@ -26,6 +25,7 @@ export interface ButtonProps {
   onClick?: (...args: any) => any;
   type?: string;
   href?: string;
+  target?: '_blank' | '_self' | '_parent' | '_top' | string; // or framename
   to?: string;
   disabled?: boolean;
   borderless?: boolean;
@@ -45,12 +45,12 @@ export class Button extends React.Component<ButtonProps> {
       to,
       icon,
       isLoading,
-      text,
       type,
       size,
       disabled,
       borderless,
       className,
+      children,
       ...passthrough
     } = this.props;
 
@@ -76,7 +76,7 @@ export class Button extends React.Component<ButtonProps> {
       return (
         <Link className={classNames} to={to} style={styles}>
           {icon}
-          {isLoading ? <Icons.InlineLoader /> : text}
+          {isLoading ? <Icons.InlineLoader /> : children}
         </Link>
       );
     }
@@ -84,14 +84,14 @@ export class Button extends React.Component<ButtonProps> {
       return (
         <button className={classNames} {...passthrough} style={styles}>
           {icon}
-          {isLoading ? <Icons.InlineLoader /> : text}
+          {isLoading ? <Icons.InlineLoader /> : children}
         </button>
       );
     } else {
       return (
         <a className={classNames} {...passthrough} style={styles}>
           {icon}
-          {isLoading ? <Icons.InlineLoader /> : text}
+          {isLoading ? <Icons.InlineLoader /> : children}
         </a>
       );
     }

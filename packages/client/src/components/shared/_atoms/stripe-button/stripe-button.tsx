@@ -4,6 +4,7 @@ import StripeCheckout, { Token } from 'react-stripe-checkout';
 import { Button } from '@root/components';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 import { ButtonSize } from '../button';
+import { Coins } from '../coins';
 
 interface StripeButtonProps {
   handleToken: (token: Token) => HandleTokenAction;
@@ -19,11 +20,9 @@ export class StripeButton extends React.Component<StripeButtonProps> {
         token={token => this.props.handleToken(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
       >
-        <Button
-          size={ButtonSize.small}
-          text={'Buy doday coins'}
-          onClick={noop}
-        />
+        <Button borderless size={ButtonSize.small}>
+          <Coins coins={100} />
+        </Button>
       </StripeCheckout>
     );
   }

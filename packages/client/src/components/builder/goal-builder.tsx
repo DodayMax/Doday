@@ -108,9 +108,8 @@ export class GoalBuilder extends React.Component<
           <Button
             primary
             isLoading={loading}
-            text={'Create'}
             onClick={this.handleCreateGoal}
-          />
+          >Create</Button>
         </LayoutBlock>
       </>
     );

@@ -26,10 +26,9 @@ export const CustomDatePicker = ({
           <Button
             icon={icon}
             borderless={borderless}
-            text={moment(props.selected).format('ll')}
             onClick={onClick}
             className={css.customDatepicker}
-          />
+          >{moment(props.selected).format('ll')}</Button>
         }
         selected={props.selected}
         onChange={props.onChange}

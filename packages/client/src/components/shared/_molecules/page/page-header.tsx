@@ -14,7 +14,7 @@ interface PageHeaderProps extends Partial<RouteComponentProps> {
 @(withRouter as any)
 export class PageHeader extends React.Component<PageHeaderProps> {
   render() {
-    const { status, actions, onClose } = this.props;
+    const { status, actions, onClose, children } = this.props;
     return (
       <LayoutBlock className={css.headerContainer}>
         <LayoutBlock
@@ -29,7 +29,7 @@ export class PageHeader extends React.Component<PageHeaderProps> {
           valign="vflex-center"
           className={css.headerActions}
         >
-          {actions}
+          {actions || children}
           <ClickableIcon
             hover
             onClick={() => {

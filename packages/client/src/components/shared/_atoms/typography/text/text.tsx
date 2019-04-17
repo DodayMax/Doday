@@ -13,6 +13,7 @@ export const Text: React.SFC<
   align,
   size,
   bold,
+  heavy,
   italic,
   uppercase,
   capitalize,
@@ -26,6 +27,7 @@ export const Text: React.SFC<
   const cx = classnames({
     [css['text-l']]: !!!size, // default size for text
     [css['bold']]: !!bold,
+    [css['heavy']]: !!heavy,
     [css['italic']]: !!italic,
     [css['uppercase']]: !!uppercase,
     [css['capitalize']]: !!capitalize,

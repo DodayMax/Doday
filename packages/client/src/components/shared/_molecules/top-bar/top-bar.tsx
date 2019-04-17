@@ -30,14 +30,9 @@ class TopBar extends React.Component<
       case undefined:
         return 'Loading';
       case false:
-        return <Button href="/auth/google" text="Sign In" />;
+        return <Button href="/auth/google">Sign In</Button>;
       default:
-        return (
-          <LayoutBlock>
-            <StripeButton handleToken={this.props.handleStripeToken} />
-            <a href="/api/logout">Logout</a>
-          </LayoutBlock>
-        );
+        return null;
     }
   }
 
@@ -52,18 +47,17 @@ class TopBar extends React.Component<
         {this.renderContent()}
         <ACLGuard
           allowed={
-            <LayoutBlock insideElementsMargin align="flex-end">
+            <LayoutBlock insideElementsMargin align="flex-end" valign='vflex-center'>
+              <StripeButton handleToken={this.props.handleStripeToken} />
               <Button
-                text={'New Goal'}
                 to={'/builder?type=1'}
                 disabled={this.props.location.pathname === '/builder'}
-              />
+              >New Goal</Button>
               <Button
                 primary
-                text={'New Doday'}
                 to={'/builder?type=0'}
                 disabled={this.props.location.pathname === '/builder'}
-              />
+              >New Doday</Button>
             </LayoutBlock>
           }
         />

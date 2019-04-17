@@ -12,7 +12,8 @@ export const detectActivityType = (metadata: any): Activity => {
       return 'watch';
     } else if (
       contentType.startsWith('article') ||
-      contentType.startsWith('book')
+      contentType.startsWith('book') ||
+      contentType.startsWith('website')
     ) {
       return 'read';
     }

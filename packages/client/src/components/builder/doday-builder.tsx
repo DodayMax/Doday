@@ -242,22 +242,19 @@ export class DodayBuilder extends React.Component<
             <Button
               active={!isPublic}
               size={ButtonSize.small}
-              text={'Private'}
               onClick={() => this.setState({ isPublic: false })}
-            />
+            >Private</Button>
             <Button
               active={isPublic}
               size={ButtonSize.small}
-              text={'Public'}
               onClick={() => this.setState({ isPublic: true })}
-            />
+            >Public</Button>
           </ButtonGroup>
           <Button
             primary
             isLoading={loading}
-            text={'Create'}
             onClick={this.handleCreateDoday}
-          />
+          >Create</Button>
         </LayoutBlock>
       </>
     );

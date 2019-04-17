@@ -9,7 +9,7 @@ describe('Button', () => {
     const text = 'text';
     const wrapper = mount(
       <Router>
-        <Button text={text} onClick={onClick} />
+        <Button onClick={onClick}>{text}</Button>
       </Router>
     );
 
@@ -21,7 +21,7 @@ describe('Button', () => {
     const text = 'text';
     const wrapper = shallow(
       <Router>
-        <Button text={text} onClick={onClick} />
+        <Button onClick={onClick}>{text}</Button>
       </Router>
     ).dive() as any;
 
@@ -35,7 +35,7 @@ describe('Button', () => {
     const text = 'text';
     const button = mount(
       <Router>
-        <Button text={text} onClick={onClick} isLoading={true} />
+        <Button onClick={onClick} isLoading={true}>{text}</Button>
       </Router>
     );
 

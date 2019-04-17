@@ -8,6 +8,7 @@ export * from './shared/_atoms/typography';
 export * from './shared/_atoms/input';
 export * from './shared/_atoms/acl-guard';
 export * from './shared/_atoms/loader';
+export * from './shared/_atoms/coins';
 export * from './shared/_atoms/button';
 export * from './shared/_atoms/checkbox';
 export * from './shared/_atoms/badge';
