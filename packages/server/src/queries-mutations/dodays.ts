@@ -185,3 +185,27 @@ export const updateDodayTransaction = (
     }
   );
 };
+
+export const multyUpdateDodaysTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    dids: string[];
+    updates: Partial<SerializedDoday>;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (p:Progress)-[]-(h:Hero)
+      WHERE p.did IN $dids AND h.did = $heroDID
+      ${props.updates.date ? 'SET p.date = date($date)' : ''}
+    `,
+    {
+      heroDID: props.heroDID,
+      dids: props.dids,
+      date:
+        props.updates.date &&
+        dateInputStringFromDate(new Date(props.updates.date)),
+    }
+  );
+};

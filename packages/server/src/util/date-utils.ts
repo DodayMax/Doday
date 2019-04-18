@@ -29,3 +29,6 @@ export const isToday = (date: Date) => {
     date.getDate() === today.getDate()
   );
 };
+
+export const durationToMinutes = (duration: string) =>
+  Number(duration.slice(2, -1));

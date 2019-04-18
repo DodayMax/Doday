@@ -12,6 +12,7 @@ import {
   FetchAllGoalsAction,
   PushToNavigationStackAction,
   ToggleDodayAction,
+  PlanOutAction,
 } from '@root/ducks/doday-app/actions';
 import {
   PopFromNavigationStackAction,
@@ -50,6 +51,7 @@ interface PropsFromConnect {
   fetchAllGoalsActionCreator: () => FetchAllGoalsAction;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   toggleDoday: (doday: Doday) => ToggleDodayAction;
+  planOutActionCreator: (date: number) => PlanOutAction;
 }
 
 export class DodayAppComponent extends React.Component<
@@ -127,6 +129,8 @@ export class DodayAppComponent extends React.Component<
       .map((a: Doday) => durationToMinutes(a.duration))
       .reduce((a, b) => a + b, 0);
 
+    console.log(totalDurationOfTheDay);
+
     switch (path) {
       case 'goals':
         return (
@@ -182,7 +186,7 @@ export class DodayAppComponent extends React.Component<
               date={chosenDate!}
               changeDate={changeDateActionCreator!}
             />
-            {Math.floor(totalDurationOfTheDay / 60) > 8 ? (
+            {totalDurationOfTheDay > 8 * 60 ? (
               <LayoutBlock
                 className={css.bannerContainer}
                 margin="1rem 0 0 0"
@@ -190,7 +194,13 @@ export class DodayAppComponent extends React.Component<
                 valign="vflex-center"
               >
                 <Text>Your day is overloading!</Text>
-                <Button primary size={ButtonSize.small}>
+                <Button
+                  onClick={() =>
+                    this.props.planOutActionCreator(chosenDate.getTime())
+                  }
+                  primary
+                  size={ButtonSize.small}
+                >
                   Plan out!
                 </Button>
               </LayoutBlock>

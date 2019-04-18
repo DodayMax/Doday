@@ -21,6 +21,7 @@ export enum ActionConstants {
   FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
   SET_GOALS = '[doday-app] SET_GOALS',
   DELETE_GOAL = '[doday-app] DELETE_GOAL',
+  PLAN_OUT = '[doday-app] PLAN_OUT',
 }
 
 /**
@@ -250,6 +251,19 @@ export function deleteGoalActionCreator(did: string): DeleteGoalAction {
 }
 
 /**
+ * Plan out overloading dodays to next days action creator
+ *
+ * @export
+ * @returns {PlanOutAction}
+ */
+export function planOutActionCreator(date: number): PlanOutAction {
+  return {
+    type: ActionConstants.PLAN_OUT,
+    payload: date,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -336,6 +350,11 @@ export interface SetNavStackAction extends AnyAction {
 export interface DeleteGoalAction extends AnyAction {
   type: ActionConstants.DELETE_GOAL;
   payload: string;
+}
+
+export interface PlanOutAction extends AnyAction {
+  type: ActionConstants.PLAN_OUT;
+  payload: number;
 }
 
 /**

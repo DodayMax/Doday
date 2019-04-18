@@ -16,6 +16,7 @@ import {
   fetchAllGoalsActionCreator,
   deleteGoalActionCreator,
   pushToNavStackByDIDActionCreator,
+  planOutActionCreator,
 } from './actions';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -35,7 +36,7 @@ describe('doday-app duck', () => {
     });
 
     it('change path action creator', () => {
-      const path = 'dodays';
+      const path = '/';
       const expectedActionObject = {
         type: ActionConstants.CHANGE_PATH,
         payload: path,
@@ -85,15 +86,7 @@ describe('doday-app duck', () => {
     });
 
     it('set dodays for date action creator', () => {
-      const dodays: Doday[] = [
-        {
-          did: '123',
-          activityType: 'do',
-          type: DodayTypes.Doday,
-          name: 'name',
-          public: false,
-        },
-      ];
+      const dodays: Doday[] = [testDoday];
       const expectedActionObject = {
         type: ActionConstants.SET_DODAYS_FOR_DATE,
         payload: dodays,
@@ -126,18 +119,11 @@ describe('doday-app duck', () => {
     });
 
     it('toggle doday action creator', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       const expectedActionObject = {
         type: ActionConstants.TOGGLE_DODAY,
-        payload: doday,
+        payload: testDoday,
       };
-      expect(toggleDoday(doday)).toEqual(expectedActionObject);
+      expect(toggleDoday(testDoday)).toEqual(expectedActionObject);
     });
 
     it('delete doday action creator', () => {
@@ -159,19 +145,13 @@ describe('doday-app duck', () => {
     });
 
     it('remove doday from my app action creator', () => {
-      const doday: Doday = {
-        did: '123',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'name',
-        public: false,
-      };
       const expectedActionObject = {
         type: ActionConstants.REMOVE_DODAY,
-        payload: doday,
+        payload: testDoday,
       };
-      expect(removeDodayActionCreator(doday)).toEqual(expectedActionObject);
+      expect(removeDodayActionCreator(testDoday)).toEqual(expectedActionObject);
     });
+
     it('remove doday from my app action creator', () => {
       const did = 'test did';
       const updates = {
@@ -189,6 +169,15 @@ describe('doday-app duck', () => {
         expectedActionObject
       );
     });
+
+    it('plan out action creator', () => {
+      const date = Date.now();
+      const expectedActionObject = {
+        type: ActionConstants.PLAN_OUT,
+        payload: date,
+      };
+      expect(planOutActionCreator(date)).toEqual(expectedActionObject);
+    });
   });
 
   describe('doday-app reducers', () => {
@@ -198,7 +187,7 @@ describe('doday-app duck', () => {
     });
 
     it('change path reducer', () => {
-      const path = 'dodays';
+      const path = '/';
       expect(reducer(undefined, changePath(path)).path).toEqual(path);
     });
 

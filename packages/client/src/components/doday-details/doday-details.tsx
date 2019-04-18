@@ -220,8 +220,11 @@ class DodayDetails extends React.Component<
                 {durationToLabel(selectedDoday.duration)}
               </Text>
               <Text size={TypographySize.s} color={TypographyColor.Disabled}>
-                ({(durationToMinutes(selectedDoday.duration) / (8 * 60)) * 100}%
-                of your day)
+                (
+                {Math.round(
+                  (durationToMinutes(selectedDoday.duration) / (8 * 60)) * 100
+                )}
+                % of your day)
               </Text>
             </LayoutBlock>
           )}

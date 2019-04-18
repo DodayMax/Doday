@@ -18,6 +18,7 @@ import {
   DeleteGoalAction,
   PushToNavigationStackByDIDAction,
   changePath,
+  PlanOutAction,
 } from './actions';
 import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -158,6 +159,17 @@ function* pushToNavStackByDIDSaga(action: PushToNavigationStackByDIDAction) {
   }
 }
 
+/**
+ * Plan out saga
+ *
+ * @param {PlanOutAction} action
+ */
+function* planOutSaga(action: PlanOutAction) {
+  yield put(setAppLoadingState(true));
+  yield call(api.days.queries.planOutStartFromDate, action.payload);
+  yield put(setAppLoadingState(false));
+}
+
 export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
@@ -169,4 +181,5 @@ export default [
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodaySaga),
   takeLatest(ActionConstants.REMOVE_DODAY, removeDodaySaga),
   takeLatest(ActionConstants.DELETE_GOAL, deleteGoalSaga),
+  takeLatest(ActionConstants.PLAN_OUT, planOutSaga),
 ];
