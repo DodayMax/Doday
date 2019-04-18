@@ -12,6 +12,7 @@ export interface SerializedProgress {
   completed: boolean;
   tookAt: Neo4jDateTime;
   date: Neo4jDate;
+  dateIsLocked: boolean;
   completedAt?: Neo4jDateTime;
   relatedGoal?: {
     did: string;

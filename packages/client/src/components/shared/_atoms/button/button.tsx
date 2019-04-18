@@ -28,6 +28,7 @@ export interface ButtonProps {
   target?: '_blank' | '_self' | '_parent' | '_top' | string; // or framename
   to?: string;
   disabled?: boolean;
+  lightBorder?: boolean;
   borderless?: boolean;
   className?: string;
 }
@@ -48,6 +49,7 @@ export class Button extends React.Component<ButtonProps> {
       type,
       size,
       disabled,
+      lightBorder,
       borderless,
       className,
       children,
@@ -60,6 +62,7 @@ export class Button extends React.Component<ButtonProps> {
         [css.primary]: primary,
         [css.disabled]: location.pathname === to || disabled,
         [css.borderless]: borderless,
+        [css.lightBorder]: lightBorder,
         [css.withIcon]: !!icon,
       },
       css[ButtonSize[size]],
@@ -68,7 +71,8 @@ export class Button extends React.Component<ButtonProps> {
 
     const styles = active
       ? {
-          backgroundColor: activeColor ? detectColor(activeColor) : vars.gray5,
+          backgroundColor:
+            activeColor != null ? detectColor(activeColor) : vars.gray4,
         }
       : {};
 

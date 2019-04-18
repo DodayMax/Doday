@@ -9,6 +9,7 @@ export interface SerializedDoday {
   public: boolean;
   resource?: Resource;
   date?: number;
+  dateIsLocked?: boolean;
   created?: number;
   relatedGoal?: string;
 }

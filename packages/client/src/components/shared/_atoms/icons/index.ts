@@ -17,5 +17,7 @@ export * from './settings/settings';
 export * from './clock/clock';
 export * from './silver/silver';
 export * from './dodayman/dodayman';
+export * from './locked/locked';
+export * from './unlocked/unlocked';
 
 export * from './names';

@@ -6,6 +6,9 @@
 
 .button {
   box-sizing: border-box;
+  height: 3.8rem;
+  border: 2px solid $dark-bg;
+  font-size: $body-m;
   cursor: pointer;
   outline: none;
   border-radius: $radius-4;

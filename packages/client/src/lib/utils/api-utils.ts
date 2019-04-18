@@ -37,6 +37,7 @@ export function parseProgressToDoday(progress: SerializedProgress): Doday {
     completed: deserializedProgress.completed,
     tookAt: deserializedProgress.tookAt,
     date: deserializedProgress.date,
+    dateIsLocked: deserializedProgress.dateIsLocked,
     completedAt: deserializedProgress.completedAt,
   };
 }

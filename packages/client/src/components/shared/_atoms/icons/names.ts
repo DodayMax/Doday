@@ -18,4 +18,6 @@ export type IconNames =
   | 'Clock'
   | 'Settings'
   | 'Silver'
-  | 'Dodayman';
+  | 'Dodayman'
+  | 'Locked'
+  | 'Unlocked';

@@ -21,6 +21,7 @@ export interface Doday {
   completed?: boolean;
   tookAt?: Date;
   date?: Date;
+  dateIsLocked?: boolean;
   completedAt?: Date;
   relatedGoal?: Goal;
 }
@@ -34,6 +35,7 @@ export interface SerializedDoday {
   // Computed props by relations and from Progress node
   resource?: Resource;
   date?: number;
+  dateIsLocked?: boolean;
   owner?: Hero;
   doing?: Hero[];
   done?: Hero[];

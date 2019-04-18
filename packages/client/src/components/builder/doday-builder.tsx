@@ -54,6 +54,7 @@ interface DodayBuilderState {
   selectedTags?: Tag[];
   parsingFinished?: string;
   date: Date;
+  dateIsLocked: boolean;
   isPublic: boolean;
 }
 
@@ -87,6 +88,7 @@ export class DodayBuilder extends React.Component<
       dodayName: '',
       date: new Date(),
       isPublic: false,
+      dateIsLocked: false,
     };
   }
 
@@ -157,6 +159,7 @@ export class DodayBuilder extends React.Component<
           this.state.selectedTags &&
           this.state.selectedTags.map(tag => tag.value),
         date: this.state.date.getTime(),
+        dateIsLocked: this.state.dateIsLocked,
         resource: resource,
         public: this.state.isPublic,
         relatedGoal: selectedGoal && selectedGoal.did,
@@ -231,20 +234,28 @@ export class DodayBuilder extends React.Component<
           </LayoutBlock>
           <LayoutBlock childFlex flex={'1'} margin="0 0 0 1rem">
             <CustomDatePicker
+              lightBorder
+              withLocker
+              isLocked={this.state.dateIsLocked}
               icon={<Icons.Clock />}
               minDate={new Date()}
               selected={this.state.date}
               onChange={this.handleChangeDate}
+              onLocked={() =>
+                this.setState({
+                  dateIsLocked: !this.state.dateIsLocked,
+                })
+              }
               className={css.datePickerInput}
             />
           </LayoutBlock>
         </LayoutBlock>
         <LayoutBlock margin="0 0 2rem 0" direction="column">
-          <Text>Estimate time:</Text>
+          <Text color={TypographyColor.Disabled}>Estimate time:</Text>
           <Slider
             min={0}
             max={8 * 60}
-            defaultValue={3}
+            defaultValue={60}
             handle={handle}
             step={10}
           />

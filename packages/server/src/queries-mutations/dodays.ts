@@ -16,11 +16,11 @@ export const activeDodaysForDateQuery = (
         isToday(new Date(props.date)) ? '<=' : '='
       } date($date) AND p.completed = false
       OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
+      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, dateIsLocked: p.dateIsLocked, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
       UNION ALL MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
       WHERE h.did = $heroDID AND p.completedAt = date($date) AND p.completed = true
       OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
+      RETURN d { .did, .name, .type, .activityType, .tags, .public, date: p.date, dateIsLocked: p.dateIsLocked, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
       ORDER BY p.completed
     `,
     {
@@ -44,7 +44,7 @@ export const createAndTakeDodayTransaction = (
       }, public: {public} })
       CREATE (p:Progress { did: {did}, ${
         props.doday.date ? 'date: date({date}),' : ''
-      } completed: {completed}, tookAt: {tookAt} })
+      } dateIsLocked: {dateIsLocked}, completed: {completed}, tookAt: {tookAt} })
       ${
         props.doday.resource
           ? `
@@ -163,12 +163,16 @@ export const updateDodayTransaction = (
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
-      ${props.updates.relatedGoal ? `
+      ${
+        props.updates.relatedGoal
+          ? `
       MATCH (g:Goal {did: $relatedGoal})
       OPTIONAL MATCH (p)-[r4:INSIDE]-(:Goal)
       DELETE r4
       CREATE (p)-[:INSIDE]->(g)
-      ` : ''}
+      `
+          : ''
+      }
       ${props.updates.date ? 'SET p.date = date($date)' : ''}
     `,
     {
@@ -177,7 +181,7 @@ export const updateDodayTransaction = (
       date:
         props.updates.date &&
         dateInputStringFromDate(new Date(props.updates.date)),
-      relatedGoal: props.updates.relatedGoal
+      relatedGoal: props.updates.relatedGoal,
     }
   );
 };

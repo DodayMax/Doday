@@ -18,6 +18,7 @@ export const dodayProgressByDID = async (variables: any) => {
             month
             day
           }
+          dateIsLocked
           completed
           relatedGoal {
             did

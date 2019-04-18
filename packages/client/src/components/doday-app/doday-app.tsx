@@ -176,7 +176,7 @@ export class DodayAppComponent extends React.Component<
               date={chosenDate!}
               changeDate={changeDateActionCreator!}
             />
-            {this.getDodaysToRender().length > 8 ? (
+            {this.getDodaysToRender().filter(doday => doday.type === DodayTypes.Doday && !doday.completed).length > 8 ? (
               <LayoutBlock
                 className={css.bannerContainer}
                 margin="1rem 0 0 0"
