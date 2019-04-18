@@ -16,7 +16,12 @@ import {
   UpdateDodayAction,
 } from '@root/ducks/doday-app/actions';
 import { Marker } from '../shared/_atoms/marker';
-import { activityTypeColor, youtubeIDFromURL } from '@root/lib/utils';
+import {
+  activityTypeColor,
+  youtubeIDFromURL,
+  durationToLabel,
+  durationToMinutes,
+} from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/Resource';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 import {
@@ -208,12 +213,15 @@ class DodayDetails extends React.Component<
               })
             }
           />
-          {youtubeLink && (
+          {selectedDoday.duration && (
             <LayoutBlock insideElementsMargin valign="vflex-center">
-              <Icons.Goal width={16} height={16} />
-              <Text size={TypographySize.s}>25m 27s</Text>
+              <Icons.Duration width={16} height={16} />
+              <Text size={TypographySize.s}>
+                {durationToLabel(selectedDoday.duration)}
+              </Text>
               <Text size={TypographySize.s} color={TypographyColor.Disabled}>
-                (3% of your day)
+                ({(durationToMinutes(selectedDoday.duration) / (8 * 60)) * 100}%
+                of your day)
               </Text>
             </LayoutBlock>
           )}

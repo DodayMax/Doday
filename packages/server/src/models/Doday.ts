@@ -5,6 +5,7 @@ export interface SerializedDoday {
   activityType: string;
   type: number;
   name: string;
+  duration: string;
   tags: string[];
   public: boolean;
   resource?: Resource;

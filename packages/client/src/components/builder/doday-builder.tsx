@@ -56,26 +56,8 @@ interface DodayBuilderState {
   date: Date;
   dateIsLocked: boolean;
   isPublic: boolean;
+  estimateTime: string;
 }
-
-const handle = props => {
-  const { value, dragging, index, ...restProps } = props;
-  const hours = Math.floor(value / 60);
-  const minutes = value % 60;
-  const time = hours ? `${hours}h ${minutes}m` : `${minutes}m`;
-  return (
-    <Tooltip
-      prefixCls="rc-slider-tooltip"
-      overlay={time}
-      visible={dragging}
-      placement="top"
-      key={index}
-      overlayClassName={css.timeTooltip}
-    >
-      <Handle value={time} {...restProps} />
-    </Tooltip>
-  );
-};
 
 export class DodayBuilder extends React.Component<
   DodayBuilderProps,
@@ -89,6 +71,7 @@ export class DodayBuilder extends React.Component<
       date: new Date(),
       isPublic: false,
       dateIsLocked: false,
+      estimateTime: 'P60M',
     };
   }
 
@@ -154,6 +137,7 @@ export class DodayBuilder extends React.Component<
         did: cuid(),
         activityType,
         type: DodayTypes.Doday,
+        duration: this.state.estimateTime,
         name: this.state.dodayName || parsedMetadata.title,
         tags:
           this.state.selectedTags &&
@@ -172,6 +156,25 @@ export class DodayBuilder extends React.Component<
       this.props.goals &&
       this.props.goals.find(goal => goal.did === selected.value);
     this.props.selectGoalActionCreator(goal);
+  };
+
+  handleEstimateTimeChange = props => {
+    const { value, dragging, index, ...restProps } = props;
+    const hours = Math.floor(value / 60);
+    const minutes = value % 60;
+    const time = hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+    return (
+      <Tooltip
+        prefixCls="rc-slider-tooltip"
+        overlay={time}
+        visible={dragging}
+        placement="top"
+        key={index}
+        overlayClassName={css.timeTooltip}
+      >
+        <Handle value={time} {...restProps} />
+      </Tooltip>
+    );
   };
 
   render() {
@@ -206,7 +209,6 @@ export class DodayBuilder extends React.Component<
         </LayoutBlock>
         <Input
           size={StandartSizes.large}
-          autofocus
           value={this.state.dodayName}
           onChange={this.onChangeInput}
           onPressEnter={this.handleCreateDoday}
@@ -256,7 +258,12 @@ export class DodayBuilder extends React.Component<
             min={0}
             max={8 * 60}
             defaultValue={60}
-            handle={handle}
+            onChange={value =>
+              this.setState({
+                estimateTime: `PT${value}M`,
+              })
+            }
+            handle={this.handleEstimateTimeChange}
             step={10}
           />
         </LayoutBlock>

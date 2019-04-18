@@ -57,3 +57,13 @@ export const isToday = (date: Date) => {
     date.getDate() === today.getDate()
   );
 };
+
+export const durationToLabel = (duration: string) => {
+  const totalMinutes = Number(duration.slice(2, -1));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+};
+
+export const durationToMinutes = (duration: string) =>
+  Number(duration.slice(2, -1));

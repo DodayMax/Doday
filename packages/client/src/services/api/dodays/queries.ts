@@ -38,6 +38,7 @@ export const dodayProgressByDID = async (variables: any) => {
             name
             activityType
             type
+            duration
             public
             resource {
               description

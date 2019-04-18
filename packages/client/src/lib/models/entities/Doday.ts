@@ -10,6 +10,7 @@ export interface Doday {
   activityType: Activity;
   type: DodayTypes.Doday;
   name: string;
+  duration: string;
   public: boolean;
   // Computed props by relations and from Progress node
   resource?: Resource;
@@ -31,6 +32,7 @@ export interface SerializedDoday {
   activityType: Activity;
   type: number;
   name: string;
+  duration: string;
   public: boolean;
   // Computed props by relations and from Progress node
   resource?: Resource;

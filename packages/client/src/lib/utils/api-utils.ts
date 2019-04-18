@@ -24,6 +24,7 @@ export function parseProgressToDoday(progress: SerializedProgress): Doday {
     activityType: deserializedProgress.origin.activityType,
     type: deserializedProgress.origin.type,
     name: deserializedProgress.origin.name,
+    duration: deserializedProgress.origin.duration,
     public: deserializedProgress.origin.public,
     // Computed props by relations and from Progress node
     relatedGoal: parseGoal(firstItem(deserializedProgress.relatedGoal)),

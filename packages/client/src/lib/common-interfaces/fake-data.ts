@@ -7,6 +7,7 @@ export const testDoday: Doday = {
   activityType: 'do',
   type: DodayTypes.Doday,
   name: 'name',
+  duration: 'P60M',
   public: false,
 };
 

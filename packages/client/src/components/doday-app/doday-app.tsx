@@ -28,6 +28,7 @@ import { DodayAppPaths } from '@root/lib/common-interfaces';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 import { Text } from '../shared/_atoms/typography';
 import { Button, ButtonSize } from '../shared/_atoms/button';
+import { durationToMinutes } from '@root/lib/utils';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -121,6 +122,11 @@ export class DodayAppComponent extends React.Component<
       navStack,
     } = this.props;
 
+    const totalDurationOfTheDay = this.getDodaysToRender()
+      .filter(doday => doday.type === DodayTypes.Doday && !doday.completed)
+      .map((a: Doday) => durationToMinutes(a.duration))
+      .reduce((a, b) => a + b, 0);
+
     switch (path) {
       case 'goals':
         return (
@@ -176,7 +182,7 @@ export class DodayAppComponent extends React.Component<
               date={chosenDate!}
               changeDate={changeDateActionCreator!}
             />
-            {this.getDodaysToRender().filter(doday => doday.type === DodayTypes.Doday && !doday.completed).length > 8 ? (
+            {Math.floor(totalDurationOfTheDay / 60) > 8 ? (
               <LayoutBlock
                 className={css.bannerContainer}
                 margin="1rem 0 0 0"

@@ -20,4 +20,5 @@ export type IconNames =
   | 'Silver'
   | 'Dodayman'
   | 'Locked'
-  | 'Unlocked';
+  | 'Unlocked'
+  | 'Duration';
