@@ -23,6 +23,7 @@ export * from './shared/_molecules/top-bar';
 export * from './shared/_molecules/page';
 import * as Icons from './shared/_atoms/icons';
 export * from './shared/_organisms/grid';
+export * from './pageflow/pageflow';
 export * from './main-top-bar';
 export * from './app';
 export * from './doday-app';

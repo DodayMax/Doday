@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -38,6 +39,7 @@ import {
 import Select from 'react-select';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { selectedValueFromGoal } from '../builder/doday-builder';
+import { Pageflow, PageWrapperChildContext } from '../pageflow';
 
 const css = require('./doday-details.module.scss');
 
@@ -71,11 +73,18 @@ interface PropsFromConnect {
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
+@Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
 class DodayDetails extends React.Component<
   DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>,
   DodayDetailsState
 > {
+  public static contextTypes = {
+    requestClose: PropTypes.func,
+  };
+
+  public context!: PageWrapperChildContext;
+
   componentDidMount() {
     //fetch selected doday with graphQL
     const did = this.props.match.params.did;
@@ -104,39 +113,34 @@ class DodayDetails extends React.Component<
     });
   };
 
-  render() {
+  isOwner = () => {
+    const { selectedDoday, myDID } = this.props;
+    return (
+      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID
+    );
+  };
+
+  actions = () => {
     const {
-      loading,
-      dirty,
-      updates,
       history,
       selectedDoday,
-      updateSelectedDodayActionCreator,
-      clearSelectedDodayActionCreator,
+      dirty,
       updateDodayActionCreator,
-      myDID,
+      updateSelectedDodayActionCreator,
+      updates,
       goals,
+      loading,
     } = this.props;
-
-    if (!selectedDoday) {
-      return 'Loading...';
-    }
-
-    const IAMOwner =
-      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID;
-
     const goal =
       updates && updates.relatedGoal
-        ? this.props.goals &&
-          this.props.goals.find(goal => goal.did === updates.relatedGoal)
+        ? goals && goals.find(goal => goal.did === updates.relatedGoal)
         : undefined;
-
     const actions = [
       <Button
         key={1}
         size={ButtonSize.small}
         onClick={() => {
-          if (IAMOwner) {
+          if (this.isOwner) {
             this.props.deleteDodayActionCreator(selectedDoday);
           } else {
             this.props.removeDodayActionCreator(selectedDoday);
@@ -149,7 +153,7 @@ class DodayDetails extends React.Component<
     ];
 
     // Add owner actions
-    if (IAMOwner && dirty) {
+    if (this.isOwner && dirty) {
       actions.unshift(
         <Button
           primary
@@ -171,16 +175,36 @@ class DodayDetails extends React.Component<
       );
     }
 
-    const status = [
+    return actions;
+  };
+
+  status = () => {
+    return [
       <Marker
         key={1}
         rounded
-        color={activityTypeColor(selectedDoday.activityType)}
-        text={selectedDoday.activityType}
+        color={activityTypeColor(this.props.selectedDoday.activityType)}
+        text={this.props.selectedDoday.activityType}
       />,
     ];
+  };
 
-    const resource = selectedDoday.resource;
+  onRequestClose = () => {
+    this.props.clearSelectedDodayActionCreator();
+    if (this.context.requestClose) {
+      this.context.requestClose();
+    }
+  };
+
+  render() {
+    const { updates, selectedDoday, goals } = this.props;
+
+    const goal =
+      updates && updates.relatedGoal
+        ? goals && goals.find(goal => goal.did === updates.relatedGoal)
+        : undefined;
+
+    const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
 
@@ -192,111 +216,125 @@ class DodayDetails extends React.Component<
     const dateIsLocked =
       updates && updates.dateIsLocked != null
         ? updates.dateIsLocked
-        : selectedDoday.dateIsLocked;
+        : selectedDoday && selectedDoday.dateIsLocked;
 
     return (
       <Page
         header={
           <PageHeader
-            status={status}
-            actions={actions}
-            onClose={clearSelectedDodayActionCreator}
+            status={selectedDoday && this.status()}
+            actions={selectedDoday && this.actions()}
+            onClose={this.onRequestClose}
           />
         }
       >
-        <LayoutBlock insideElementsMargin>
-          <CustomDatePicker
-            borderless
-            minDate={new Date()}
-            icon={<Icons.Clock />}
-            selected={
-              (updates && updates.date && new Date(updates.date)) ||
-              selectedDoday.date
-            }
-            onChange={date => {
-              const dateDirty =
-                moment(date).format('ll') !==
-                moment(selectedDoday.date).format('ll');
-              this.props.requestForSetUpdatesActionCreator({
-                date: dateDirty ? date.getTime() : undefined,
-              });
-            }}
-          />
-          <Button
-            borderless
-            active={updates && updates.dateIsLocked}
-            onClick={() => {
-              this.props.requestForSetUpdatesActionCreator({
-                dateIsLocked: !dateIsLocked,
-              });
-            }}
-          >
-            {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
-          </Button>
-          {selectedDoday.duration && (
-            <LayoutBlock insideElementsMargin valign="vflex-center">
-              <Icons.Duration width={16} height={16} />
-              <Text size={TypographySize.s}>
-                {durationToLabel(selectedDoday.duration)}
-              </Text>
-              <Text size={TypographySize.s} color={TypographyColor.Disabled}>
-                (
-                {Math.round(
-                  (durationToMinutes(selectedDoday.duration) / (8 * 60)) * 100
-                )}
-                % of your day)
-              </Text>
+        {selectedDoday ? (
+          <>
+            <LayoutBlock insideElementsMargin>
+              <CustomDatePicker
+                borderless
+                minDate={new Date()}
+                icon={<Icons.Clock />}
+                selected={
+                  (updates && updates.date && new Date(updates.date)) ||
+                  selectedDoday.date
+                }
+                onChange={date => {
+                  const dateDirty =
+                    moment(date).format('ll') !==
+                    moment(selectedDoday.date).format('ll');
+                  this.props.requestForSetUpdatesActionCreator({
+                    date: dateDirty ? date.getTime() : undefined,
+                  });
+                }}
+              />
+              <Button
+                borderless
+                active={updates && updates.dateIsLocked}
+                onClick={() => {
+                  this.props.requestForSetUpdatesActionCreator({
+                    dateIsLocked: !dateIsLocked,
+                  });
+                }}
+              >
+                {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+              </Button>
+              {selectedDoday.duration && (
+                <LayoutBlock insideElementsMargin valign="vflex-center">
+                  <Icons.Duration width={16} height={16} />
+                  <Text size={TypographySize.s}>
+                    {durationToLabel(selectedDoday.duration)}
+                  </Text>
+                  <Text
+                    size={TypographySize.s}
+                    color={TypographyColor.Disabled}
+                  >
+                    (
+                    {Math.round(
+                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                        100
+                    )}
+                    % of your day)
+                  </Text>
+                </LayoutBlock>
+              )}
             </LayoutBlock>
-          )}
-        </LayoutBlock>
-        <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
-        <LayoutBlock margin="1rem 0" insideElementsMargin valign="vflex-center">
-          <Text color={TypographyColor.Disabled} size={TypographySize.m}>
-            {'Related goal: '}
-          </Text>
-          <Select
-            className={css.goalSelect}
-            value={
-              (updates && updates.relatedGoal && selectedValueFromGoal(goal)) ||
-              (selectedDoday.relatedGoal &&
-                selectedValueFromGoal(selectedDoday.relatedGoal))
-            }
-            onChange={this.handleChangeGoal}
-            placeholder="Choose goal"
-            options={goalsForSelect}
-          />
-        </LayoutBlock>
-        {youtubeLink ? (
-          <div
-            className={css.videoWrapper}
-            style={{
-              background: `url(${preview})`,
-              backgroundSize: 'contain',
-            }}
-          >
-            <iframe
-              frameBorder="0"
-              src={youtubeLink}
-              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : preview ? (
-          <div
-            className={css.videoWrapper}
-            style={{
-              background: `url(${preview})`,
-              backgroundSize: 'contain',
-            }}
-          />
-        ) : null}
-        <Text>{resource.description}</Text>
-        {selectedDoday.activityType === 'read' ? (
-          <LayoutBlock margin="2rem 0" align="flex-center">
-            <Button primary href={resource.url} target="_blank">
-              Read full article
-            </Button>
-          </LayoutBlock>
+            <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
+            <LayoutBlock
+              margin="1rem 0"
+              insideElementsMargin
+              valign="vflex-center"
+            >
+              <Text color={TypographyColor.Disabled} size={TypographySize.m}>
+                {'Related goal: '}
+              </Text>
+              <Select
+                className={css.goalSelect}
+                value={
+                  (updates &&
+                    updates.relatedGoal &&
+                    selectedValueFromGoal(goal)) ||
+                  (selectedDoday.relatedGoal &&
+                    selectedValueFromGoal(selectedDoday.relatedGoal))
+                }
+                onChange={this.handleChangeGoal}
+                placeholder="Choose goal"
+                options={goalsForSelect}
+              />
+            </LayoutBlock>
+            {youtubeLink ? (
+              <div
+                className={css.videoWrapper}
+                style={{
+                  background: `url(${preview})`,
+                  backgroundSize: 'contain',
+                }}
+              >
+                <iframe
+                  frameBorder="0"
+                  src={youtubeLink}
+                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              </div>
+            ) : preview ? (
+              <div
+                className={css.videoWrapper}
+                style={{
+                  background: `url(${preview})`,
+                  backgroundSize: 'contain',
+                }}
+              />
+            ) : null}
+            <Text>{resource.description}</Text>
+            {selectedDoday.activityType === 'read' ? (
+              <LayoutBlock margin="2rem 0" align="flex-center">
+                <Button primary href={resource.url} target="_blank">
+                  Read full article
+                </Button>
+              </LayoutBlock>
+            ) : null}
+          </>
         ) : null}
       </Page>
     );

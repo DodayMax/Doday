@@ -1,6 +1,6 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
 import { actions as builderActions } from '@ducks/builder';
@@ -23,6 +23,7 @@ import { DodayBuilder } from './doday-builder';
 import { Goal, SerializedGoal } from '@root/lib/models/entities/Goal';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { GoalBuilder } from './goal-builder';
+import { Pageflow, PageWrapperChildContext } from '../pageflow';
 
 interface BuilderProps {}
 
@@ -51,6 +52,7 @@ interface PropsFromConnect {
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
+@Pageflow({ path: '/builder' })
 export class Builder extends React.Component<
   BuilderProps & PropsFromConnect & Partial<RouteComponentProps>,
   BuilderState
@@ -67,6 +69,12 @@ export class Builder extends React.Component<
     };
   }
 
+  public static contextTypes = {
+    requestClose: PropTypes.func,
+  };
+
+  public context!: PageWrapperChildContext;
+
   componentDidUpdate(prevProps) {
     if (this.props.success) {
       this.props.history.push('/');
@@ -74,11 +82,11 @@ export class Builder extends React.Component<
     }
   }
 
-  onCloseBuidler = () => {
+  onRequestClose = () => {
     this.props.clearBuilderActionCreator();
-    this.setState({
-      visible: false,
-    });
+    if (this.context.requestClose) {
+      this.context.requestClose();
+    }
   };
 
   renderBuilder = () => {
@@ -128,25 +136,10 @@ export class Builder extends React.Component<
   };
 
   render() {
-    console.log(this.props.match);
     return (
-      <ReactCSSTransitionGroup
-        transitionAppear={true}
-        transitionAppearTimeout={600}
-        transitionEnterTimeout={600}
-        transitionLeaveTimeout={200}
-        transitionName={
-          this.props.match.path === '/builder'
-            ? 'loadComponent'
-            : 'leaveComponent'
-        }
-      >
-        {this.state.visible ? (
-          <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
-            {this.renderBuilder()}
-          </Page>
-        ) : null}
-      </ReactCSSTransitionGroup>
+      <Page header={<PageHeader onClose={this.onRequestClose} />}>
+        {this.renderBuilder()}
+      </Page>
     );
   }
 }

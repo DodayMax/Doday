@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { actions as dodaysActions } from '@ducks/doday-app';
@@ -12,6 +13,7 @@ import { RootState } from '@root/lib/models';
 import { FetchSelectedGoalAction } from '@root/ducks/doday-details/actions';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { DeleteGoalAction } from '@root/ducks/doday-app/actions';
+import { Pageflow, PageWrapperChildContext } from '../pageflow';
 
 interface GoalDetailsProps {}
 interface PropsFromConnect {
@@ -21,11 +23,24 @@ interface PropsFromConnect {
 }
 interface GoalDetailsState {}
 
+@Pageflow({ path: '/goals/:did' })
 @(withRouter as any)
 class GoalDetails extends React.Component<
   GoalDetailsProps & PropsFromConnect & RouteComponentProps<any>,
   GoalDetailsState
 > {
+  public static contextTypes = {
+    requestClose: PropTypes.func,
+  };
+
+  public context!: PageWrapperChildContext;
+
+  onRequestClose = () => {
+    if (this.context.requestClose) {
+      this.context.requestClose();
+    }
+  };
+
   componentDidMount() {
     //fetch selected doday with graphQL
     const did = this.props.match.params.did;
@@ -42,11 +57,15 @@ class GoalDetails extends React.Component<
           this.props.deleteGoalActionCreator(selectedGoal && selectedGoal.did);
           history.push('/');
         }}
-      >Delete goal</Button>,
+      >
+        Delete goal
+      </Button>,
     ];
 
     return (
-      <Page header={<PageHeader actions={actions} />}>
+      <Page
+        header={<PageHeader actions={actions} onClose={this.onRequestClose} />}
+      >
         <LayoutBlock insideElementsMargin>
           {/* <EditableDatePicker
             selected={updates.date || selectedDoday.date}
