@@ -11,9 +11,10 @@ export const getDayInfoQuery = (
   return tx.run(
     `
       MATCH (h:Hero)-[]-(p:Progress)-[]-(d:Doday)
-      WHERE h.did = $heroDID AND p.date ${
-        isToday(new Date(props.date)) ? '<=' : '='
-      } date($date) AND p.completed = false AND p.dateIsLocked = false
+      WHERE h.did = $heroDID
+      AND p.date ${isToday(new Date(props.date)) ? '<=' : '='} date($date)
+      AND p.completed = false
+      AND p.dateIsLocked in CASE WHEN p.date >= date($date) THEN [false] ELSE [true, false] END
 
       WITH sum(duration(d.duration)).minutes as otherDodaysDuration, collect(d) as otherDodays
 

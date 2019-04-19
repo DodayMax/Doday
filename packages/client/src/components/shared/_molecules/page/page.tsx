@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { LayoutBlock } from '@components';
-import * as H from 'history';
 import { withRouter } from 'react-router';
 
 const css = require('./_page.module.scss');
@@ -8,7 +7,6 @@ const css = require('./_page.module.scss');
 interface PageProps extends React.HTMLAttributes<HTMLElement> {
   header?: React.ReactElement<any>;
 }
-
 @(withRouter as any)
 export class Page extends React.Component<PageProps, {}> {
   render() {
