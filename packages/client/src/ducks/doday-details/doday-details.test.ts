@@ -6,8 +6,12 @@ import {
   clearSelectedDodayActionCreator,
   updateSelectedDodayActionCreator,
   setSelectedGoalActionCreator,
+  setDirtyStatusActionCreator,
+  setUpdatesForSelectedDodayActionCreator,
+  clearDirtyStuffActionCreator,
 } from './actions';
 import { testDoday, testGoal } from '@root/lib/common-interfaces/fake-data';
+import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 
 describe('doday details page duck', () => {
   describe('action creators', () => {
@@ -86,6 +90,36 @@ describe('doday details page duck', () => {
       };
       expect(clearSelectedDodayActionCreator()).toEqual(expectedActionObject);
     });
+
+    it('set dirty status action creator', () => {
+      const status = true;
+      const expectedActionObject = {
+        type: ActionConstants.SET_DIRTY_STATUS,
+        payload: status,
+      };
+      expect(setDirtyStatusActionCreator(status)).toEqual(expectedActionObject);
+    });
+
+    it('set updates for selected doday action creator', () => {
+      const updates: Partial<SerializedDoday> = {
+        date: Date.now(),
+        dateIsLocked: false,
+      };
+      const expectedActionObject = {
+        type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
+        payload: updates,
+      };
+      expect(setUpdatesForSelectedDodayActionCreator(updates)).toEqual(
+        expectedActionObject
+      );
+    });
+
+    it('clear updates and dirty status action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.CLEAR_DIRTY_STUFF,
+      };
+      expect(clearDirtyStuffActionCreator()).toEqual(expectedActionObject);
+    });
   });
 
   describe('doday detaila reducers', () => {
@@ -123,6 +157,24 @@ describe('doday details page duck', () => {
       expect(
         reducer(state, clearSelectedDodayActionCreator()).selectedDoday
       ).toEqual(undefined);
+    });
+
+    it('set dirty status reducer', () => {
+      const status = true;
+      expect(
+        reducer(initialState, setDirtyStatusActionCreator(status)).dirty
+      ).toEqual(status);
+    });
+
+    it('set updates for selected doday reducer', () => {
+      const updates = {
+        date: Date.now(),
+        dateIsLocked: true,
+      };
+      expect(
+        reducer(initialState, setUpdatesForSelectedDodayActionCreator(updates))
+          .updates.dateIsLocked
+      ).toEqual(updates.dateIsLocked);
     });
   });
 });

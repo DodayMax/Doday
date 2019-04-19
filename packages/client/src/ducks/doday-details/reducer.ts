@@ -38,6 +38,25 @@ export default (
         ...state,
         selectedDoday: undefined,
       };
+    case actions.ActionConstants.SET_DIRTY_STATUS:
+      return {
+        ...state,
+        dirty: action.payload,
+      };
+    case actions.ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY:
+      return {
+        ...state,
+        updates: {
+          ...state.updates,
+          ...action.payload,
+        },
+      };
+    case actions.ActionConstants.CLEAR_DIRTY_STUFF:
+      return {
+        ...state,
+        dirty: undefined,
+        updates: undefined,
+      };
     default:
       return state;
   }

@@ -127,28 +127,26 @@ export class DodayBuilder extends React.Component<
   handleCreateDoday = () => {
     const { parsedMetadata, activityType = 'do', selectedGoal } = this.props;
 
-    if (this.state.dodayName || parsedMetadata) {
-      const resource = parsedMetadata && {
-        ...parsedMetadata,
-        did: cuid(),
-      };
+    const resource = parsedMetadata && {
+      ...parsedMetadata,
+      did: cuid(),
+    };
 
-      this.props.createAndTakeDoday({
-        did: cuid(),
-        activityType,
-        type: DodayTypes.Doday,
-        duration: this.state.estimateTime,
-        name: this.state.dodayName || parsedMetadata.title,
-        tags:
-          this.state.selectedTags &&
-          this.state.selectedTags.map(tag => tag.value),
-        date: this.state.date.getTime(),
-        dateIsLocked: this.state.dateIsLocked,
-        resource: resource,
-        public: this.state.isPublic,
-        relatedGoal: selectedGoal && selectedGoal.did,
-      });
-    }
+    this.props.createAndTakeDoday({
+      did: cuid(),
+      activityType,
+      type: DodayTypes.Doday,
+      duration: this.state.estimateTime,
+      name: this.state.dodayName || parsedMetadata.title,
+      tags:
+        this.state.selectedTags &&
+        this.state.selectedTags.map(tag => tag.value),
+      date: this.state.date.getTime(),
+      dateIsLocked: this.state.dateIsLocked,
+      resource: resource,
+      public: this.state.isPublic,
+      relatedGoal: selectedGoal && selectedGoal.did,
+    });
   };
 
   handleGoalSelect = selected => {
@@ -303,7 +301,12 @@ export class DodayBuilder extends React.Component<
               Public
             </Button>
           </ButtonGroup>
-          <Button primary isLoading={loading} onClick={this.handleCreateDoday}>
+          <Button
+            primary
+            disabled={!this.state.dodayName && !parsedMetadata}
+            isLoading={loading}
+            onClick={this.handleCreateDoday}
+          >
             Create
           </Button>
         </LayoutBlock>

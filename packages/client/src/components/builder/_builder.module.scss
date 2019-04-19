@@ -56,3 +56,42 @@
 .time-tooltip {
   width: 6rem;
 }
+
+.days-label {
+  position: absolute;
+  top: -2rem;
+}
+
+.connecting-line {
+  &:before {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid $gray-5;
+    border-radius: $radius-circle;
+    box-sizing: border-box;
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: -0.4rem;
+    background-color: $gray-2;
+    z-index: 1;
+  }
+  &:after {
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid $gray-5;
+    border-radius: $radius-circle;
+    box-sizing: border-box;
+    content: '';
+    position: absolute;
+    right: -0.5rem;
+    top: -0.4rem;
+    background-color: $gray-2;
+    z-index: 1;
+  }
+
+  width: 100%;
+  position: relative;
+  height: 0.2rem;
+  background-color: $gray-4;
+}

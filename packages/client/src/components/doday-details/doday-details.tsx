@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import { TypographySize, TypographyColor } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
@@ -21,6 +22,7 @@ import {
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
+  isEmptyObject,
 } from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/Resource';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
@@ -28,6 +30,10 @@ import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
   UpdateSelectedDodayAction,
+  SetDirtyStatusAction,
+  SetUpdatesForSelectedDodayAction,
+  ClearDirtyStuffAction,
+  RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
 import Select from 'react-select';
 import { Goal } from '@root/lib/models/entities/Goal';
@@ -35,23 +41,14 @@ import { selectedValueFromGoal } from '../builder/doday-builder';
 
 const css = require('./doday-details.module.scss');
 
-const initialState: DodayDetailsState = {
-  updates: {},
-  dirty: false,
-};
-
 interface DodayDetailsProps {}
 
-interface DodayDetailsState {
-  updates: {
-    date?: Date;
-    relatedGoal?: Goal;
-  };
-  dirty: boolean;
-}
+interface DodayDetailsState {}
 
 interface PropsFromConnect {
   loading: boolean;
+  dirty?: boolean;
+  updates?: Partial<SerializedDoday>;
   myDID?: string;
   goals: Goal[];
   selectedDoday: Doday;
@@ -60,6 +57,11 @@ interface PropsFromConnect {
     did: string,
     updates: Partial<SerializedDoday>
   ) => UpdateDodayAction;
+  setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
+  clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
+  requestForSetUpdatesActionCreator: (
+    updates: Partial<SerializedDoday>
+  ) => RequestForSetUpdatesAction;
   deleteDodayActionCreator: (doday: Doday) => DeleteDodayAction;
   removeDodayActionCreator: (doday: Doday) => RemoveDodayAction;
   updateSelectedDodayActionCreator: (
@@ -74,15 +76,6 @@ class DodayDetails extends React.Component<
   DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>,
   DodayDetailsState
 > {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      updates: {},
-      dirty: false,
-    };
-  }
-
   componentDidMount() {
     //fetch selected doday with graphQL
     const did = this.props.match.params.did;
@@ -102,18 +95,20 @@ class DodayDetails extends React.Component<
     const goal =
       this.props.goals &&
       this.props.goals.find(goal => goal.did === selected.value);
-    this.setState({
-      dirty:
-        goal.did !==
-        (this.props.selectedDoday.relatedGoal &&
-          this.props.selectedDoday.relatedGoal.did),
-      updates: { relatedGoal: goal },
+    const dirty =
+      goal.did !==
+      (this.props.selectedDoday.relatedGoal &&
+        this.props.selectedDoday.relatedGoal.did);
+    this.props.requestForSetUpdatesActionCreator({
+      relatedGoal: dirty ? goal.did : undefined,
     });
   };
 
   render() {
     const {
       loading,
+      dirty,
+      updates,
       history,
       selectedDoday,
       updateSelectedDodayActionCreator,
@@ -123,14 +118,18 @@ class DodayDetails extends React.Component<
       goals,
     } = this.props;
 
-    const { dirty, updates } = this.state;
-
     if (!selectedDoday) {
       return 'Loading...';
     }
 
     const IAMOwner =
       selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID;
+
+    const goal =
+      updates && updates.relatedGoal
+        ? this.props.goals &&
+          this.props.goals.find(goal => goal.did === updates.relatedGoal)
+        : undefined;
 
     const actions = [
       <Button
@@ -158,12 +157,13 @@ class DodayDetails extends React.Component<
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
-            updateDodayActionCreator(selectedDoday.did, {
-              date: updates.date && updates.date.getTime(),
-              relatedGoal: updates.relatedGoal && updates.relatedGoal.did,
-            });
-            updateSelectedDodayActionCreator(selectedDoday.did, updates);
-            this.setState(initialState);
+            updateDodayActionCreator(selectedDoday.did, updates);
+            updateSelectedDodayActionCreator(selectedDoday.did, {
+              ...updates,
+              date: updates && updates.date && new Date(updates.date),
+              relatedGoal: goal,
+            } as any);
+            this.props.clearDirtyStuffActionCreator();
           }}
         >
           {loading ? 'Saving...' : 'Save'}
@@ -189,6 +189,11 @@ class DodayDetails extends React.Component<
       value: goal.did,
     }));
 
+    const dateIsLocked =
+      updates && updates.dateIsLocked != null
+        ? updates.dateIsLocked
+        : selectedDoday.dateIsLocked;
+
     return (
       <Page
         header={
@@ -202,17 +207,32 @@ class DodayDetails extends React.Component<
         <LayoutBlock insideElementsMargin>
           <CustomDatePicker
             borderless
+            minDate={new Date()}
             icon={<Icons.Clock />}
-            selected={updates.date || selectedDoday.date}
-            onChange={date =>
-              this.setState({
-                dirty:
-                  moment(date).format('ll') !==
-                  moment(selectedDoday.date).format('ll'),
-                updates: { date },
-              })
+            selected={
+              (updates && updates.date && new Date(updates.date)) ||
+              selectedDoday.date
             }
+            onChange={date => {
+              const dateDirty =
+                moment(date).format('ll') !==
+                moment(selectedDoday.date).format('ll');
+              this.props.requestForSetUpdatesActionCreator({
+                date: dateDirty ? date.getTime() : undefined,
+              });
+            }}
           />
+          <Button
+            borderless
+            active={updates && updates.dateIsLocked}
+            onClick={() => {
+              this.props.requestForSetUpdatesActionCreator({
+                dateIsLocked: !dateIsLocked,
+              });
+            }}
+          >
+            {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+          </Button>
           {selectedDoday.duration && (
             <LayoutBlock insideElementsMargin valign="vflex-center">
               <Icons.Duration width={16} height={16} />
@@ -237,8 +257,7 @@ class DodayDetails extends React.Component<
           <Select
             className={css.goalSelect}
             value={
-              (this.state.updates.relatedGoal &&
-                selectedValueFromGoal(this.state.updates.relatedGoal)) ||
+              (updates && updates.relatedGoal && selectedValueFromGoal(goal)) ||
               (selectedDoday.relatedGoal &&
                 selectedValueFromGoal(selectedDoday.relatedGoal))
             }
@@ -286,6 +305,8 @@ class DodayDetails extends React.Component<
 
 const mapState = (state: RootState) => ({
   loading: state.dodayDetails.loading,
+  dirty: state.dodayDetails.dirty,
+  updates: state.dodayDetails.updates,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
   goals: state.dodayApp.goals,

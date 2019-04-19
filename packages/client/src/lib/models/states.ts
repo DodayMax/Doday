@@ -1,6 +1,6 @@
 import { Activity } from '../common-interfaces';
 import { Hero } from './entities/Hero';
-import { Doday } from './entities/Doday';
+import { Doday, SerializedDoday } from './entities/Doday';
 import { Goal } from './entities/Goal';
 
 export interface RootState {
@@ -41,6 +41,8 @@ export interface HeroSettingsState {
 
 export interface DodayDetailsState {
   loading: boolean;
+  dirty?: boolean;
+  updates?: Partial<SerializedDoday>;
   selectedDoday?: Doday;
   selectedGoal?: Goal;
 }

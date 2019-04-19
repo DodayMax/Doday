@@ -42,21 +42,24 @@ export class GoalBuilder extends React.Component<
   }
 
   handleCreateGoal = () => {
-    if (this.state.goalName) {
-      this.props.createGoalActionCreator({
-        did: cuid(),
-        type: DodayTypes.Goal,
-        name: this.state.goalName,
-        ownerDID: this.props.ownerDID,
-        color: getRandomColor(this.props.goalNumber),
-        startDate: this.state.startDate.getTime(),
-        endDate: this.state.endDate.getTime(),
-      });
-    }
+    this.props.createGoalActionCreator({
+      did: cuid(),
+      type: DodayTypes.Goal,
+      name: this.state.goalName,
+      ownerDID: this.props.ownerDID,
+      color: getRandomColor(this.props.goalNumber),
+      startDate: this.state.startDate.getTime(),
+      endDate: this.state.endDate.getTime(),
+    });
   };
 
   render() {
     const { loading } = this.props;
+    const days = Math.round(
+      ((this.state.endDate as any) - (this.state.startDate as any)) /
+        (1000 * 60 * 60 * 24)
+    );
+
     return (
       <>
         <LayoutBlock insideElementsMargin valign="vflex-end">
@@ -76,9 +79,13 @@ export class GoalBuilder extends React.Component<
           onPressEnter={this.handleCreateGoal}
           placeholder="Enter name or paste link..."
         />
-        <LayoutBlock align="space-between" padding="2rem 0">
+        <LayoutBlock
+          align="space-between"
+          valign="vflex-center"
+          padding="2rem 0"
+        >
           <CustomDatePicker
-            icon={<Icons.Clock />}
+            icon={<Icons.Flag />}
             minDate={new Date()}
             selected={this.state.startDate}
             onChange={date => {
@@ -88,8 +95,26 @@ export class GoalBuilder extends React.Component<
             }}
             className={css.datePickerInput}
           />
+          <LayoutBlock
+            relative
+            flex="1"
+            valign="vflex-center"
+            align="flex-center"
+            direction="column"
+          >
+            <Text
+              color={
+                days ? TypographyColor.Secondary : TypographyColor.Disabled
+              }
+              className={css.daysLabel}
+              size={TypographySize.s}
+            >
+              {days} days
+            </Text>
+            <div className={css.connectingLine} />
+          </LayoutBlock>
           <CustomDatePicker
-            icon={<Icons.Clock />}
+            icon={<Icons.Flag />}
             minDate={new Date()}
             selected={this.state.endDate}
             onChange={date => {
@@ -107,9 +132,12 @@ export class GoalBuilder extends React.Component<
         >
           <Button
             primary
+            disabled={!this.state.goalName}
             isLoading={loading}
             onClick={this.handleCreateGoal}
-          >Create</Button>
+          >
+            Create
+          </Button>
         </LayoutBlock>
       </>
     );

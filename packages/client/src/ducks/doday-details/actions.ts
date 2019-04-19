@@ -1,15 +1,19 @@
 import { AnyAction } from 'redux';
-import { Doday } from '@root/lib/models/entities/Doday';
+import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { Goal } from '@root/lib/models/entities/Goal';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
-  FETCH_SELECTED_DODAY = '[doday-app] FETCH_SELECTED_DODAY',
-  FETCH_SELECTED_GOAL = '[doday-app] FETCH_SELECTED_GOAL',
-  SET_SELECTED_DODAY = '[doday-app] SET_SELECTED_DODAY',
-  SET_SELECTED_GOAL = '[doday-app] SET_SELECTED_GOAL',
-  UPDATE_SELECTED_DODAY = '[doday-app] UPDATE_SELECTED_DODAY',
-  CLEAR_SELECTED_DODAY = '[doday-app] CLEAR_SELECTED_DODAY',
+  FETCH_SELECTED_DODAY = '[doday-details] FETCH_SELECTED_DODAY',
+  FETCH_SELECTED_GOAL = '[doday-details] FETCH_SELECTED_GOAL',
+  SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
+  SET_SELECTED_GOAL = '[doday-details] SET_SELECTED_GOAL',
+  UPDATE_SELECTED_DODAY = '[doday-details] UPDATE_SELECTED_DODAY',
+  CLEAR_SELECTED_DODAY = '[doday-details] CLEAR_SELECTED_DODAY',
+  SET_DIRTY_STATUS = '[doday-details] SET_DIRTY_STATUS',
+  REQUEST_FOR_SET_UPDATES = '[doday-details] REQUEST_FOR_SET_UPDATES',
+  SET_UPDATES_FOR_SELECTED_DODAY = '[doday-details] SET_UPDATES_FOR_SELECTED_DODAY',
+  CLEAR_DIRTY_STUFF = '[doday-details] CLEAR_DIRTY_STUFF',
 }
 
 /**
@@ -119,6 +123,66 @@ export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
 }
 
 /**
+ * Set dirty status when there are some updates
+ * for selected doday
+ *
+ * @export
+ * @returns {SetDirtyStatusAction}
+ */
+export function setDirtyStatusActionCreator(
+  status: boolean
+): SetDirtyStatusAction {
+  return {
+    type: ActionConstants.SET_DIRTY_STATUS,
+    payload: status,
+  };
+}
+
+/**
+ * Request for set updates to store
+ * Needed for set updates to store in saga and then
+ * set dirty status
+ *
+ * @export
+ * @returns {RequestForSetUpdatesAction}
+ */
+export function requestForSetUpdatesActionCreator(
+  updates: Partial<SerializedDoday>
+): RequestForSetUpdatesAction {
+  return {
+    type: ActionConstants.REQUEST_FOR_SET_UPDATES,
+    payload: updates,
+  };
+}
+
+/**
+ * Set updates for selected doday to store
+ *
+ * @export
+ * @returns {SetUpdatesForSelectedDodayAction}
+ */
+export function setUpdatesForSelectedDodayActionCreator(
+  updates: Partial<SerializedDoday>
+): SetUpdatesForSelectedDodayAction {
+  return {
+    type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
+    payload: updates,
+  };
+}
+
+/**
+ * Clear all updates and dirty status for selected doday
+ *
+ * @export
+ * @returns {ClearDirtyStuffAction}
+ */
+export function clearDirtyStuffActionCreator(): ClearDirtyStuffAction {
+  return {
+    type: ActionConstants.CLEAR_DIRTY_STUFF,
+  };
+}
+
+/**
  * Define return types of actions
  */
 
@@ -159,6 +223,25 @@ export interface ClearSelectedDodayAction extends AnyAction {
   type: ActionConstants.CLEAR_SELECTED_DODAY;
 }
 
+export interface SetDirtyStatusAction extends AnyAction {
+  type: ActionConstants.SET_DIRTY_STATUS;
+  payload: boolean;
+}
+
+export interface SetUpdatesForSelectedDodayAction extends AnyAction {
+  type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY;
+  payload: Partial<SerializedDoday>;
+}
+
+export interface RequestForSetUpdatesAction extends AnyAction {
+  type: ActionConstants.REQUEST_FOR_SET_UPDATES;
+  payload: Partial<SerializedDoday>;
+}
+
+export interface ClearDirtyStuffAction extends AnyAction {
+  type: ActionConstants.CLEAR_DIRTY_STUFF;
+}
+
 /**
  * Export all action types for reducers
  */
@@ -170,4 +253,8 @@ export type ActionTypes =
   | SetSelectedDodayAction
   | SetSelectedGoalAction
   | UpdateSelectedDodayAction
-  | ClearSelectedDodayAction;
+  | ClearSelectedDodayAction
+  | SetDirtyStatusAction
+  | RequestForSetUpdatesAction
+  | SetUpdatesForSelectedDodayAction
+  | ClearDirtyStuffAction;

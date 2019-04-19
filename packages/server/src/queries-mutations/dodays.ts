@@ -174,6 +174,11 @@ export const updateDodayTransaction = (
           : ''
       }
       ${props.updates.date ? 'SET p.date = date($date)' : ''}
+      ${
+        props.updates.dateIsLocked != null
+          ? 'SET p.dateIsLocked = $dateIsLocked'
+          : ''
+      }
     `,
     {
       heroDID: props.heroDID,
@@ -181,6 +186,7 @@ export const updateDodayTransaction = (
       date:
         props.updates.date &&
         dateInputStringFromDate(new Date(props.updates.date)),
+      dateIsLocked: props.updates.dateIsLocked,
       relatedGoal: props.updates.relatedGoal,
     }
   );

@@ -71,7 +71,7 @@ export const planout = async (req: Request, res: Response) => {
       // 8 hours
       const fitDoday = findDodayToFit(
         dodaysToReplan,
-        8 * 60 - selectedDuration
+        8 * 60 - dayDuration
       );
       if (fitDoday) {
         dodaysToStay.push(fitDoday);
@@ -82,6 +82,8 @@ export const planout = async (req: Request, res: Response) => {
           doday => doday.did !== fitDoday.did
         );
         dayDuration += durationToMinutes(fitDoday.duration);
+      } else {
+        break;
       }
     }
     await session.writeTransaction(tx =>

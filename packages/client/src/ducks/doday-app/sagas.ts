@@ -167,6 +167,8 @@ function* pushToNavStackByDIDSaga(action: PushToNavigationStackByDIDAction) {
 function* planOutSaga(action: PlanOutAction) {
   yield put(setAppLoadingState(true));
   yield call(api.days.queries.planOutStartFromDate, action.payload);
+  yield put(fetchDodaysForDate());
+  yield put(fetchAllGoalsActionCreator());
   yield put(setAppLoadingState(false));
 }
 

@@ -21,4 +21,5 @@ export type IconNames =
   | 'Dodayman'
   | 'Locked'
   | 'Unlocked'
-  | 'Duration';
+  | 'Duration'
+  | 'Flag';

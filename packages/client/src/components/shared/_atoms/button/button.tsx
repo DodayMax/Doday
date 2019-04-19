@@ -71,8 +71,9 @@ export class Button extends React.Component<ButtonProps> {
 
     const styles = active
       ? {
-          backgroundColor:
-            activeColor != null ? detectColor(activeColor) : vars.gray4,
+          backgroundColor: `${
+            activeColor != null ? detectColor(activeColor) : vars.gray4
+          }`,
         }
       : {};
 

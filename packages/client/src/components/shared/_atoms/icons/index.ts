@@ -20,5 +20,6 @@ export * from './dodayman/dodayman';
 export * from './locked/locked';
 export * from './unlocked/unlocked';
 export * from './duration/duration';
+export * from './flag/flag';
 
 export * from './names';

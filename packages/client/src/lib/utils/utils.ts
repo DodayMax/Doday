@@ -99,6 +99,17 @@ export const getRandomColor = index => {
   }
 };
 
+export const isEmptyObject = (obj: Object) => {
+  if (!obj) return true;
+  let result = true;
+  Object.keys(obj).forEach(key => {
+    if (typeof obj[key] !== 'undefined') {
+      result = false;
+    }
+  });
+  return result;
+};
+
 const standartColorsForGoalsChart = [
   vars.yellow,
   vars.green,
