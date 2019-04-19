@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
 import { actions as builderActions } from '@ducks/builder';
@@ -25,7 +26,11 @@ import { GoalBuilder } from './goal-builder';
 
 interface BuilderProps {}
 
-interface BuilderState {}
+interface BuilderState {
+  dodayName: string;
+  visible: boolean;
+  date: Date;
+}
 
 interface PropsFromConnect {
   ownerDID?: string;
@@ -57,6 +62,7 @@ export class Builder extends React.Component<
 
     this.state = {
       dodayName: '',
+      visible: true,
       date: new Date(),
     };
   }
@@ -70,6 +76,9 @@ export class Builder extends React.Component<
 
   onCloseBuidler = () => {
     this.props.clearBuilderActionCreator();
+    this.setState({
+      visible: false,
+    });
   };
 
   renderBuilder = () => {
@@ -119,10 +128,25 @@ export class Builder extends React.Component<
   };
 
   render() {
+    console.log(this.props.match);
     return (
-      <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
-        {this.renderBuilder()}
-      </Page>
+      <ReactCSSTransitionGroup
+        transitionAppear={true}
+        transitionAppearTimeout={600}
+        transitionEnterTimeout={600}
+        transitionLeaveTimeout={200}
+        transitionName={
+          this.props.match.path === '/builder'
+            ? 'loadComponent'
+            : 'leaveComponent'
+        }
+      >
+        {this.state.visible ? (
+          <Page header={<PageHeader onClose={this.onCloseBuidler} />}>
+            {this.renderBuilder()}
+          </Page>
+        ) : null}
+      </ReactCSSTransitionGroup>
     );
   }
 }

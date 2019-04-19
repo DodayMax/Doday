@@ -34,7 +34,9 @@ export class PageHeader extends React.Component<PageHeaderProps> {
           <ClickableIcon
             hover
             onClick={() => {
-              this.props.history.push('/');
+              setTimeout(() => {
+                this.props.history.push('/');
+              }, 200);
               if (onClose) {
                 onClose();
               }
