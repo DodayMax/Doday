@@ -4,6 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { actions } from '@ducks/doday-app';
 import { Loader } from '@components';
 import { LayoutBlock } from '../../_atoms/layout-block';
+import { Space } from '@root/lib/common-interfaces';
 
 const styles = require('./_grid.module.scss');
 
@@ -47,7 +48,11 @@ export class GridComponent extends React.Component<
     return (
       <ul id="grid" className={styles.gridContainer}>
         {loading && (
-          <LayoutBlock align="flex-center" padding="0.6rem 0">
+          <LayoutBlock
+            align="flex-center"
+            paddingTop={Space.XSmall}
+            paddingBottom={Space.XSmall}
+          >
             <Loader />
           </LayoutBlock>
         )}

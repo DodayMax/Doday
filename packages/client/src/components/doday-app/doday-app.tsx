@@ -25,7 +25,7 @@ import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { Goal } from '@root/lib/models/entities/Goal';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
-import { DodayAppPaths } from '@root/lib/common-interfaces';
+import { DodayAppPaths, Space } from '@root/lib/common-interfaces';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 import { Text } from '../shared/_atoms/typography';
 import { Button, ButtonSize } from '../shared/_atoms/button';
@@ -189,7 +189,7 @@ export class DodayAppComponent extends React.Component<
             {totalDurationOfTheDay > 8 * 60 ? (
               <LayoutBlock
                 className={css.bannerContainer}
-                margin="1rem 0 0 0"
+                spaceAbove={Space.Small}
                 direction="column"
                 valign="vflex-center"
               >

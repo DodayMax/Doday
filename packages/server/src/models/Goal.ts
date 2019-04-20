@@ -3,6 +3,7 @@ export interface SerializedGoal {
   type: number;
   name: string;
   ownerDID: string;
+  color: string;
   startDate?: number;
   endDate?: number;
   children?: string[];

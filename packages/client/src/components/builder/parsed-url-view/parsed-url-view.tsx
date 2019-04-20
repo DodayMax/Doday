@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { Text, LayoutBlock, ClickableIcon, Icons } from '@components';
-import { TypographyColor, TypographySize } from '@root/lib/common-interfaces';
+import {
+  TypographyColor,
+  TypographySize,
+  Space,
+} from '@root/lib/common-interfaces';
 import { AnyAction } from 'redux';
 
 const vars = require('@styles/_config.scss');
@@ -18,7 +22,14 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
     return (
       <>
         {loading && (
-          <LayoutBlock align="flex-center" valign="vflex-center" padding="1rem">
+          <LayoutBlock
+            align="flex-center"
+            valign="vflex-center"
+            paddingBottom={Space.Small}
+            paddingLeft={Space.Small}
+            paddingRight={Space.Small}
+            paddingTop={Space.Small}
+          >
             <Icons.InlineLoader />
           </LayoutBlock>
         )}

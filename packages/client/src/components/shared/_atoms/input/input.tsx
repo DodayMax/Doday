@@ -1,12 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { Icons } from '@root/components';
-import { StandartSizes } from '@root/lib/common-interfaces';
+import { Size } from '@root/lib/common-interfaces';
 
 const styles = require('./_input.module.scss');
 
 interface InputProps {
-  size?: StandartSizes;
+  size?: Size;
   isLoading?: boolean;
   autofocus?: boolean;
   onPressEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -49,7 +49,7 @@ export class Input extends React.Component<
       onChange,
       autofocus,
       isLoading = false,
-      size = StandartSizes.medium,
+      size = Size.Medium,
       onPressEnter,
       ...props
     } = this.props;
@@ -58,7 +58,7 @@ export class Input extends React.Component<
         [styles.input]: true,
         [styles.loading]: isLoading,
       },
-      styles[StandartSizes[size]]
+      styles[Size[size]]
     );
 
     return (

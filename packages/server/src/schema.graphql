@@ -27,6 +27,7 @@ type Progress {
   completed: Boolean
   tookAt: DateTime
   date: Date
+  dateIsLocked: Boolean
   completedAt: DateTime
   hero: [Hero] @relation(name: "DOING", direction: "IN")
   origin: [Doday] @relation(name: "ORIGIN", direction: "OUT")
@@ -39,6 +40,7 @@ type Doday {
   activityType: String
   type: Int
   name: String
+  duration: String
   public: Boolean
   resource: [Resource] @relation(name: "RESOURCE", direction: "OUT")
   owner: [Hero] @relation(name: "CREATE", direction: "IN")
@@ -53,6 +55,7 @@ type Goal {
   did: String
   type: Int
   name: String
+  color: String
   startDate: Date
   endDate: Date
   ownerDID: String

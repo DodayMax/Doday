@@ -111,12 +111,11 @@ $small-screen-max: $medium-screen - 1px;
 $large-screen: 1500px;
 $medium-screen-max: $large-screen - 1px;
 
-// inset, stack, and inline spacings
+// spacing
 $space-xxs: 4px;
 $space-xs: 8px;
 $space-s: 16px;
 $space-m: 20px;
-$space-xm: 24px;
 $space-l: 32px;
 $space-xl: 40px;
 $space-xxl: 60px;
@@ -185,14 +184,13 @@ $radius-circle: 100%;
 
   skeletonGray: $skeleton-gray;
 
-  spaceXXS: $space-xxs;
-  spaceXS: $space-xs;
-  spaceS: $space-s;
-  spaceM: $space-m;
-  spaceXM: $space-xm;
-  spaceL: $space-l;
-  spaceXL: $space-xl;
-  spaceXXL: $space-xxl;
+  spacexxs: $space-xxs;
+  spacexs: $space-xs;
+  spaces: $space-s;
+  spacem: $space-m;
+  spacel: $space-l;
+  spacexl: $space-xl;
+  spacexxl: $space-xxl;
 
   topBarHeight: $top-bar-height;
 }
@@ -203,6 +201,8 @@ $radius-circle: 100%;
   font-size: 10px;
   font-family: $font-regular;
 }
+
+// Animations
 
 .loadComponent-appear {
   opacity: 0;

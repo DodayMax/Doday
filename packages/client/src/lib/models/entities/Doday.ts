@@ -40,9 +40,6 @@ export interface SerializedDoday {
   public: boolean;
   // Computed props by relations and from Progress node
   resource?: Resource;
-  owner?: Hero;
-  doing?: Hero[];
-  done?: Hero[];
   tags?: string[];
   created?: number;
   completed?: boolean;

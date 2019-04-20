@@ -3,7 +3,11 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { TypographySize, TypographyColor } from '@root/lib/common-interfaces';
+import {
+  TypographySize,
+  TypographyColor,
+  Space,
+} from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
@@ -281,7 +285,8 @@ class DodayDetails extends React.Component<
             </LayoutBlock>
             <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
             <LayoutBlock
-              margin="1rem 0"
+              spaceAbove={Space.XSmall}
+              spaceBelow={Space.XSmall}
               insideElementsMargin
               valign="vflex-center"
             >
@@ -328,7 +333,11 @@ class DodayDetails extends React.Component<
             ) : null}
             <Text>{resource.description}</Text>
             {selectedDoday.activityType === 'read' ? (
-              <LayoutBlock margin="2rem 0" align="flex-center">
+              <LayoutBlock
+                spaceAbove={Space.Small}
+                spaceBelow={Space.Small}
+                align="flex-center"
+              >
                 <Button primary href={resource.url} target="_blank">
                   Read full article
                 </Button>

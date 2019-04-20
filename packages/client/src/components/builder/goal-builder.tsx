@@ -4,7 +4,8 @@ import { LayoutBlock, Button, Text, Input, Icons } from '@components';
 import {
   TypographySize,
   TypographyColor,
-  StandartSizes,
+  Size,
+  Space,
 } from '@root/lib/common-interfaces';
 import { SerializedGoal } from '@root/lib/models/entities/Goal';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -68,7 +69,7 @@ export class GoalBuilder extends React.Component<
           </Text>
         </LayoutBlock>
         <Input
-          size={StandartSizes.large}
+          size={Size.Large}
           autofocus
           value={this.state.goalName}
           onChange={e => {
@@ -82,7 +83,8 @@ export class GoalBuilder extends React.Component<
         <LayoutBlock
           align="space-between"
           valign="vflex-center"
-          padding="2rem 0"
+          paddingTop={Space.Small}
+          paddingBottom={Space.Small}
         >
           <CustomDatePicker
             icon={<Icons.Flag />}

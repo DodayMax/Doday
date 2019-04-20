@@ -6,11 +6,15 @@ export interface SerializedDoday {
   type: number;
   name: string;
   duration: string;
-  tags: string[];
   public: boolean;
+  // Computed props by relations and from Progress node
   resource?: Resource;
+  tags?: string[];
+  created?: number;
+  completed?: boolean;
+  tookAt?: number;
   date?: number;
   dateIsLocked?: boolean;
-  created?: number;
+  completedAt?: number;
   relatedGoal?: string;
 }

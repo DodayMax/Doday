@@ -18,7 +18,7 @@
 }
 
 .cell-title {
-  composes: padding-l-xs from '@styles/_utils.scss';
+  composes: padding-l-xs from '@styles/_spaces.module.scss';
 }
 
 .active {

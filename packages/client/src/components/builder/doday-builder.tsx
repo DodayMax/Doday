@@ -18,8 +18,9 @@ import Select from 'react-select';
 import {
   TypographySize,
   TypographyColor,
-  StandartSizes,
+  Size,
   Activity,
+  Space,
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
 import {
@@ -206,7 +207,7 @@ export class DodayBuilder extends React.Component<
           />
         </LayoutBlock>
         <Input
-          size={StandartSizes.large}
+          size={Size.Large}
           value={this.state.dodayName}
           onChange={this.onChangeInput}
           onPressEnter={this.handleCreateDoday}
@@ -223,7 +224,11 @@ export class DodayBuilder extends React.Component<
           loading={isUrlParsing}
           parsedMetadata={parsedMetadata}
         />
-        <LayoutBlock childFlex padding="2rem 0">
+        <LayoutBlock
+          childFlex
+          paddingTop={Space.Small}
+          paddingBottom={Space.Small}
+        >
           <LayoutBlock childFlex flex={'1'}>
             <Select
               value={selectedGoal && selectedValueFromGoal(selectedGoal)}
@@ -232,7 +237,7 @@ export class DodayBuilder extends React.Component<
               options={goalsForSelect}
             />
           </LayoutBlock>
-          <LayoutBlock childFlex flex={'1'} margin="0 0 0 1rem">
+          <LayoutBlock childFlex flex={'1'} spaceLeft={Space.XSmall}>
             <CustomDatePicker
               lightBorder
               withLocker
@@ -250,7 +255,7 @@ export class DodayBuilder extends React.Component<
             />
           </LayoutBlock>
         </LayoutBlock>
-        <LayoutBlock margin="0 0 2rem 0" direction="column">
+        <LayoutBlock spaceBelow={Space.Small} direction="column">
           <Text color={TypographyColor.Disabled}>Estimate time:</Text>
           <Slider
             min={0}
@@ -265,7 +270,7 @@ export class DodayBuilder extends React.Component<
             step={10}
           />
         </LayoutBlock>
-        <LayoutBlock childFlex flex={'1'} padding="0 0 2rem">
+        <LayoutBlock childFlex flex={'1'} paddingBottom={Space.Small}>
           <div>
             <AsyncCreatableSelect
               value={this.state.selectedTags}
