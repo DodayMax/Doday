@@ -28,6 +28,7 @@ import {
   CreateAndTakeDodayAction,
   ParseUrlMetadataAction,
   SelectGoalAction,
+  CreateDodayAction,
 } from '@root/ducks/builder/actions';
 import { Tag } from '@root/lib/models/entities/Tag';
 import { Goal } from '@root/lib/models/entities/Goal';
@@ -44,6 +45,7 @@ interface DodayBuilderProps {
   goals: Goal[];
   selectedGoal?: Goal;
   activityType: Activity;
+  createDodayActionCreator: (doday: SerializedDoday) => CreateDodayAction;
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
@@ -133,7 +135,7 @@ export class DodayBuilder extends React.Component<
       did: cuid(),
     };
 
-    this.props.createAndTakeDoday({
+    const newDoday = {
       did: cuid(),
       activityType,
       type: DodayTypes.Doday,
@@ -147,7 +149,14 @@ export class DodayBuilder extends React.Component<
       resource: resource,
       public: this.state.isPublic,
       relatedGoal: selectedGoal && selectedGoal.did,
-    });
+    };
+
+    if (this.state.isPublic) {
+      delete newDoday.relatedGoal;
+      this.props.createDodayActionCreator(newDoday);
+    } else {
+      this.props.createAndTakeDoday(newDoday);
+    }
   };
 
   handleGoalSelect = selected => {
@@ -231,6 +240,7 @@ export class DodayBuilder extends React.Component<
         >
           <LayoutBlock childFlex flex={'1'}>
             <Select
+              isDisabled={this.state.isPublic}
               value={selectedGoal && selectedValueFromGoal(selectedGoal)}
               onChange={this.handleGoalSelect}
               placeholder="Related to goal"
@@ -301,7 +311,9 @@ export class DodayBuilder extends React.Component<
             <Button
               active={isPublic}
               size={ButtonSize.small}
-              onClick={() => this.setState({ isPublic: true })}
+              onClick={() => {
+                this.setState({ isPublic: true });
+              }}
             >
               Public
             </Button>

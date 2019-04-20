@@ -6,6 +6,7 @@ import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
   SET_ACTIVITY_TYPE = '[builder] SET_ACTIVITY_TYPE',
+  CREATE_DODAY = '[builder] CREATE_DODAY',
   CREATE_AND_TAKE_DODAY = '[builder] CREATE_AND_TAKE_DODAY',
   CREATE_GOAL = '[builder] CREATE_GOAL',
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
@@ -41,6 +42,21 @@ export function createAndTakeDoday(
 ): CreateAndTakeDodayAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_DODAY,
+    payload: doday,
+  };
+}
+
+/**
+ * Create only Doday node and relation to Hero
+ *
+ * @export
+ * @returns {CreateDodayAction}
+ */
+export function createDodayActionCreator(
+  doday: SerializedDoday
+): CreateDodayAction {
+  return {
+    type: ActionConstants.CREATE_DODAY,
     payload: doday,
   };
 }
@@ -198,6 +214,11 @@ export interface FetchActivityTypesAction extends AnyAction {
 export interface SetActivityTypeAction extends AnyAction {
   type: ActionConstants.SET_ACTIVITY_TYPE;
   payload: Activity;
+}
+
+export interface CreateDodayAction extends AnyAction {
+  type: ActionConstants.CREATE_DODAY;
+  payload: SerializedDoday;
 }
 
 export interface CreateAndTakeDodayAction extends AnyAction {

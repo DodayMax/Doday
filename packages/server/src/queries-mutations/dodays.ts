@@ -2,7 +2,7 @@ import { v1 as neo4j } from 'neo4j-driver';
 import { SerializedDoday } from '../models/Doday';
 import { isToday, endDay, startDay } from '../util/date-utils';
 
-export const activeDodaysForDateQuery = (
+export const activeDodaysQuery = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
@@ -61,6 +61,79 @@ export const activeDodaysForDateQuery = (
   );
 };
 
+export const publicDodaysQuery = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (d:Doday)-[]-(h:Hero)
+      WHERE h.did = $heroDID
+      AND d.public = true
+      OPTIONAL MATCH (d)-[]-(p:Progress)-[]-(h)
+      RETURN d {
+        .did,
+        .name,
+        .duration,
+        .type,
+        .activityType,
+        .public,
+        date: p.date,
+        dateIsLocked: p.dateIsLocked,
+        completed: p.completed,
+        completedAt: p.completedAt,
+        tookAt: p.tookAt
+      } as Doday
+    `,
+    {
+      heroDID: props.heroDID,
+    }
+  );
+};
+
+export const createDodayTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    doday: SerializedDoday;
+    heroDID: string;
+  }
+) => {
+  return tx.run(
+    `
+      CREATE (d:Doday {
+        did: {did},
+        activityType: {activityType},
+        type: {type},
+        name: {name},
+        duration: {duration},
+        ${props.doday.tags ? ' tags: {tags}' : ''}
+        public: {public}
+        ownerDID: {heroDID}
+      })
+      ${
+        props.doday.resource
+          ? `
+            MERGE (r:Resource {url: {resourceURL}})
+            ON CREATE SET r = {resource}
+          `
+          : ''
+      }
+      WITH d ${props.doday.resource ? ', r' : ''}
+      MATCH (h:Hero { did: {heroDID} })
+      CREATE (h)-[:CREATE]->(d)
+      ${props.doday.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
+    `,
+    {
+      ...props.doday,
+      resourceURL: props.doday.resource && props.doday.resource.url,
+      heroDID: props.heroDID,
+      date: props.doday.date && new Date(props.doday.date).toISOString(),
+    }
+  );
+};
+
 export const createAndTakeDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
@@ -70,12 +143,23 @@ export const createAndTakeDodayTransaction = (
 ) => {
   return tx.run(
     `
-      CREATE (d:Doday { did: {did}, activityType: {activityType}, type: {type}, name: {name}, duration: {duration}, ${
-        props.doday.tags ? ' tags: {tags}' : ''
-      } public: {public} })
-      CREATE (p:Progress { did: {did}, ${
-        props.doday.date ? 'date: datetime({date}),' : ''
-      } dateIsLocked: {dateIsLocked}, completed: {completed}, tookAt: datetime({tookAt}) })
+      CREATE (d:Doday {
+        did: {did},
+        activityType: {activityType},
+        type: {type},
+        name: {name},
+        duration: {duration}, 
+        ${props.doday.tags ? ' tags: {tags}' : ''}
+        public: {public}
+        ownerDID: {heroDID}
+      })
+      CREATE (p:Progress {
+        did: {did},
+        ${props.doday.date ? 'date: datetime({date}),' : ''}
+        dateIsLocked: {dateIsLocked},
+        completed: {completed},
+        tookAt: datetime({tookAt})
+      })
       ${
         props.doday.resource
           ? `

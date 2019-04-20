@@ -20,6 +20,17 @@ type Neo4jDateInput = {
 
 // Dodays mutations
 
+export const createDodayNode = async (doday: SerializedDoday) => {
+  return fetch('/api/dodays/create', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
+    },
+    body: JSON.stringify(doday),
+  });
+};
+
 export const createAndTakeDodayNode = async (doday: SerializedDoday) => {
   return fetch('/api/dodays', {
     method: 'POST',

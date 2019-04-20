@@ -55,10 +55,10 @@ const items: DrawerMenuItem[] = [
     path: 'memos',
   },
   {
-    text: 'Published by me',
+    text: 'Public dodays',
     icon: 'Apps',
     action: 'changePath',
-    path: 'createdByMe',
+    path: 'public',
   },
 ];
 

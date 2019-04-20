@@ -1,20 +1,22 @@
 import { driver } from '../config/neo4j-driver';
 import { Request, Response } from 'express';
 import {
+  createDodayTransaction,
   createAndTakeDodayTransaction,
   toggleDodayTransaction,
-  activeDodaysForDateQuery,
+  activeDodaysQuery,
+  publicDodaysQuery,
   deleteDodayTransaction,
   removeDodayTransaction,
   updateDodayTransaction,
 } from '../queries-mutations/dodays';
 
-export const getActiveDodaysForDate = (req: Request, res: Response) => {
+export const getActiveDodays = (req: Request, res: Response) => {
   const session = driver.session();
 
   session
     .readTransaction(tx =>
-      activeDodaysForDateQuery(tx, {
+      activeDodaysQuery(tx, {
         heroDID: req.user.did,
         date: Number(req.query.date),
       })
@@ -22,6 +24,47 @@ export const getActiveDodaysForDate = (req: Request, res: Response) => {
     .then(result => {
       session.close();
       res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const getPublicDodays = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  session
+    .readTransaction(tx =>
+      publicDodaysQuery(tx, {
+        heroDID: req.user.did,
+      })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const create = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  const body = req.body as any;
+
+  session
+    .writeTransaction(tx =>
+      createDodayTransaction(tx, {
+        doday: body,
+        heroDID: req.user.did,
+      })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send({ success: true });
     })
     .catch(e => {
       console.error(e);

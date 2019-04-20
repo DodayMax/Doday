@@ -15,6 +15,7 @@ import {
   ClearBuilderAction,
   CreateGoalAction,
   SelectGoalAction,
+  CreateDodayAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
@@ -43,6 +44,7 @@ interface PropsFromConnect {
   loading?: boolean;
   success?: boolean;
   fetchActivityTypes: () => FetchActivityTypesAction;
+  createDodayActionCreator: (doday: SerializedDoday) => CreateDodayAction;
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   createGoalActionCreator: (goal: SerializedGoal) => CreateGoalAction;
   selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
@@ -98,6 +100,7 @@ export class Builder extends React.Component<
       isUrlParsing,
       parsedMetadata,
       parseUrlMetadataActionCreator,
+      createDodayActionCreator,
       createAndTakeDoday,
       clearParsedMetadataActionCreator,
       createGoalActionCreator,
@@ -116,6 +119,7 @@ export class Builder extends React.Component<
           loading={loading}
           isUrlParsing={isUrlParsing}
           parsedMetadata={parsedMetadata}
+          createDodayActionCreator={createDodayActionCreator}
           createAndTakeDoday={createAndTakeDoday}
           selectGoalActionCreator={selectGoalActionCreator}
           parseUrlMetadataActionCreator={parseUrlMetadataActionCreator}

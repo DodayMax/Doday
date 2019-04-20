@@ -41,6 +41,7 @@ interface DodayAppProps {
 interface PropsFromConnect {
   loading: boolean;
   dodays: (Doday | Goal)[];
+  publicDodays: Doday[];
   goals: Goal[];
   chosenDate?: Date;
   changeDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
@@ -59,7 +60,6 @@ export class DodayAppComponent extends React.Component<
 > {
   componentDidMount() {
     this.props.fetchDodaysForDate();
-    this.props.fetchAllGoalsActionCreator();
   }
 
   getDodaysToRender = () => {
@@ -129,8 +129,6 @@ export class DodayAppComponent extends React.Component<
       .map((a: Doday) => durationToMinutes(a.duration))
       .reduce((a, b) => a + b, 0);
 
-    console.log(totalDurationOfTheDay);
-
     switch (path) {
       case 'goals':
         return (
@@ -177,8 +175,16 @@ export class DodayAppComponent extends React.Component<
         );
       case 'memos':
         return <div>Memos</div>;
-      case 'createdByMe':
-        return <div>CreatedByMe</div>;
+      case 'public':
+        return (
+          <>
+            <Grid
+              loading={loading}
+              items={this.props.publicDodays}
+              renderCell={this.renderCellByDodayType}
+            />
+          </>
+        );
       default:
         return (
           <>
@@ -230,6 +236,7 @@ const mapState = ({ dodayApp }) => ({
   chosenDate: dodayApp.chosenDate,
   dodays: dodayApp.dodays,
   goals: dodayApp.goals,
+  publicDodays: dodayApp.public,
   navStack: dodayApp.navStack,
 });
 

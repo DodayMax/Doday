@@ -10,6 +10,7 @@ import {
   setActivityTypeActionCreator,
   clearBuilderActionCreator,
   CreateGoalAction,
+  CreateDodayAction,
 } from './actions';
 import {
   fetchDodaysForDate,
@@ -18,7 +19,23 @@ import {
 import { api } from '@services';
 import { detectActivityType } from '@root/lib/utils/regexp';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
-import { navStack } from '../doday-app/selectors';
+
+/**
+ * Create Doday and relation to Hero
+ *
+ * @param {CreateDodayAction} action
+ */
+function* createDodaySaga(action: CreateDodayAction) {
+  yield put(setBuilderLoadingState(true));
+  const res = yield call(api.dodays.mutations.createDodayNode, action.payload);
+  if (res.status === 200) {
+    yield put(setBuilderSuccessFlag(true));
+    yield put(fetchDodaysForDate());
+    yield put(fetchAllGoalsActionCreator());
+  }
+  yield put(setBuilderLoadingState(false));
+  yield put(clearBuilderActionCreator());
+}
 
 /**
  * Create Doday and Progress node saga
@@ -33,7 +50,6 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
   );
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
-    const stack = yield select(navStack);
     yield put(fetchDodaysForDate());
     yield put(fetchAllGoalsActionCreator());
   }
@@ -74,6 +90,7 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 }
 
 export default [
+  takeLatest(ActionConstants.CREATE_DODAY, createDodaySaga),
   takeLatest(ActionConstants.CREATE_AND_TAKE_DODAY, createAndTakeDodaySaga),
   takeLatest(ActionConstants.CREATE_GOAL, createGoalSaga),
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),

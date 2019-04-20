@@ -18,6 +18,11 @@ import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
+import {
+  serializedDoday,
+  serializedGoal,
+  goal,
+} from '@root/lib/common-interfaces/fake-data';
 
 describe('builder duck', () => {
   describe('builder action creators', () => {
@@ -37,32 +42,30 @@ describe('builder duck', () => {
       expect(setActivityTypeActionCreator(type)).toEqual(expectedActionObject);
     });
 
-    it('create doday and progress action creator', () => {
-      const doday: SerializedDoday = {
-        did: 'test',
-        activityType: 'do',
-        type: DodayTypes.Doday,
-        name: 'test',
-        public: false,
+    it('create doday action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.CREATE_DODAY,
+        payload: serializedDoday,
       };
+      expect(createAndTakeDoday(serializedDoday)).toEqual(expectedActionObject);
+    });
+
+    it('create doday and progress action creator', () => {
       const expectedActionObject = {
         type: ActionConstants.CREATE_AND_TAKE_DODAY,
-        payload: doday,
+        payload: serializedDoday,
       };
-      expect(createAndTakeDoday(doday)).toEqual(expectedActionObject);
+      expect(createAndTakeDoday(serializedDoday)).toEqual(expectedActionObject);
     });
 
     it('create goal node action creator', () => {
-      const goal: SerializedGoal = {
-        did: 'test',
-        type: DodayTypes.Goal,
-        name: 'test',
-      };
       const expectedActionObject = {
         type: ActionConstants.CREATE_GOAL,
-        payload: goal,
+        payload: serializedGoal,
       };
-      expect(createGoalActionCreator(goal)).toEqual(expectedActionObject);
+      expect(createGoalActionCreator(serializedGoal)).toEqual(
+        expectedActionObject
+      );
     });
 
     it('set builder loading state action creator', () => {
@@ -145,11 +148,6 @@ describe('builder duck', () => {
     });
 
     it('select goal in builder action creator', () => {
-      const goal: Goal = {
-        did: 'test did',
-        name: 'name',
-        type: DodayTypes.Goal,
-      };
       const expectedActionObject = {
         type: ActionConstants.SELECT_GOAL,
         payload: goal,
@@ -267,11 +265,6 @@ describe('builder duck', () => {
     });
 
     it('select goal in builder reducer', () => {
-      const goal: Goal = {
-        did: 'test did',
-        name: 'name',
-        type: DodayTypes.Goal,
-      };
       expect(
         reducer(initialState, selectGoalActionCreator(goal)).selectedGoal.did
       ).toEqual(goal.did);

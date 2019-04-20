@@ -1,43 +1,6 @@
 @import '@styles/_config.scss';
 
-// -------------------- Margins -------------------- //
-
-.padding-l-xs {
-  padding-left: $space-xs;
-}
-.padding-l-s {
-  padding-left: $space-s;
-}
-.padding-l-l {
-  padding-left: $space-l;
-}
-.padding-r-xs {
-  padding-right: $space-xs;
-}
-.padding-r-s {
-  padding-right: $space-s;
-}
-.padding-r-l {
-  padding-right: $space-l;
-}
-.padding-t-xs {
-  padding-top: $space-xs;
-}
-.padding-t-s {
-  padding-top: $space-s;
-}
-.padding-t-l {
-  padding-top: $space-l;
-}
-.padding-b-xs {
-  padding-bottom: $space-xs;
-}
-.padding-b-s {
-  padding-bottom: $space-s;
-}
-.padding-b-l {
-  padding-bottom: $space-l;
-}
+// -------------------- Paddings -------------------- //
 
 // Padding above
 .padding-zero-above {
@@ -92,6 +55,9 @@
 }
 
 // Padding left
+.padding-zero-left {
+  padding-left: 0;
+}
 .padding-xxs-left {
   padding-left: $space-xxs;
 }
@@ -115,6 +81,9 @@
 }
 
 // Padding right
+.padding-zero-right {
+  padding-right: 0;
+}
 .padding-xxs-right {
   padding-right: $space-xxs;
 }
@@ -192,6 +161,9 @@
 }
 
 // Space left
+.space-zero-left {
+  margin-left: 0;
+}
 .space-xxs-left {
   margin-left: $space-xxs;
 }
@@ -215,6 +187,9 @@
 }
 
 // Space right
+.space-zero-right {
+  margin-right: 0;
+}
 .space-xxs-right {
   margin-right: $space-xxs;
 }

@@ -16,6 +16,8 @@ export enum ActionConstants {
   SET_NAV_STACK = '[doday-app] SET_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
   FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
+  FETCH_PUBLIC_DODAYS = '[doday-app] FETCH_PUBLIC_DODAYS',
+  SET_PUBLIC_DODAYS = '[doday-app] SET_PUBLIC_DODAYS',
   SET_DODAYS_FOR_DATE = '[doday-app] SET_DODAYS_FOR_DATE',
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
   FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
@@ -137,6 +139,33 @@ export function fetchDodaysForDate(): FetchDodayForDate {
 export function setDodaysForDate(dodays: Doday[]): SetDodaysForDate {
   return {
     type: ActionConstants.SET_DODAYS_FOR_DATE,
+    payload: dodays,
+  };
+}
+
+/**
+ * Fetch Hero's public dodays
+ *
+ * @export
+ * @returns {FetchPublicDodaysAction}
+ */
+export function fetchPublicDodaysActionCreator(): FetchPublicDodaysAction {
+  return {
+    type: ActionConstants.FETCH_PUBLIC_DODAYS,
+  };
+}
+
+/**
+ * Set public dodays to store
+ *
+ * @export
+ * @returns {SetPublicDodaysAction}
+ */
+export function setPublicDodaysActionCreator(
+  dodays: Doday[]
+): SetPublicDodaysAction {
+  return {
+    type: ActionConstants.SET_PUBLIC_DODAYS,
     payload: dodays,
   };
 }
@@ -305,6 +334,15 @@ export interface SetDodaysForDate extends AnyAction {
   payload: Doday[];
 }
 
+export interface FetchPublicDodaysAction extends AnyAction {
+  type: ActionConstants.FETCH_PUBLIC_DODAYS;
+}
+
+export interface SetPublicDodaysAction extends AnyAction {
+  type: ActionConstants.SET_PUBLIC_DODAYS;
+  payload: Doday[];
+}
+
 export interface SetDodaysBadgeForToday extends AnyAction {
   type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
   payload: number;
@@ -371,6 +409,8 @@ export type ActionTypes =
   | ChangeDodayAppDateAction
   | FetchDodayForDate
   | SetDodaysForDate
+  | FetchPublicDodaysAction
+  | SetPublicDodaysAction
   | SetDodaysBadgeForToday
   | SetGoalsAction
   | ToggleDodayAction

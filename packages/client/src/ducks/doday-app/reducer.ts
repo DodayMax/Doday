@@ -9,6 +9,7 @@ export const initialState: DodayAppState = {
   navStack: [],
   dodays: [],
   goals: [],
+  public: [],
 };
 
 export default (
@@ -50,6 +51,11 @@ export default (
       return {
         ...state,
         dodays: action.payload,
+      };
+    case actions.ActionConstants.SET_PUBLIC_DODAYS:
+      return {
+        ...state,
+        public: action.payload,
       };
     case actions.ActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
       return {

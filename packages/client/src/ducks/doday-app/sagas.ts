@@ -19,6 +19,10 @@ import {
   PushToNavigationStackByDIDAction,
   changePath,
   PlanOutAction,
+  FetchPublicDodaysAction,
+  setPublicDodaysActionCreator,
+  ChangePathAction,
+  fetchPublicDodaysActionCreator,
 } from './actions';
 import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
@@ -35,7 +39,7 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
   yield put(setAppLoadingState(true));
   const date: Date = yield select(chosenDate);
   const dodays = yield call(
-    api.dodays.queries.fetchActiveDodaysForDate,
+    api.dodays.queries.fetchActiveDodays,
     date.getTime()
   );
   yield put(
@@ -44,6 +48,18 @@ function* fetchDodayForDateSaga(action: FetchDodayForDate) {
     )
   );
   yield put(setDodaysForDate(dodays));
+  yield put(setAppLoadingState(false));
+}
+
+/**
+ * Fetch public dodays
+ *
+ * @param {FetchPublicDodaysAction} action
+ */
+function* FetchPublicDodaysActionSaga(action: FetchPublicDodaysAction) {
+  yield put(setAppLoadingState(true));
+  const dodays = yield call(api.dodays.queries.fetchPublicDodays);
+  yield put(setPublicDodaysActionCreator(dodays));
   yield put(setAppLoadingState(false));
 }
 
@@ -172,8 +188,33 @@ function* planOutSaga(action: PlanOutAction) {
   yield put(setAppLoadingState(false));
 }
 
+/**
+ * Change doday app path
+ * Fetch appropriate data
+ *
+ * @param {ChangePathAction} action
+ */
+function* changePathSaga(action: ChangePathAction) {
+  yield put(setAppLoadingState(true));
+  switch (action.payload) {
+    case '/':
+      yield put(fetchDodaysForDate());
+      break;
+    case 'goals':
+      yield put(fetchAllGoalsActionCreator());
+      break;
+    case 'public':
+      yield put(fetchPublicDodaysActionCreator());
+      break;
+    default:
+      break;
+  }
+  yield put(setAppLoadingState(false));
+}
+
 export default [
   takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
+  takeLatest(ActionConstants.FETCH_PUBLIC_DODAYS, FetchPublicDodaysActionSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),
   takeLatest(ActionConstants.SET_GOALS, setGoalsSaga),
@@ -184,4 +225,5 @@ export default [
   takeLatest(ActionConstants.REMOVE_DODAY, removeDodaySaga),
   takeLatest(ActionConstants.DELETE_GOAL, deleteGoalSaga),
   takeLatest(ActionConstants.PLAN_OUT, planOutSaga),
+  takeLatest(ActionConstants.CHANGE_PATH, changePathSaga),
 ];

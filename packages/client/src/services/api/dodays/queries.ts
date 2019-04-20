@@ -66,8 +66,19 @@ export const dodayProgressByDID = async (variables: any) => {
   return parseGraphQLResponseProgressToDoday(progress);
 };
 
-export const fetchActiveDodaysForDate = (date: number) => {
-  return fetch(`/api/activeDodaysForDate?date=${String(date)}`, {
+export const fetchActiveDodays = (date: number) => {
+  return fetch(`/api/dodays/active?date=${String(date)}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    return parseAPIResponseDodays(res);
+  });
+};
+
+export const fetchPublicDodays = (date?: number) => {
+  return fetch(`/api/dodays/public`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -84,7 +95,7 @@ export const parseAPIResponseDodays = async (res): Promise<Doday[]> => {
     doday._fields.map((doday: APIResponseDoday) => {
       return {
         ...doday,
-        date: neo4jResponseDateToJSDate(doday.date),
+        date: doday.date && neo4jResponseDateToJSDate(doday.date),
         completedAt:
           doday.completedAt && neo4jResponseDateTimeToJSDate(doday.completedAt),
         tookAt: doday.tookAt && neo4jResponseDateTimeToJSDate(doday.tookAt),
