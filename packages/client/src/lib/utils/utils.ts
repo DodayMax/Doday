@@ -79,7 +79,7 @@ export function isGoal(doday: Doday | Goal): doday is Goal {
   return doday.type === DodayTypes.Goal;
 }
 
-export const firstItem = (arr: any[]) => arr.length && arr[0];
+export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
 
 export const youtubeIDFromURL = (url: string) => {
   const splitted = url.split('v=');

@@ -17,9 +17,8 @@ export const dateInputFromDate = (date: Date) => {
   };
 };
 
-export const dateInputStringFromDate = (date: Date) => {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-};
+export const startDay = (date: Date) => new Date(date.setHours(0, 0, 0, 0));
+export const endDay = (date: Date) => new Date(date.setHours(23, 59, 59, 999));
 
 export const isToday = (date: Date) => {
   const today = new Date();

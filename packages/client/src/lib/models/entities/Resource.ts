@@ -17,3 +17,15 @@ export interface Resource {
   // A canonical URL for the page.
   url?: string;
 }
+
+export interface GraphQLResponseResource {
+  did: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  keywords?: string[];
+  provider?: string;
+  title?: string;
+  type?: string;
+  url?: string;
+}

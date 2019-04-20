@@ -1,6 +1,6 @@
 import { v1 as neo4j } from 'neo4j-driver';
 import { SerializedGoal } from '../models/Goal';
-import { dateInputStringFromDate, isToday } from '../util/date-utils';
+import { isToday } from '../util/date-utils';
 
 export const getAllGoalsQuery = (
   tx: neo4j.Transaction,
@@ -28,7 +28,7 @@ export const createGoalMutation = (
 ) => {
   return tx.run(
     `
-      CREATE (g: Goal { did: $did, type: $type, name: $name, ownerDID: $heroDID, color: $color, startDate: date($startDate), endDate: date($endDate) })
+      CREATE (g: Goal { did: $did, type: $type, name: $name, ownerDID: $heroDID, color: $color, startDate: datetime($startDate), endDate: datetime($endDate) })
       with g
       MATCH (h:Hero {did: $heroDID})
       CREATE (h)-[:GOAL]->(g)
@@ -36,8 +36,8 @@ export const createGoalMutation = (
     {
       ...props.goal,
       heroDID: props.heroDID,
-      startDate: dateInputStringFromDate(new Date(props.goal.startDate)),
-      endDate: dateInputStringFromDate(new Date(props.goal.endDate)),
+      startDate: new Date(props.goal.startDate).toISOString(),
+      endDate: new Date(props.goal.endDate).toISOString(),
     }
   );
 };

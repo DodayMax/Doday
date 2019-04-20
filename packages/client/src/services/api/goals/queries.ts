@@ -30,6 +30,11 @@ export const fetchGoals = async (variables: any) => {
           }
           children(orderBy: completed_asc) {
             did
+            relatedGoal {
+              did
+              name
+              color
+            }
             date {
               year
               month
@@ -108,6 +113,7 @@ export const parseGoalGraphQLResponseGoal = res => {
         ...progress,
         date: dateFromNeo4jDate(progress.date),
         ...firstItem(progress.origin),
+        relatedGoal: firstItem(progress.relatedGoal),
         origin: undefined,
       })),
   }));

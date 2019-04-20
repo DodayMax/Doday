@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
+import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { SerializedGoal } from '@root/lib/models/entities/Goal';
 
 type Neo4jDateTimeInput = {
@@ -93,41 +93,5 @@ export const updateDoday = ({
       'Access-Control-Allow-Origin': 'true',
     },
     body: JSON.stringify(updates),
-  });
-};
-
-/////////////////////////////////////////////////////////////////
-
-/**
- * Toggle Doday by changed prop on DOING relation.
- *
- * @param variables HeroID, DodayID, DateTime, Value
- */
-
-export const toggleDodayOld = (variables: {
-  heroID: string;
-  dodayID: string;
-  date: number;
-  value: boolean;
-}) => {
-  return client.mutate({
-    mutation: gql`
-      mutation toggleDoday(
-        $heroID: ID!
-        $dodayID: ID!
-        $date: Float!
-        $value: Boolean
-      ) {
-        toggleDoday(
-          heroID: $heroID
-          dodayID: $dodayID
-          date: $date
-          value: $value
-        ) {
-          id
-        }
-      }
-    `,
-    variables,
   });
 };

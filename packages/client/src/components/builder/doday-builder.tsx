@@ -71,7 +71,7 @@ export class DodayBuilder extends React.Component<
       date: new Date(),
       isPublic: false,
       dateIsLocked: false,
-      estimateTime: 'P60M',
+      estimateTime: 'PT60M',
     };
   }
 

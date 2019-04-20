@@ -69,10 +69,7 @@ export const planout = async (req: Request, res: Response) => {
     let dodaysToReplan = otherDodays.concat();
     while (dayDuration < 8 * 60 && dodaysToReplan.length) {
       // 8 hours
-      const fitDoday = findDodayToFit(
-        dodaysToReplan,
-        8 * 60 - dayDuration
-      );
+      const fitDoday = findDodayToFit(dodaysToReplan, 8 * 60 - dayDuration);
       if (fitDoday) {
         dodaysToStay.push(fitDoday);
         dodaysToReplan = dodaysToReplan.filter(
@@ -99,6 +96,7 @@ export const planout = async (req: Request, res: Response) => {
   do {
     const dayInfoResponse = await dayInfo(startDate);
     const parsedDayInfo = parseDayInfoResponse(dayInfoResponse);
+    console.log('//////////', parsedDayInfo.otherDodays.length);
     replannedDodays = await fillDay(
       startDate,
       parsedDayInfo.selectedDuration,

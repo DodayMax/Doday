@@ -1,6 +1,6 @@
 import { v1 as neo4j } from 'neo4j-driver';
 import { SerializedDoday } from '../models/Doday';
-import { dateInputStringFromDate, isToday } from '../util/date-utils';
+import { isToday, endDay, startDay } from '../util/date-utils';
 
 export const activeDodaysForDateQuery = (
   tx: neo4j.Transaction,
@@ -12,20 +12,51 @@ export const activeDodaysForDateQuery = (
   return tx.run(
     `
       MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
-      WHERE h.did = $heroDID AND p.date ${
-        isToday(new Date(props.date)) ? '<=' : '='
-      } date($date) AND p.completed = false
+      WHERE h.did = $heroDID AND ${
+        isToday(new Date(props.date))
+          ? 'p.date <= datetime($endDay)'
+          : 'p.date >= datetime($startDay) AND p.date <= datetime($endDay)'
+      } AND p.completed = false
       OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d { .did, .name, .duration, .type, .activityType, .tags, .public, date: p.date, dateIsLocked: p.dateIsLocked, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
+      RETURN d {
+        .did,
+        .name,
+        .duration,
+        .type,
+        .activityType,
+        .tags,
+        .public,
+        date: p.date,
+        dateIsLocked: p.dateIsLocked,
+        completed: p.completed,
+        completedAt: p.completedAt,
+        tookAt: p.tookAt,
+        relatedGoal: { did: g.did, name: g.name, color: g.color }
+      } as Doday
       UNION ALL MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
-      WHERE h.did = $heroDID AND p.completedAt = date($date) AND p.completed = true
+      WHERE h.did = $heroDID AND p.completedAt >= datetime($startDay) AND p.completedAt <= datetime($endDay) AND p.completed = true
       OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d { .did, .name, .duration, .type, .activityType, .tags, .public, date: p.date, dateIsLocked: p.dateIsLocked, completed: p.completed, completedAt: p.completedAt, tookAt: p.tookAt, relatedGoal: { did: g.did, name: g.name, color: g.color } } as Doday
+      RETURN d {
+        .did,
+        .name,
+        .duration,
+        .type,
+        .activityType,
+        .tags,
+        .public,
+        date: p.date,
+        dateIsLocked: p.dateIsLocked,
+        completed: p.completed,
+        completedAt: p.completedAt,
+        tookAt: p.tookAt,
+        relatedGoal: { did: g.did, name: g.name, color: g.color }
+      } as Doday
       ORDER BY p.completed
     `,
     {
       heroDID: props.heroDID,
-      date: dateInputStringFromDate(new Date(props.date)),
+      startDay: startDay(new Date(props.date)).toISOString(),
+      endDay: endDay(new Date(props.date)).toISOString(),
     }
   );
 };
@@ -43,8 +74,8 @@ export const createAndTakeDodayTransaction = (
         props.doday.tags ? ' tags: {tags}' : ''
       } public: {public} })
       CREATE (p:Progress { did: {did}, ${
-        props.doday.date ? 'date: date({date}),' : ''
-      } dateIsLocked: {dateIsLocked}, completed: {completed}, tookAt: {tookAt} })
+        props.doday.date ? 'date: datetime({date}),' : ''
+      } dateIsLocked: {dateIsLocked}, completed: {completed}, tookAt: datetime({tookAt}) })
       ${
         props.doday.resource
           ? `
@@ -73,9 +104,8 @@ export const createAndTakeDodayTransaction = (
       ...props.doday,
       resourceURL: props.doday.resource && props.doday.resource.url,
       heroDID: props.heroDID,
-      date:
-        props.doday.date && dateInputStringFromDate(new Date(props.doday.date)),
-      tookAt: Date.now(),
+      date: props.doday.date && new Date(props.doday.date).toISOString(),
+      tookAt: new Date().toISOString(),
       completed: false,
     }
   );
@@ -92,12 +122,12 @@ export const toggleDodayTransaction = (
     `
       MATCH (p:Progress {did: $did})
       SET p.completed = $value
-      SET p.completedAt = date($date)
+      SET p.completedAt = datetime($date)
     `,
     {
       did: props.did,
       value: props.value,
-      date: dateInputStringFromDate(new Date()),
+      date: new Date().toISOString(),
     }
   );
 };
@@ -173,7 +203,7 @@ export const updateDodayTransaction = (
       `
           : ''
       }
-      ${props.updates.date ? 'SET p.date = date($date)' : ''}
+      ${props.updates.date ? 'SET p.date = datetime($date)' : ''}
       ${
         props.updates.dateIsLocked != null
           ? 'SET p.dateIsLocked = $dateIsLocked'
@@ -183,9 +213,7 @@ export const updateDodayTransaction = (
     {
       heroDID: props.heroDID,
       did: props.did,
-      date:
-        props.updates.date &&
-        dateInputStringFromDate(new Date(props.updates.date)),
+      date: props.updates.date && new Date(props.updates.date).toISOString(),
       dateIsLocked: props.updates.dateIsLocked,
       relatedGoal: props.updates.relatedGoal,
     }
@@ -204,14 +232,12 @@ export const multyUpdateDodaysTransaction = (
     `
       MATCH (p:Progress)-[]-(h:Hero)
       WHERE p.did IN $dids AND h.did = $heroDID
-      ${props.updates.date ? 'SET p.date = date($date)' : ''}
+      ${props.updates.date ? 'SET p.date = datetime($date)' : ''}
     `,
     {
       heroDID: props.heroDID,
       dids: props.dids,
-      date:
-        props.updates.date &&
-        dateInputStringFromDate(new Date(props.updates.date)),
+      date: props.updates.date && new Date(props.updates.date).toISOString(),
     }
   );
 };

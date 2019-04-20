@@ -1,9 +1,13 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { Doday } from '@root/lib/models/entities/Doday';
-import { firstItem, neo4jResponseDateToJSDate } from '@root/lib/utils';
-import { SerializedProgress } from '@root/lib/models/entities/Progress';
-import { parseProgressToDoday } from '@root/lib/utils/api-utils';
+import { Doday, APIResponseDoday } from '@root/lib/models/entities/Doday';
+import {
+  firstItem,
+  neo4jResponseDateToJSDate,
+  neo4jResponseDateTimeToJSDate,
+} from '@root/lib/utils';
+import { parseGraphQLResponseProgressToDoday } from '@root/lib/utils/api-utils';
+import { GraphQLResponseProgress } from '@root/lib/models/entities/Progress';
 
 // Dodays
 
@@ -23,6 +27,7 @@ export const dodayProgressByDID = async (variables: any) => {
           relatedGoal {
             did
             name
+            color
             startDate {
               year
               month
@@ -56,9 +61,9 @@ export const dodayProgressByDID = async (variables: any) => {
     variables,
     fetchPolicy: 'no-cache',
   });
-  const progress: SerializedProgress = firstItem(res.data.Progress);
+  const progress: GraphQLResponseProgress = firstItem(res.data.Progress);
 
-  return parseProgressToDoday(progress);
+  return parseGraphQLResponseProgressToDoday(progress);
 };
 
 export const fetchActiveDodaysForDate = (date: number) => {
@@ -68,17 +73,22 @@ export const fetchActiveDodaysForDate = (date: number) => {
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    return parseDodaysResponse(res);
+    return parseAPIResponseDodays(res);
   });
 };
 
-export const parseDodaysResponse = async (res): Promise<Doday[]> => {
+export const parseAPIResponseDodays = async (res): Promise<Doday[]> => {
   const json = await res.json();
   const dodays = [];
   json.map(doday => {
-    doday._fields.map(doday => {
-      const date = doday.date;
-      doday.date = neo4jResponseDateToJSDate(date);
+    doday._fields.map((doday: APIResponseDoday) => {
+      return {
+        ...doday,
+        date: neo4jResponseDateToJSDate(doday.date),
+        completedAt:
+          doday.completedAt && neo4jResponseDateTimeToJSDate(doday.completedAt),
+        tookAt: doday.tookAt && neo4jResponseDateTimeToJSDate(doday.tookAt),
+      };
     });
     dodays.push(doday._fields[0]);
   });

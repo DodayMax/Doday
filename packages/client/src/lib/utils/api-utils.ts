@@ -1,7 +1,7 @@
-import { SerializedProgress } from '../models/entities/Progress';
 import { dateFromNeo4jDateTime, dateFromNeo4jDate } from './date-utils';
 import { firstItem } from './utils';
 import { Doday } from '../models/entities/Doday';
+import { GraphQLResponseProgress } from '../models/entities/Progress';
 
 export const parseMetadataFromUrl = (url: string) => {
   return fetch(`/api/utils/parse?url=${url}`).then((res: Response) => {
@@ -9,7 +9,9 @@ export const parseMetadataFromUrl = (url: string) => {
   });
 };
 
-export function parseProgressToDoday(progress: SerializedProgress): Doday {
+export function parseGraphQLResponseProgressToDoday(
+  progress: GraphQLResponseProgress
+): Doday {
   const deserializedProgress = {
     ...progress,
     tookAt: progress.tookAt && dateFromNeo4jDateTime(progress.tookAt),

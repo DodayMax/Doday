@@ -1,16 +1,8 @@
 import { Neo4jDateTime, Neo4jDate } from '@lib/common-interfaces';
-import { Neo4jResponseDate } from '../common-interfaces/neo4j';
-
-export const neo4jDateTimeFromDate = (date: Date) => {
-  return {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1,
-    day: date.getDate(),
-    hour: date.getHours(),
-    minute: date.getMinutes(),
-    second: date.getSeconds(),
-  };
-};
+import {
+  Neo4jResponseDate,
+  Neo4jResponseDateTime,
+} from '../common-interfaces/neo4j';
 
 export const dateFromNeo4jDateTime = (datetime: Neo4jDateTime) => {
   const date = new Date();
@@ -33,6 +25,17 @@ export const neo4jDateFromDate = (date: Date) => {
   };
 };
 
+export const neo4jDateTimeFromDate = (date: Date) => {
+  return {
+    year: date.getFullYear(),
+    month: date.getMonth() + 1,
+    day: date.getDate(),
+    hour: date.getHours(),
+    minute: date.getMinutes(),
+    second: date.getSeconds(),
+  };
+};
+
 export const dateFromNeo4jDate = (date: Neo4jDate) => {
   const newDate = new Date();
   newDate.setFullYear(date.year);
@@ -44,6 +47,12 @@ export const dateFromNeo4jDate = (date: Neo4jDate) => {
 
 export const neo4jResponseDateToJSDate = (date: Neo4jResponseDate) =>
   new Date(`${date.year.low}-${date.month.low}-${date.day.low}`);
+
+export const neo4jResponseDateTimeToJSDate = (date: Neo4jResponseDateTime) =>
+  new Date(
+    `${date.year.low}-${date.month.low}-${date.day.low}T${date.hour.low ||
+      0}:${date.minute.low || 0}:${date.second.low || 0}`
+  );
 
 export const dateInputStringFromDate = (date: Date) => {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;

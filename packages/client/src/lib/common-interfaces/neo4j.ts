@@ -33,3 +33,30 @@ export interface Neo4jResponseDate {
     high: number;
   };
 }
+
+export interface Neo4jResponseDateTime {
+  year: {
+    low: number;
+    high: number;
+  };
+  month: {
+    low: number;
+    high: number;
+  };
+  day: {
+    low: number;
+    high: number;
+  };
+  hour: {
+    low: number;
+    high: number;
+  };
+  minute: {
+    low: number;
+    high: number;
+  };
+  second?: {
+    low: number;
+    high: number;
+  };
+}
