@@ -50,8 +50,8 @@ export class GridComponent extends React.Component<
         {loading && (
           <LayoutBlock
             align="flex-center"
-            paddingTop={Space.XSmall}
-            paddingBottom={Space.XSmall}
+            paddingAbove={Space.XSmall}
+            paddingBelow={Space.XSmall}
           >
             <Loader />
           </LayoutBlock>

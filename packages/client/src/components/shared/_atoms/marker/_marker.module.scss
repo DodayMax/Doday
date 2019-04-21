@@ -9,3 +9,9 @@
 .rounded {
   border-radius: $radius-4;
 }
+
+.bordered {
+  border: 1px solid $gray-6;
+  border-radius: $radius-6;
+  padding: 0.2rem;
+}

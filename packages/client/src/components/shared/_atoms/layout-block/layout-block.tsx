@@ -13,6 +13,7 @@ import {
   paddingBelowClassNames,
   paddingLeftClassNames,
   paddingRightClassNames,
+  SpacingProps,
 } from '@lib/common-interfaces';
 
 const styles = require('./_layout-block.module.scss');
@@ -31,27 +32,19 @@ interface LayoutBlockProps {
   left?: string;
   right?: string;
   bottom?: string;
-  spaceAbove?: Space;
-  spaceBelow?: Space;
-  spaceLeft?: Space;
-  spaceRight?: Space;
-  paddingTop?: Space;
-  paddingBottom?: Space;
-  paddingLeft?: Space;
-  paddingRight?: Space;
   insideElementsMargin?: boolean;
   className?: string;
   children?: React.ReactNode;
 }
 
-export const LayoutBlock = (props: LayoutBlockProps) => {
+export const LayoutBlock = (props: LayoutBlockProps & SpacingProps) => {
   const classNames = classnames(
     spaceAboveClassNames[props.spaceAbove!],
     spaceBelowClassNames[props.spaceBelow!],
     spaceLeftClassNames[props.spaceLeft!],
     spaceRightClassNames[props.spaceRight!],
-    paddingAboveClassNames[props.paddingTop!],
-    paddingBelowClassNames[props.paddingBottom!],
+    paddingAboveClassNames[props.paddingAbove!],
+    paddingBelowClassNames[props.paddingBelow!],
     paddingLeftClassNames[props.paddingLeft!],
     paddingRightClassNames[props.paddingRight!],
     {

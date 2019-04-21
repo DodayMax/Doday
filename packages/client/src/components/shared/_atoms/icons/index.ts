@@ -21,5 +21,6 @@ export * from './locked/locked';
 export * from './unlocked/unlocked';
 export * from './duration/duration';
 export * from './flag/flag';
+export * from './score/score';
 
 export * from './names';

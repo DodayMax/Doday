@@ -18,7 +18,7 @@ import {
   PopFromNavigationStackAction,
   FetchDodayForDate,
 } from '@root/ducks/doday-app/actions';
-import { DodayCell, GoalCell } from '../shared/_organisms/grid';
+import { DodayCell, GoalCell, PublicCell } from '../shared/_organisms/grid';
 import { RouteComponentProps } from 'react-router';
 import { Doday } from '@root/lib/models/entities/Doday';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
@@ -60,6 +60,7 @@ export class DodayAppComponent extends React.Component<
 > {
   componentDidMount() {
     this.props.fetchDodaysForDate();
+    this.props.fetchAllGoalsActionCreator();
   }
 
   getDodaysToRender = () => {
@@ -88,6 +89,16 @@ export class DodayAppComponent extends React.Component<
   renderCellByDodayType = (item: Doday | Goal, index) => {
     switch (item.type) {
       case DodayTypes.Doday:
+        if (item.public) {
+          return (
+            <PublicCell
+              doday={item}
+              key={cuid()}
+              onClick={this.handleDodayCellClick}
+              onComplete={(doday: Doday) => this.props.toggleDoday(doday)}
+            />
+          );
+        }
         return (
           <DodayCell
             doday={item}

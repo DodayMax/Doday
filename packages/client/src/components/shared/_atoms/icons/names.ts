@@ -22,4 +22,5 @@ export type IconNames =
   | 'Locked'
   | 'Unlocked'
   | 'Duration'
-  | 'Flag';
+  | 'Flag'
+  | 'Score';

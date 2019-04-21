@@ -197,12 +197,6 @@ function* planOutSaga(action: PlanOutAction) {
 function* changePathSaga(action: ChangePathAction) {
   yield put(setAppLoadingState(true));
   switch (action.payload) {
-    case '/':
-      yield put(fetchDodaysForDate());
-      break;
-    case 'goals':
-      yield put(fetchAllGoalsActionCreator());
-      break;
     case 'public':
       yield put(fetchPublicDodaysActionCreator());
       break;

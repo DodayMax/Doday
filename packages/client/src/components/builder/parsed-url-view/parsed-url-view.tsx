@@ -25,10 +25,10 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
           <LayoutBlock
             align="flex-center"
             valign="vflex-center"
-            paddingBottom={Space.Small}
+            paddingBelow={Space.Small}
             paddingLeft={Space.Small}
             paddingRight={Space.Small}
-            paddingTop={Space.Small}
+            paddingAbove={Space.Small}
           >
             <Icons.InlineLoader />
           </LayoutBlock>

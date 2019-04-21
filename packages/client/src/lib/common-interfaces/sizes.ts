@@ -129,3 +129,14 @@ export const paddingRightClassNames: { [K in Space]: string } = {
   [Space.XLarge]: utils['padding-xl-right'],
   [Space.XXLarge]: utils['padding-xxl-right'],
 };
+
+export interface SpacingProps {
+  spaceAbove?: Space;
+  spaceBelow?: Space;
+  spaceLeft?: Space;
+  spaceRight?: Space;
+  paddingAbove?: Space;
+  paddingBelow?: Space;
+  paddingLeft?: Space;
+  paddingRight?: Space;
+}

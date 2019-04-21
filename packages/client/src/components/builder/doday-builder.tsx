@@ -235,8 +235,8 @@ export class DodayBuilder extends React.Component<
         />
         <LayoutBlock
           childFlex
-          paddingTop={Space.Small}
-          paddingBottom={Space.Small}
+          paddingAbove={Space.Small}
+          paddingBelow={Space.Small}
         >
           <LayoutBlock childFlex flex={'1'}>
             <Select
@@ -280,7 +280,7 @@ export class DodayBuilder extends React.Component<
             step={10}
           />
         </LayoutBlock>
-        <LayoutBlock childFlex flex={'1'} paddingBottom={Space.Small}>
+        <LayoutBlock childFlex flex={'1'} paddingBelow={Space.Small}>
           <div>
             <AsyncCreatableSelect
               value={this.state.selectedTags}

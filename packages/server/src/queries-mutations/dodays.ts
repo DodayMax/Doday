@@ -108,8 +108,8 @@ export const createDodayTransaction = (
         type: {type},
         name: {name},
         duration: {duration},
-        ${props.doday.tags ? ' tags: {tags}' : ''}
-        public: {public}
+        ${props.doday.tags ? ' tags: {tags},' : ''}
+        public: {public},
         ownerDID: {heroDID}
       })
       ${
@@ -149,8 +149,8 @@ export const createAndTakeDodayTransaction = (
         type: {type},
         name: {name},
         duration: {duration}, 
-        ${props.doday.tags ? ' tags: {tags}' : ''}
-        public: {public}
+        ${props.doday.tags ? ' tags: {tags},' : ''}
+        public: {public},
         ownerDID: {heroDID}
       })
       CREATE (p:Progress {

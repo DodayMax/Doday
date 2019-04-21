@@ -83,8 +83,8 @@ export class GoalBuilder extends React.Component<
         <LayoutBlock
           align="space-between"
           valign="vflex-center"
-          paddingTop={Space.Small}
-          paddingBottom={Space.Small}
+          paddingAbove={Space.Small}
+          paddingBelow={Space.Small}
         >
           <CustomDatePicker
             icon={<Icons.Flag />}
