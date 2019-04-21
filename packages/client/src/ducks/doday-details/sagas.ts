@@ -21,6 +21,18 @@ import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
  * @param {FetchSelectedDodayAction} action
  */
 function* fetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
+  const doday = yield call(api.dodays.queries.getDodayByDID, {
+    did: action.payload,
+  });
+  yield put(setSelectedDodayActionCreator(doday));
+}
+
+/**
+ * Fetch selected doday saga
+ *
+ * @param {FetchSelectedDodayAction} action
+ */
+function* fetchSelectedDodayWithProgressSaga(action: FetchSelectedDodayAction) {
   const progress = yield call(api.dodays.queries.dodayProgressByDID, {
     did: action.payload,
   });
@@ -59,6 +71,10 @@ function* setUpdatesAndDirtyStatusSaga(action: RequestForSetUpdatesAction) {
 
 export default [
   takeLatest(ActionConstants.FETCH_SELECTED_DODAY, fetchSelectedDodaySaga),
+  takeLatest(
+    ActionConstants.FETCH_SELECTED_DODAY_WITH_PROGRESS,
+    fetchSelectedDodayWithProgressSaga
+  ),
   takeLatest(ActionConstants.FETCH_SELECTED_GOAL, fetchSelectedGoalSaga),
   takeLatest(
     ActionConstants.REQUEST_FOR_SET_UPDATES,

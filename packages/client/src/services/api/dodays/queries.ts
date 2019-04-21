@@ -1,6 +1,10 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { Doday, APIResponseDoday } from '@root/lib/models/entities/Doday';
+import {
+  Doday,
+  APIResponseDoday,
+  GraphQLResponseDoday,
+} from '@root/lib/models/entities/Doday';
 import {
   firstItem,
   neo4jResponseDateToJSDate,
@@ -64,6 +68,49 @@ export const dodayProgressByDID = async (variables: any) => {
   const progress: GraphQLResponseProgress = firstItem(res.data.Progress);
 
   return parseGraphQLResponseProgressToDoday(progress);
+};
+
+export const getDodayByDID = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Doday($did: String) {
+        Doday(did: $did) {
+          did
+          name
+          activityType
+          type
+          duration
+          public
+          resource {
+            description
+            image
+            provider
+            url
+          }
+          doing {
+            did
+            displayName
+          }
+          done {
+            did
+            displayName
+          }
+          owner {
+            did
+            displayName
+          }
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  const doday: GraphQLResponseDoday = firstItem(res.data.Doday);
+  if (doday.resource.length) {
+    doday.resource = firstItem(doday.resource);
+  }
+  console.log(doday);
+  return doday;
 };
 
 export const fetchActiveDodays = (date: number) => {

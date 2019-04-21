@@ -9,6 +9,7 @@ import {
   deleteDodayTransaction,
   removeDodayTransaction,
   updateDodayTransaction,
+  getDodayByDIDQuery,
 } from '../queries-mutations/dodays';
 
 export const getActiveDodays = (req: Request, res: Response) => {
@@ -39,6 +40,23 @@ export const getPublicDodays = (req: Request, res: Response) => {
       publicDodaysQuery(tx, {
         heroDID: req.user.did,
       })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const getDodayByDID = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  session
+    .readTransaction(tx =>
+      getDodayByDIDQuery(tx, { heroDID: req.user.did, did: req.params.did })
     )
     .then(result => {
       session.close();

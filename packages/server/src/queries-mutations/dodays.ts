@@ -195,6 +195,25 @@ export const createAndTakeDodayTransaction = (
   );
 };
 
+export const getDodayByDIDQuery = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    did: string;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (d:Doday {did: $did})
+      RETURN d
+    `,
+    {
+      heroDID: props.heroDID,
+      did: props.did,
+    }
+  );
+};
+
 export const toggleDodayTransaction = (
   tx: neo4j.Transaction,
   props: {

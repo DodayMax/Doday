@@ -13,7 +13,7 @@ const css = require('./public-cell.module.scss');
 interface PublicCellProps {
   doday: Doday;
   active?: boolean;
-  onClick?: (route: string, did: string) => void;
+  onClick?: (route: string, doday: Doday) => void;
   onComplete?: (doday: Doday) => AnyAction;
 }
 
@@ -32,7 +32,7 @@ export const PublicCell: React.SFC<PublicCellProps> = ({
     <li
       className={classNames}
       key={doday.did}
-      onClick={() => onClick && onClick(`/dodays/${doday.did}`, doday.did)}
+      onClick={() => onClick && onClick(`/dodays/${doday.did}`, doday)}
     >
       <LayoutBlock
         spaceAbove={Space.XSmall}

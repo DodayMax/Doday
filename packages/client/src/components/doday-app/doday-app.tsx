@@ -51,6 +51,9 @@ interface PropsFromConnect {
   fetchDodaysForDate: () => FetchDodayForDate;
   fetchAllGoalsActionCreator: () => FetchAllGoalsAction;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
+  fetchSelectedDodayWithProgressActionCreator: (
+    did: string
+  ) => FetchSelectedDodayAction;
   toggleDoday: (doday: Doday) => ToggleDodayAction;
   planOutActionCreator: (date: number) => PlanOutAction;
 }
@@ -67,9 +70,15 @@ export class DodayAppComponent extends React.Component<
     return this.props.dodays || [];
   };
 
-  handleDodayCellClick = (route: string, did: string) => {
+  handleDodayCellClick = (route: string, doday: Doday) => {
     this.props.history.push(route);
-    this.props.fetchSelectedDodayActionCreator(did);
+    if (this.props.path === 'public') {
+      // fetch public doday without progress node
+      this.props.fetchSelectedDodayActionCreator(doday.did);
+    } else {
+      // fetch private doday starts with progress node
+      this.props.fetchSelectedDodayWithProgressActionCreator(doday.did);
+    }
   };
 
   getGoalsToRender = () => {
