@@ -1,5 +1,5 @@
 import { v1 as neo4j } from 'neo4j-driver';
-import { isToday, endDay } from '../util/date-utils';
+import { isToday, endDay, startDay } from '../util/date-utils';
 
 export const getDayInfoQuery = (
   tx: neo4j.Transaction,
@@ -12,15 +12,23 @@ export const getDayInfoQuery = (
     `
       MATCH (h:Hero)-[]-(p:Progress)-[]-(d:Doday)
       WHERE h.did = $heroDID
-      AND p.date ${isToday(new Date(props.date)) ? '<=' : '='} datetime($date)
+      AND ${
+        isToday(new Date(props.date))
+          ? 'p.date <= datetime($endDay)'
+          : 'p.date >= datetime($startDay) AND p.date <= datetime($endDay)'
+      } 
       AND p.completed = false
-      AND p.dateIsLocked in CASE WHEN p.date >= datetime($date) THEN [false] ELSE [true, false] END
+      AND p.dateIsLocked in CASE WHEN p.date >= datetime($startDay) THEN [false] ELSE [true, false] END
 
       WITH  collect(d) as otherDodays
 
       OPTIONAL MATCH (h:Hero)-[]-(p:Progress)-[]-(d:Doday)
       WHERE h.did = $heroDID
-      AND p.date ${isToday(new Date(props.date)) ? '<=' : '='} datetime($date)
+      AND ${
+        isToday(new Date(props.date))
+          ? 'p.date <= datetime($endDay)'
+          : 'p.date >= datetime($startDay) AND p.date <= datetime($endDay)'
+      } 
       AND p.completed = false
       AND p.dateIsLocked = true
 
@@ -30,7 +38,8 @@ export const getDayInfoQuery = (
     `,
     {
       heroDID: props.heroDID,
-      date: endDay(new Date(props.date)).toISOString(),
+      startDay: startDay(new Date(props.date)).toISOString(),
+      endDay: endDay(new Date(props.date)).toISOString(),
     }
   );
 };
