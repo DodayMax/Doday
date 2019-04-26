@@ -83,3 +83,8 @@ a {
   align-items: center;
   padding: 0 $space-xs;
 }
+
+.well {
+  background-color: $gray-2;
+  border-radius: $radius-6;
+}

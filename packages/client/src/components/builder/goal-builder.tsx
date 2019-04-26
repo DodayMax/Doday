@@ -45,6 +45,7 @@ export class GoalBuilder extends React.Component<
   handleCreateGoal = () => {
     this.props.createGoalActionCreator({
       did: cuid(),
+      public: false,
       type: DodayTypes.Goal,
       name: this.state.goalName,
       ownerDID: this.props.ownerDID,

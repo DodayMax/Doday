@@ -34,12 +34,7 @@ export const PublicCell: React.SFC<PublicCellProps> = ({
       key={doday.did}
       onClick={() => onClick && onClick(`/dodays/${doday.did}`, doday)}
     >
-      <LayoutBlock
-        spaceAbove={Space.XSmall}
-        spaceBelow={Space.XSmall}
-        flex="1"
-        direction="column"
-      >
+      <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
         <Text
           spaceLeft={Space.Small}
           wordwrap
@@ -63,6 +58,8 @@ export const PublicCell: React.SFC<PublicCellProps> = ({
           spaceAbove={Space.XSmall}
           paddingLeft={Space.XSmall}
           paddingRight={Space.XSmall}
+          paddingAbove={Space.XXSmall}
+          paddingBelow={Space.XXSmall}
           align="space-between"
         >
           <Marker

@@ -13,11 +13,9 @@ import {
   setActivityTypeActionCreator,
   createGoalActionCreator,
   selectGoalActionCreator,
+  takeDodayActionCreator,
 } from './actions';
 import { Activity } from '@root/lib/common-interfaces';
-import { SerializedDoday } from '@root/lib/models/entities/Doday';
-import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
 import {
   serializedDoday,
   serializedGoal,
@@ -48,6 +46,16 @@ describe('builder duck', () => {
         payload: serializedDoday,
       };
       expect(createAndTakeDoday(serializedDoday)).toEqual(expectedActionObject);
+    });
+
+    it('take doday action creator', () => {
+      const expectedActionObject = {
+        type: ActionConstants.TAKE_DODAY,
+        payload: serializedDoday.did,
+      };
+      expect(takeDodayActionCreator(serializedDoday.did)).toEqual(
+        expectedActionObject
+      );
     });
 
     it('create doday and progress action creator', () => {

@@ -30,6 +30,8 @@ import { LayoutBlock } from '../shared/_atoms/layout-block';
 import { Text } from '../shared/_atoms/typography';
 import { Button, ButtonSize } from '../shared/_atoms/button';
 import { durationToMinutes } from '@root/lib/utils';
+import { Activity } from '@root/lib/models/entities/Activity';
+import { Progress } from '@root/lib/models/entities/Progress';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -40,7 +42,7 @@ interface DodayAppProps {
 
 interface PropsFromConnect {
   loading: boolean;
-  dodays: (Doday | Goal)[];
+  dodays: Progress[];
   publicDodays: Doday[];
   goals: Goal[];
   chosenDate?: Date;
@@ -72,13 +74,6 @@ export class DodayAppComponent extends React.Component<
 
   handleDodayCellClick = (route: string, doday: Doday) => {
     this.props.history.push(route);
-    if (this.props.path === 'public') {
-      // fetch public doday without progress node
-      this.props.fetchSelectedDodayActionCreator(doday.did);
-    } else {
-      // fetch private doday starts with progress node
-      this.props.fetchSelectedDodayWithProgressActionCreator(doday.did);
-    }
   };
 
   getGoalsToRender = () => {
@@ -97,7 +92,7 @@ export class DodayAppComponent extends React.Component<
 
   renderCellByDodayType = (item: Doday | Goal, index) => {
     switch (item.type) {
-      case DodayTypes.Doday:
+      case DodayTypes.Activity:
         if (item.public) {
           return (
             <PublicCell
@@ -119,7 +114,7 @@ export class DodayAppComponent extends React.Component<
       case DodayTypes.Goal:
         return (
           <GoalCell
-            goal={item}
+            goal={item as Goal}
             key={cuid()}
             onClick={this.handleGoalCellClick}
           />
@@ -145,8 +140,11 @@ export class DodayAppComponent extends React.Component<
     } = this.props;
 
     const totalDurationOfTheDay = this.getDodaysToRender()
-      .filter(doday => doday.type === DodayTypes.Doday && !doday.completed)
-      .map((a: Doday) => durationToMinutes(a.duration))
+      .filter(
+        progress =>
+          progress.doday.type === DodayTypes.Activity && !progress.completed
+      )
+      .map((a: Progress) => durationToMinutes(a.doday.duration))
       .reduce((a, b) => a + b, 0);
 
     switch (path) {

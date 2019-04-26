@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import * as queryString from 'query-string';
 import { actions as builderActions } from '@ducks/builder';
-import { Activity } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import {
   FetchActivityTypesAction,
@@ -25,6 +24,7 @@ import { Goal, SerializedGoal } from '@root/lib/models/entities/Goal';
 import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
 import { GoalBuilder } from './goal-builder';
 import { Pageflow, PageWrapperChildContext } from '../pageflow';
+import { ActivityTypes } from '@root/lib/common-interfaces';
 
 interface BuilderProps {}
 
@@ -38,7 +38,7 @@ interface PropsFromConnect {
   ownerDID?: string;
   goals: Goal[];
   selectedGoal?: Goal;
-  activityType: Activity;
+  activityType: ActivityTypes;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
   loading?: boolean;
@@ -111,7 +111,7 @@ export class Builder extends React.Component<
 
     const queryParams = queryString.parse(location.search);
 
-    if (Number(queryParams.type) === DodayTypes.Doday) {
+    if (Number(queryParams.type) === DodayTypes.Activity) {
       return (
         <DodayBuilder
           goals={goals}
@@ -125,6 +125,7 @@ export class Builder extends React.Component<
           parseUrlMetadataActionCreator={parseUrlMetadataActionCreator}
           clearParsedMetadataActionCreator={clearParsedMetadataActionCreator}
           activityType={activityType}
+          ownerDID={ownerDID}
         />
       );
     } else if (Number(queryParams.type) === DodayTypes.Goal) {

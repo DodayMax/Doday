@@ -14,6 +14,7 @@ export enum ActionConstants {
   PUSH_TO_NAV_STACK_BY_DID = '[doday-app] PUSH_TO_NAV_STACK_BY_DID',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   SET_NAV_STACK = '[doday-app] SET_NAV_STACK',
+  CLEAR_NAV_STACK = '[doday-app] CLEAR_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
   FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
   FETCH_PUBLIC_DODAYS = '[doday-app] FETCH_PUBLIC_DODAYS',
@@ -62,6 +63,18 @@ export function setToNavStackActionCreator(goals: Goal[]): SetNavStackAction {
   return {
     type: ActionConstants.SET_NAV_STACK,
     payload: goals,
+  };
+}
+
+/**
+ * Clear nav stack
+ *
+ * @export
+ * @returns {ClearNavStackAction}
+ */
+export function clearNavStackActionCreator(): ClearNavStackAction {
+  return {
+    type: ActionConstants.CLEAR_NAV_STACK,
   };
 }
 
@@ -385,6 +398,10 @@ export interface SetNavStackAction extends AnyAction {
   payload: Goal[];
 }
 
+export interface ClearNavStackAction extends AnyAction {
+  type: ActionConstants.CLEAR_NAV_STACK;
+}
+
 export interface DeleteGoalAction extends AnyAction {
   type: ActionConstants.DELETE_GOAL;
   payload: string;
@@ -406,6 +423,7 @@ export type ActionTypes =
   | PushToNavigationStackByDIDAction
   | PopFromNavigationStackAction
   | SetNavStackAction
+  | ClearNavStackAction
   | ChangeDodayAppDateAction
   | FetchDodayForDate
   | SetDodaysForDate

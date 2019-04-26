@@ -10,7 +10,10 @@ import { DodayAppPaths, DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import { Goal } from '@root/lib/models/entities/Goal';
-import { PushToNavigationStackByDIDAction } from '@root/ducks/doday-app/actions';
+import {
+  PushToNavigationStackByDIDAction,
+  ClearNavStackAction,
+} from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 
@@ -29,6 +32,7 @@ interface PropsFromConnect {
   pushToNavStackByDIDActionCreator?: (
     did: string
   ) => PushToNavigationStackByDIDAction;
+  clearNavStackActionCreator?: () => ClearNavStackAction;
 }
 
 interface Actions {
@@ -118,10 +122,13 @@ export class DrawerComponent extends React.Component<
     }
   };
 
-  handleMenuClick = (item, index) => {
+  handleMenuClick = (item: DrawerMenuItem, index: number) => {
     const action = this.props[item.action];
     if (action) {
       action(item.path);
+      if (item.path === 'goals') {
+        this.props.clearNavStackActionCreator();
+      }
     }
     this.setState({ activeIndex: index });
   };

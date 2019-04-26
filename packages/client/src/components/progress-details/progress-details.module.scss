@@ -21,7 +21,3 @@
     border: 1px dashed $gray-4;
   }
 }
-
-.well {
-  composes: well from '@styles/_common.scss';
-}

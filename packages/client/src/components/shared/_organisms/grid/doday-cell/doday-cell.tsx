@@ -33,7 +33,7 @@ export const DodayCell: React.SFC<DodayCellProps> = ({
     <li
       className={classNames}
       key={doday.did}
-      onClick={() => onClick && onClick(`/dodays/${doday.did}`, doday)}
+      onClick={() => onClick && onClick(`/progress/${doday.did}`, doday)}
     >
       {
         <Checkbox

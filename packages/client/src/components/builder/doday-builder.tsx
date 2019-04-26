@@ -19,7 +19,7 @@ import {
   TypographySize,
   TypographyColor,
   Size,
-  Activity,
+  ActivityTypes,
   Space,
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
@@ -44,7 +44,8 @@ interface DodayBuilderProps {
   parsedMetadata?: any;
   goals: Goal[];
   selectedGoal?: Goal;
-  activityType: Activity;
+  activityType: ActivityTypes;
+  ownerDID: string;
   createDodayActionCreator: (doday: SerializedDoday) => CreateDodayAction;
   createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
   selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
@@ -128,7 +129,12 @@ export class DodayBuilder extends React.Component<
   };
 
   handleCreateDoday = () => {
-    const { parsedMetadata, activityType = 'do', selectedGoal } = this.props;
+    const {
+      parsedMetadata,
+      activityType = 'do',
+      selectedGoal,
+      ownerDID,
+    } = this.props;
 
     const resource = parsedMetadata && {
       ...parsedMetadata,
@@ -138,7 +144,7 @@ export class DodayBuilder extends React.Component<
     const newDoday = {
       did: cuid(),
       activityType,
-      type: DodayTypes.Doday,
+      type: DodayTypes.Activity,
       duration: this.state.estimateTime,
       name: this.state.dodayName || parsedMetadata.title,
       tags:
@@ -149,6 +155,7 @@ export class DodayBuilder extends React.Component<
       resource: resource,
       public: this.state.isPublic,
       relatedGoal: selectedGoal && selectedGoal.did,
+      ownerDID,
     };
 
     if (this.state.isPublic) {

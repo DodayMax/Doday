@@ -195,6 +195,38 @@ export const createAndTakeDodayTransaction = (
   );
 };
 
+export const takeDodayTransaction = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    did: string;
+    date: number;
+    dateIsLocked: boolean;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (d:Doday { did: $did })
+      MATCH (h:Hero { did: $heroDID })
+      CREATE (p:Progress {
+        did: $did,
+        ${props.date ? 'date: datetime($date),' : ''}
+        dateIsLocked: $dateIsLocked,
+        completed: false,
+        tookAt: datetime($tookAt)
+      })
+      CREATE (h)-[:DOING]->(p)
+      CREATE (p)-[:ORIGIN]->(d)
+    `,
+    {
+      did: props.did,
+      heroDID: props.heroDID,
+      date: new Date(props.date).toISOString(),
+      tookAt: new Date().toISOString(),
+    }
+  );
+};
+
 export const getDodayByDIDQuery = (
   tx: neo4j.Transaction,
   props: {

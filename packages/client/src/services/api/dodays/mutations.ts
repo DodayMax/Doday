@@ -31,6 +31,16 @@ export const createDodayNode = async (doday: SerializedDoday) => {
   });
 };
 
+export const takeDoday = async (did: string) => {
+  return fetch(`/api/dodays/take/${did}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'true',
+    },
+  });
+};
+
 export const createAndTakeDodayNode = async (doday: SerializedDoday) => {
   return fetch('/api/dodays', {
     method: 'POST',

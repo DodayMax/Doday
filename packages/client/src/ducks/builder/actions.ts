@@ -2,11 +2,13 @@ import { AnyAction } from 'redux';
 import { Activity } from '@root/lib/common-interfaces';
 import { SerializedDoday } from '@root/lib/models/entities/Doday';
 import { SerializedGoal, Goal } from '@root/lib/models/entities/Goal';
+import { SerializedProgress } from '@root/lib/models/entities/Progress';
 
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
   SET_ACTIVITY_TYPE = '[builder] SET_ACTIVITY_TYPE',
   CREATE_DODAY = '[builder] CREATE_DODAY',
+  TAKE_DODAY = '[builder] TAKE_DODAY',
   CREATE_AND_TAKE_DODAY = '[builder] CREATE_AND_TAKE_DODAY',
   CREATE_GOAL = '[builder] CREATE_GOAL',
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
@@ -38,11 +40,15 @@ export function fetchActivityTypes(): FetchActivityTypesAction {
  * @returns {CreateAndTakeDodayAction}
  */
 export function createAndTakeDoday(
-  doday: SerializedDoday
+  doday: SerializedDoday,
+  progress: SerializedProgress
 ): CreateAndTakeDodayAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_DODAY,
-    payload: doday,
+    payload: {
+      doday,
+      progress,
+    },
   };
 }
 
@@ -58,6 +64,22 @@ export function createDodayActionCreator(
   return {
     type: ActionConstants.CREATE_DODAY,
     payload: doday,
+  };
+}
+
+/**
+ * Take created(public or my own) doday, create progress
+ * node and DOING, ORIGIN relations
+ *
+ * @export
+ * @returns {TakeDodayAction}
+ */
+export function takeDodayActionCreator(
+  progress: Partial<SerializedProgress>
+): TakeDodayAction {
+  return {
+    type: ActionConstants.TAKE_DODAY,
+    payload: progress,
   };
 }
 
@@ -221,9 +243,17 @@ export interface CreateDodayAction extends AnyAction {
   payload: SerializedDoday;
 }
 
+export interface TakeDodayAction extends AnyAction {
+  type: ActionConstants.TAKE_DODAY;
+  payload: Partial<SerializedProgress>;
+}
+
 export interface CreateAndTakeDodayAction extends AnyAction {
   type: ActionConstants.CREATE_AND_TAKE_DODAY;
-  payload: SerializedDoday;
+  payload: {
+    doday: SerializedDoday;
+    progress: SerializedProgress;
+  };
 }
 
 export interface CreateGoalAction extends AnyAction {
@@ -276,6 +306,7 @@ export type ActionTypes =
   | FetchActivityTypesAction
   | SetActivityTypeAction
   | CreateAndTakeDodayAction
+  | TakeDodayAction
   | SetBuilderLoadingStateAction
   | SetBuilderSuccessFlagAction
   | ParseUrlMetadataAction

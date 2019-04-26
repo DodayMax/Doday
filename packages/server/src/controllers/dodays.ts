@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import {
   createDodayTransaction,
   createAndTakeDodayTransaction,
+  takeDodayTransaction,
   toggleDodayTransaction,
   activeDodaysQuery,
   publicDodaysQuery,
@@ -120,6 +121,30 @@ export const toggleDoday = (req: Request, res: Response) => {
   session
     .writeTransaction(tx =>
       toggleDodayTransaction(tx, { did: req.params.did, value: body.value })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send({ success: true });
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const takeDoday = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  const body = req.body as any;
+
+  session
+    .writeTransaction(tx =>
+      takeDodayTransaction(tx, {
+        heroDID: req.user.did,
+        did: req.params.did,
+        date: body.date,
+        dateIsLocked: body.dateIsLocked,
+      })
     )
     .then(result => {
       session.close();

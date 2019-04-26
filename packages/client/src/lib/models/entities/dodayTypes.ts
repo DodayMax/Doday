@@ -1,4 +1,5 @@
 export enum DodayTypes {
-  Doday,
+  Activity,
   Goal,
+  Path,
 }

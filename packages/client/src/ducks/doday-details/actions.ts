@@ -5,7 +5,7 @@ import { Goal } from '@root/lib/models/entities/Goal';
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
   FETCH_SELECTED_DODAY = '[doday-details] FETCH_SELECTED_DODAY',
-  FETCH_SELECTED_DODAY_WITH_PROGRESS = '[doday-details] FETCH_SELECTED_DODAY_WITH_PROGRESS',
+  FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
   FETCH_SELECTED_GOAL = '[doday-details] FETCH_SELECTED_GOAL',
   SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
   SET_SELECTED_GOAL = '[doday-details] SET_SELECTED_GOAL',
@@ -51,13 +51,13 @@ export function fetchSelectedDodayActionCreator(
  * Select doday with progress node and show details page
  *
  * @export
- * @returns {FetchSelectedDodayWithProgressAction}
+ * @returns {FetchSelectedProgressAction}
  */
-export function fetchSelectedDodayWithProgressActionCreator(
+export function fetchSelectedProgressActionCreator(
   did: string
-): FetchSelectedDodayWithProgressAction {
+): FetchSelectedProgressAction {
   return {
-    type: ActionConstants.FETCH_SELECTED_DODAY,
+    type: ActionConstants.FETCH_SELECTED_PROGRESS,
     payload: did,
   };
 }
@@ -212,8 +212,8 @@ export interface FetchSelectedDodayAction extends AnyAction {
   payload: string;
 }
 
-export interface FetchSelectedDodayWithProgressAction extends AnyAction {
-  type: ActionConstants.FETCH_SELECTED_DODAY;
+export interface FetchSelectedProgressAction extends AnyAction {
+  type: ActionConstants.FETCH_SELECTED_PROGRESS;
   payload: string;
 }
 
@@ -270,7 +270,7 @@ export interface ClearDirtyStuffAction extends AnyAction {
 export type ActionTypes =
   | SetDodayDetailsLoadingStateAction
   | FetchSelectedDodayAction
-  | FetchSelectedDodayWithProgressAction
+  | FetchSelectedProgressAction
   | FetchSelectedGoalAction
   | SetSelectedDodayAction
   | SetSelectedGoalAction

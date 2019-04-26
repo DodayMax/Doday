@@ -47,6 +47,11 @@ export default (
         ...state,
         navStack: action.payload,
       };
+    case actions.ActionConstants.CLEAR_NAV_STACK:
+      return {
+        ...state,
+        navStack: [],
+      };
     case actions.ActionConstants.SET_DODAYS_FOR_DATE:
       return {
         ...state,

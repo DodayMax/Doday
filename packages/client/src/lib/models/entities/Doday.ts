@@ -1,85 +1,61 @@
-import { Hero, GraphQLResponseHero } from './Hero';
+import { Hero } from './Hero';
 import { Tag } from './Tag';
 import { DodayTypes } from './dodayTypes';
-import { Resource, GraphQLResponseResource } from './Resource';
-import {
-  Activity,
-  Neo4jResponseDate,
-  Neo4jResponseDateTime,
-} from '@root/lib/common-interfaces';
-import { Goal } from './Goal';
+import { Neo4jDateTime } from '@root/lib/common-interfaces';
 
+/** Main abstract interface */
 export interface Doday {
+  /** Doday inner ID */
   did: string;
-  activityType: Activity;
-  type: DodayTypes.Doday;
+  /** Doday type */
+  type: DodayTypes;
+  /** Doday name */
   name: string;
-  duration: string;
+  /** Public or private doday */
   public: boolean;
-  // Computed props by relations and from Progress node
-  resource?: Resource;
-  owner?: Hero;
+  /** [:CREATE] relation */
+  owner: Hero;
+  /** Owner DID for graphQL queries */
+  ownerDID: string;
+  /** Datetime when doday was created */
+  created: Date;
+  /** Description */
+  description?: string;
+  /** Preview image url */
+  image?: string;
+  /** Duration of the doday */
+  duration?: string;
+  /** CYPHER query for Heroes with active Progress node */
   doing?: Hero[];
+  /** CYPHER query for Heroes with completed Progress node */
   done?: Hero[];
+  /** Tags related to doday */
   tags?: Tag[];
-  created?: Date;
-  completed?: boolean;
-  tookAt?: Date;
-  date?: Date;
-  dateIsLocked?: boolean;
-  completedAt?: Date;
-  relatedGoal?: Goal;
 }
 
+/** Which data we send to API */
 export interface SerializedDoday {
   did: string;
-  activityType: Activity;
   type: number;
   name: string;
-  duration: string;
   public: boolean;
-  // Computed props by relations and from Progress node
-  resource?: Resource;
+  description?: string;
+  image?: string;
+  duration?: string;
   tags?: string[];
   created?: number;
-  completed?: boolean;
-  tookAt?: number;
-  date?: number;
-  dateIsLocked?: boolean;
-  completedAt?: number;
-  relatedGoal?: string;
-}
-
-export interface APIResponseDoday {
-  did: string;
-  name: string;
-  duration: string;
-  type: number;
-  activityType: Activity;
-  tags?: string[];
-  public: boolean;
-  date: Neo4jResponseDate;
-  dateIsLocked: boolean;
-  completed: boolean;
-  completedAt?: Neo4jResponseDateTime;
-  tookAt: Neo4jResponseDateTime;
-  relatedGoal?: {
-    did: string;
-    name: string;
-    color: string;
-  };
+  ownerDID: string;
 }
 
 export interface GraphQLResponseDoday {
   did: string;
-  activityType: string;
   type: number;
   name: string;
-  duration: string;
   public: boolean;
-  resource: GraphQLResponseResource[];
-  owner: GraphQLResponseHero[];
-  doing: GraphQLResponseHero[];
-  done: GraphQLResponseHero[];
-  created: number;
+  description?: string;
+  image?: string;
+  duration?: string;
+  tags?: string[];
+  created?: Neo4jDateTime;
+  ownerDID: string;
 }

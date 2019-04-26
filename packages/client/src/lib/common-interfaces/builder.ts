@@ -1,1 +1,1 @@
-export type Activity = 'do' | 'read' | 'watch';
+export type ActivityTypes = 'do' | 'read' | 'watch';

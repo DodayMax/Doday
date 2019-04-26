@@ -12,6 +12,7 @@ import {
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
 import { Profile } from '../profile';
+import { ProgressDetails } from '../progress-details';
 
 const css = require('./_dashboard.module.scss');
 
@@ -82,6 +83,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
         <Route exact path="/" render={() => <div>Dashboard</div>} />
         <Route path="/dodays/:did" component={DodayDetails} />
+        <Route path="/progress/:did" component={ProgressDetails} />
         <Route path="/goals/:did" component={GoalDetails} />
         <Route path="/builder" component={Builder} />
         <Route path="/profile" component={Profile} />

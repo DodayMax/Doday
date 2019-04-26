@@ -27,35 +27,38 @@ import {
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
-  isEmptyObject,
 } from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/Resource';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 import {
-  FetchSelectedDodayAction,
   ClearSelectedDodayAction,
   UpdateSelectedDodayAction,
   SetDirtyStatusAction,
   ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
+  FetchSelectedProgressAction,
 } from '@root/ducks/doday-details/actions';
 import Select from 'react-select';
+import { Goal } from '@root/lib/models/entities/Goal';
 import { selectedValueFromGoal } from '../builder/doday-builder';
 import { Pageflow, PageWrapperChildContext } from '../pageflow';
 
-const css = require('./doday-details.module.scss');
+const css = require('./progress-details.module.scss');
 
-interface DodayDetailsProps {}
+interface ProgressDetailsProps {}
 
-interface DodayDetailsState {}
+interface ProgressDetailsState {}
 
 interface PropsFromConnect {
   loading: boolean;
   dirty?: boolean;
   updates?: Partial<SerializedDoday>;
   myDID?: string;
+  goals: Goal[];
   selectedDoday: Doday;
-  fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
+  fetchSelectedProgressActionCreator: (
+    did: string
+  ) => FetchSelectedProgressAction;
   updateDodayActionCreator: (
     did: string,
     updates: Partial<SerializedDoday>
@@ -74,11 +77,11 @@ interface PropsFromConnect {
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
-@Pageflow({ path: '/dodays/:did' })
+@Pageflow({ path: '/progress/:did' })
 @(withRouter as any)
-class DodayDetails extends React.Component<
-  DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>,
-  DodayDetailsState
+class ProgressDetails extends React.Component<
+  ProgressDetailsProps & PropsFromConnect & RouteComponentProps<any>,
+  ProgressDetailsState
 > {
   public static contextTypes = {
     requestClose: PropTypes.func,
@@ -87,9 +90,19 @@ class DodayDetails extends React.Component<
   public context!: PageWrapperChildContext;
 
   componentDidMount() {
-    //fetch selected doday with graphQL
+    // Fetch selected doday with graphQL
     const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
+    this.props.fetchSelectedProgressActionCreator(did);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    const selected = this.props.selectedDoday && this.props.selectedDoday.did;
+    const did = nextProps.match.params.did;
+
+    // Selected new progress item
+    if (selected !== did) this.props.fetchSelectedProgressActionCreator(did);
+
+    return true;
   }
 
   getYouTubeLink = (resource: Resource) => {
@@ -99,6 +112,19 @@ class DodayDetails extends React.Component<
         return `https://www.youtube.com/embed/${youtubeID}`;
       }
     }
+  };
+
+  handleChangeGoal = selected => {
+    const goal =
+      this.props.goals &&
+      this.props.goals.find(goal => goal.did === selected.value);
+    const dirty =
+      goal.did !==
+      (this.props.selectedDoday.relatedGoal &&
+        this.props.selectedDoday.relatedGoal.did);
+    this.props.requestForSetUpdatesActionCreator({
+      relatedGoal: dirty ? goal.did : undefined,
+    });
   };
 
   isOwner = () => {
@@ -116,8 +142,13 @@ class DodayDetails extends React.Component<
       updateDodayActionCreator,
       updateSelectedDodayActionCreator,
       updates,
+      goals,
       loading,
     } = this.props;
+    const goal =
+      updates && updates.relatedGoal
+        ? goals && goals.find(goal => goal.did === updates.relatedGoal)
+        : undefined;
     const actions = [
       <Button
         key={1}
@@ -148,6 +179,7 @@ class DodayDetails extends React.Component<
             updateSelectedDodayActionCreator(selectedDoday.did, {
               ...updates,
               date: updates && updates.date && new Date(updates.date),
+              relatedGoal: goal,
             } as any);
             this.props.clearDirtyStuffActionCreator();
           }}
@@ -213,6 +245,34 @@ class DodayDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
+              <CustomDatePicker
+                borderless
+                minDate={new Date()}
+                icon={<Icons.Clock />}
+                selected={
+                  (updates && updates.date && new Date(updates.date)) ||
+                  selectedDoday.date
+                }
+                onChange={date => {
+                  const dateDirty =
+                    moment(date).format('ll') !==
+                    moment(selectedDoday.date).format('ll');
+                  this.props.requestForSetUpdatesActionCreator({
+                    date: dateDirty ? date.getTime() : undefined,
+                  });
+                }}
+              />
+              <Button
+                borderless
+                active={updates && updates.dateIsLocked}
+                onClick={() => {
+                  this.props.requestForSetUpdatesActionCreator({
+                    dateIsLocked: !dateIsLocked,
+                  });
+                }}
+              >
+                {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+              </Button>
               {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
@@ -233,13 +293,30 @@ class DodayDetails extends React.Component<
                 </LayoutBlock>
               )}
             </LayoutBlock>
-            <Text
-              spaceAbove={Space.Medium}
-              spaceBelow={Space.Medium}
-              size={TypographySize.h1}
+            <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
+            <LayoutBlock
+              spaceAbove={Space.XSmall}
+              spaceBelow={Space.XSmall}
+              insideElementsMargin
+              valign="vflex-center"
             >
-              {selectedDoday.name}
-            </Text>
+              <Text color={TypographyColor.Disabled} size={TypographySize.m}>
+                {'Related goal: '}
+              </Text>
+              <Select
+                className={css.goalSelect}
+                value={
+                  (updates &&
+                    updates.relatedGoal &&
+                    selectedValueFromGoal(goal)) ||
+                  (selectedDoday.relatedGoal &&
+                    selectedValueFromGoal(selectedDoday.relatedGoal))
+                }
+                onChange={this.handleChangeGoal}
+                placeholder="Choose goal"
+                options={goalsForSelect}
+              />
+            </LayoutBlock>
             {youtubeLink ? (
               <div
                 className={css.videoWrapper}
@@ -265,77 +342,17 @@ class DodayDetails extends React.Component<
               />
             ) : null}
             <Text>{resource.description}</Text>
-            <LayoutBlock
-              spaceAbove={Space.Medium}
-              spaceBelow={Space.Medium}
-              paddingAbove={Space.Medium}
-              paddingBelow={Space.Medium}
-              paddingLeft={Space.Medium}
-              paddingRight={Space.Medium}
-              direction="column"
-              className={css.well}
-            >
+            {selectedDoday.activityType === 'read' ? (
               <LayoutBlock
+                spaceAbove={Space.Small}
                 spaceBelow={Space.Small}
-                align="space-between"
-                valign="vflex-center"
+                align="flex-center"
               >
-                <Text color={TypographyColor.Disabled} size={TypographySize.m}>
-                  {'Related goal: '}
-                </Text>
-                <Select
-                  className={css.goalSelect}
-                  value={
-                    (updates &&
-                      updates.relatedGoal &&
-                      selectedValueFromGoal(goal)) ||
-                    (selectedDoday.relatedGoal &&
-                      selectedValueFromGoal(selectedDoday.relatedGoal))
-                  }
-                  onChange={this.handleChangeGoal}
-                  placeholder="Choose goal"
-                  options={goalsForSelect}
-                />
-                <CustomDatePicker
-                  borderless
-                  minDate={new Date()}
-                  icon={<Icons.Clock />}
-                  selected={
-                    (updates && updates.date && new Date(updates.date)) ||
-                    selectedDoday.date
-                  }
-                  onChange={date => {
-                    const dateDirty =
-                      moment(date).format('ll') !==
-                      moment(selectedDoday.date).format('ll');
-                    this.props.requestForSetUpdatesActionCreator({
-                      date: dateDirty ? date.getTime() : undefined,
-                    });
-                  }}
-                />
-                <Button
-                  borderless
-                  active={updates && updates.dateIsLocked}
-                  onClick={() => {
-                    this.props.requestForSetUpdatesActionCreator({
-                      dateIsLocked: !dateIsLocked,
-                    });
-                  }}
-                >
-                  {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+                <Button primary href={resource.url} target="_blank">
+                  Read full article
                 </Button>
               </LayoutBlock>
-              <LayoutBlock alignSelf="align-self-end">
-                <Button
-                  primary
-                  onClick={() => {
-                    // Take doday action
-                  }}
-                >
-                  DO
-                </Button>
-              </LayoutBlock>
-            </LayoutBlock>
+            ) : null}
           </>
         ) : null}
       </Page>
@@ -358,4 +375,4 @@ export default connect(
     ...dodaysActions,
     ...dodayDetailsActions,
   }
-)(DodayDetails);
+)(ProgressDetails);

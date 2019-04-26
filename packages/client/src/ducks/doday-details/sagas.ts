@@ -9,6 +9,7 @@ import {
   setDirtyStatusActionCreator,
   RequestForSetUpdatesAction,
   setUpdatesForSelectedDodayActionCreator,
+  FetchSelectedProgressAction,
 } from './actions';
 import { api } from '@root/services';
 import { updatesSelector, selectedDoday } from './selectors';
@@ -30,9 +31,9 @@ function* fetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
 /**
  * Fetch selected doday saga
  *
- * @param {FetchSelectedDodayAction} action
+ * @param {FetchSelectedProgressAction} action
  */
-function* fetchSelectedDodayWithProgressSaga(action: FetchSelectedDodayAction) {
+function* fetchSelectedProgressSaga(action: FetchSelectedProgressAction) {
   const progress = yield call(api.dodays.queries.dodayProgressByDID, {
     did: action.payload,
   });
@@ -72,8 +73,8 @@ function* setUpdatesAndDirtyStatusSaga(action: RequestForSetUpdatesAction) {
 export default [
   takeLatest(ActionConstants.FETCH_SELECTED_DODAY, fetchSelectedDodaySaga),
   takeLatest(
-    ActionConstants.FETCH_SELECTED_DODAY_WITH_PROGRESS,
-    fetchSelectedDodayWithProgressSaga
+    ActionConstants.FETCH_SELECTED_PROGRESS,
+    fetchSelectedProgressSaga
   ),
   takeLatest(ActionConstants.FETCH_SELECTED_GOAL, fetchSelectedGoalSaga),
   takeLatest(
