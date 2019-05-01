@@ -1,18 +1,12 @@
 import * as actions from './actions';
-import { BuilderState } from '@lib/models';
 
-export const initialState: BuilderState = {};
+export const initialState: BuilderStatus = {};
 
 export default (
   state = initialState,
   action?: actions.ActionTypes
-): BuilderState => {
+): BuilderStatus => {
   switch (action && action.type) {
-    case actions.ActionConstants.SET_ACTIVITY_TYPE:
-      return {
-        ...state,
-        activityType: action!.payload,
-      };
     case actions.ActionConstants.SET_BUILDER_LOADING_STATE:
       return {
         ...state,
@@ -23,30 +17,14 @@ export default (
         ...state,
         success: action.payload,
       };
-    case actions.ActionConstants.SET_URL_PARSING_PROGRESS:
-      return {
-        ...state,
-        isUrlParsing: action.payload,
-      };
-    case actions.ActionConstants.SET_PARSED_URL_METADATA_OBJECT:
-      return {
-        ...state,
-        parsedMetadata: action.payload,
-      };
-    case actions.ActionConstants.CLEAR_PARSED_METADATA:
-      return {
-        ...state,
-        parsedMetadata: undefined,
-        activityType: undefined,
-      };
     case actions.ActionConstants.CLEAR_BUILDER:
       return initialState;
-    case actions.ActionConstants.SELECT_GOAL:
-      return {
-        ...state,
-        selectedGoal: action.payload,
-      };
     default:
       return state;
   }
+};
+
+export type BuilderStatus = {
+  loading?: boolean;
+  success?: boolean;
 };

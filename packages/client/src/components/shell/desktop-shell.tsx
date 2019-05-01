@@ -5,7 +5,7 @@ import { Dashboard, TopBar } from '@components';
 import { RootState } from '@lib/models';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { actions as authActions } from '@ducks/auth';
-import { Hero } from '@root/lib/models/entities/Hero';
+import { Hero } from '@root/lib/models/entities/hero';
 import { FetchHeroAction } from '@root/ducks/auth/actions';
 import { Landing } from '../landing';
 import {

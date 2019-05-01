@@ -5,12 +5,10 @@ import { actions as appActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
-import { DefaultTopBar } from './default-top-bar/default-top-bar';
 import { Grid, Icons } from '@components';
 import {
   ChangeDodayAppDateAction,
   FetchAllGoalsAction,
-  PushToNavigationStackAction,
   ToggleDodayAction,
   PlanOutAction,
 } from '@root/ducks/doday-app/actions';
@@ -18,20 +16,20 @@ import {
   PopFromNavigationStackAction,
   FetchDodayForDate,
 } from '@root/ducks/doday-app/actions';
-import { DodayCell, GoalCell, PublicCell } from '../shared/_organisms/grid';
 import { RouteComponentProps } from 'react-router';
-import { Doday } from '@root/lib/models/entities/Doday';
-import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { Goal } from '@root/lib/models/entities/Goal';
+import {
+  DodayTypes,
+  DodayLikeProgress,
+  DodayLike,
+} from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
-import { ClickableIcon } from '../shared/_atoms/clickable-icon/clickable-icon';
 import { DodayAppPaths, Space } from '@root/lib/common-interfaces';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
 import { Text } from '../shared/_atoms/typography';
 import { Button, ButtonSize } from '../shared/_atoms/button';
-import { durationToMinutes } from '@root/lib/utils';
+import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
-import { Progress } from '@root/lib/models/entities/Progress';
+import { ActivityCell } from '../tools/activities/app-cell/activity-cell';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -42,13 +40,12 @@ interface DodayAppProps {
 
 interface PropsFromConnect {
   loading: boolean;
-  dodays: Progress[];
-  publicDodays: Doday[];
-  goals: Goal[];
+  dodays: DodayLikeProgress[];
+  publicDodays: DodayLike[];
   chosenDate?: Date;
   changeDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
-  navStack: Goal[];
-  pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
+  // navStack: Goal[];
+  // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   popFromNavStack: () => PopFromNavigationStackAction;
   fetchDodaysForDate: () => FetchDodayForDate;
   fetchAllGoalsActionCreator: () => FetchAllGoalsAction;
@@ -56,7 +53,7 @@ interface PropsFromConnect {
   fetchSelectedDodayWithProgressActionCreator: (
     did: string
   ) => FetchSelectedDodayAction;
-  toggleDoday: (doday: Doday) => ToggleDodayAction;
+  toggleDoday: (doday: Activity) => ToggleDodayAction;
   planOutActionCreator: (date: number) => PlanOutAction;
 }
 
@@ -72,56 +69,37 @@ export class DodayAppComponent extends React.Component<
     return this.props.dodays || [];
   };
 
-  handleDodayCellClick = (route: string, doday: Doday) => {
+  handleDodayCellClick = (route: string, doday: DodayLike) => {
     this.props.history.push(route);
   };
 
-  getGoalsToRender = () => {
-    const navStack = this.props.navStack;
-    if (navStack.length > 0) {
-      return navStack[navStack.length - 1].children || [];
-    } else {
-      return this.props.goals || [];
-    }
-  };
+  // getGoalsToRender = () => {
+  //   const navStack = this.props.navStack;
+  //   if (navStack.length > 0) {
+  //     return navStack[navStack.length - 1].children || [];
+  //   } else {
+  //     return this.props.goals || [];
+  //   }
+  // };
 
-  handleGoalCellClick = (goal: Goal) => {
-    // push goal to navigation stack
-    this.props.pushToNavStack(goal);
-  };
+  // handleGoalCellClick = (goal: Goal) => {
+  //   // push goal to navigation stack
+  //   this.props.pushToNavStack(goal);
+  // };
 
-  renderCellByDodayType = (item: Doday | Goal, index) => {
+  renderCellByDodayType = (item: DodayLike, index) => {
     switch (item.type) {
       case DodayTypes.Activity:
-        if (item.public) {
-          return (
-            <PublicCell
-              doday={item}
-              key={cuid()}
-              onClick={this.handleDodayCellClick}
-              onComplete={(doday: Doday) => this.props.toggleDoday(doday)}
-            />
-          );
-        }
         return (
-          <DodayCell
-            doday={item}
+          <ActivityCell
+            doday={item as Activity}
             key={cuid()}
             onClick={this.handleDodayCellClick}
-            onComplete={(doday: Doday) => this.props.toggleDoday(doday)}
-          />
-        );
-      case DodayTypes.Goal:
-        return (
-          <GoalCell
-            goal={item as Goal}
-            key={cuid()}
-            onClick={this.handleGoalCellClick}
           />
         );
       default:
-        <DodayCell
-          doday={item}
+        <ActivityCell
+          doday={item as Activity}
           key={cuid()}
           onClick={this.handleDodayCellClick}
         />;
@@ -136,22 +114,26 @@ export class DodayAppComponent extends React.Component<
       changeDateActionCreator,
       popFromNavStack,
       loading,
-      navStack,
+      // navStack,
     } = this.props;
 
     const totalDurationOfTheDay = this.getDodaysToRender()
       .filter(
         progress =>
-          progress.doday.type === DodayTypes.Activity && !progress.completed
+          progress.origin.type === DodayTypes.Activity && !progress.completed
       )
-      .map((a: Progress) => durationToMinutes(a.doday.duration))
+      .map((a: DodayLikeProgress) => {
+        const doday = a.origin;
+        const activity = isActivity(doday);
+        return activity && durationToMinutes((doday as Activity).duration);
+      })
       .reduce((a, b) => a + b, 0);
 
     switch (path) {
       case 'goals':
         return (
           <>
-            <DefaultTopBar
+            {/* <DefaultTopBar
               title={
                 (navStack.length > 0 && navStack[navStack.length - 1].name) ||
                 'Goals'
@@ -188,21 +170,11 @@ export class DodayAppComponent extends React.Component<
               loading={loading}
               items={this.getGoalsToRender()}
               renderCell={this.renderCellByDodayType}
-            />
+            /> */}
           </>
         );
       case 'memos':
         return <div>Memos</div>;
-      case 'public':
-        return (
-          <>
-            <Grid
-              loading={loading}
-              items={this.props.publicDodays}
-              renderCell={this.renderCellByDodayType}
-            />
-          </>
-        );
       default:
         return (
           <>

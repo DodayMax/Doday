@@ -1,21 +1,28 @@
-import { GraphQLResponseDoday } from './Doday';
+import { DodayLikeGraphQLResponse } from './common';
 
 export interface Hero {
   did: string;
   nickname?: string;
   displayName: string;
   google?: string;
-  vk?: string;
-  github?: string;
+  created: Date;
+}
+
+export interface APIResponseHero {
+  did: string;
+  nickname?: string;
+  displayName: string;
+  google?: string;
+  created: number;
 }
 
 export interface GraphQLResponseHero {
   did: string;
-  nickname: string;
+  nickname?: string;
   displayName: string;
-  google: string;
+  google?: string;
   friends: GraphQLResponseHero[];
   invitedByMe: GraphQLResponseHero[];
-  createdDodays: GraphQLResponseDoday[];
+  createdDodays: DodayLikeGraphQLResponse[];
   created: number;
 }

@@ -1,13 +1,7 @@
-export type AuthToken = {
-  accessToken: string;
-  kind: string;
-};
-
 export interface Hero {
   did: string;
   nickname?: string;
   displayName: string;
-  google: string;
+  google?: string;
+  created: Date;
 }
-
-export default Hero;

@@ -12,19 +12,17 @@ import {
   ParseUrlMetadataAction,
   ClearParsedMetadataAction,
   ClearBuilderAction,
-  CreateGoalAction,
-  SelectGoalAction,
   CreateDodayAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
-import { SerializedDoday } from '@root/lib/models/entities/Doday';
 
-import { DodayBuilder } from './doday-builder';
-import { Goal, SerializedGoal } from '@root/lib/models/entities/Goal';
-import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { GoalBuilder } from './goal-builder';
+import {
+  DodayTypes,
+  DodayLikeSerialized,
+} from '@root/lib/models/entities/common';
 import { Pageflow, PageWrapperChildContext } from '../pageflow';
 import { ActivityTypes } from '@root/lib/common-interfaces';
+import { ActivityBuilder } from '../tools/activities/builder/activity-builder';
 
 interface BuilderProps {}
 
@@ -36,18 +34,14 @@ interface BuilderState {
 
 interface PropsFromConnect {
   ownerDID?: string;
-  goals: Goal[];
-  selectedGoal?: Goal;
   activityType: ActivityTypes;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
   loading?: boolean;
   success?: boolean;
   fetchActivityTypes: () => FetchActivityTypesAction;
-  createDodayActionCreator: (doday: SerializedDoday) => CreateDodayAction;
-  createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
-  createGoalActionCreator: (goal: SerializedGoal) => CreateGoalAction;
-  selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
+  createDodayActionCreator: (doday: DodayLikeSerialized) => CreateDodayAction;
+  createAndTakeDoday: (doday: DodayLikeSerialized) => CreateAndTakeDodayAction;
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
@@ -94,8 +88,6 @@ export class Builder extends React.Component<
   renderBuilder = () => {
     const {
       ownerDID,
-      goals,
-      selectedGoal,
       loading,
       isUrlParsing,
       parsedMetadata,
@@ -103,8 +95,6 @@ export class Builder extends React.Component<
       createDodayActionCreator,
       createAndTakeDoday,
       clearParsedMetadataActionCreator,
-      createGoalActionCreator,
-      selectGoalActionCreator,
       activityType = 'do',
       location,
     } = this.props;
@@ -113,15 +103,12 @@ export class Builder extends React.Component<
 
     if (Number(queryParams.type) === DodayTypes.Activity) {
       return (
-        <DodayBuilder
-          goals={goals}
-          selectedGoal={selectedGoal}
+        <ActivityBuilder
           loading={loading}
           isUrlParsing={isUrlParsing}
           parsedMetadata={parsedMetadata}
           createDodayActionCreator={createDodayActionCreator}
           createAndTakeDoday={createAndTakeDoday}
-          selectGoalActionCreator={selectGoalActionCreator}
           parseUrlMetadataActionCreator={parseUrlMetadataActionCreator}
           clearParsedMetadataActionCreator={clearParsedMetadataActionCreator}
           activityType={activityType}
@@ -129,14 +116,14 @@ export class Builder extends React.Component<
         />
       );
     } else if (Number(queryParams.type) === DodayTypes.Goal) {
-      return (
-        <GoalBuilder
-          ownerDID={ownerDID}
-          createGoalActionCreator={createGoalActionCreator}
-          loading={loading}
-          goalNumber={goals.length}
-        />
-      );
+      // return (
+      //   <GoalBuilder
+      //     ownerDID={ownerDID}
+      //     createGoalActionCreator={createGoalActionCreator}
+      //     loading={loading}
+      //     goalNumber={goals.length}
+      //   />
+      // );
     }
   };
 

@@ -1,39 +1,39 @@
-import { Doday, SerializedDoday } from '../models/entities/Doday';
-import { Goal, SerializedGoal } from '../models/entities/Goal';
-import { DodayTypes } from '../models/entities/dodayTypes';
+import { DodayTypes } from '../models/entities/common';
+import {
+  SerializedActivity,
+  Activity,
+  SerializedActivityProgress,
+} from '../models/entities/Activity';
 
-export const serializedDoday: SerializedDoday = {
+export const serializedActivity: SerializedActivity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayTypes.Doday,
+  type: DodayTypes.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
+  owner: 'did',
+  ownerDID: 'did',
 };
 
-export const serializedGoal: SerializedGoal = {
-  did: 'test did',
-  type: DodayTypes.Goal,
-  name: 'name',
-  ownerDID: 'qweq12g3123guh',
-  color: '#123j12',
-  children: [],
+export const partialProgress: Partial<SerializedActivityProgress> = {
+  date: Date.now(),
+  dateIsLocked: true,
+  origin: 'did',
 };
 
-export const doday: Doday = {
+export const activity: Activity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayTypes.Doday,
+  type: DodayTypes.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
-};
-
-export const goal: Goal = {
-  did: 'test did',
-  type: DodayTypes.Goal,
-  name: 'name',
-  ownerDID: 'qweq12g3123guh',
-  color: '#123j12',
-  children: [],
+  owner: {
+    did: 'did',
+    displayName: 'Test name',
+    created: new Date(),
+  },
+  ownerDID: 'did',
+  created: new Date(),
 };

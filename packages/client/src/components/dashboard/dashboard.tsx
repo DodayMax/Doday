@@ -1,18 +1,14 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import {
-  Drawer,
-  DodayApp,
-  Builder,
-  DodayDetails,
-  GoalDetails,
-} from '@components';
+import { Drawer, DodayApp, Builder } from '@components';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
 import { Profile } from '../profile';
-import { ProgressDetails } from '../progress-details';
+import { tools } from '@root/components/tools';
+import ActivityDetails from '@root/components/tools/activities/details/activity-details';
+import ActivityProgressDetails from '@root/components/tools/activities/details/progress-details';
 
 const css = require('./_dashboard.module.scss');
 
@@ -78,13 +74,16 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           <Drawer
             collapsed={this.state.isDrawerCollapsed}
             toggle={() => this.toggleMenu()}
+            tools={tools}
           />
         </nav>
         {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
         <Route exact path="/" render={() => <div>Dashboard</div>} />
-        <Route path="/dodays/:did" component={DodayDetails} />
-        <Route path="/progress/:did" component={ProgressDetails} />
-        <Route path="/goals/:did" component={GoalDetails} />
+        <Route path="/activities/:did" component={ActivityDetails} />
+        <Route
+          path="/activities/progress/:did"
+          component={ActivityProgressDetails}
+        />
         <Route path="/builder" component={Builder} />
         <Route path="/profile" component={Profile} />
       </>

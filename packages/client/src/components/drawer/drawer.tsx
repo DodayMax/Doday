@@ -9,17 +9,18 @@ import { actions } from '@ducks/doday-app';
 import { DodayAppPaths, DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
-import { Goal } from '@root/lib/models/entities/Goal';
 import {
   PushToNavigationStackByDIDAction,
   ClearNavStackAction,
 } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
+import { ToolBeacon } from '../tools/activities';
 
 const css = require('./_drawer.module.scss');
 
 interface DrawerProps {
+  tools: ToolBeacon[];
   match?: match;
   collapsed: boolean;
   toggle: () => void;
@@ -28,7 +29,6 @@ interface DrawerProps {
 interface PropsFromConnect {
   badge: number;
   path: DodayAppPaths;
-  goals: Goal[];
   pushToNavStackByDIDActionCreator?: (
     did: string
   ) => PushToNavigationStackByDIDAction;
@@ -41,28 +41,10 @@ interface Actions {
 
 const items: DrawerMenuItem[] = [
   {
-    text: 'Today',
+    text: 'Doday',
     icon: 'TodayCalendar',
     action: 'changePath',
     path: '/',
-  },
-  {
-    text: 'Goals',
-    icon: 'Goal',
-    action: 'changePath',
-    path: 'goals',
-  },
-  {
-    text: 'Memorizer',
-    icon: 'Lighting',
-    action: 'changePath',
-    path: 'memos',
-  },
-  {
-    text: 'Public dodays',
-    icon: 'Apps',
-    action: 'changePath',
-    path: 'public',
   },
 ];
 
@@ -77,6 +59,7 @@ export class DrawerComponent extends React.Component<
       activeIndex: 0,
     };
   }
+
   renderDrawerProfileSection = () => {
     if (this.props.collapsed) {
       return (
@@ -176,21 +159,31 @@ export class DrawerComponent extends React.Component<
   };
 
   private get pieGoalsData() {
-    const { goals } = this.props;
-    const pieData: any = [];
-    goals.map((goal, index) => {
-      pieData.push({
-        did: goal.did,
-        title: goal.name,
-        value: (goal.children && goal.children.length) || 1,
-        color: goal.color,
-      });
-    });
-    return pieData.length ? pieData : undefined;
+    // const { goals } = this.props;
+    // const pieData: any = [];
+    // goals.map((goal, index) => {
+    //   pieData.push({
+    //     did: goal.did,
+    //     title: goal.name,
+    //     value: (goal.children && goal.children.length) || 1,
+    //     color: goal.color,
+    //   });
+    // });
+    // return pieData.length ? pieData : undefined;
+    return null;
+  }
+
+  toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
+    return tools.map((tool: ToolBeacon) => ({
+      text: tool.name,
+      icon: tool.icon,
+      action: 'changePath',
+      path: tool.path,
+    }));
   }
 
   render() {
-    const { collapsed, path } = this.props;
+    const { collapsed, path, tools } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
@@ -202,7 +195,7 @@ export class DrawerComponent extends React.Component<
         {this.renderDrawerLevel()}
         <ul role="navigation" className={css.drawerMenu}>
           <Grid
-            items={items}
+            items={items.concat(this.toolsToDrawerMenuItems(tools))}
             renderCell={(item: DrawerMenuItem, index) => (
               <DodayAppMenuCell
                 key={cuid()}

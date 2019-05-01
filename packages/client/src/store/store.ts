@@ -3,13 +3,15 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import ducks from '@ducks';
-import { RootState } from '@lib/models';
+import { RootState, BuilderState } from '@lib/models';
 
 const rootReducer = combineReducers<RootState>({
   auth: ducks.auth.default,
   dodayApp: ducks.dodayapp.default,
   dodayDetails: ducks.dodayDetails.default,
-  builder: ducks.builder.default,
+  builder: combineReducers<BuilderState>({
+    status: ducks.builder.default,
+  }),
   heroSettings: ducks.herosettings.default,
 });
 

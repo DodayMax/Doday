@@ -1,7 +1,6 @@
-import { Activity } from '../common-interfaces';
-import { Hero } from './entities/Hero';
-import { Doday, SerializedDoday } from './entities/Doday';
-import { Goal } from './entities/Goal';
+import { Hero } from './entities/hero';
+import { BuilderStatus } from '@root/ducks/builder/reducer';
+import { BuilderActivitiesState } from '@root/ducks/activities/reducer';
 
 export interface RootState {
   auth: AuthState;
@@ -22,17 +21,13 @@ export interface DodayAppState {
   chosenDate: Date;
 }
 
-export interface AuthState {
-  hero?: Hero;
+export interface BuilderState {
+  status: BuilderStatus;
+  activities: BuilderActivitiesState;
 }
 
-export interface BuilderState {
-  loading?: boolean;
-  selectedGoal?: Goal;
-  isUrlParsing?: boolean;
-  parsedMetadata?: any;
-  success?: boolean;
-  activityType?: Activity;
+export interface AuthState {
+  hero?: Hero;
 }
 
 export interface HeroSettingsState {

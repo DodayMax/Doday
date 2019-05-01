@@ -1,11 +1,11 @@
-import { Hero } from './Hero';
-import { Doday } from './Doday';
+import { Hero } from './hero';
+import { DodayLike } from './common';
 
 export interface Tag {
   label: string;
   value: string;
   heroes?: [Hero];
-  dodays?: [Doday];
+  dodays?: [DodayLike];
   weight?: number;
 }
 

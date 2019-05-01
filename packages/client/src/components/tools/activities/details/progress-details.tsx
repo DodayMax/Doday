@@ -8,20 +8,19 @@ import {
   TypographyColor,
   Space,
 } from '@root/lib/common-interfaces';
-import { Page, PageHeader } from '../shared/_molecules/page';
+import { Page, PageHeader } from '../../../shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { Text, Icons, CustomDatePicker } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
-import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
-import { Button, ButtonSize } from '../shared/_atoms/button';
+import { Button, ButtonSize } from '../../../shared/_atoms/button';
 import {
   DeleteDodayAction,
   RemoveDodayAction,
   UpdateDodayAction,
 } from '@root/ducks/doday-app/actions';
-import { Marker } from '../shared/_atoms/marker';
+import { Marker } from '../../../shared/_atoms/marker';
 import {
   activityTypeColor,
   youtubeIDFromURL,
@@ -29,8 +28,8 @@ import {
   durationToMinutes,
   isEmptyObject,
 } from '@root/lib/utils';
-import { Resource } from '@root/lib/models/entities/Resource';
-import { LayoutBlock } from '../shared/_atoms/layout-block';
+import { Resource } from '@root/lib/models/entities/resource';
+import { LayoutBlock } from '../../../shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
@@ -40,45 +39,49 @@ import {
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
 import Select from 'react-select';
-import { selectedValueFromGoal } from '../builder/doday-builder';
-import { Pageflow, PageWrapperChildContext } from '../pageflow';
+import {
+  SerializedActivity,
+  Activity,
+  ActivityProgress,
+} from '@root/lib/models/entities/Activity';
+import { Pageflow, PageWrapperChildContext } from '@root/components/pageflow';
 
-const css = require('./doday-details.module.scss');
+const css = require('./progress-details.module.scss');
 
-interface DodayDetailsProps {}
+interface ActivityProgressDetailsProps {}
 
-interface DodayDetailsState {}
+interface ActivityProgressDetailsState {}
 
 interface PropsFromConnect {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedDoday>;
+  updates?: Partial<SerializedActivity>;
   myDID?: string;
-  selectedDoday: Doday;
+  selectedDoday: ActivityProgress;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator: (
     did: string,
-    updates: Partial<SerializedDoday>
+    updates: Partial<SerializedActivity>
   ) => UpdateDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
   requestForSetUpdatesActionCreator: (
-    updates: Partial<SerializedDoday>
+    updates: Partial<SerializedActivity>
   ) => RequestForSetUpdatesAction;
-  deleteDodayActionCreator: (doday: Doday) => DeleteDodayAction;
-  removeDodayActionCreator: (doday: Doday) => RemoveDodayAction;
+  deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
+  removeDodayActionCreator: (doday: Activity) => RemoveDodayAction;
   updateSelectedDodayActionCreator: (
     did: string,
-    updates: Partial<Doday>
+    updates: Partial<Activity>
   ) => UpdateSelectedDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
 @Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
-class DodayDetails extends React.Component<
-  DodayDetailsProps & PropsFromConnect & RouteComponentProps<any>,
-  DodayDetailsState
+class ActivityProgressDetails extends React.Component<
+  ActivityProgressDetailsProps & PropsFromConnect & RouteComponentProps<any>,
+  ActivityProgressDetailsState
 > {
   public static contextTypes = {
     requestClose: PropTypes.func,
@@ -104,7 +107,9 @@ class DodayDetails extends React.Component<
   isOwner = () => {
     const { selectedDoday, myDID } = this.props;
     return (
-      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID
+      selectedDoday.origin.owner.did &&
+      myDID &&
+      selectedDoday.origin.owner.did === myDID
     );
   };
 
@@ -118,15 +123,16 @@ class DodayDetails extends React.Component<
       updates,
       loading,
     } = this.props;
+    const origin = selectedDoday.origin as Activity;
     const actions = [
       <Button
         key={1}
         size={ButtonSize.small}
         onClick={() => {
           if (this.isOwner) {
-            this.props.deleteDodayActionCreator(selectedDoday);
+            this.props.deleteDodayActionCreator(origin);
           } else {
-            this.props.removeDodayActionCreator(selectedDoday);
+            this.props.removeDodayActionCreator(origin);
           }
           history.push('/');
         }}
@@ -144,8 +150,8 @@ class DodayDetails extends React.Component<
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
-            updateDodayActionCreator(selectedDoday.did, updates);
-            updateSelectedDodayActionCreator(selectedDoday.did, {
+            updateDodayActionCreator(selectedDoday.origin.did, updates);
+            updateSelectedDodayActionCreator(selectedDoday.origin.did, {
               ...updates,
               date: updates && updates.date && new Date(updates.date),
             } as any);
@@ -161,12 +167,13 @@ class DodayDetails extends React.Component<
   };
 
   status = () => {
+    const origin = this.props.selectedDoday.origin as Activity;
     return [
       <Marker
         key={1}
         rounded
-        color={activityTypeColor(this.props.selectedDoday.activityType)}
-        text={this.props.selectedDoday.activityType}
+        color={activityTypeColor(origin.activityType)}
+        text={origin.activityType}
       />,
     ];
   };
@@ -179,21 +186,22 @@ class DodayDetails extends React.Component<
   };
 
   render() {
-    const { updates, selectedDoday, goals } = this.props;
+    const { updates, selectedDoday } = this.props;
+    const origin = selectedDoday && (selectedDoday.origin as Activity);
 
-    const goal =
-      updates && updates.relatedGoal
-        ? goals && goals.find(goal => goal.did === updates.relatedGoal)
-        : undefined;
+    // const goal =
+    //   updates && updates.relatedGoal
+    //     ? goals && goals.find(goal => goal.did === updates.relatedGoal)
+    //     : undefined;
 
-    const resource = selectedDoday && selectedDoday.resource;
+    const resource = origin && origin.resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
 
-    const goalsForSelect = goals.map(goal => ({
-      label: goal.name,
-      value: goal.did,
-    }));
+    // const goalsForSelect = goals.map(goal => ({
+    //   label: goal.name,
+    //   value: goal.did,
+    // }));
 
     const dateIsLocked =
       updates && updates.dateIsLocked != null
@@ -213,11 +221,11 @@ class DodayDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
-              {selectedDoday.duration && (
+              {origin.duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel(selectedDoday.duration)}
+                    {durationToLabel(origin.duration)}
                   </Text>
                   <Text
                     size={TypographySize.s}
@@ -225,8 +233,7 @@ class DodayDetails extends React.Component<
                   >
                     (
                     {Math.round(
-                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
-                        100
+                      (durationToMinutes(origin.duration) / (8 * 60)) * 100
                     )}
                     % of your day)
                   </Text>
@@ -238,7 +245,7 @@ class DodayDetails extends React.Component<
               spaceBelow={Space.Medium}
               size={TypographySize.h1}
             >
-              {selectedDoday.name}
+              {origin.name}
             </Text>
             {youtubeLink ? (
               <div
@@ -280,22 +287,6 @@ class DodayDetails extends React.Component<
                 align="space-between"
                 valign="vflex-center"
               >
-                <Text color={TypographyColor.Disabled} size={TypographySize.m}>
-                  {'Related goal: '}
-                </Text>
-                <Select
-                  className={css.goalSelect}
-                  value={
-                    (updates &&
-                      updates.relatedGoal &&
-                      selectedValueFromGoal(goal)) ||
-                    (selectedDoday.relatedGoal &&
-                      selectedValueFromGoal(selectedDoday.relatedGoal))
-                  }
-                  onChange={this.handleChangeGoal}
-                  placeholder="Choose goal"
-                  options={goalsForSelect}
-                />
                 <CustomDatePicker
                   borderless
                   minDate={new Date()}
@@ -358,4 +349,4 @@ export default connect(
     ...dodaysActions,
     ...dodayDetailsActions,
   }
-)(DodayDetails);
+)(ActivityProgressDetails);

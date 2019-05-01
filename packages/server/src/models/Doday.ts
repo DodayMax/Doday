@@ -1,20 +1,18 @@
-import { Resource } from './Resource';
+import { Resource } from './resource';
 
 export interface SerializedDoday {
   did: string;
-  activityType: string;
   type: number;
-  name: string;
-  duration: string;
   public: boolean;
-  // Computed props by relations and from Progress node
-  resource?: Resource;
+  activityType: string;
+  name: string;
+  description?: string;
+  image?: string;
+  duration?: string;
   tags?: string[];
+  resource?: Resource;
+  memos?: string[];
+  owner: string;
+  ownerDID: string;
   created?: number;
-  completed?: boolean;
-  tookAt?: number;
-  date?: number;
-  dateIsLocked?: boolean;
-  completedAt?: number;
-  relatedGoal?: string;
 }

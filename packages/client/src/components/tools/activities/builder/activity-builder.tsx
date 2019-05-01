@@ -13,7 +13,6 @@ import {
   ButtonGroup,
   Icons,
 } from '@components';
-import { ParsedUrlView } from './parsed-url-view/parsed-url-view';
 import Select from 'react-select';
 import {
   TypographySize,
@@ -30,30 +29,27 @@ import {
   SelectGoalAction,
   CreateDodayAction,
 } from '@root/ducks/builder/actions';
-import { Tag } from '@root/lib/models/entities/Tag';
-import { Goal } from '@root/lib/models/entities/Goal';
-import { SerializedDoday } from '@root/lib/models/entities/Doday';
-import { DodayTypes } from '@root/lib/models/entities/dodayTypes';
-import { CustomDatePicker } from '../shared/_atoms/custom-datepicker';
+import { Tag } from '@root/lib/models/entities/tag';
+import { DodayTypes } from '@root/lib/models/entities/common';
+import { CustomDatePicker } from '../../../shared/_atoms/custom-datepicker';
+import { SerializedActivity } from '@root/lib/models/entities/Activity';
+import { ParsedUrlView } from '@root/components/builder';
 
-const css = require('./_builder.module.scss');
+const css = require('./activity-builder.module.scss');
 
-interface DodayBuilderProps {
+interface ActivityBuilderProps {
   loading: boolean;
   isUrlParsing: boolean;
   parsedMetadata?: any;
-  goals: Goal[];
-  selectedGoal?: Goal;
   activityType: ActivityTypes;
   ownerDID: string;
-  createDodayActionCreator: (doday: SerializedDoday) => CreateDodayAction;
-  createAndTakeDoday: (doday: SerializedDoday) => CreateAndTakeDodayAction;
-  selectGoalActionCreator: (goal: Goal) => SelectGoalAction;
+  createDodayActionCreator: (doday: SerializedActivity) => CreateDodayAction;
+  createAndTakeDoday: (doday: SerializedActivity) => CreateAndTakeDodayAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
 }
 
-interface DodayBuilderState {
+interface ActivityBuilderState {
   dodayName: string;
   selectedTags?: Tag[];
   parsingFinished?: string;
@@ -63,11 +59,11 @@ interface DodayBuilderState {
   estimateTime: string;
 }
 
-export class DodayBuilder extends React.Component<
-  DodayBuilderProps,
-  DodayBuilderState
+export class ActivityBuilder extends React.Component<
+  ActivityBuilderProps,
+  ActivityBuilderState
 > {
-  constructor(props: DodayBuilderProps) {
+  constructor(props: ActivityBuilderProps) {
     super(props);
 
     this.state = {
@@ -129,12 +125,7 @@ export class DodayBuilder extends React.Component<
   };
 
   handleCreateDoday = () => {
-    const {
-      parsedMetadata,
-      activityType = 'do',
-      selectedGoal,
-      ownerDID,
-    } = this.props;
+    const { parsedMetadata, activityType = 'do', ownerDID } = this.props;
 
     const resource = parsedMetadata && {
       ...parsedMetadata,
@@ -154,12 +145,11 @@ export class DodayBuilder extends React.Component<
       dateIsLocked: this.state.dateIsLocked,
       resource: resource,
       public: this.state.isPublic,
-      relatedGoal: selectedGoal && selectedGoal.did,
+      owner: ownerDID,
       ownerDID,
     };
 
     if (this.state.isPublic) {
-      delete newDoday.relatedGoal;
       this.props.createDodayActionCreator(newDoday);
     } else {
       this.props.createAndTakeDoday(newDoday);
@@ -167,10 +157,10 @@ export class DodayBuilder extends React.Component<
   };
 
   handleGoalSelect = selected => {
-    const goal =
-      this.props.goals &&
-      this.props.goals.find(goal => goal.did === selected.value);
-    this.props.selectGoalActionCreator(goal);
+    // const goal =
+    //   this.props.goals &&
+    //   this.props.goals.find(goal => goal.did === selected.value);
+    // this.props.selectGoalActionCreator(goal);
   };
 
   handleEstimateTimeChange = props => {
@@ -198,17 +188,15 @@ export class DodayBuilder extends React.Component<
       activityType,
       clearParsedMetadataActionCreator,
       isUrlParsing,
-      goals = [],
-      selectedGoal,
       parsedMetadata,
     } = this.props;
 
     const { isPublic } = this.state;
 
-    const goalsForSelect = goals.map(goal => ({
-      label: goal.name,
-      value: goal.did,
-    }));
+    // const goalsForSelect = goals.map(goal => ({
+    //   label: goal.name,
+    //   value: goal.did,
+    // }));
 
     return (
       <>
@@ -248,10 +236,8 @@ export class DodayBuilder extends React.Component<
           <LayoutBlock childFlex flex={'1'}>
             <Select
               isDisabled={this.state.isPublic}
-              value={selectedGoal && selectedValueFromGoal(selectedGoal)}
               onChange={this.handleGoalSelect}
               placeholder="Related to goal"
-              options={goalsForSelect}
             />
           </LayoutBlock>
           <LayoutBlock childFlex flex={'1'} spaceLeft={Space.XSmall}>
@@ -339,7 +325,7 @@ export class DodayBuilder extends React.Component<
   }
 }
 
-export const selectedValueFromGoal = (goal: Goal) => ({
-  label: goal.name,
-  value: goal.did,
-});
+// export const selectedValueFromGoal = (goal: Goal) => ({
+//   label: goal.name,
+//   value: goal.did,
+// });

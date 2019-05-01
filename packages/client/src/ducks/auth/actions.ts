@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { Hero } from '@lib/models/entities/Hero';
+import { Hero } from '@root/lib/models/entities/hero';
 
 export enum ActionConstants {
   FETCH_HERO = '[auth] FETCH_HERO',

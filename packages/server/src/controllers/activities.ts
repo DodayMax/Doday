@@ -2,72 +2,13 @@ import { driver } from '../config/neo4j-driver';
 import { Request, Response } from 'express';
 import {
   createActivityTransaction,
-  createAndTakeDodayTransaction,
-  takeDodayTransaction,
+  createAndTakeActivityTransaction,
+  takeActivityTransaction,
   toggleDodayTransaction,
-  progressActivitiesQuery,
-  publicDodaysQuery,
   deleteDodayTransaction,
   removeDodayTransaction,
   updateDodayTransaction,
-  getDodayByDIDQuery,
-} from '../queries-mutations/dodays';
-
-export const getProgressActivities = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  session
-    .readTransaction(tx =>
-      progressActivitiesQuery(tx, {
-        heroDID: req.user.did,
-        date: Number(req.query.date),
-      })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send(result.records);
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
-
-export const getPublicDodays = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  session
-    .readTransaction(tx =>
-      publicDodaysQuery(tx, {
-        heroDID: req.user.did,
-      })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send(result.records);
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
-
-export const getDodayByDID = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  session
-    .readTransaction(tx =>
-      getDodayByDIDQuery(tx, { heroDID: req.user.did, did: req.params.did })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send(result.records);
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
+} from '../queries-mutations/activities';
 
 export const createActivity = (req: Request, res: Response) => {
   const session = driver.session();
@@ -91,14 +32,14 @@ export const createActivity = (req: Request, res: Response) => {
     });
 };
 
-export const createAndTakeDoday = (req: Request, res: Response) => {
+export const createAndTakeActivity = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
 
   session
     .writeTransaction(tx =>
-      createAndTakeDodayTransaction(tx, {
+      createAndTakeActivityTransaction(tx, {
         doday: body,
         heroDID: req.user.did,
       })
@@ -132,14 +73,14 @@ export const toggleDoday = (req: Request, res: Response) => {
     });
 };
 
-export const takeDoday = (req: Request, res: Response) => {
+export const takeActivity = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
 
   session
     .writeTransaction(tx =>
-      takeDodayTransaction(tx, {
+      takeActivityTransaction(tx, {
         heroDID: req.user.did,
         did: req.params.did,
         date: body.date,
