@@ -73,15 +73,6 @@ export class Builder extends React.Component<
 
     if (Number(queryParams.type) === DodayTypes.Activity) {
       return <ActivityBuilder />;
-    } else if (Number(queryParams.type) === DodayTypes.Goal) {
-      // return (
-      //   <GoalBuilder
-      //     ownerDID={ownerDID}
-      //     createGoalActionCreator={createGoalActionCreator}
-      //     loading={loading}
-      //     goalNumber={goals.length}
-      //   />
-      // );
     }
   };
 

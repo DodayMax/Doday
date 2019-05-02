@@ -14,6 +14,7 @@ export const dodaysQuery = (
     `
       MATCH (d:Doday)-[]-(h:Hero)
       WHERE h.did = $heroDID
+      ${props.type ? `AND d.type = $type` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
@@ -46,6 +47,7 @@ export const dodaysWithProgressQuery = (
       OPTIONAL MATCH (r:Resource)-[]-(d)
       WHERE h.did = $heroDID
       ${dateQuery}
+      ${props.dodaytype ? `AND d.type = $dodaytype` : ''}
       ${props.completed ? `AND p.completed = $completed` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       OPTIONAL MATCH (p)-[]-(g:Goal)

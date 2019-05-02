@@ -1,7 +1,7 @@
 import { Hero } from './entities/hero';
 import { BuilderStatus } from '@root/ducks/builder/reducer';
 import { ActivityBuilderState } from '@root/ducks/activities/reducer';
-import { DodayLike } from './entities/common';
+import { DodayLike, SerializedProgressLike } from './entities/common';
 
 export interface RootState {
   auth: AuthState;
@@ -13,13 +13,12 @@ export interface RootState {
 
 export interface DodayAppState {
   loading: boolean;
+  chosenDate: Date;
   path: string;
   badge: number;
-  navStack: Doday[];
-  dodays: Doday[];
-  public: Doday[];
-  goals: Goal[];
-  chosenDate: Date;
+  // navStack: Doday[];
+  dodays: DodayLike[];
+  completed: DodayLike[];
 }
 
 export interface BuilderState {
@@ -39,6 +38,6 @@ export interface HeroSettingsState {
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedDoday>;
+  updates?: Partial<SerializedProgressLike>;
   selectedDoday?: DodayLike;
 }

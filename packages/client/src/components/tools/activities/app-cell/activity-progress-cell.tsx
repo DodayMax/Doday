@@ -5,14 +5,14 @@ import { Checkbox, Text } from '@components';
 import { AnyAction } from 'redux';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity, ActivityProgress } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/Activity';
 
 const css = require('./activity-cell.module.scss');
 
 interface ActivityProgressCellProps {
-  doday: ActivityProgress;
+  doday: Activity;
   active?: boolean;
-  onClick?: (route: string, doday: ActivityProgress) => void;
+  onClick?: (route: string, doday: Activity) => void;
   onComplete?: (doday: Activity) => AnyAction;
 }
 
@@ -24,18 +24,16 @@ export const ActivityProgressCell: React.SFC<ActivityProgressCellProps> = ({
 }) => {
   const classNames = classnames({
     [css.cell]: true,
-    [css.completed]: doday.completed,
+    [css.completed]: doday.progress && doday.progress.completed,
     [css.padded]: true,
     [css.active]: active,
   });
 
-  const origin = doday.origin as Activity;
-
   return (
     <li
       className={classNames}
-      key={origin.did}
-      onClick={() => onClick && onClick(`/progress/${origin.did}`, doday)}
+      key={doday.did}
+      onClick={() => onClick && onClick(`/progress/${doday.did}`, doday)}
     >
       {
         <Checkbox
@@ -43,19 +41,19 @@ export const ActivityProgressCell: React.SFC<ActivityProgressCellProps> = ({
           onClick={e => {
             e.stopPropagation();
             if (onComplete) {
-              onComplete(origin as Activity);
+              onComplete(doday);
             }
           }}
-          checked={doday.completed}
+          checked={doday.progress && doday.progress.completed}
         />
       }
       <Text wordwrap size={TypographySize.s} className={css.cellTitle}>
-        {origin.name}
+        {doday.name}
       </Text>
       <LayoutBlock absolute top="0" right="0">
         <Marker
           color={DodayColors.gray4}
-          text={origin.activityType}
+          text={doday.activityType}
           size={TypographySize.s}
         />
       </LayoutBlock>

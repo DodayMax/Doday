@@ -53,13 +53,13 @@ export function setActivityTypeActionCreator(
  * @returns {CreateActivityAction}
  */
 export function createActivityActionCreator(
-  activity: SerializedActivity,
+  doday: SerializedActivity,
   resource: SerializedResource
 ): CreateActivityAction {
   return {
     type: ActionConstants.CREATE_ACTIVITY,
     payload: {
-      activity,
+      doday,
       resource,
     },
   };
@@ -93,13 +93,13 @@ export function takeActivityActionCreator(
  * @returns {CreateAndTakeActivityAction}
  */
 export function createAndTakeActivityActionCreator(
-  activity: SerializedActivity,
+  doday: SerializedActivity,
   progress: SerializedActivityProgress
 ): CreateAndTakeActivityAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_ACTIVITY,
     payload: {
-      activity,
+      doday,
       progress,
     },
   };
@@ -203,7 +203,7 @@ export interface SetActivityTypeAction extends AnyAction {
 export interface CreateActivityAction extends AnyAction {
   type: ActionConstants.CREATE_ACTIVITY;
   payload: {
-    activity: SerializedActivity;
+    doday: SerializedActivity;
     resource: SerializedResource;
   };
 }
@@ -219,7 +219,7 @@ export interface TakeActivityAction extends AnyAction {
 export interface CreateAndTakeActivityAction extends AnyAction {
   type: ActionConstants.CREATE_AND_TAKE_ACTIVITY;
   payload: {
-    activity: SerializedActivity;
+    doday: SerializedActivity;
     progress: SerializedActivityProgress;
   };
 }

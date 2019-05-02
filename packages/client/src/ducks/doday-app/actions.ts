@@ -1,29 +1,19 @@
 import { AnyAction } from 'redux';
-import { Goal } from '@root/lib/models/entities/Goal';
-import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 import { DodayAppPaths } from '@root/lib/common-interfaces';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
-  TOGGLE_DODAY = '[doday-app] TOGGLE_DODAY',
-  UPDATE_DODAY = '[doday-app] UPDATE_DODAY',
-  DELETE_DODAY = '[doday-app] DELETE_DODAY',
-  REMOVE_DODAY = '[doday-app] REMOVE_DODAY',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   PUSH_TO_NAV_STACK_BY_DID = '[doday-app] PUSH_TO_NAV_STACK_BY_DID',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
   SET_NAV_STACK = '[doday-app] SET_NAV_STACK',
   CLEAR_NAV_STACK = '[doday-app] CLEAR_NAV_STACK',
   CHANGE_DATE = '[heroSettings] CHANGE_DATE',
-  FETCH_DODAYS_FOR_DATE = '[doday-app] FETCH_DODAYS_FOR_DATE',
-  FETCH_PUBLIC_DODAYS = '[doday-app] FETCH_PUBLIC_DODAYS',
-  SET_PUBLIC_DODAYS = '[doday-app] SET_PUBLIC_DODAYS',
-  SET_DODAYS_FOR_DATE = '[doday-app] SET_DODAYS_FOR_DATE',
+  SET_DODAYS = '[doday-app] SET_DODAYS',
+  SET_COMPLETED_DODAYS = '[doday-app] SET_COMPLETED_DODAYS',
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
-  FETCH_ALL_GOALS = '[doday-app] FETCH_ALL_GOALS',
-  SET_GOALS = '[doday-app] SET_GOALS',
-  DELETE_GOAL = '[doday-app] DELETE_GOAL',
   PLAN_OUT = '[doday-app] PLAN_OUT',
 }
 
@@ -54,19 +44,6 @@ export function changePath(path: DodayAppPaths): ChangePathAction {
 }
 
 /**
- * Set Goal[] as nav stack
- *
- * @export
- * @returns {SetNavStackAction}
- */
-export function setToNavStackActionCreator(goals: Goal[]): SetNavStackAction {
-  return {
-    type: ActionConstants.SET_NAV_STACK,
-    payload: goals,
-  };
-}
-
-/**
  * Clear nav stack
  *
  * @export
@@ -75,19 +52,6 @@ export function setToNavStackActionCreator(goals: Goal[]): SetNavStackAction {
 export function clearNavStackActionCreator(): ClearNavStackAction {
   return {
     type: ActionConstants.CLEAR_NAV_STACK,
-  };
-}
-
-/**
- * Push Goal to navigation stack
- *
- * @export
- * @returns {PushToNavigationStackAction}
- */
-export function pushToNavStack(goal: Goal): PushToNavigationStackAction {
-  return {
-    type: ActionConstants.PUSH_TO_NAV_STACK,
-    payload: goal,
   };
 }
 
@@ -132,99 +96,30 @@ export function changeDateActionCreator(date: Date): ChangeDodayAppDateAction {
 }
 
 /**
- * Fetch dodays for chosen date
- *
- * @export
- * @returns {FetchDodayForDate}
- */
-export function fetchDodaysForDate(): FetchDodayForDate {
-  return {
-    type: ActionConstants.FETCH_DODAYS_FOR_DATE,
-  };
-}
-
-/**
  * Set dodays for chosen date to redux store
  *
  * @export
- * @returns {SetDodaysForDate}
+ * @returns {SetDodaysAction}
  */
-export function setDodaysForDate(dodays: Doday[]): SetDodaysForDate {
+export function setDodaysActionCreator(dodays: DodayLike[]): SetDodaysAction {
   return {
-    type: ActionConstants.SET_DODAYS_FOR_DATE,
+    type: ActionConstants.SET_DODAYS,
     payload: dodays,
   };
 }
 
 /**
- * Fetch Hero's public dodays
+ * Set completed dodays for chosen date to redux store
  *
  * @export
- * @returns {FetchPublicDodaysAction}
+ * @returns {SetCompletedDodaysAction}
  */
-export function fetchPublicDodaysActionCreator(): FetchPublicDodaysAction {
+export function setCompletedDodaysActionCreator(
+  dodays: DodayLike[]
+): SetCompletedDodaysAction {
   return {
-    type: ActionConstants.FETCH_PUBLIC_DODAYS,
-  };
-}
-
-/**
- * Set public dodays to store
- *
- * @export
- * @returns {SetPublicDodaysAction}
- */
-export function setPublicDodaysActionCreator(
-  dodays: Doday[]
-): SetPublicDodaysAction {
-  return {
-    type: ActionConstants.SET_PUBLIC_DODAYS,
+    type: ActionConstants.SET_COMPLETED_DODAYS,
     payload: dodays,
-  };
-}
-
-/**
- * Toggle doday
- *
- * @export
- * @returns {ToggleDodayAction}
- */
-export function toggleDoday(doday: Doday): ToggleDodayAction {
-  return {
-    type: ActionConstants.TOGGLE_DODAY,
-    payload: doday,
-  };
-}
-
-/**
- * Update doday
- *
- * @export
- * @returns {UpdateDodayAction}
- */
-export function updateDodayActionCreator(
-  did: string,
-  updates: Partial<SerializedDoday>
-): UpdateDodayAction {
-  return {
-    type: ActionConstants.UPDATE_DODAY,
-    payload: {
-      did,
-      updates,
-    },
-  };
-}
-
-/**
- * Completely delete Doday from app and from created section
- *
- * @export
- * @returns {DeleteDodayAction}
- */
-export function deleteDodayActionCreator(doday: Doday): DeleteDodayAction {
-  return {
-    type: ActionConstants.DELETE_DODAY,
-    payload: doday,
   };
 }
 
@@ -238,57 +133,6 @@ export function setDodaysBadgeForToday(value: number): SetDodaysBadgeForToday {
   return {
     type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
     payload: value,
-  };
-}
-
-/**
- * Fetch all goals
- *
- * @export
- * @returns {FetchAllGoalsAction}
- */
-export function fetchAllGoalsActionCreator(): FetchAllGoalsAction {
-  return {
-    type: ActionConstants.FETCH_ALL_GOALS,
-  };
-}
-
-/**
- * Set goals to redux store
- *
- * @export
- * @returns {SetGoalsAction}
- */
-export function setGoalsActionCreator(goals: Goal[]): SetGoalsAction {
-  return {
-    type: ActionConstants.SET_GOALS,
-    payload: goals,
-  };
-}
-
-/**
- * Remove doday from my app
- *
- * @export
- * @returns {RemoveDodayAction}
- */
-export function removeDodayActionCreator(doday: Doday): RemoveDodayAction {
-  return {
-    type: ActionConstants.REMOVE_DODAY,
-    payload: doday,
-  };
-}
-
-/**
- * Delete goal and remove relations from dodays
- *
- * @export
- * @returns {DeleteGoalAction}
- */
-export function deleteGoalActionCreator(did: string): DeleteGoalAction {
-  return {
-    type: ActionConstants.DELETE_GOAL,
-    payload: did,
   };
 }
 
@@ -314,14 +158,19 @@ export interface SetLoadingState extends AnyAction {
   payload: boolean;
 }
 
+export interface SetDodaysAction extends AnyAction {
+  type: ActionConstants.SET_DODAYS;
+  payload: DodayLike[];
+}
+
+export interface SetCompletedDodaysAction extends AnyAction {
+  type: ActionConstants.SET_COMPLETED_DODAYS;
+  payload: DodayLike[];
+}
+
 export interface ChangePathAction extends AnyAction {
   type: ActionConstants.CHANGE_PATH;
   payload: DodayAppPaths;
-}
-
-export interface PushToNavigationStackAction extends AnyAction {
-  type: ActionConstants.PUSH_TO_NAV_STACK;
-  payload: Goal;
 }
 
 export interface PushToNavigationStackByDIDAction extends AnyAction {
@@ -338,73 +187,13 @@ export interface ChangeDodayAppDateAction extends AnyAction {
   payload: Date;
 }
 
-export interface FetchDodayForDate extends AnyAction {
-  type: ActionConstants.FETCH_DODAYS_FOR_DATE;
-}
-
-export interface SetDodaysForDate extends AnyAction {
-  type: ActionConstants.SET_DODAYS_FOR_DATE;
-  payload: Doday[];
-}
-
-export interface FetchPublicDodaysAction extends AnyAction {
-  type: ActionConstants.FETCH_PUBLIC_DODAYS;
-}
-
-export interface SetPublicDodaysAction extends AnyAction {
-  type: ActionConstants.SET_PUBLIC_DODAYS;
-  payload: Doday[];
-}
-
 export interface SetDodaysBadgeForToday extends AnyAction {
   type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
   payload: number;
 }
 
-export interface FetchAllGoalsAction extends AnyAction {
-  type: ActionConstants.FETCH_ALL_GOALS;
-}
-
-export interface SetGoalsAction extends AnyAction {
-  type: ActionConstants.SET_GOALS;
-  payload: Goal[];
-}
-
-export interface ToggleDodayAction extends AnyAction {
-  type: ActionConstants.TOGGLE_DODAY;
-  payload: Doday;
-}
-
-export interface UpdateDodayAction extends AnyAction {
-  type: ActionConstants.UPDATE_DODAY;
-  payload: {
-    did: string;
-    updates: Partial<SerializedDoday>;
-  };
-}
-
-export interface DeleteDodayAction extends AnyAction {
-  type: ActionConstants.DELETE_DODAY;
-  payload: Doday;
-}
-
-export interface RemoveDodayAction extends AnyAction {
-  type: ActionConstants.REMOVE_DODAY;
-  payload: Doday;
-}
-
-export interface SetNavStackAction extends AnyAction {
-  type: ActionConstants.SET_NAV_STACK;
-  payload: Goal[];
-}
-
 export interface ClearNavStackAction extends AnyAction {
   type: ActionConstants.CLEAR_NAV_STACK;
-}
-
-export interface DeleteGoalAction extends AnyAction {
-  type: ActionConstants.DELETE_GOAL;
-  payload: string;
 }
 
 export interface PlanOutAction extends AnyAction {
@@ -419,18 +208,10 @@ export interface PlanOutAction extends AnyAction {
 export type ActionTypes =
   | ChangePathAction
   | SetLoadingState
-  | PushToNavigationStackAction
+  | SetDodaysAction
+  | SetCompletedDodaysAction
   | PushToNavigationStackByDIDAction
   | PopFromNavigationStackAction
-  | SetNavStackAction
   | ClearNavStackAction
   | ChangeDodayAppDateAction
-  | FetchDodayForDate
-  | SetDodaysForDate
-  | FetchPublicDodaysAction
-  | SetPublicDodaysAction
-  | SetDodaysBadgeForToday
-  | SetGoalsAction
-  | ToggleDodayAction
-  | RemoveDodayAction
-  | DeleteGoalAction;
+  | SetDodaysBadgeForToday;

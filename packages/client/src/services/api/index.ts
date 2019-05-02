@@ -1,4 +1,3 @@
-import * as activities from './activities';
 import * as dodays from './dodays';
 import * as goals from './goals';
 import * as heroes from './heroes';
@@ -8,14 +7,4 @@ import * as payments from './payments';
 import * as constants from './constants';
 import client from './apollo-client';
 
-export {
-  activities,
-  client,
-  dodays,
-  goals,
-  heroes,
-  tags,
-  days,
-  payments,
-  constants,
-};
+export { client, dodays, goals, heroes, tags, days, payments, constants };

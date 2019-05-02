@@ -17,6 +17,7 @@ export const getDodaysController = (req: Request, res: Response) => {
     heroDID: req.user.did,
   };
 
+  if (req.query.type) params.type = Number(req.query.type);
   if (req.query.createdBy) params.createdBy = req.query.createdBy;
 
   session
@@ -163,11 +164,7 @@ export const updateDodayController = (req: Request, res: Response) => {
       updateDodayTransaction(tx, {
         heroDID: req.user.did,
         dodayDID: req.params.did,
-        updates: {
-          doday: body.doday,
-          progress: body.progress,
-          resource: body.resource,
-        },
+        updates: body,
       })
     )
     .then(result => {
@@ -182,5 +179,6 @@ export const updateDodayController = (req: Request, res: Response) => {
 
 export type DodaysQueryParams = {
   heroDID: string;
+  type?: number;
   createdBy?: string;
 };

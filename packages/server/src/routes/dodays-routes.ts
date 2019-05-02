@@ -5,6 +5,9 @@ module.exports = app => {
    * Get dodays with query params
    * Query params:
    *
+   * type: number - only dodays with passed DodayType
+   *  0 - Activity
+   *  1 - FlashCard
    * createdBy: DID(string) - created by Hero with passed DID
    */
   app.get('/api/dodays', dodaysController.getDodaysController);

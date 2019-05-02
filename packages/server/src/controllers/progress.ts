@@ -12,8 +12,9 @@ export const getDodaysWithProgressController = (
     heroDID: req.user.did,
   };
 
-  if (req.query.date) params.startdate = req.query.startdate;
-  if (req.query.date) params.enddate = req.query.enddate;
+  if (req.query.dodaytype) params.dodaytype = Number(req.query.dodaytype);
+  if (req.query.startdate) params.startdate = req.query.startdate;
+  if (req.query.enddate) params.enddate = req.query.enddate;
   if (req.query.completed) params.completed = req.query.completed;
   if (req.query.createdBy) params.createdBy = req.query.createdBy;
 
@@ -31,6 +32,7 @@ export const getDodaysWithProgressController = (
 
 export type DodaysWithProgressQueryParams = {
   heroDID: string;
+  dodaytype?: number;
   startdate?: number;
   enddate?: number;
   completed?: boolean;

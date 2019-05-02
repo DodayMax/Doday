@@ -1,20 +1,16 @@
 import {
   Activity,
-  GraphQLResponseActivity,
   ActivityProgress,
   SerializedActivity,
-  APIResponseActivity,
+  SerializedActivityProgress,
 } from './activity';
-import { Hero, GraphQLResponseHero, APIResponseHero } from './Hero';
-import {
-  Neo4jDateTime,
-  Neo4jResponseDateTime,
-} from '@root/lib/common-interfaces';
+import { Hero, APIResponseHero } from './Hero';
+import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
 import {
   FlashCard,
-  GraphQLResponseFlashCard,
   FlashCardProgress,
   SerializedFlashCard,
+  SerializedFlashCardProgress,
 } from './flash-card';
 
 /** Doday base abstract interface */
@@ -32,8 +28,8 @@ export interface DodayBase {
   ownerDID: string;
   /** Datetime when doday was created */
   created: Date;
-  doing: GraphQLResponseHero[];
-  done: GraphQLResponseHero[];
+  /** Progress node for this Doday */
+  progress?: ProgressBase;
 }
 
 export interface SerializedDodayBase {
@@ -54,17 +50,6 @@ export interface APIResponseDodayBase {
   created?: number;
 }
 
-export interface GraphQLResponseDodayBase {
-  did: string;
-  type: number;
-  public: boolean;
-  created?: Neo4jDateTime;
-  owner: GraphQLResponseHero[];
-  ownerDID: string;
-  doing: GraphQLResponseHero[];
-  done: GraphQLResponseHero[];
-}
-
 /** Progress base abstract interface */
 
 export interface ProgressBase {
@@ -78,8 +63,6 @@ export interface ProgressBase {
   dateIsLocked?: boolean;
   /** Datetime when Doday is completed */
   completedAt?: Date;
-  /** Actual Doday node for this Progress */
-  origin: DodayLike;
 }
 
 /** Which data we send to API */
@@ -89,7 +72,6 @@ export interface SerializedProgressBase {
   date?: number;
   dateIsLocked?: boolean;
   completedAt?: number;
-  origin?: string;
 }
 
 export interface APIResponseProgressBase {
@@ -98,18 +80,6 @@ export interface APIResponseProgressBase {
   completed: boolean;
   completedAt?: Neo4jResponseDateTime;
   tookAt: Neo4jResponseDateTime;
-  origin: APIResponseActivity;
-}
-
-export interface GraphQLResponseProgressBase {
-  did: string;
-  completed: boolean;
-  tookAt: Neo4jDateTime;
-  date: Neo4jDateTime;
-  dateIsLocked: boolean;
-  completedAt?: Neo4jDateTime;
-  hero: GraphQLResponseHero[];
-  origin: DodayLikeGraphQLResponse[];
 }
 
 /** Other common interfaces */
@@ -120,10 +90,8 @@ export enum DodayTypes {
 }
 
 export type DodayLike = Activity | FlashCard;
-
-export type DodayLikeGraphQLResponse =
-  | GraphQLResponseActivity
-  | GraphQLResponseFlashCard;
-
 export type SerializedDodayLike = SerializedActivity | SerializedFlashCard;
 export type ProgressLike = ActivityProgress | FlashCardProgress;
+export type SerializedProgressLike =
+  | SerializedActivityProgress
+  | SerializedFlashCardProgress;

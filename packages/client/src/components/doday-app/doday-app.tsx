@@ -8,20 +8,11 @@ import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { Grid, Icons } from '@components';
 import {
   ChangeDodayAppDateAction,
-  FetchAllGoalsAction,
-  ToggleDodayAction,
   PlanOutAction,
 } from '@root/ducks/doday-app/actions';
-import {
-  PopFromNavigationStackAction,
-  FetchDodayForDate,
-} from '@root/ducks/doday-app/actions';
+import { FetchDodayForDate } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
-import {
-  DodayTypes,
-  DodayLikeProgress,
-  DodayLike,
-} from '@root/lib/models/entities/common';
+import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import { DodayAppPaths, Space } from '@root/lib/common-interfaces';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
@@ -30,6 +21,7 @@ import { Button, ButtonSize } from '../shared/_atoms/button';
 import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
 import { ActivityCell } from '../tools/activities/app-cell/activity-cell';
+import { RootState } from '@root/lib/models';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -40,20 +32,17 @@ interface DodayAppProps {
 
 interface PropsFromConnect {
   loading: boolean;
-  dodays: DodayLikeProgress[];
-  publicDodays: DodayLike[];
+  dodays: DodayLike[];
   chosenDate?: Date;
   changeDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
   // navStack: Goal[];
   // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
-  popFromNavStack: () => PopFromNavigationStackAction;
+  // popFromNavStack: () => PopFromNavigationStackAction;
   fetchDodaysForDate: () => FetchDodayForDate;
-  fetchAllGoalsActionCreator: () => FetchAllGoalsAction;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   fetchSelectedDodayWithProgressActionCreator: (
     did: string
   ) => FetchSelectedDodayAction;
-  toggleDoday: (doday: Activity) => ToggleDodayAction;
   planOutActionCreator: (date: number) => PlanOutAction;
 }
 
@@ -62,7 +51,6 @@ export class DodayAppComponent extends React.Component<
 > {
   componentDidMount() {
     this.props.fetchDodaysForDate();
-    this.props.fetchAllGoalsActionCreator();
   }
 
   getDodaysToRender = () => {
@@ -107,23 +95,16 @@ export class DodayAppComponent extends React.Component<
   };
 
   renderContent() {
-    const {
-      path,
-      chosenDate,
-      history,
-      changeDateActionCreator,
-      popFromNavStack,
-      loading,
-      // navStack,
-    } = this.props;
+    const { path, chosenDate, changeDateActionCreator, loading } = this.props;
 
     const totalDurationOfTheDay = this.getDodaysToRender()
       .filter(
-        progress =>
-          progress.origin.type === DodayTypes.Activity && !progress.completed
+        doday =>
+          doday.type === DodayTypes.Activity &&
+          doday.progress &&
+          !doday.progress.completed
       )
-      .map((a: DodayLikeProgress) => {
-        const doday = a.origin;
+      .map((doday: DodayLike) => {
         const activity = isActivity(doday);
         return activity && durationToMinutes((doday as Activity).duration);
       })
@@ -220,14 +201,11 @@ export class DodayAppComponent extends React.Component<
   }
 }
 
-const mapState = ({ dodayApp }) => ({
+const mapState = ({ dodayApp }: RootState) => ({
   path: dodayApp.path,
   loading: dodayApp.loading,
   chosenDate: dodayApp.chosenDate,
   dodays: dodayApp.dodays,
-  goals: dodayApp.goals,
-  publicDodays: dodayApp.public,
-  navStack: dodayApp.navStack,
 });
 
 export default connect(

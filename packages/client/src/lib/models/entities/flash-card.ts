@@ -2,8 +2,8 @@ import {
   DodayBase,
   SerializedDodayBase,
   APIResponseDodayBase,
-  GraphQLResponseDodayBase,
   ProgressBase,
+  SerializedProgressBase,
 } from './common';
 
 export interface FlashCard extends DodayBase {
@@ -23,9 +23,5 @@ export interface APIResponseFlashCard extends APIResponseDodayBase {
   back: string;
 }
 
-export interface GraphQLResponseFlashCard extends GraphQLResponseDodayBase {
-  front: string;
-  back: string;
-}
-
 export interface FlashCardProgress extends ProgressBase {}
+export interface SerializedFlashCardProgress extends SerializedProgressBase {}

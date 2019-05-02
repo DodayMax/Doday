@@ -11,7 +11,7 @@ import ActivityDetails from '@root/components/tools/activities/details/activity-
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
-  selectedProgress: DodayLike;
+  selectedDoday: DodayLike;
   fetchSelectedDodayActionCreator: (
     did: string
   ) => detailsActions.FetchSelectedDodayAction;

@@ -4,7 +4,9 @@ module.exports = app => {
   /**
    * Get dodays with progress with query params
    *
-   * progress: boolean - to get dodays nodes with Progress
+   * dodaytype: number - get Progress only for dodays with passed DodayType
+   *  0 - Activity
+   *  1 - FlashCard
    * startdate: number - >= startdate
    * enddate: number - <= enddate
    * completed: boolean - if undefined - both

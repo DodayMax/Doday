@@ -3,9 +3,6 @@ import * as _ from 'lodash';
 import {
   ActionConstants,
   FetchSelectedDodayAction,
-  setSelectedDodayActionCreator,
-  FetchSelectedGoalAction,
-  setSelectedGoalActionCreator,
   setDirtyStatusActionCreator,
   RequestForSetUpdatesAction,
   setUpdatesForSelectedDodayActionCreator,
@@ -14,7 +11,6 @@ import {
 import { api } from '@root/services';
 import { updatesSelector, selectedDoday } from './selectors';
 import { isEmptyObject } from '@root/lib/utils';
-import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
 
 /**
  * Fetch selected doday saga
@@ -22,10 +18,10 @@ import { SerializedDoday, Doday } from '@root/lib/models/entities/Doday';
  * @param {FetchSelectedDodayAction} action
  */
 function* fetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
-  const doday = yield call(api.dodays.queries.getDodayByDID, {
-    did: action.payload,
-  });
-  yield put(setSelectedDodayActionCreator(doday));
+  // const doday = yield call(api.dodays.queries.getDodayByDID, {
+  //   did: action.payload,
+  // });
+  // yield put(setSelectedDodayActionCreator(doday));
 }
 
 /**
@@ -34,22 +30,10 @@ function* fetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
  * @param {FetchSelectedProgressAction} action
  */
 function* fetchSelectedProgressSaga(action: FetchSelectedProgressAction) {
-  const progress = yield call(api.dodays.queries.dodayProgressByDID, {
-    did: action.payload,
-  });
-  yield put(setSelectedDodayActionCreator(progress));
-}
-
-/**
- * Fetch selected goal saga
- *
- * @param {FetchSelectedGoalAction} action
- */
-function* fetchSelectedGoalSaga(action: FetchSelectedGoalAction) {
-  const goal = yield call(api.goals.queries.goalByDID, {
-    did: action.payload,
-  });
-  yield put(setSelectedGoalActionCreator(goal));
+  // const progress = yield call(api.dodays.queries.dodayProgressByDID, {
+  //   did: action.payload,
+  // });
+  // yield put(setSelectedDodayActionCreator(progress));
 }
 
 /**
@@ -59,15 +43,15 @@ function* fetchSelectedGoalSaga(action: FetchSelectedGoalAction) {
  * @param {RequestForSetUpdatesAction} action
  */
 function* setUpdatesAndDirtyStatusSaga(action: RequestForSetUpdatesAction) {
-  yield put(setUpdatesForSelectedDodayActionCreator(action.payload));
-  const updates: Partial<SerializedDoday> = yield select(updatesSelector);
-  const selected: Doday = yield select(selectedDoday);
-  const dirty =
-    !isEmptyObject(updates) &&
-    (updates.dateIsLocked !== selected.dateIsLocked ||
-      updates.date != null ||
-      updates.relatedGoal != null);
-  yield put(setDirtyStatusActionCreator(dirty));
+  // yield put(setUpdatesForSelectedDodayActionCreator(action.payload));
+  // const updates: Partial<SerializedDoday> = yield select(updatesSelector);
+  // const selected: Doday = yield select(selectedDoday);
+  // const dirty =
+  //   !isEmptyObject(updates) &&
+  //   (updates.dateIsLocked !== selected.dateIsLocked ||
+  //     updates.date != null ||
+  //     updates.relatedGoal != null);
+  // yield put(setDirtyStatusActionCreator(dirty));
 }
 
 export default [
@@ -76,7 +60,6 @@ export default [
     ActionConstants.FETCH_SELECTED_PROGRESS,
     fetchSelectedProgressSaga
   ),
-  takeLatest(ActionConstants.FETCH_SELECTED_GOAL, fetchSelectedGoalSaga),
   takeLatest(
     ActionConstants.REQUEST_FOR_SET_UPDATES,
     setUpdatesAndDirtyStatusSaga

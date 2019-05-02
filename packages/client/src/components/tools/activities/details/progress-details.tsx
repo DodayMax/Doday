@@ -45,6 +45,7 @@ import {
   ActivityProgress,
 } from '@root/lib/models/entities/Activity';
 import { Pageflow, PageWrapperChildContext } from '@root/components/pageflow';
+import { SerializedProgressLike } from '@root/lib/models/entities/common';
 
 const css = require('./progress-details.module.scss');
 
@@ -55,24 +56,24 @@ interface ActivityProgressDetailsState {}
 interface PropsFromConnect {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedActivity>;
+  updates?: Partial<SerializedProgressLike>;
   myDID?: string;
-  selectedDoday: ActivityProgress;
+  selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator: (
     did: string,
-    updates: Partial<SerializedActivity>
+    updates: Partial<SerializedProgressLike>
   ) => UpdateDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
   requestForSetUpdatesActionCreator: (
-    updates: Partial<SerializedActivity>
+    updates: Partial<SerializedProgressLike>
   ) => RequestForSetUpdatesAction;
   deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
   removeDodayActionCreator: (doday: Activity) => RemoveDodayAction;
   updateSelectedDodayActionCreator: (
     did: string,
-    updates: Partial<Activity>
+    updates: Partial<SerializedProgressLike>
   ) => UpdateSelectedDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
@@ -107,9 +108,7 @@ class ActivityProgressDetails extends React.Component<
   isOwner = () => {
     const { selectedDoday, myDID } = this.props;
     return (
-      selectedDoday.origin.owner.did &&
-      myDID &&
-      selectedDoday.origin.owner.did === myDID
+      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID
     );
   };
 
@@ -123,16 +122,15 @@ class ActivityProgressDetails extends React.Component<
       updates,
       loading,
     } = this.props;
-    const origin = selectedDoday.origin as Activity;
     const actions = [
       <Button
         key={1}
         size={ButtonSize.small}
         onClick={() => {
           if (this.isOwner) {
-            this.props.deleteDodayActionCreator(origin);
+            this.props.deleteDodayActionCreator(selectedDoday);
           } else {
-            this.props.removeDodayActionCreator(origin);
+            this.props.removeDodayActionCreator(selectedDoday);
           }
           history.push('/');
         }}
@@ -150,8 +148,8 @@ class ActivityProgressDetails extends React.Component<
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
-            updateDodayActionCreator(selectedDoday.origin.did, updates);
-            updateSelectedDodayActionCreator(selectedDoday.origin.did, {
+            updateDodayActionCreator(selectedDoday.did, updates);
+            updateSelectedDodayActionCreator(selectedDoday.did, {
               ...updates,
               date: updates && updates.date && new Date(updates.date),
             } as any);
@@ -167,13 +165,13 @@ class ActivityProgressDetails extends React.Component<
   };
 
   status = () => {
-    const origin = this.props.selectedDoday.origin as Activity;
+    const { selectedDoday } = this.props;
     return [
       <Marker
         key={1}
         rounded
-        color={activityTypeColor(origin.activityType)}
-        text={origin.activityType}
+        color={activityTypeColor(selectedDoday.activityType)}
+        text={selectedDoday.activityType}
       />,
     ];
   };
@@ -187,14 +185,13 @@ class ActivityProgressDetails extends React.Component<
 
   render() {
     const { updates, selectedDoday } = this.props;
-    const origin = selectedDoday && (selectedDoday.origin as Activity);
 
     // const goal =
     //   updates && updates.relatedGoal
     //     ? goals && goals.find(goal => goal.did === updates.relatedGoal)
     //     : undefined;
 
-    const resource = origin && origin.resource;
+    const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
 
@@ -206,7 +203,9 @@ class ActivityProgressDetails extends React.Component<
     const dateIsLocked =
       updates && updates.dateIsLocked != null
         ? updates.dateIsLocked
-        : selectedDoday && selectedDoday.dateIsLocked;
+        : selectedDoday &&
+          selectedDoday.progress &&
+          selectedDoday.progress.dateIsLocked;
 
     return (
       <Page
@@ -221,11 +220,11 @@ class ActivityProgressDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
-              {origin.duration && (
+              {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel(origin.duration)}
+                    {durationToLabel(selectedDoday.duration)}
                   </Text>
                   <Text
                     size={TypographySize.s}
@@ -233,7 +232,8 @@ class ActivityProgressDetails extends React.Component<
                   >
                     (
                     {Math.round(
-                      (durationToMinutes(origin.duration) / (8 * 60)) * 100
+                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                        100
                     )}
                     % of your day)
                   </Text>
@@ -245,7 +245,7 @@ class ActivityProgressDetails extends React.Component<
               spaceBelow={Space.Medium}
               size={TypographySize.h1}
             >
-              {origin.name}
+              {selectedDoday.name}
             </Text>
             {youtubeLink ? (
               <div
@@ -293,12 +293,18 @@ class ActivityProgressDetails extends React.Component<
                   icon={<Icons.Clock />}
                   selected={
                     (updates && updates.date && new Date(updates.date)) ||
-                    selectedDoday.date
+                    (selectedDoday &&
+                      selectedDoday.progress &&
+                      selectedDoday.progress.date)
                   }
                   onChange={date => {
                     const dateDirty =
                       moment(date).format('ll') !==
-                      moment(selectedDoday.date).format('ll');
+                      moment(
+                        selectedDoday &&
+                          selectedDoday.progress &&
+                          selectedDoday.progress.date
+                      ).format('ll');
                     this.props.requestForSetUpdatesActionCreator({
                       date: dateDirty ? date.getTime() : undefined,
                     });
@@ -340,7 +346,6 @@ const mapState = (state: RootState) => ({
   updates: state.dodayDetails.updates,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
-  goals: state.dodayApp.goals,
 });
 
 export default connect(

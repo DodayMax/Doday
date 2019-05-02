@@ -41,6 +41,7 @@ import {
   Activity,
 } from '@root/lib/models/entities/Activity';
 import { Pageflow, PageWrapperChildContext } from '@root/components/pageflow';
+import { SerializedProgressLike } from '@root/lib/models/entities/common';
 
 const css = require('./activity-details.module.scss');
 
@@ -51,18 +52,18 @@ interface ActivityDetailsState {}
 interface PropsFromConnect {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedActivity>;
+  updates?: Partial<SerializedProgressLike>;
   myDID?: string;
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator: (
     did: string,
-    updates: Partial<SerializedActivity>
+    updates: Partial<SerializedProgressLike>
   ) => UpdateDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
   requestForSetUpdatesActionCreator: (
-    updates: Partial<SerializedActivity>
+    updates: Partial<SerializedProgressLike>
   ) => RequestForSetUpdatesAction;
   deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
   removeDodayActionCreator: (doday: Activity) => RemoveDodayAction;
@@ -300,7 +301,6 @@ const mapState = (state: RootState) => ({
   updates: state.dodayDetails.updates,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
-  goals: state.dodayApp.goals,
 });
 
 export default connect(

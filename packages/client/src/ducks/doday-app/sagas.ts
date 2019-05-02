@@ -1,41 +1,16 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import {
-  ActionConstants,
-  setDodaysForDate,
-  FetchDodayForDate,
-  setDodaysBadgeForToday,
-  setAppLoadingState,
-  ToggleDodayAction,
-  fetchDodaysForDate,
-  RemoveDodayAction,
-  UpdateDodayAction,
-  changeDateActionCreator,
-  FetchAllGoalsAction,
-  setGoalsActionCreator,
-  SetGoalsAction,
-  setToNavStackActionCreator,
-  fetchAllGoalsActionCreator,
-  DeleteGoalAction,
-  PushToNavigationStackByDIDAction,
-  changePath,
-  PlanOutAction,
-  FetchPublicDodaysAction,
-  setPublicDodaysActionCreator,
-  ChangePathAction,
-  fetchPublicDodaysActionCreator,
-} from './actions';
+import { ActionConstants } from './actions';
 import { chosenDate, myDID } from '@ducks/all-selectors';
 import { api } from '@services';
-import { Doday } from '@root/lib/models/entities/Doday';
 import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actions';
 import { navStack, goalByDIDFromStore } from './selectors';
 
 /**
  * Fetch dodays for chosen date saga
  *
- * @param {FetchDodayForDate} action
+ * @param {FetchDodaysAction} action
  */
-function* fetchDodayForDateSaga(action: FetchDodayForDate) {
+function* fetchDodaysActionSaga(action: FetchDodaysAction) {
   yield put(setAppLoadingState(true));
   const date: Date = yield select(chosenDate);
   const dodays = yield call(
@@ -207,7 +182,7 @@ function* changePathSaga(action: ChangePathAction) {
 }
 
 export default [
-  takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodayForDateSaga),
+  takeLatest(ActionConstants.FETCH_DODAYS_FOR_DATE, fetchDodaysActionSaga),
   takeLatest(ActionConstants.FETCH_PUBLIC_DODAYS, FetchPublicDodaysActionSaga),
   takeLatest(ActionConstants.CHANGE_DATE, fetchDodayForDateSaga),
   takeLatest(ActionConstants.FETCH_ALL_GOALS, fetchAllGoalsSaga),

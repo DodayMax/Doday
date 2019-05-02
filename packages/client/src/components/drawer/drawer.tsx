@@ -219,7 +219,6 @@ export class DrawerComponent extends React.Component<
 const mapState = (state: RootState) => ({
   badge: state.dodayApp.badge,
   path: state.dodayApp.path,
-  goals: state.dodayApp.goals,
 });
 
 export default withRouter(

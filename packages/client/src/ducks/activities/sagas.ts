@@ -31,7 +31,7 @@ import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actio
 function* createActivityActionSaga(action: CreateActivityAction) {
   yield put(setBuilderLoadingState(true));
   const res = yield call(
-    api.activities.mutations.createActivityMutation,
+    api.dodays.mutations.createDodayMutation,
     action.payload
   );
   if (res.status === 200) {
