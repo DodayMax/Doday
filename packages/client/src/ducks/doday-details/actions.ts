@@ -63,21 +63,6 @@ export function fetchSelectedProgressActionCreator(
 }
 
 /**
- * Select goal and set to the store
- *
- * @export
- * @returns {FetchSelectedGoalAction}
- */
-export function fetchSelectedGoalActionCreator(
-  did: string
-): FetchSelectedGoalAction {
-  return {
-    type: ActionConstants.FETCH_SELECTED_GOAL,
-    payload: did,
-  };
-}
-
-/**
  * Set selected doday to store action
  *
  * @export
@@ -89,21 +74,6 @@ export function setSelectedDodayActionCreator(
   return {
     type: ActionConstants.SET_SELECTED_DODAY,
     payload: progress,
-  };
-}
-
-/**
- * Set selected goal to store action
- *
- * @export
- * @returns {SetSelectedGoalAction}
- */
-export function setSelectedGoalActionCreator(
-  goal: Goal
-): SetSelectedGoalAction {
-  return {
-    type: ActionConstants.SET_SELECTED_GOAL,
-    payload: goal,
   };
 }
 
@@ -197,6 +167,18 @@ export function clearDirtyStuffActionCreator(): ClearDirtyStuffAction {
     type: ActionConstants.CLEAR_DIRTY_STUFF,
   };
 }
+
+export const actionCreators = {
+  setDodayDetailsLoadingStateActionCreator,
+  fetchSelectedDodayActionCreator,
+  setSelectedDodayActionCreator,
+  updateSelectedDodayActionCreator,
+  clearSelectedDodayActionCreator,
+  setDirtyStatusActionCreator,
+  requestForSetUpdatesActionCreator,
+  setUpdatesForSelectedDodayActionCreator,
+  clearDirtyStuffActionCreator,
+};
 
 /**
  * Define return types of actions

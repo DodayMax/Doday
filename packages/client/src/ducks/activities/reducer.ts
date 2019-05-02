@@ -2,12 +2,12 @@ import * as actions from './actions';
 import { BuilderStatus } from '../builder/reducer';
 import { ActivityType } from '@root/lib/common-interfaces';
 
-export const initialState: BuilderActivitiesState = {};
+export const initialState: ActivityBuilderState = {};
 
 export default (
   state = initialState,
   action?: actions.ActionTypes
-): BuilderActivitiesState => {
+): ActivityBuilderState => {
   switch (action && action.type) {
     case actions.ActionConstants.SET_ACTIVITY_TYPE:
       return {
@@ -24,6 +24,13 @@ export default (
         ...state,
         parsedMetadata: action.payload,
       };
+    case actions.ActionConstants.CLEAR_PARSED_URL_METADATA:
+      return {
+        ...state,
+        activityType: undefined,
+        isUrlParsing: false,
+        parsedMetadata: undefined,
+      };
     case actions.ActionConstants.CLEAR_ACTIVITIES_BUILDER:
       return initialState;
     default:
@@ -31,7 +38,7 @@ export default (
   }
 };
 
-export type BuilderActivitiesState = {
+export type ActivityBuilderState = {
   activityType?: ActivityType;
   isUrlParsing?: boolean;
   parsedMetadata?: any;

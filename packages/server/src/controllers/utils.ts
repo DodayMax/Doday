@@ -93,7 +93,11 @@ export const planout = async (req: Request, res: Response) => {
       multyUpdateDodaysTransaction(tx, {
         heroDID: req.user.did,
         dids: dodaysToStay.map(doday => doday.did),
-        updates: { date },
+        updates: {
+          progress: {
+            date,
+          },
+        },
       })
     );
     return dodaysToReplan || [];
@@ -102,8 +106,6 @@ export const planout = async (req: Request, res: Response) => {
   do {
     const dayInfoResponse = await dayInfo(startDate);
     const parsedDayInfo = parseDayInfoResponse(dayInfoResponse);
-    console.log('//////////', parsedDayInfo.selectedDuration);
-    console.log('//////////', parsedDayInfo.otherDodays.length);
     replannedDodays = await fillDay(
       startDate,
       parsedDayInfo.selectedDuration,

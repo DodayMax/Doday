@@ -1,4 +1,4 @@
-import { DodayColors, ActivityTypes } from '../common-interfaces';
+import { DodayColors, ActivityType } from '../common-interfaces';
 import { DodayTypes, DodayLike } from '../models/entities/common';
 import { Activity } from '../models/entities/Activity';
 
@@ -63,7 +63,7 @@ export const detectColor: (color?: DodayColors) => string = color => {
   }
 };
 
-export const activityTypeColor = (type: ActivityTypes) => {
+export const activityTypeColor = (type: ActivityType) => {
   switch (type) {
     case 'read':
       return DodayColors.gray3;

@@ -4,6 +4,7 @@ import {
   SerializedActivityProgress,
 } from '@root/lib/models/entities/Activity';
 import { ActivityType } from '@root/lib/common-interfaces';
+import { SerializedResource } from '@root/lib/models/entities/resource';
 
 export enum ActionConstants {
   FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
@@ -14,6 +15,7 @@ export enum ActionConstants {
   PARSE_URL = '[builder] PARSE_URL',
   SET_URL_PARSING_PROGRESS = '[builder] SET_URL_PARSING_PROGRESS',
   SET_PARSED_URL_METADATA_OBJECT = '[builder] SET_PARSED_URL_METADATA_OBJECT',
+  CLEAR_PARSED_URL_METADATA = '[builder] CLEAR_PARSED_URL_METADATA',
   CLEAR_ACTIVITIES_BUILDER = '[builder] CLEAR_ACTIVITIES_BUILDER',
 }
 
@@ -23,7 +25,7 @@ export enum ActionConstants {
  * @export
  * @returns {FetchActivityTypesAction}
  */
-export function fetchActivityTypes(): FetchActivityTypesAction {
+export function fetchActivityTypesActionCreator(): FetchActivityTypesAction {
   return {
     type: ActionConstants.FETCH_ACTIVITY_TYPES,
   };
@@ -51,11 +53,15 @@ export function setActivityTypeActionCreator(
  * @returns {CreateActivityAction}
  */
 export function createActivityActionCreator(
-  doday: SerializedActivity
+  activity: SerializedActivity,
+  resource: SerializedResource
 ): CreateActivityAction {
   return {
     type: ActionConstants.CREATE_ACTIVITY,
-    payload: doday,
+    payload: {
+      activity,
+      resource,
+    },
   };
 }
 
@@ -67,11 +73,15 @@ export function createActivityActionCreator(
  * @returns {TakeActivityAction}
  */
 export function takeActivityActionCreator(
+  dodayDID: string,
   progress: Partial<SerializedActivityProgress>
 ): TakeActivityAction {
   return {
     type: ActionConstants.TAKE_ACTIVITY,
-    payload: progress,
+    payload: {
+      dodayDID,
+      progress,
+    },
   };
 }
 
@@ -144,6 +154,18 @@ export function parseUrlMetadataActionCreator(
  * Clear parsed metadata from store
  *
  * @export
+ * @returns {ClearParsedUrlMetadataAction}
+ */
+export function clearParsedUrlMetadataActionCreator(): ClearParsedUrlMetadataAction {
+  return {
+    type: ActionConstants.CLEAR_PARSED_URL_METADATA,
+  };
+}
+
+/**
+ * Clear activities builder data from store
+ *
+ * @export
  * @returns {ClearActivitiesBuilderAction}
  */
 export function clearActivitiesBuilderActionCreator(): ClearActivitiesBuilderAction {
@@ -151,6 +173,19 @@ export function clearActivitiesBuilderActionCreator(): ClearActivitiesBuilderAct
     type: ActionConstants.CLEAR_ACTIVITIES_BUILDER,
   };
 }
+
+export const actionCreators = {
+  fetchActivityTypesActionCreator,
+  setActivityTypeActionCreator,
+  createActivityActionCreator,
+  takeActivityActionCreator,
+  createAndTakeActivityActionCreator,
+  setUrlParsingProgressActionCreator,
+  setParsedUrlMetadataObjectActionCreator,
+  parseUrlMetadataActionCreator,
+  clearParsedUrlMetadataActionCreator,
+  clearActivitiesBuilderActionCreator,
+};
 
 /**
  * Define return types of actions
@@ -167,12 +202,18 @@ export interface SetActivityTypeAction extends AnyAction {
 
 export interface CreateActivityAction extends AnyAction {
   type: ActionConstants.CREATE_ACTIVITY;
-  payload: SerializedActivity;
+  payload: {
+    activity: SerializedActivity;
+    resource: SerializedResource;
+  };
 }
 
 export interface TakeActivityAction extends AnyAction {
   type: ActionConstants.TAKE_ACTIVITY;
-  payload: Partial<SerializedActivityProgress>;
+  payload: {
+    dodayDID: string;
+    progress: Partial<SerializedActivityProgress>;
+  };
 }
 
 export interface CreateAndTakeActivityAction extends AnyAction {
@@ -198,6 +239,10 @@ export interface SetParsedUrlMetadataObjectAction extends AnyAction {
   payload: any;
 }
 
+export interface ClearParsedUrlMetadataAction extends AnyAction {
+  type: ActionConstants.CLEAR_PARSED_URL_METADATA;
+}
+
 export interface ClearActivitiesBuilderAction extends AnyAction {
   type: ActionConstants.CLEAR_ACTIVITIES_BUILDER;
 }
@@ -215,4 +260,5 @@ export type ActionTypes =
   | ParseUrlMetadataAction
   | ParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
+  | ClearParsedUrlMetadataAction
   | ClearActivitiesBuilderAction;

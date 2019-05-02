@@ -3,6 +3,7 @@ import {
   GraphQLResponseActivity,
   ActivityProgress,
   SerializedActivity,
+  APIResponseActivity,
 } from './activity';
 import { Hero, GraphQLResponseHero, APIResponseHero } from './Hero';
 import {
@@ -31,6 +32,8 @@ export interface DodayBase {
   ownerDID: string;
   /** Datetime when doday was created */
   created: Date;
+  doing: GraphQLResponseHero[];
+  done: GraphQLResponseHero[];
 }
 
 export interface SerializedDodayBase {
@@ -46,8 +49,8 @@ export interface APIResponseDodayBase {
   did: string;
   type: number;
   public: boolean;
-  owner: APIResponseHero;
   ownerDID: string;
+  owner?: APIResponseHero;
   created?: number;
 }
 
@@ -56,7 +59,7 @@ export interface GraphQLResponseDodayBase {
   type: number;
   public: boolean;
   created?: Neo4jDateTime;
-  owner: GraphQLResponseHero;
+  owner: GraphQLResponseHero[];
   ownerDID: string;
   doing: GraphQLResponseHero[];
   done: GraphQLResponseHero[];
@@ -90,13 +93,12 @@ export interface SerializedProgressBase {
 }
 
 export interface APIResponseProgressBase {
-  did: string;
   date: Neo4jResponseDateTime;
   dateIsLocked: boolean;
   completed: boolean;
   completedAt?: Neo4jResponseDateTime;
   tookAt: Neo4jResponseDateTime;
-  origin: string;
+  origin: APIResponseActivity;
 }
 
 export interface GraphQLResponseProgressBase {
@@ -114,8 +116,7 @@ export interface GraphQLResponseProgressBase {
 
 export enum DodayTypes {
   Activity,
-  Goal,
-  Path,
+  FlashCard,
 }
 
 export type DodayLike = Activity | FlashCard;
@@ -124,5 +125,5 @@ export type DodayLikeGraphQLResponse =
   | GraphQLResponseActivity
   | GraphQLResponseFlashCard;
 
-export type DodayLikeSerialized = SerializedActivity | SerializedFlashCard;
-export type DodayLikeProgress = ActivityProgress | FlashCardProgress;
+export type SerializedDodayLike = SerializedActivity | SerializedFlashCard;
+export type ProgressLike = ActivityProgress | FlashCardProgress;

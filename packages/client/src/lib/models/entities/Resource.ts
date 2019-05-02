@@ -18,6 +18,18 @@ export interface Resource {
   url?: string;
 }
 
+export interface SerializedResource {
+  did: string;
+  description?: string;
+  icon?: string;
+  image?: string;
+  keywords?: string[];
+  provider?: string;
+  title?: string;
+  type?: string;
+  url?: string;
+}
+
 export interface GraphQLResponseResource {
   did: string;
   description?: string;

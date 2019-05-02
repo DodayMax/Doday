@@ -1,21 +1,86 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
+import { firstItem } from '@root/lib/utils';
 import {
-  Doday,
-  APIResponseDoday,
-  GraphQLResponseDoday,
-} from '@root/lib/models/entities/Doday';
-import {
-  firstItem,
-  neo4jResponseDateToJSDate,
-  neo4jResponseDateTimeToJSDate,
-} from '@root/lib/utils';
-import { parseGraphQLResponseProgressToDoday } from '@root/lib/utils/api-utils';
-import { GraphQLResponseProgress } from '@root/lib/models/entities/progress';
+  GraphQLResponseActivityProgress,
+  parseGraphQLResponseActivityProgress,
+} from '@root/lib/models/entities/activity';
 
-// Dodays
+// Activities queries
 
-export const dodayProgressByDID = async (variables: any) => {
+export const activitiesInProgress = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Progress($ownerDID: String) {
+        Progress(ownerDID: $did, completed: false) {
+          did
+          date {
+            year
+            month
+            day
+          }
+          completed
+          origin {
+            name
+            activityType
+            type
+            duration
+          }
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  return res.data.Progress;
+};
+
+export const activitiesCompleted = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Progress($ownerDID: String) {
+        Progress(ownerDID: $did, completed: true) {
+          did
+          date {
+            year
+            month
+            day
+          }
+          completed
+          origin {
+            name
+            activityType
+            type
+            duration
+          }
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  return res.data.Progress;
+};
+
+export const activitiesCreated = async (variables: any) => {
+  const res = await client.query({
+    query: gql`
+      query Doday($ownerDID: String) {
+        Doday(ownerDID: $did, type: 0) {
+          name
+          activityType
+          type
+          duration
+        }
+      }
+    `,
+    variables,
+    fetchPolicy: 'no-cache',
+  });
+  return res.data.Doday;
+};
+
+export const activityProgressByDID = async (variables: any) => {
   const res = await client.query({
     query: gql`
       query Progress($did: String) {
@@ -28,21 +93,6 @@ export const dodayProgressByDID = async (variables: any) => {
           }
           dateIsLocked
           completed
-          relatedGoal {
-            did
-            name
-            color
-            startDate {
-              year
-              month
-              day
-            }
-            endDate {
-              year
-              month
-              day
-            }
-          }
           origin {
             name
             activityType
@@ -65,90 +115,9 @@ export const dodayProgressByDID = async (variables: any) => {
     variables,
     fetchPolicy: 'no-cache',
   });
-  const progress: GraphQLResponseProgress = firstItem(res.data.Progress);
+  const progress: GraphQLResponseActivityProgress = firstItem(
+    res.data.Progress
+  );
 
-  return parseGraphQLResponseProgressToDoday(progress);
-};
-
-export const getDodayByDID = async (variables: any) => {
-  const res = await client.query({
-    query: gql`
-      query Doday($did: String) {
-        Doday(did: $did) {
-          did
-          name
-          activityType
-          type
-          duration
-          public
-          resource {
-            description
-            image
-            provider
-            url
-          }
-          doing {
-            did
-            displayName
-          }
-          done {
-            did
-            displayName
-          }
-          owner {
-            did
-            displayName
-          }
-        }
-      }
-    `,
-    variables,
-    fetchPolicy: 'no-cache',
-  });
-  const doday: GraphQLResponseDoday = firstItem(res.data.Doday);
-  if (doday.resource.length) {
-    doday.resource = firstItem(doday.resource);
-  }
-  console.log(doday);
-  return doday;
-};
-
-export const fetchActiveDodays = (date: number) => {
-  return fetch(`/api/dodays/active?date=${String(date)}`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  }).then(async (res: Response) => {
-    return parseAPIResponseDodays(res);
-  });
-};
-
-export const fetchPublicDodays = (date?: number) => {
-  return fetch(`/api/dodays/public`, {
-    method: 'GET',
-    headers: {
-      Accept: 'application/json',
-    },
-  }).then(async (res: Response) => {
-    return parseAPIResponseDodays(res);
-  });
-};
-
-export const parseAPIResponseDodays = async (res): Promise<Doday[]> => {
-  const json = await res.json();
-  const dodays = [];
-  json.map(doday => {
-    doday._fields.map((doday: APIResponseDoday) => {
-      return {
-        ...doday,
-        date: doday.date && neo4jResponseDateToJSDate(doday.date),
-        completedAt:
-          doday.completedAt && neo4jResponseDateTimeToJSDate(doday.completedAt),
-        tookAt: doday.tookAt && neo4jResponseDateTimeToJSDate(doday.tookAt),
-      };
-    });
-    dodays.push(doday._fields[0]);
-  });
-  return dodays;
+  return parseGraphQLResponseActivityProgress(progress);
 };

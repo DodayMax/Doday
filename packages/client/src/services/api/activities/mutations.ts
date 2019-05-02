@@ -1,74 +1,57 @@
 import gql from 'graphql-tag';
 import client from '../apollo-client';
-import { SerializedActivity } from '@root/lib/models/entities/Activity';
-
-type Neo4jDateTimeInput = {
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-};
-
-type Neo4jDateInput = {
-  year: number;
-  month: number;
-  day: number;
-};
+import {
+  SerializedActivity,
+  SerializedActivityProgress,
+} from '@root/lib/models/entities/Activity';
+import { SerializedResource } from '@root/lib/models/entities/resource';
 
 // Activities mutations
 
-export const createActivityMutation = async (activity: SerializedActivity) => {
-  return fetch('/api/activities/create', {
+export const createActivityMutation = async (payload: {
+  activity: SerializedActivity;
+  resource: SerializedResource;
+}) => {
+  return fetch('/api/dodays/create', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'true',
     },
-    body: JSON.stringify(activity),
+    body: JSON.stringify(payload),
   });
 };
 
-export const takeDoday = async (did: string) => {
-  return fetch(`/api/dodays/take/${did}`, {
+export const takeActivityMutation = async (payload: {
+  dodayDID: string;
+  progress: Partial<SerializedActivityProgress>;
+}) => {
+  return fetch(`/api/dodays/${payload.dodayDID}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'true',
     },
+    body: JSON.stringify(payload.progress),
   });
 };
 
-export const createAndTakeDodayNode = async (doday: SerializedDoday) => {
+export const createAndTakeActivityMutation = async (payload: {
+  activity: SerializedActivity;
+  progress: SerializedActivityProgress;
+  resource?: SerializedResource;
+}) => {
   return fetch('/api/dodays', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': 'true',
     },
-    body: JSON.stringify(doday),
+    body: JSON.stringify(payload),
   });
 };
 
-export const toggleDoday = ({
-  did,
-  value,
-}: {
-  did: string;
-  value: boolean;
-}) => {
-  return fetch(`/api/dodays/${did}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'true',
-    },
-    body: JSON.stringify({ value }),
-  });
-};
-
-export const deleteDoday = (did: string) => {
+export const deleteActivityMutation = (did: string) => {
   return fetch(`/api/dodays/delete/${did}`, {
     method: 'DELETE',
     headers: {
@@ -78,7 +61,7 @@ export const deleteDoday = (did: string) => {
   });
 };
 
-export const removeDoday = (did: string) => {
+export const removeActivityMutation = (did: string) => {
   return fetch(`/api/dodays/remove/${did}`, {
     method: 'DELETE',
     headers: {
@@ -88,12 +71,16 @@ export const removeDoday = (did: string) => {
   });
 };
 
-export const updateDoday = ({
+export const updateActivityMutation = ({
   did,
   updates,
 }: {
   did: string;
-  updates: Partial<SerializedDoday>;
+  updates: {
+    activity: Partial<SerializedActivity>;
+    progress: Partial<SerializedActivityProgress>;
+    resource: Partial<SerializedResource>;
+  };
 }) => {
   return fetch(`/api/dodays/${did}`, {
     method: 'PUT',

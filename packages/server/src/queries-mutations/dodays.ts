@@ -1,135 +1,97 @@
 import { v1 as neo4j } from 'neo4j-driver';
 import { SerializedDoday } from '../models/doday';
-import { isToday, endDay, startDay } from '../util/date-utils';
+import { endDay, startDay } from '../util/date-utils';
+import { SerializedResource } from '../models/resource';
+import { SerializedProgress } from '../models/progress';
+import { DodaysQueryParams } from '../controllers/dodays';
+import { DodaysWithProgressQueryParams } from '../controllers/progress';
 
-export const progressActivitiesQuery = (
+export const dodaysQuery = (
   tx: neo4j.Transaction,
-  props: {
-    heroDID: string;
-    date: number;
-  }
-) => {
-  return tx.run(
-    `
-      MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
-      WHERE h.did = $heroDID
-      AND ${
-        isToday(new Date(props.date))
-          ? 'p.date <= datetime($endDay)'
-          : 'p.date >= datetime($startDay) AND p.date <= datetime($endDay)'
-      }
-      AND p.completed = false
-      OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d {
-        .did,
-        .name,
-        .duration,
-        .type,
-        .activityType,
-        .tags,
-        .public,
-        date: p.date,
-        dateIsLocked: p.dateIsLocked,
-        completed: p.completed,
-        completedAt: p.completedAt,
-        tookAt: p.tookAt,
-        relatedGoal: { did: g.did, name: g.name, color: g.color }
-      } as Doday
-      UNION ALL MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
-      WHERE h.did = $heroDID AND p.completedAt >= datetime($startDay) AND p.completedAt <= datetime($endDay) AND p.completed = true
-      OPTIONAL MATCH (p)-[]-(g:Goal)
-      RETURN d {
-        .did,
-        .name,
-        .duration,
-        .type,
-        .activityType,
-        .tags,
-        .public,
-        date: p.date,
-        dateIsLocked: p.dateIsLocked,
-        completed: p.completed,
-        completedAt: p.completedAt,
-        tookAt: p.tookAt,
-        relatedGoal: { did: g.did, name: g.name, color: g.color }
-      } as Doday
-      ORDER BY p.completed
-    `,
-    {
-      heroDID: props.heroDID,
-      startDay: startDay(new Date(props.date)).toISOString(),
-      endDay: endDay(new Date(props.date)).toISOString(),
-    }
-  );
-};
-
-export const publicDodaysQuery = (
-  tx: neo4j.Transaction,
-  props: {
-    heroDID: string;
-  }
+  props: DodaysQueryParams
 ) => {
   return tx.run(
     `
       MATCH (d:Doday)-[]-(h:Hero)
       WHERE h.did = $heroDID
-      AND d.public = true
-      OPTIONAL MATCH (d)-[]-(p:Progress)-[]-(h)
-      RETURN d {
-        .did,
-        .name,
-        .duration,
-        .type,
-        .activityType,
-        .public,
-        date: p.date,
-        dateIsLocked: p.dateIsLocked,
-        completed: p.completed,
-        completedAt: p.completedAt,
-        tookAt: p.tookAt
-      } as Doday
+      ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
+      OPTIONAL MATCH (r:Resource)-[]-(d)
+      RETURN {
+        doday: d
+        resource: r
+      }
     `,
     {
-      heroDID: props.heroDID,
+      ...props,
     }
   );
 };
 
-export const createActivityTransaction = (
+export const dodaysWithProgressQuery = (
+  tx: neo4j.Transaction,
+  props: DodaysWithProgressQueryParams
+) => {
+  let dateQuery = '';
+  if (!props.startdate && props.enddate) {
+    dateQuery = 'AND p.date <= datetime($enddate)';
+  } else if (props.startdate && props.enddate) {
+    dateQuery =
+      'AND p.date >= datetime($startdate) AND p.date <= datetime($enddate)';
+  } else if (props.startdate && !props.enddate) {
+    dateQuery = 'AND p.date >= datetime($startdate)';
+  }
+  return tx.run(
+    `
+      MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
+      OPTIONAL MATCH (r:Resource)-[]-(d)
+      WHERE h.did = $heroDID
+      ${dateQuery}
+      ${props.completed ? `AND p.completed = $completed` : ''}
+      ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
+      OPTIONAL MATCH (p)-[]-(g:Goal)
+      RETURN {
+        doday: d
+        progress: p
+        resource: r
+      }
+      ORDER BY p.completed
+    `,
+    {
+      ...props,
+      startdate: startDay(new Date(props.startdate)).toISOString(),
+      enddate: endDay(new Date(props.enddate)).toISOString(),
+    }
+  );
+};
+
+export const createDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
-    doday: SerializedDoday;
     heroDID: string;
+    doday: SerializedDoday;
+    resource: SerializedResource;
   }
 ) => {
   return tx.run(
     `
-      CREATE (d:Doday {
-        did: {did},
-        activityType: {activityType},
-        type: {type},
-        name: {name},
-        duration: {duration},
-        ${props.doday.tags ? ' tags: {tags},' : ''}
-        public: {public},
-        ownerDID: {heroDID}
-      })
+      CREATE (d:Doday $doday)
       ${
-        props.doday.resource
+        props.resource
           ? `
             MERGE (r:Resource {url: {resourceURL}})
             ON CREATE SET r = {resource}
           `
           : ''
       }
-      WITH d ${props.doday.resource ? ', r' : ''}
+      WITH d ${props.resource ? ', r' : ''}
       MATCH (h:Hero { did: {heroDID} })
       CREATE (h)-[:CREATE]->(d)
-      ${props.doday.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
+      ${props.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
     `,
     {
-      ...props.doday,
-      resourceURL: props.doday.resource && props.doday.resource.url,
+      doday: props.doday,
+      resource: props.resource,
+      resourceURL: props.resource && props.resource.url,
       heroDID: props.heroDID,
     }
   );
@@ -138,60 +100,43 @@ export const createActivityTransaction = (
 export const createAndTakeDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
-    doday: SerializedDoday;
     heroDID: string;
+    doday: SerializedDoday;
+    progress: SerializedProgress;
+    resource: SerializedResource;
   }
 ) => {
+  /** Omit date to convert it to neo4j datetime */
+  const { date, ...passthrough } = props.progress;
   return tx.run(
     `
-      CREATE (d:Doday {
-        did: {did},
-        activityType: {activityType},
-        type: {type},
-        name: {name},
-        duration: {duration}, 
-        ${props.doday.tags ? ' tags: {tags},' : ''}
-        public: {public},
-        ownerDID: {heroDID}
-      })
-      CREATE (p:Progress {
-        did: {did},
-        ${props.doday.date ? 'date: datetime({date}),' : ''}
-        dateIsLocked: {dateIsLocked},
-        completed: {completed},
-        tookAt: datetime({tookAt})
-      })
+      CREATE (d:Doday $doday)
+      CREATE (p:Progress $progress)
+      ${date ? 'SET p.date = datetime($date)' : ''}
+      SET p.tookAt = datetime($tookAt)
       ${
-        props.doday.resource
+        props.resource
           ? `
             MERGE (r:Resource {url: {resourceURL}})
             ON CREATE SET r = {resource}
           `
           : ''
       }
-      WITH d, p ${props.doday.resource ? ', r' : ''}
+      WITH d, p ${props.resource ? ', r' : ''}
       MATCH (h:Hero { did: {heroDID} })
       CREATE (h)-[:CREATE]->(d)
       CREATE (h)-[:DOING]->(p)
       CREATE (p)-[:ORIGIN]->(d)
-      ${props.doday.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
-      ${
-        props.doday.relatedGoal
-          ? `
-          WITH p
-          MATCH (g:Goal { did: {relatedGoal} })
-          CREATE (p)-[:INSIDE]->(g)
-        `
-          : ''
-      }
+      ${props.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
     `,
     {
-      ...props.doday,
-      resourceURL: props.doday.resource && props.doday.resource.url,
+      doday: props.doday,
+      progress: passthrough,
+      resource: props.resource,
+      resourceURL: props.resource && props.resource.url,
       heroDID: props.heroDID,
-      date: props.doday.date && new Date(props.doday.date).toISOString(),
+      date: date && new Date(date).toISOString(),
       tookAt: new Date().toISOString(),
-      completed: false,
     }
   );
 };
@@ -200,70 +145,28 @@ export const takeDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
-    did: string;
-    date: number;
-    dateIsLocked: boolean;
+    dodayDID: string;
+    progress: SerializedProgress;
   }
 ) => {
+  /** Omit date to convert it to neo4j datetime */
+  const { date, ...passthrough } = props.progress;
   return tx.run(
     `
-      MATCH (d:Doday { did: $did })
+      MATCH (d:Doday { did: $dodayDID })
       MATCH (h:Hero { did: $heroDID })
-      CREATE (p:Progress {
-        did: $did,
-        ${props.date ? 'date: datetime($date),' : ''}
-        dateIsLocked: $dateIsLocked,
-        completed: false,
-        tookAt: datetime($tookAt)
-      })
+      CREATE (p:Progress $progress)
+      ${date ? 'SET p.date = datetime($date)' : ''}
+      SET p.tookAt = datetime($tookAt)
       CREATE (h)-[:DOING]->(p)
       CREATE (p)-[:ORIGIN]->(d)
     `,
     {
-      did: props.did,
       heroDID: props.heroDID,
-      date: new Date(props.date).toISOString(),
+      dodayDID: props.dodayDID,
+      progress: passthrough,
+      date: date && new Date(date).toISOString(),
       tookAt: new Date().toISOString(),
-    }
-  );
-};
-
-export const getDodayByDIDQuery = (
-  tx: neo4j.Transaction,
-  props: {
-    heroDID: string;
-    did: string;
-  }
-) => {
-  return tx.run(
-    `
-      MATCH (d:Doday {did: $did})
-      RETURN d
-    `,
-    {
-      heroDID: props.heroDID,
-      did: props.did,
-    }
-  );
-};
-
-export const toggleDodayTransaction = (
-  tx: neo4j.Transaction,
-  props: {
-    did: string;
-    value: boolean;
-  }
-) => {
-  return tx.run(
-    `
-      MATCH (p:Progress {did: $did})
-      SET p.completed = $value
-      SET p.completedAt = datetime($date)
-    `,
-    {
-      did: props.did,
-      value: props.value,
-      date: new Date().toISOString(),
     }
   );
 };
@@ -272,7 +175,7 @@ export const deleteDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
-    did: string;
+    dodayDID: string;
   }
 ) => {
   return tx.run(
@@ -287,7 +190,7 @@ export const deleteDodayTransaction = (
     `,
     {
       heroDID: props.heroDID,
-      did: props.did,
+      did: props.dodayDID,
     }
   );
 };
@@ -296,7 +199,7 @@ export const removeDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
-    did: string;
+    dodayDID: string;
   }
 ) => {
   return tx.run(
@@ -310,7 +213,7 @@ export const removeDodayTransaction = (
     `,
     {
       heroDID: props.heroDID,
-      did: props.did,
+      did: props.dodayDID,
     }
   );
 };
@@ -319,39 +222,49 @@ export const updateDodayTransaction = (
   tx: neo4j.Transaction,
   props: {
     heroDID: string;
-    did: string;
-    updates: Partial<SerializedDoday>;
+    dodayDID: string;
+    updates: {
+      doday: Partial<SerializedDoday>;
+      progress: Partial<SerializedProgress>;
+      resource: Partial<SerializedResource>;
+    };
   }
 ) => {
+  /** Omit date to convert it to neo4j datetime */
+  const { date, ...passthrough } = props.updates.progress;
   return tx.run(
     `
       MATCH (p:Progress {did: $did})
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      SET d += $doday
+      SET p += $progress
+      ${date ? 'SET p.date = datetime($date)' : ''}
       ${
-        props.updates.relatedGoal
+        props.updates.progress.completed
+          ? 'SET p.completedAt = datetime($completedAt)'
+          : ''
+      }
+      ${
+        props.updates.resource
           ? `
-      MATCH (g:Goal {did: $relatedGoal})
-      OPTIONAL MATCH (p)-[r4:INSIDE]-(:Goal)
-      DELETE r4
-      CREATE (p)-[:INSIDE]->(g)
-      `
+            MERGE (r:Resource {url: {resourceURL}})
+            ON CREATE SET r = {resource}
+          `
           : ''
       }
-      ${props.updates.date ? 'SET p.date = datetime($date)' : ''}
-      ${
-        props.updates.dateIsLocked != null
-          ? 'SET p.dateIsLocked = $dateIsLocked'
-          : ''
-      }
+      WITH d, p ${props.updates.resource ? ', r' : ''}
+      ${props.updates.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
     `,
     {
       heroDID: props.heroDID,
-      did: props.did,
-      date: props.updates.date && new Date(props.updates.date).toISOString(),
-      dateIsLocked: props.updates.dateIsLocked,
-      relatedGoal: props.updates.relatedGoal,
+      did: props.dodayDID,
+      doday: props.updates.doday,
+      progress: passthrough,
+      resource: props.updates.resource,
+      date: date && new Date(date).toISOString(),
+      completedAt: new Date().toISOString(),
     }
   );
 };
@@ -361,19 +274,35 @@ export const multyUpdateDodaysTransaction = (
   props: {
     heroDID: string;
     dids: string[];
-    updates: Partial<SerializedDoday>;
+    updates: {
+      doday?: Partial<SerializedDoday>;
+      progress?: Partial<SerializedProgress>;
+    };
   }
 ) => {
+  /** Omit date to convert it to neo4j datetime */
+  const { date, ...passthrough } = props.updates.progress;
   return tx.run(
     `
-      MATCH (p:Progress)-[]-(h:Hero)
-      WHERE p.did IN $dids AND h.did = $heroDID
-      ${props.updates.date ? 'SET p.date = datetime($date)' : ''}
+      MATCH (h:Hero {did: $heroDID})
+      MATCH (h)-[r1:CREATE]->(d: Doday)<-[r2:ORIGIN]-(p: Progress)<-[r3:DOING]-(h)
+      WHERE p.did IN $dids
+      SET d += $doday
+      SET p += $progress
+      ${date ? 'SET p.date = datetime($date)' : ''}
+      ${
+        props.updates.progress.completed
+          ? 'SET p.completedAt = datetime($completedAt)'
+          : ''
+      }
     `,
     {
       heroDID: props.heroDID,
       dids: props.dids,
-      date: props.updates.date && new Date(props.updates.date).toISOString(),
+      doday: props.updates.doday,
+      progress: passthrough,
+      date: date && new Date(date).toISOString(),
+      completedAt: new Date().toISOString(),
     }
   );
 };

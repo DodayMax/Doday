@@ -6,7 +6,6 @@ import {
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
   setActivityTypeActionCreator,
-  clearActivitiesBuilderActionCreator,
   CreateActivityAction,
   TakeActivityAction,
 } from './actions';
@@ -29,42 +28,10 @@ import { setDodayDetailsLoadingStateActionCreator } from '../doday-details/actio
  *
  * @param {CreateActivityAction} action
  */
-function* createActivitySaga(action: CreateActivityAction) {
-  yield put(setBuilderLoadingState(true));
-  const res = yield call(api.dodays.mutations.createDodayNode, action.payload);
-  if (res.status === 200) {
-    yield put(setBuilderSuccessFlag(true));
-    yield put(fetchDodaysForDate());
-    yield put(fetchAllGoalsActionCreator());
-  }
-  yield put(setBuilderLoadingState(false));
-  yield put(clearBuilderActionCreator());
-}
-
-/**
- * Take Doday
- *
- * @param {TakeDodayAction} action
- */
-function* takeDodaySaga(action: TakeDodayAction) {
-  yield put(setDodayDetailsLoadingStateActionCreator(true));
-  const res = yield call(api.dodays.mutations.takeDoday, action.payload);
-  if (res.status === 200) {
-    yield put(fetchDodaysForDate());
-    yield put(fetchAllGoalsActionCreator());
-  }
-  yield put(setDodayDetailsLoadingStateActionCreator(false));
-}
-
-/**
- * Create Doday and Progress node saga
- *
- * @param {CreateAndTakeDodayAction} action
- */
-function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
+function* createActivityActionSaga(action: CreateActivityAction) {
   yield put(setBuilderLoadingState(true));
   const res = yield call(
-    api.dodays.mutations.createAndTakeDodayNode,
+    api.activities.mutations.createActivityMutation,
     action.payload
   );
   if (res.status === 200) {
@@ -77,15 +44,36 @@ function* createAndTakeDodaySaga(action: CreateAndTakeDodayAction) {
 }
 
 /**
- * Create Goal node saga
+ * Take Doday
  *
- * @param {CreateGoalAction} action
+ * @param {TakeActivityAction} action
  */
-function* createGoalSaga(action: CreateGoalAction) {
+function* takeActivityActionSaga(action: TakeActivityAction) {
+  yield put(setDodayDetailsLoadingStateActionCreator(true));
+  const res = yield call(
+    api.activities.mutations.takeActivityMutation,
+    action.payload
+  );
+  if (res.status === 200) {
+    yield put(fetchDodaysForDate());
+  }
+  yield put(setDodayDetailsLoadingStateActionCreator(false));
+}
+
+/**
+ * Create Doday and Progress node saga
+ *
+ * @param {CreateAndTakeActivityAction} action
+ */
+function* createAndTakeActivityActionSaga(action: CreateAndTakeActivityAction) {
   yield put(setBuilderLoadingState(true));
-  const res = yield call(api.dodays.mutations.createGoal, action.payload);
+  const res = yield call(
+    api.activities.mutations.createAndTakeActivityMutation,
+    action.payload
+  );
   if (res.status === 200) {
     yield put(setBuilderSuccessFlag(true));
+    yield put(fetchDodaysForDate());
     yield put(fetchAllGoalsActionCreator());
   }
   yield put(setBuilderLoadingState(false));
@@ -109,9 +97,11 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 }
 
 export default [
-  takeLatest(ActionConstants.CREATE_DODAY, createDodaySaga),
-  takeLatest(ActionConstants.TAKE_DODAY, takeDodaySaga),
-  takeLatest(ActionConstants.CREATE_AND_TAKE_DODAY, createAndTakeDodaySaga),
-  takeLatest(ActionConstants.CREATE_GOAL, createGoalSaga),
+  takeLatest(ActionConstants.CREATE_ACTIVITY, createActivityActionSaga),
+  takeLatest(ActionConstants.TAKE_ACTIVITY, takeActivityActionSaga),
+  takeLatest(
+    ActionConstants.CREATE_AND_TAKE_ACTIVITY,
+    createAndTakeActivityActionSaga
+  ),
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
 ];

@@ -1,28 +1,26 @@
 import { driver } from '../config/neo4j-driver';
 import { Request, Response } from 'express';
 import {
-  createActivityTransaction,
+  createDodayTransaction,
   createAndTakeDodayTransaction,
   takeDodayTransaction,
-  toggleDodayTransaction,
-  progressActivitiesQuery,
-  publicDodaysQuery,
+  dodaysQuery,
   deleteDodayTransaction,
   removeDodayTransaction,
   updateDodayTransaction,
-  getDodayByDIDQuery,
 } from '../queries-mutations/dodays';
 
-export const getProgressActivities = (req: Request, res: Response) => {
+export const getDodaysController = (req: Request, res: Response) => {
   const session = driver.session();
 
+  const params: DodaysQueryParams = {
+    heroDID: req.user.did,
+  };
+
+  if (req.query.createdBy) params.createdBy = req.query.createdBy;
+
   session
-    .readTransaction(tx =>
-      progressActivitiesQuery(tx, {
-        heroDID: req.user.did,
-        date: Number(req.query.date),
-      })
-    )
+    .readTransaction(tx => dodaysQuery(tx, params))
     .then(result => {
       session.close();
       res.status(200).send(result.records);
@@ -33,52 +31,17 @@ export const getProgressActivities = (req: Request, res: Response) => {
     });
 };
 
-export const getPublicDodays = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  session
-    .readTransaction(tx =>
-      publicDodaysQuery(tx, {
-        heroDID: req.user.did,
-      })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send(result.records);
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
-
-export const getDodayByDID = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  session
-    .readTransaction(tx =>
-      getDodayByDIDQuery(tx, { heroDID: req.user.did, did: req.params.did })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send(result.records);
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
-
-export const createActivity = (req: Request, res: Response) => {
+export const createDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
 
   session
     .writeTransaction(tx =>
-      createActivityTransaction(tx, {
-        doday: body,
+      createDodayTransaction(tx, {
         heroDID: req.user.did,
+        doday: body.doday,
+        resource: body.resource,
       })
     )
     .then(result => {
@@ -91,18 +54,28 @@ export const createActivity = (req: Request, res: Response) => {
     });
 };
 
-export const createAndTakeDoday = (req: Request, res: Response) => {
+export const createAndTakeDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
+  const take = req.query.take;
 
   session
-    .writeTransaction(tx =>
-      createAndTakeDodayTransaction(tx, {
-        doday: body,
+    .writeTransaction(tx => {
+      if (take) {
+        return createAndTakeDodayTransaction(tx, {
+          heroDID: req.user.did,
+          doday: body.doday,
+          progress: body.progress,
+          resource: body.resource,
+        });
+      }
+      return createDodayTransaction(tx, {
         heroDID: req.user.did,
-      })
-    )
+        doday: body.doday,
+        resource: body.resource,
+      });
+    })
     .then(result => {
       session.close();
       res.status(200).send({ success: true });
@@ -113,26 +86,7 @@ export const createAndTakeDoday = (req: Request, res: Response) => {
     });
 };
 
-export const toggleDoday = (req: Request, res: Response) => {
-  const session = driver.session();
-
-  const body = req.body as any;
-
-  session
-    .writeTransaction(tx =>
-      toggleDodayTransaction(tx, { did: req.params.did, value: body.value })
-    )
-    .then(result => {
-      session.close();
-      res.status(200).send({ success: true });
-    })
-    .catch(e => {
-      console.error(e);
-      session.close();
-    });
-};
-
-export const takeDoday = (req: Request, res: Response) => {
+export const takeDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
@@ -141,9 +95,8 @@ export const takeDoday = (req: Request, res: Response) => {
     .writeTransaction(tx =>
       takeDodayTransaction(tx, {
         heroDID: req.user.did,
-        did: req.params.did,
-        date: body.date,
-        dateIsLocked: body.dateIsLocked,
+        dodayDID: req.params.did,
+        progress: body,
       })
     )
     .then(result => {
@@ -158,12 +111,15 @@ export const takeDoday = (req: Request, res: Response) => {
 
 // Completely delete doday from app
 
-export const deleteDoday = (req: Request, res: Response) => {
+export const deleteDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   session
     .writeTransaction(tx =>
-      deleteDodayTransaction(tx, { heroDID: req.user.did, did: req.params.did })
+      deleteDodayTransaction(tx, {
+        heroDID: req.user.did,
+        dodayDID: req.params.did,
+      })
     )
     .then(result => {
       session.close();
@@ -177,12 +133,15 @@ export const deleteDoday = (req: Request, res: Response) => {
 
 // Just remove doday from Hero that taken it
 
-export const removeDoday = (req: Request, res: Response) => {
+export const removeDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   session
     .writeTransaction(tx =>
-      removeDodayTransaction(tx, { heroDID: req.user.did, did: req.params.did })
+      removeDodayTransaction(tx, {
+        heroDID: req.user.did,
+        dodayDID: req.params.did,
+      })
     )
     .then(result => {
       session.close();
@@ -194,7 +153,7 @@ export const removeDoday = (req: Request, res: Response) => {
     });
 };
 
-export const updateDoday = (req: Request, res: Response) => {
+export const updateDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body;
@@ -203,8 +162,12 @@ export const updateDoday = (req: Request, res: Response) => {
     .writeTransaction(tx =>
       updateDodayTransaction(tx, {
         heroDID: req.user.did,
-        did: req.params.did,
-        updates: body,
+        dodayDID: req.params.did,
+        updates: {
+          doday: body.doday,
+          progress: body.progress,
+          resource: body.resource,
+        },
       })
     )
     .then(result => {
@@ -215,4 +178,9 @@ export const updateDoday = (req: Request, res: Response) => {
       console.error(e);
       session.close();
     });
+};
+
+export type DodaysQueryParams = {
+  heroDID: string;
+  createdBy?: string;
 };

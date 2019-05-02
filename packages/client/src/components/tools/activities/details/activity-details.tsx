@@ -73,12 +73,13 @@ interface PropsFromConnect {
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
+type Props = ActivityDetailsProps &
+  Partial<PropsFromConnect> &
+  Partial<RouteComponentProps<any>>;
+
 @Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
-class ActivityDetails extends React.Component<
-  ActivityDetailsProps & PropsFromConnect & RouteComponentProps<any>,
-  ActivityDetailsState
-> {
+class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   public static contextTypes = {
     requestClose: PropTypes.func,
   };

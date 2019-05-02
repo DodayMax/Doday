@@ -11,6 +11,7 @@ const rootReducer = combineReducers<RootState>({
   dodayDetails: ducks.dodayDetails.default,
   builder: combineReducers<BuilderState>({
     status: ducks.builder.default,
+    activity: ducks.activities.default,
   }),
   heroSettings: ducks.herosettings.default,
 });

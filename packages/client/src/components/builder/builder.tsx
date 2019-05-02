@@ -6,22 +6,13 @@ import * as queryString from 'query-string';
 import { actions as builderActions } from '@ducks/builder';
 import { RootState } from '@root/lib/models';
 import {
-  FetchActivityTypesAction,
-  CreateAndTakeDodayAction,
   SetBuilderSuccessFlagAction,
-  ParseUrlMetadataAction,
-  ClearParsedMetadataAction,
   ClearBuilderAction,
-  CreateDodayAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../shared/_molecules/page';
 
-import {
-  DodayTypes,
-  DodayLikeSerialized,
-} from '@root/lib/models/entities/common';
+import { DodayTypes } from '@root/lib/models/entities/common';
 import { Pageflow, PageWrapperChildContext } from '../pageflow';
-import { ActivityTypes } from '@root/lib/common-interfaces';
 import { ActivityBuilder } from '../tools/activities/builder/activity-builder';
 
 interface BuilderProps {}
@@ -33,18 +24,8 @@ interface BuilderState {
 }
 
 interface PropsFromConnect {
-  ownerDID?: string;
-  activityType: ActivityTypes;
-  isUrlParsing?: boolean;
-  parsedMetadata?: any;
-  loading?: boolean;
   success?: boolean;
-  fetchActivityTypes: () => FetchActivityTypesAction;
-  createDodayActionCreator: (doday: DodayLikeSerialized) => CreateDodayAction;
-  createAndTakeDoday: (doday: DodayLikeSerialized) => CreateAndTakeDodayAction;
   setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
-  parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
-  clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
@@ -86,35 +67,12 @@ export class Builder extends React.Component<
   };
 
   renderBuilder = () => {
-    const {
-      ownerDID,
-      loading,
-      isUrlParsing,
-      parsedMetadata,
-      parseUrlMetadataActionCreator,
-      createDodayActionCreator,
-      createAndTakeDoday,
-      clearParsedMetadataActionCreator,
-      activityType = 'do',
-      location,
-    } = this.props;
+    const { location } = this.props;
 
     const queryParams = queryString.parse(location.search);
 
     if (Number(queryParams.type) === DodayTypes.Activity) {
-      return (
-        <ActivityBuilder
-          loading={loading}
-          isUrlParsing={isUrlParsing}
-          parsedMetadata={parsedMetadata}
-          createDodayActionCreator={createDodayActionCreator}
-          createAndTakeDoday={createAndTakeDoday}
-          parseUrlMetadataActionCreator={parseUrlMetadataActionCreator}
-          clearParsedMetadataActionCreator={clearParsedMetadataActionCreator}
-          activityType={activityType}
-          ownerDID={ownerDID}
-        />
-      );
+      return <ActivityBuilder />;
     } else if (Number(queryParams.type) === DodayTypes.Goal) {
       // return (
       //   <GoalBuilder
@@ -137,14 +95,7 @@ export class Builder extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  ownerDID: state.auth.hero && state.auth.hero.did,
-  activityType: state.builder.activityType,
-  selectedGoal: state.builder.selectedGoal,
-  goals: state.dodayApp.goals,
-  isUrlParsing: state.builder.isUrlParsing,
-  parsedMetadata: state.builder.parsedMetadata,
-  loading: state.builder.loading,
-  success: state.builder.success,
+  success: state.builder.status.success,
 });
 
 export default withRouter(connect(

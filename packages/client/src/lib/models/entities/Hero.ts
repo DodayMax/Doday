@@ -21,8 +21,14 @@ export interface GraphQLResponseHero {
   nickname?: string;
   displayName: string;
   google?: string;
-  friends: GraphQLResponseHero[];
-  invitedByMe: GraphQLResponseHero[];
-  createdDodays: DodayLikeGraphQLResponse[];
   created: number;
+}
+
+/** Utils to parse Responses => Entities */
+
+export function parseGraphQLResponseHero(response: GraphQLResponseHero): Hero {
+  return {
+    ...response,
+    created: new Date(response.created),
+  };
 }

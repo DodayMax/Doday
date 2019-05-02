@@ -1,4 +1,4 @@
-export interface Resource {
+export interface SerializedResource {
   did: string;
   // A user displayable description for the page.
   description?: string;

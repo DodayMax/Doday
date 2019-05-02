@@ -1,6 +1,5 @@
 import { Resource, GraphQLResponseResource } from './resource';
-import { ActivityTypes } from '@root/lib/common-interfaces';
-import { Hero } from './hero';
+import { Hero, parseGraphQLResponseHero } from './hero';
 import {
   DodayBase,
   SerializedDodayBase,
@@ -17,10 +16,16 @@ import {
   APIResponseFlashCard,
   GraphQLResponseFlashCard,
 } from './flash-card';
+import { ActivityType } from '@root/lib/common-interfaces';
+import {
+  firstItem,
+  dateFromNeo4jDateTime,
+  dateFromNeo4jDate,
+} from '@root/lib/utils';
 
 export interface Activity extends DodayBase {
   /** Activity type of the doday based on Resource */
-  activityType: ActivityTypes;
+  activityType: ActivityType;
   /** Doday name */
   name: string;
   /** Description */
@@ -29,22 +34,16 @@ export interface Activity extends DodayBase {
   image?: string;
   /** Duration of the doday */
   duration?: string;
-  /** CYPHER query for Heroes with active Progress node */
-  doing?: Hero[];
-  /** CYPHER query for Heroes with completed Progress node */
-  done?: Hero[];
   /** Tags related to doday */
-  tags?: Tag[];
+  tags?: string[];
   /** [:RESOURCE] relation */
   resource?: Resource;
   /** Attached flash cards */
-  memos?: FlashCard[];
+  memos?: GraphQLResponseFlashCard[];
 }
 
-export interface SerializedActivity
-  extends SerializedDodayBase,
-    SerializedActivityProgress {
-  activityType: ActivityTypes;
+export interface SerializedActivity extends SerializedDodayBase {
+  activityType: ActivityType;
   name: string;
   description?: string;
   image?: string;
@@ -55,7 +54,7 @@ export interface SerializedActivity
 }
 
 export interface APIResponseActivity extends APIResponseDodayBase {
-  activityType: ActivityTypes;
+  activityType: ActivityType;
   name: string;
   description?: string;
   image?: string;
@@ -65,14 +64,14 @@ export interface APIResponseActivity extends APIResponseDodayBase {
 }
 
 export interface GraphQLResponseActivity extends GraphQLResponseDodayBase {
-  activityType: ActivityTypes;
+  activityType: ActivityType;
   name: string;
   description?: string;
   image?: string;
   duration?: string;
   tags?: string[];
   resource: GraphQLResponseResource[];
-  memos?: GraphQLResponseFlashCard[];
+  memos: GraphQLResponseFlashCard[];
 }
 
 export interface ActivityProgress extends ProgressBase {}
@@ -83,3 +82,26 @@ export interface APIresponseActivityProgress extends APIResponseProgressBase {}
 
 export interface GraphQLResponseActivityProgress
   extends GraphQLResponseProgressBase {}
+
+/** Utils to parse Responses => Entities */
+
+export function parseGraphQLResponseActivityProgress(
+  progress: GraphQLResponseActivityProgress
+): ActivityProgress {
+  const origin: GraphQLResponseActivity =
+    progress.origin && firstItem(progress.origin);
+  const originActivity: Activity = {
+    ...origin,
+    resource: firstItem(origin.resource),
+    owner: parseGraphQLResponseHero(firstItem(origin.owner)),
+    created: dateFromNeo4jDateTime(origin.created),
+  };
+  return {
+    ...progress,
+    tookAt: progress.tookAt && dateFromNeo4jDateTime(progress.tookAt),
+    date: progress.date && dateFromNeo4jDate(progress.date),
+    completedAt:
+      progress.completedAt && dateFromNeo4jDate(progress.completedAt),
+    origin: originActivity,
+  };
+}

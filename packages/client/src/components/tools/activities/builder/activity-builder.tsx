@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
+import { connect } from 'react-redux';
 import Tooltip from 'rc-tooltip';
 import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
@@ -18,35 +19,53 @@ import {
   TypographySize,
   TypographyColor,
   Size,
-  ActivityTypes,
   Space,
+  ActivityType,
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
-import {
-  ClearParsedMetadataAction,
-  CreateAndTakeDodayAction,
-  ParseUrlMetadataAction,
-  SelectGoalAction,
-  CreateDodayAction,
-} from '@root/ducks/builder/actions';
 import { Tag } from '@root/lib/models/entities/tag';
 import { DodayTypes } from '@root/lib/models/entities/common';
 import { CustomDatePicker } from '../../../shared/_atoms/custom-datepicker';
-import { SerializedActivity } from '@root/lib/models/entities/Activity';
+import {
+  SerializedActivity,
+  SerializedActivityProgress,
+} from '@root/lib/models/entities/Activity';
 import { ParsedUrlView } from '@root/components/builder';
+import { SerializedResource } from '@root/lib/models/entities/resource';
+import {
+  CreateActivityAction,
+  CreateAndTakeActivityAction,
+  ParseUrlMetadataAction,
+  ClearActivitiesBuilderAction,
+  ClearParsedUrlMetadataAction,
+  FetchActivityTypesAction,
+} from '@root/ducks/activities/actions';
+import * as activityBuilderActions from '@ducks/activities/actions';
+import { RootState } from '@root/lib/models';
 
 const css = require('./activity-builder.module.scss');
 
-interface ActivityBuilderProps {
+interface ActivityBuilderProps {}
+
+interface PropsFromConnect {
   loading: boolean;
   isUrlParsing: boolean;
   parsedMetadata?: any;
-  activityType: ActivityTypes;
+  activityType: ActivityType;
   ownerDID: string;
-  createDodayActionCreator: (doday: SerializedActivity) => CreateDodayAction;
-  createAndTakeDoday: (doday: SerializedActivity) => CreateAndTakeDodayAction;
+  fetchActivityTypesActionCreator: () => FetchActivityTypesAction;
+  createActivityActionCreator: (
+    activity: SerializedActivity,
+    resource: SerializedResource
+  ) => CreateActivityAction;
+  createAndTakeActivityActionCreator: (
+    activity: SerializedActivity,
+    progress: SerializedActivityProgress,
+    resource?: SerializedResource
+  ) => CreateAndTakeActivityAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
-  clearParsedMetadataActionCreator: () => ClearParsedMetadataAction;
+  clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
+  clearActivitiesBuilderActionCreator: () => ClearActivitiesBuilderAction;
 }
 
 interface ActivityBuilderState {
@@ -59,11 +78,13 @@ interface ActivityBuilderState {
   estimateTime: string;
 }
 
+type Props = ActivityBuilderProps & Partial<PropsFromConnect>;
+
 export class ActivityBuilder extends React.Component<
-  ActivityBuilderProps,
+  Props,
   ActivityBuilderState
 > {
-  constructor(props: ActivityBuilderProps) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -132,7 +153,7 @@ export class ActivityBuilder extends React.Component<
       did: cuid(),
     };
 
-    const newDoday = {
+    const activity: SerializedActivity = {
       did: cuid(),
       activityType,
       type: DodayTypes.Activity,
@@ -141,18 +162,26 @@ export class ActivityBuilder extends React.Component<
       tags:
         this.state.selectedTags &&
         this.state.selectedTags.map(tag => tag.value),
-      date: this.state.date.getTime(),
-      dateIsLocked: this.state.dateIsLocked,
-      resource: resource,
       public: this.state.isPublic,
       owner: ownerDID,
       ownerDID,
     };
 
+    const progress: SerializedActivityProgress = {
+      date: this.state.date.getTime(),
+      dateIsLocked: this.state.dateIsLocked,
+    };
+
     if (this.state.isPublic) {
-      this.props.createDodayActionCreator(newDoday);
+      /** Just create Activity(Doday) node */
+      this.props.createActivityActionCreator(activity, resource);
     } else {
-      this.props.createAndTakeDoday(newDoday);
+      /** Create Activity(Doday) node and Progress node */
+      this.props.createAndTakeActivityActionCreator(
+        activity,
+        progress,
+        resource
+      );
     }
   };
 
@@ -186,7 +215,7 @@ export class ActivityBuilder extends React.Component<
     const {
       loading,
       activityType,
-      clearParsedMetadataActionCreator,
+      clearParsedUrlMetadataActionCreator,
       isUrlParsing,
       parsedMetadata,
     } = this.props;
@@ -223,7 +252,7 @@ export class ActivityBuilder extends React.Component<
               // TODO: replace only removed parsed link from text
               dodayName: '',
             });
-            clearParsedMetadataActionCreator();
+            clearParsedUrlMetadataActionCreator();
           }}
           loading={isUrlParsing}
           parsedMetadata={parsedMetadata}
@@ -329,3 +358,17 @@ export class ActivityBuilder extends React.Component<
 //   label: goal.name,
 //   value: goal.did,
 // });
+
+const mapState = (state: RootState) => ({
+  ownerDID: state.auth.hero && state.auth.hero.did,
+  activityType: state.builder.activity.activityType,
+  isUrlParsing: state.builder.activity.isUrlParsing,
+  parsedMetadata: state.builder.activity.parsedMetadata,
+  loading: state.builder.status.loading,
+  success: state.builder.status.success,
+});
+
+export default connect(
+  mapState,
+  { ...activityBuilderActions.actionCreators }
+)(ActivityBuilder);

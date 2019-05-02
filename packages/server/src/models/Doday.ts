@@ -1,5 +1,3 @@
-import { Resource } from './resource';
-
 export interface SerializedDoday {
   did: string;
   type: number;
@@ -10,7 +8,6 @@ export interface SerializedDoday {
   image?: string;
   duration?: string;
   tags?: string[];
-  resource?: Resource;
   memos?: string[];
   owner: string;
   ownerDID: string;
