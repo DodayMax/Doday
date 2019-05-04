@@ -14,11 +14,6 @@ import { Text, Icons, CustomDatePicker } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Button, ButtonSize } from '../../../shared/_atoms/button';
-import {
-  DeleteDodayAction,
-  RemoveDodayAction,
-  UpdateDodayAction,
-} from '@root/ducks/doday-app/actions';
 import { Marker } from '../../../shared/_atoms/marker';
 import {
   activityTypeColor,
@@ -42,6 +37,11 @@ import {
 } from '@root/lib/models/entities/Activity';
 import { Pageflow, PageWrapperChildContext } from '@root/components/pageflow';
 import { SerializedProgressLike } from '@root/lib/models/entities/common';
+import {
+  UpdateDodayAction,
+  DeleteDodayAction,
+  UntakeDodayAction,
+} from '@root/ducks/api/dodays-api-actions/actions';
 
 const css = require('./activity-details.module.scss');
 
@@ -66,7 +66,7 @@ interface PropsFromConnect {
     updates: Partial<SerializedProgressLike>
   ) => RequestForSetUpdatesAction;
   deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
-  removeDodayActionCreator: (doday: Activity) => RemoveDodayAction;
+  untakeDodayActionCreator: (doday: Activity) => UntakeDodayAction;
   updateSelectedDodayActionCreator: (
     did: string,
     updates: Partial<Activity>

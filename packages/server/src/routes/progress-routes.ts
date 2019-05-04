@@ -12,4 +12,6 @@ module.exports = app => {
    * completed: boolean - if undefined - both
    */
   app.get('/api/progress', progressController.getDodaysWithProgressController);
+  /** Get doday with progress node by did */
+  app.get('/api/progress/:did', progressController.getDodaysWithProgressController);
 };

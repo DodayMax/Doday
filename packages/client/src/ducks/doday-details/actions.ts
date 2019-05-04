@@ -1,6 +1,10 @@
 import { AnyAction } from 'redux';
-import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
-import { Goal } from '@root/lib/models/entities/Goal';
+import {
+  DodayLike,
+  SerializedDodayLike,
+  SerializedProgressLike,
+  ProgressLike,
+} from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
@@ -69,7 +73,7 @@ export function fetchSelectedProgressActionCreator(
  * @returns {SetSelectedDodayAction}
  */
 export function setSelectedDodayActionCreator(
-  progress: Doday
+  progress: DodayLike
 ): SetSelectedDodayAction {
   return {
     type: ActionConstants.SET_SELECTED_DODAY,
@@ -85,7 +89,7 @@ export function setSelectedDodayActionCreator(
  */
 export function updateSelectedDodayActionCreator(
   did: string,
-  updates: Partial<Doday>
+  updates: Partial<ProgressLike>
 ): UpdateSelectedDodayAction {
   return {
     type: ActionConstants.UPDATE_SELECTED_DODAY,
@@ -133,7 +137,7 @@ export function setDirtyStatusActionCreator(
  * @returns {RequestForSetUpdatesAction}
  */
 export function requestForSetUpdatesActionCreator(
-  updates: Partial<SerializedDoday>
+  updates: Partial<SerializedProgressLike>
 ): RequestForSetUpdatesAction {
   return {
     type: ActionConstants.REQUEST_FOR_SET_UPDATES,
@@ -148,7 +152,7 @@ export function requestForSetUpdatesActionCreator(
  * @returns {SetUpdatesForSelectedDodayAction}
  */
 export function setUpdatesForSelectedDodayActionCreator(
-  updates: Partial<SerializedDoday>
+  updates: Partial<SerializedDodayLike>
 ): SetUpdatesForSelectedDodayAction {
   return {
     type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
@@ -206,19 +210,14 @@ export interface FetchSelectedGoalAction extends AnyAction {
 
 export interface SetSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_SELECTED_DODAY;
-  payload: Doday;
-}
-
-export interface SetSelectedGoalAction extends AnyAction {
-  type: ActionConstants.SET_SELECTED_GOAL;
-  payload: Goal;
+  payload: DodayLike;
 }
 
 export interface UpdateSelectedDodayAction extends AnyAction {
   type: ActionConstants.UPDATE_SELECTED_DODAY;
   payload: {
     did: string;
-    updates: Partial<Doday>;
+    updates: Partial<ProgressLike>;
   };
 }
 
@@ -233,12 +232,12 @@ export interface SetDirtyStatusAction extends AnyAction {
 
 export interface SetUpdatesForSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY;
-  payload: Partial<SerializedDoday>;
+  payload: Partial<SerializedDodayLike>;
 }
 
 export interface RequestForSetUpdatesAction extends AnyAction {
   type: ActionConstants.REQUEST_FOR_SET_UPDATES;
-  payload: Partial<SerializedDoday>;
+  payload: Partial<SerializedProgressLike>;
 }
 
 export interface ClearDirtyStuffAction extends AnyAction {
@@ -255,7 +254,6 @@ export type ActionTypes =
   | FetchSelectedProgressAction
   | FetchSelectedGoalAction
   | SetSelectedDodayAction
-  | SetSelectedGoalAction
   | UpdateSelectedDodayAction
   | ClearSelectedDodayAction
   | SetDirtyStatusAction

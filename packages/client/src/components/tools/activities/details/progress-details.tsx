@@ -15,11 +15,6 @@ import { Text, Icons, CustomDatePicker } from '@components';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Button, ButtonSize } from '../../../shared/_atoms/button';
-import {
-  DeleteDodayAction,
-  RemoveDodayAction,
-  UpdateDodayAction,
-} from '@root/ducks/doday-app/actions';
 import { Marker } from '../../../shared/_atoms/marker';
 import {
   activityTypeColor,
@@ -45,7 +40,17 @@ import {
   ActivityProgress,
 } from '@root/lib/models/entities/Activity';
 import { Pageflow, PageWrapperChildContext } from '@root/components/pageflow';
-import { SerializedProgressLike } from '@root/lib/models/entities/common';
+import {
+  SerializedProgressLike,
+  DodayLike,
+  ProgressLike,
+  SerializedDodayLike,
+} from '@root/lib/models/entities/common';
+import {
+  UpdateDodayAction,
+  DeleteDodayAction,
+  UntakeDodayAction,
+} from '@root/ducks/api/dodays-api-actions/actions';
 
 const css = require('./progress-details.module.scss');
 
@@ -58,7 +63,7 @@ interface PropsFromConnect {
   dirty?: boolean;
   updates?: Partial<SerializedProgressLike>;
   myDID?: string;
-  selectedDoday: Activity;
+  selectedDoday: DodayLike;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator: (
     did: string,
@@ -70,10 +75,10 @@ interface PropsFromConnect {
     updates: Partial<SerializedProgressLike>
   ) => RequestForSetUpdatesAction;
   deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
-  removeDodayActionCreator: (doday: Activity) => RemoveDodayAction;
+  untakeDodayActionCreator: (doday: Activity) => UntakeDodayAction;
   updateSelectedDodayActionCreator: (
     did: string,
-    updates: Partial<SerializedProgressLike>
+    updates: Partial<ProgressLike>
   ) => UpdateSelectedDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
@@ -128,9 +133,9 @@ class ActivityProgressDetails extends React.Component<
         size={ButtonSize.small}
         onClick={() => {
           if (this.isOwner) {
-            this.props.deleteDodayActionCreator(selectedDoday);
+            this.props.deleteDodayActionCreator(selectedDoday as Activity);
           } else {
-            this.props.removeDodayActionCreator(selectedDoday);
+            this.props.untakeDodayActionCreator(selectedDoday as Activity);
           }
           history.push('/');
         }}
@@ -170,8 +175,8 @@ class ActivityProgressDetails extends React.Component<
       <Marker
         key={1}
         rounded
-        color={activityTypeColor(selectedDoday.activityType)}
-        text={selectedDoday.activityType}
+        color={activityTypeColor((selectedDoday as Activity).activityType)}
+        text={(selectedDoday as Activity).activityType}
       />,
     ];
   };
@@ -191,7 +196,7 @@ class ActivityProgressDetails extends React.Component<
     //     ? goals && goals.find(goal => goal.did === updates.relatedGoal)
     //     : undefined;
 
-    const resource = selectedDoday && selectedDoday.resource;
+    const resource = selectedDoday && (selectedDoday as Activity).resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
 
@@ -220,11 +225,11 @@ class ActivityProgressDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
-              {selectedDoday.duration && (
+              {(selectedDoday as Activity).duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel(selectedDoday.duration)}
+                    {durationToLabel((selectedDoday as Activity).duration)}
                   </Text>
                   <Text
                     size={TypographySize.s}
@@ -232,7 +237,8 @@ class ActivityProgressDetails extends React.Component<
                   >
                     (
                     {Math.round(
-                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                      (durationToMinutes((selectedDoday as Activity).duration) /
+                        (8 * 60)) *
                         100
                     )}
                     % of your day)
@@ -245,7 +251,7 @@ class ActivityProgressDetails extends React.Component<
               spaceBelow={Space.Medium}
               size={TypographySize.h1}
             >
-              {selectedDoday.name}
+              {(selectedDoday as Activity).name}
             </Text>
             {youtubeLink ? (
               <div

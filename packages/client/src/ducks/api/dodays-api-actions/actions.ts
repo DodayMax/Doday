@@ -4,14 +4,71 @@ import {
   SerializedDodayLike,
   SerializedProgressLike,
 } from '@root/lib/models/entities/common';
+import { DodaysQueryParams, DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 
 export enum ActionConstants {
+  FETCH_DODAYS = '[dodays-api] FETCH_DODAYS',
+  FETCH_DODAY_BY_DID = '[dodays-api] FETCH_DODAY_BY_DID',
+  FETCH_DODAYS_WITH_PROGRESS = '[dodays-api] FETCH_DODAYS_WITH_PROGRESS',
+  FETCH_DODAYS_WITH_PROGRESS_BY_DID = '[dodays-api] FETCH_DODAYS_WITH_PROGRESS_BY_DID',
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
   TAKE_DODAY = '[dodays-api] TAKE_DODAY',
   CREATE_AND_TAKE_DODAY = '[dodays-api] CREATE_AND_TAKE_DODAY',
   UPDATE_DODAY = '[dodays-api] UPDATE_DODAY',
   UNTAKE_DODAY = '[dodays-api] UNTAKE_DODAY',
   DELETE_DODAY = '[dodays-api] DELETE_DODAY',
+}
+
+/**
+ * Fetch dodays with query params
+ *
+ * @export
+ * @returns {FetchDodaysAction}
+ */
+export function fetchDodaysActionCreator(params: DodaysQueryParams): FetchDodaysAction {
+  return {
+    type: ActionConstants.FETCH_DODAYS,
+    payload: params,
+  };
+}
+
+/**
+ * Fetch dodays with progress nodes with query params
+ *
+ * @export
+ * @returns {FetchDodaysWithProgressAction}
+ */
+export function fetchDodaysWithProgressActionCreator(params?: DodaysWithProgressQueryParams): FetchDodaysWithProgressAction {
+  return {
+    type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS,
+    payload: params,
+  };
+}
+
+/**
+ * Fetch doday node by DID
+ *
+ * @export
+ * @returns {FetchDodayByDIDAction}
+ */
+export function fetchDodayByDIDActionCreator(did: string): FetchDodayByDIDAction {
+  return {
+    type: ActionConstants.FETCH_DODAY_BY_DID,
+    payload: did,
+  };
+}
+
+/**
+ * Fetch doday with progress node by DID
+ *
+ * @export
+ * @returns {FetchDodayWithProgressByDIDAction}
+ */
+export function fetchDodayWithProgressByDIDActionCreator(did: string): FetchDodayWithProgressByDIDAction {
+  return {
+    type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_BY_DID,
+    payload: did,
+  };
 }
 
 /**
@@ -134,6 +191,26 @@ export const actionCreators = {
 /**
  * Define return types of actions
  */
+
+export interface FetchDodaysAction extends AnyAction {
+  type: ActionConstants.FETCH_DODAYS;
+  payload: DodaysQueryParams;
+}
+
+export interface FetchDodaysWithProgressAction extends AnyAction {
+  type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS;
+  payload?: DodaysWithProgressQueryParams;
+}
+
+export interface FetchDodayByDIDAction extends AnyAction {
+  type: ActionConstants.FETCH_DODAY_BY_DID;
+  payload: string;
+}
+
+export interface FetchDodayWithProgressByDIDAction extends AnyAction {
+  type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_BY_DID;
+  payload: string;
+}
 
 export interface CreateDodayAction extends AnyAction {
   type: ActionConstants.CREATE_DODAY;

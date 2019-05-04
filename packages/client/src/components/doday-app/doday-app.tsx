@@ -4,13 +4,13 @@ import * as cuid from 'cuid';
 import { actions as appActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
+import * as api from '@ducks/api';
 import { TodayTopBar } from './today-top-bar/today-top-bar';
 import { Grid, Icons } from '@components';
 import {
   ChangeDodayAppDateAction,
   PlanOutAction,
 } from '@root/ducks/doday-app/actions';
-import { FetchDodayForDate } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
 import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
@@ -22,6 +22,7 @@ import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
 import { ActivityCell } from '../tools/activities/app-cell/activity-cell';
 import { RootState } from '@root/lib/models';
+import { FetchDodaysWithProgressAction } from '@root/ducks/api/dodays-api-actions/actions';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -38,7 +39,7 @@ interface PropsFromConnect {
   // navStack: Goal[];
   // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   // popFromNavStack: () => PopFromNavigationStackAction;
-  fetchDodaysForDate: () => FetchDodayForDate;
+  fetchDodaysWithProgressActionCreator: () => FetchDodaysWithProgressAction;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   fetchSelectedDodayWithProgressActionCreator: (
     did: string
@@ -50,7 +51,7 @@ export class DodayAppComponent extends React.Component<
   DodayAppProps & PropsFromConnect & RouteComponentProps
 > {
   componentDidMount() {
-    this.props.fetchDodaysForDate();
+    this.props.fetchDodaysWithProgressActionCreator();
   }
 
   getDodaysToRender = () => {
@@ -210,5 +211,10 @@ const mapState = ({ dodayApp }: RootState) => ({
 
 export default connect(
   mapState,
-  { ...appActions, ...settingsActions, ...dodayDetailsActions }
+  {
+    ...appActions,
+    ...settingsActions,
+    ...dodayDetailsActions,
+    ...api.dodays.actions,
+  }
 )(DodayAppComponent);

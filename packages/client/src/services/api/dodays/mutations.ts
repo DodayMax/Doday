@@ -59,7 +59,7 @@ export const deleteDodayMutation = (did: string) => {
   });
 };
 
-export const removeDodayMutation = (did: string) => {
+export const untakeDodayMutation = (did: string) => {
   return fetch(`/api/dodays/${did}/untake`, {
     method: 'DELETE',
     headers: {

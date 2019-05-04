@@ -1,6 +1,7 @@
 import { driver } from '../config/neo4j-driver';
 import { Request, Response } from 'express';
-import { dodaysWithProgressQuery } from '../queries-mutations/dodays';
+import { dodaysWithProgressQuery, dodayWithProgressByDIDQuery } from '../queries-mutations/dodays';
+import { number } from 'prop-types';
 
 export const getDodaysWithProgressController = (
   req: Request,
@@ -30,9 +31,31 @@ export const getDodaysWithProgressController = (
     });
 };
 
+export const getDodaysWithProgressByDIDController = (
+  req: Request,
+  res: Response
+) => {
+  const session = driver.session();
+
+  session
+    .readTransaction(tx => dodayWithProgressByDIDQuery(tx, {
+      heroDID: req.user.did,
+      dodayDID: req.params.did,
+    }))
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
 export type DodaysWithProgressQueryParams = {
   heroDID: string;
   dodaytype?: number;
+  date?: number;
   startdate?: number;
   enddate?: number;
   completed?: boolean;

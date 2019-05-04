@@ -20,11 +20,6 @@ export default (
         ...state,
         selectedDoday: action.payload,
       };
-    case actions.ActionConstants.SET_SELECTED_GOAL:
-      return {
-        ...state,
-        selectedGoal: action.payload,
-      };
     case actions.ActionConstants.UPDATE_SELECTED_DODAY:
       return {
         ...state,

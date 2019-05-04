@@ -8,6 +8,7 @@ import {
   deleteDodayTransaction,
   removeDodayTransaction,
   updateDodayTransaction,
+  dodayByDIDQuery,
 } from '../queries-mutations/dodays';
 
 export const getDodaysController = (req: Request, res: Response) => {
@@ -22,6 +23,24 @@ export const getDodaysController = (req: Request, res: Response) => {
 
   session
     .readTransaction(tx => dodaysQuery(tx, params))
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const getDodayByDID = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  session
+    .readTransaction(tx => dodayByDIDQuery(tx, {
+      heroDID: req.user.did,
+      dodayDID: req.params.did,
+    }))
     .then(result => {
       session.close();
       res.status(200).send(result.records);

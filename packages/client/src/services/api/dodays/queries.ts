@@ -24,6 +24,17 @@ export const fetchDodays = (params?: DodaysQueryParams) => {
   });
 };
 
+export const fetchDodayByDID = (did: string) => {
+  return fetch(`/api/dodays/${did}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    console.log(res);
+  });
+};
+
 export const fetchDodaysWithProgress = (
   params?: DodaysWithProgressQueryParams
 ) => {
@@ -31,6 +42,17 @@ export const fetchDodaysWithProgress = (
   if (params) paramsString = `?${encodeQueryData(params)}`;
 
   return fetch(`/api/progress${paramsString}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    console.log(res);
+  });
+};
+
+export const fetchDodayWithProgressByDID = (did: string) => {
+  return fetch(`/api/progress/${did}`, {
     method: 'GET',
     headers: {
       Accept: 'application/json',
@@ -65,6 +87,7 @@ export type DodaysQueryParams = {
 
 export type DodaysWithProgressQueryParams = {
   dodaytype?: number;
+  date?: number;
   startdate?: number;
   enddate?: number;
   completed?: boolean;

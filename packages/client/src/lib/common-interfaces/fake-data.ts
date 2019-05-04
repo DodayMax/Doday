@@ -19,7 +19,6 @@ export const serializedActivity: SerializedActivity = {
 export const partialProgress: Partial<SerializedActivityProgress> = {
   date: Date.now(),
   dateIsLocked: true,
-  origin: 'did',
 };
 
 export const activity: Activity = {

@@ -24,6 +24,7 @@ function* rootSaga() {
     ...ducks.dodayDetails.dodayDetailsSagas,
     ...ducks.herosettings.herosettingsSagas,
     ...ducks.payments.coinsSagas,
+    ...ducks.api.dodays.apisagas,
   ]);
 }
 

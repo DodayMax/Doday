@@ -18,7 +18,7 @@ export const dodaysQuery = (
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
-        doday: d
+        doday: d,
         resource: r
       }
     `,
@@ -33,13 +33,25 @@ export const dodaysWithProgressQuery = (
   props: DodaysWithProgressQueryParams
 ) => {
   let dateQuery = '';
+  let startDate;
+  let endDate;
+
   if (!props.startdate && props.enddate) {
+    endDate = props.enddate;
     dateQuery = 'AND p.date <= datetime($enddate)';
   } else if (props.startdate && props.enddate) {
+    startDate = props.startdate;
+    endDate = props.enddate;
     dateQuery =
       'AND p.date >= datetime($startdate) AND p.date <= datetime($enddate)';
   } else if (props.startdate && !props.enddate) {
+    startDate = props.startdate;
     dateQuery = 'AND p.date >= datetime($startdate)';
+  } else if (!props.startdate && !props.enddate && props.date) {
+    startDate = props.date;
+    endDate = props.date;
+    dateQuery =
+      'AND p.date >= datetime($startdate) AND p.date <= datetime($enddate)';
   }
   return tx.run(
     `
@@ -52,16 +64,61 @@ export const dodaysWithProgressQuery = (
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       OPTIONAL MATCH (p)-[]-(g:Goal)
       RETURN {
-        doday: d
-        progress: p
+        doday: d,
+        progress: p,
         resource: r
       }
       ORDER BY p.completed
     `,
     {
       ...props,
-      startdate: startDay(new Date(props.startdate)).toISOString(),
-      enddate: endDay(new Date(props.enddate)).toISOString(),
+      startdate: startDate && startDay(new Date(startDate)).toISOString(),
+      enddate: endDate && endDay(new Date(endDate)).toISOString(),
+    }
+  );
+};
+
+export const dodayByDIDQuery = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    dodayDID: string;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (d:Doday {did: dodayDID})-[]-(h:Hero {did: $heroDID})
+      OPTIONAL MATCH (r:Resource)-[]-(d)
+      RETURN {
+        doday: d,
+        resource: r
+      }
+    `,
+    {
+      ...props,
+    }
+  );
+};
+
+export const dodayWithProgressByDIDQuery = (
+  tx: neo4j.Transaction,
+  props: {
+    heroDID: string;
+    dodayDID: string;
+  }
+) => {
+  return tx.run(
+    `
+      MATCH (p:Progress {ownerDID: $heroDID})-[]-(d:Doday {did: dodayDID})-[]-(h:Hero {did: $heroDID})
+      OPTIONAL MATCH (r:Resource)-[]-(d)
+      RETURN {
+        doday: d,
+        progress: p,
+        resource: r
+      }
+    `,
+    {
+      ...props,
     }
   );
 };

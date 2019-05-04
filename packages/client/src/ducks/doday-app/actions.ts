@@ -88,7 +88,9 @@ export function popFromNavStack(): PopFromNavigationStackAction {
  * @export
  * @returns {ChangeDodayAppDateAction}
  */
-export function changeDateActionCreator(date: Date): ChangeDodayAppDateAction {
+export function changeDodayAppDateActionCreator(
+  date: Date
+): ChangeDodayAppDateAction {
   return {
     type: ActionConstants.CHANGE_DATE,
     payload: date,

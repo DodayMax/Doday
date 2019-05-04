@@ -1,11 +1,11 @@
-import { Activity } from '../common-interfaces';
+import { ActivityType } from '../common-interfaces';
 
 export const detectURL = (input: string) => {
   const regexp = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/g;
   return input.match(regexp);
 };
 
-export const detectActivityType = (metadata: any): Activity => {
+export const detectActivityType = (metadata: any): ActivityType => {
   const contentType: string = metadata && metadata.type;
   if (contentType) {
     if (contentType.startsWith('video')) {

@@ -61,11 +61,12 @@ app.use((req, res, next) => {
   next();
 });
 
-require('./routes/authRoutes')(app);
-require('./routes/paymentsRoutes')(app);
-require('./routes/activitiesRoutes')(app);
-require('./routes/goalsRoutes')(app);
-require('./routes/utilsRoutes')(app);
+require('./routes/auth-routes')(app);
+require('./routes/payments-routes')(app);
+require('./routes/dodays-routes')(app);
+require('./routes/goals-routes')(app);
+require('./routes/utils-routes')(app);
+require('./routes/progress-routes')(app);
 
 /*
  * Create an executable GraphQL schema object from GraphQL type definitions

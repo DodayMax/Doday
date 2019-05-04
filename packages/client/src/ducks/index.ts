@@ -6,6 +6,7 @@ import * as activities from '@ducks/activities';
 import * as builder from '@ducks/builder';
 import * as auth from '@ducks/auth';
 import * as herosettings from '@ducks/hero-settings';
+import * as api from '@ducks/api';
 
 export default {
   dodayapp,
@@ -15,4 +16,5 @@ export default {
   auth,
   herosettings,
   payments,
+  api,
 };
