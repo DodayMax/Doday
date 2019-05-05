@@ -3,6 +3,7 @@ import { DodayAppPaths } from '@root/lib/common-interfaces';
 import { DodayLike } from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
+  FETCH_DODAYS_WITH_PROGRESS_FOR_DATE = '[dodays-app] FETCH_DODAYS_WITH_PROGRESS_FOR_DATE',
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_PATH = '[doday-app] CHANGE_PATH',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
@@ -15,6 +16,21 @@ export enum ActionConstants {
   SET_COMPLETED_DODAYS = '[doday-app] SET_COMPLETED_DODAYS',
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
   PLAN_OUT = '[doday-app] PLAN_OUT',
+}
+
+/**
+ * Fetch dodays with progress nodes with query params
+ *
+ * @export
+ * @returns {FetchDodaysWithProgressForDateAction}
+ */
+export function fetchDodaysWithProgressForDateActionCreator(
+  date?: Date
+): FetchDodaysWithProgressForDateAction {
+  return {
+    type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_FOR_DATE,
+    payload: date,
+  };
 }
 
 /**
@@ -154,6 +170,11 @@ export function planOutActionCreator(date: number): PlanOutAction {
 /**
  * Define return types of actions
  */
+
+export interface FetchDodaysWithProgressForDateAction extends AnyAction {
+  type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_FOR_DATE;
+  payload?: Date;
+}
 
 export interface SetLoadingState extends AnyAction {
   type: ActionConstants.SET_LOADING_STATE;

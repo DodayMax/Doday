@@ -10,6 +10,7 @@ import { Grid, Icons } from '@components';
 import {
   ChangeDodayAppDateAction,
   PlanOutAction,
+  FetchDodaysWithProgressForDateAction,
 } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
 import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
@@ -22,7 +23,7 @@ import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
 import { ActivityCell } from '../tools/activities/app-cell/activity-cell';
 import { RootState } from '@root/lib/models';
-import { FetchDodaysWithProgressAction } from '@root/ducks/api/dodays-api-actions/actions';
+import { ActivityProgressCell } from '../tools/activities/app-cell/activity-progress-cell';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -35,11 +36,11 @@ interface PropsFromConnect {
   loading: boolean;
   dodays: DodayLike[];
   chosenDate?: Date;
-  changeDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
+  changeDodayAppDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
   // navStack: Goal[];
   // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   // popFromNavStack: () => PopFromNavigationStackAction;
-  fetchDodaysWithProgressActionCreator: () => FetchDodaysWithProgressAction;
+  fetchDodaysWithProgressForDateActionCreator: () => FetchDodaysWithProgressForDateAction;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   fetchSelectedDodayWithProgressActionCreator: (
     did: string
@@ -51,7 +52,7 @@ export class DodayAppComponent extends React.Component<
   DodayAppProps & PropsFromConnect & RouteComponentProps
 > {
   componentDidMount() {
-    this.props.fetchDodaysWithProgressActionCreator();
+    this.props.fetchDodaysWithProgressForDateActionCreator();
   }
 
   getDodaysToRender = () => {
@@ -79,6 +80,15 @@ export class DodayAppComponent extends React.Component<
   renderCellByDodayType = (item: DodayLike, index) => {
     switch (item.type) {
       case DodayTypes.Activity:
+        if (item.progress) {
+          return (
+            <ActivityProgressCell
+              doday={item as Activity}
+              key={cuid()}
+              onClick={this.handleDodayCellClick}
+            />
+          );
+        }
         return (
           <ActivityCell
             doday={item as Activity}
@@ -96,7 +106,12 @@ export class DodayAppComponent extends React.Component<
   };
 
   renderContent() {
-    const { path, chosenDate, changeDateActionCreator, loading } = this.props;
+    const {
+      path,
+      chosenDate,
+      changeDodayAppDateActionCreator,
+      loading,
+    } = this.props;
 
     const totalDurationOfTheDay = this.getDodaysToRender()
       .filter(
@@ -162,7 +177,7 @@ export class DodayAppComponent extends React.Component<
           <>
             <TodayTopBar
               date={chosenDate!}
-              changeDate={changeDateActionCreator!}
+              changeDate={changeDodayAppDateActionCreator!}
             />
             {totalDurationOfTheDay > 8 * 60 ? (
               <LayoutBlock

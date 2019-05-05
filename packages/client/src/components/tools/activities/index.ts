@@ -10,7 +10,7 @@ import {
 import { IconNames } from '@root/components/shared/_atoms/icons';
 
 export const activityBeacon: ToolBeacon = {
-  name: 'Activity',
+  name: 'Activities',
   icon: 'Activities',
   path: 'activities',
   entityCell: ActivityCell,

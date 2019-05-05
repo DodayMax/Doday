@@ -3,6 +3,7 @@ import {
   ActivityProgress,
   SerializedActivity,
   SerializedActivityProgress,
+  APIresponseActivityProgress,
 } from './activity';
 import { Hero, APIResponseHero } from './Hero';
 import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
@@ -11,6 +12,7 @@ import {
   FlashCardProgress,
   SerializedFlashCard,
   SerializedFlashCardProgress,
+  APIresponseFlashCardProgress,
 } from './flash-card';
 
 /** Doday base abstract interface */
@@ -95,3 +97,6 @@ export type ProgressLike = ActivityProgress | FlashCardProgress;
 export type SerializedProgressLike =
   | SerializedActivityProgress
   | SerializedFlashCardProgress;
+export type APIResponseProgressLike =
+  | APIresponseActivityProgress
+  | APIresponseFlashCardProgress;

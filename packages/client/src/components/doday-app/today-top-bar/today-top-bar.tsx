@@ -9,7 +9,7 @@ const styles = require('./_today-top-bar.module.scss');
 
 interface TodayTopBarProps {
   date: Date;
-  changeDate: (date: Date) => ChangeDodayAppDateAction;
+  changeDate?: (date: Date) => ChangeDodayAppDateAction;
 }
 
 export class TodayTopBar extends React.Component<TodayTopBarProps> {

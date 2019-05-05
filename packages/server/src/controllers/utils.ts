@@ -94,6 +94,7 @@ export const planout = async (req: Request, res: Response) => {
         heroDID: req.user.did,
         dids: dodaysToStay.map(doday => doday.did),
         updates: {
+          doday: {},
           progress: {
             date,
           },

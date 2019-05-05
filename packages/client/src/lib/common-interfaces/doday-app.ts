@@ -1,6 +1,6 @@
 import { IconNames } from '@root/components/shared/_atoms/icons';
 
-export type DodayToolBeaconNames = 'Activity' | 'Goal' | 'Memorizer';
+export type DodayToolBeaconNames = 'Activities' | 'Goals' | 'Memorizer';
 
 export type DodayAppPaths = '/' | 'activities' | 'goals' | 'memos' | 'public';
 

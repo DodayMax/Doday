@@ -9,6 +9,8 @@ import {
   removeDodayTransaction,
   updateDodayTransaction,
   dodayByDIDQuery,
+  dodayWithProgressByDIDQuery,
+  dodaysWithProgressQuery,
 } from '../queries-mutations/dodays';
 
 export const getDodaysController = (req: Request, res: Response) => {
@@ -37,10 +39,65 @@ export const getDodayByDID = (req: Request, res: Response) => {
   const session = driver.session();
 
   session
-    .readTransaction(tx => dodayByDIDQuery(tx, {
-      heroDID: req.user.did,
-      dodayDID: req.params.did,
-    }))
+    .readTransaction(tx =>
+      dodayByDIDQuery(tx, {
+        heroDID: req.user.did,
+        dodayDID: req.params.did,
+      })
+    )
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const getDodaysWithProgressController = (
+  req: Request,
+  res: Response
+) => {
+  const session = driver.session();
+
+  const params: DodaysWithProgressQueryParams = {
+    heroDID: req.user.did,
+  };
+
+  if (req.query.dodaytype) params.dodaytype = Number(req.query.dodaytype);
+  if (req.query.exactDate) params.exactDate = Number(req.query.exactDate);
+  if (req.query.date) params.date = Number(req.query.date);
+  if (req.query.startdate) params.startdate = Number(req.query.startdate);
+  if (req.query.enddate) params.enddate = Number(req.query.enddate);
+  if (req.query.completed) params.completed = JSON.parse(req.query.completed);
+  if (req.query.createdBy) params.createdBy = req.query.createdBy;
+
+  session
+    .readTransaction(tx => dodaysWithProgressQuery(tx, params))
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const getDodaysWithProgressByDIDController = (
+  req: Request,
+  res: Response
+) => {
+  const session = driver.session();
+
+  session
+    .readTransaction(tx =>
+      dodayWithProgressByDIDQuery(tx, {
+        heroDID: req.user.did,
+        dodayDID: req.params.did,
+      })
+    )
     .then(result => {
       session.close();
       res.status(200).send(result.records);
@@ -199,5 +256,16 @@ export const updateDodayController = (req: Request, res: Response) => {
 export type DodaysQueryParams = {
   heroDID: string;
   type?: number;
+  createdBy?: string;
+};
+
+export type DodaysWithProgressQueryParams = {
+  heroDID: string;
+  dodaytype?: number;
+  date?: number; // <= date
+  exactDate?: number; // only for this date
+  startdate?: number;
+  enddate?: number;
+  completed?: boolean;
   createdBy?: string;
 };

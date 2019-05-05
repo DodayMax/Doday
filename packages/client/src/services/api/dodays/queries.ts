@@ -1,11 +1,8 @@
-import gql from 'graphql-tag';
-import client from '../apollo-client';
+import { neo4jResponseDateTimeToJSDate } from '@root/lib/utils';
 import {
-  neo4jResponseDateToJSDate,
-  neo4jResponseDateTimeToJSDate,
-} from '@root/lib/utils';
-import { DodayLike } from '@root/lib/models/entities/common';
-import { APIresponseActivityProgress } from '@root/lib/models/entities/activity';
+  DodayLike,
+  APIResponseProgressLike,
+} from '@root/lib/models/entities/common';
 import { encodeQueryData } from '@root/lib/utils/api-utils';
 
 // Dodays
@@ -47,7 +44,7 @@ export const fetchDodaysWithProgress = (
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    console.log(res);
+    return await parseAPIResponseDodays(res);
   });
 };
 
@@ -64,20 +61,29 @@ export const fetchDodayWithProgressByDID = (did: string) => {
 
 export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
   const json = await res.json();
-  const dodays = [];
-  json.map(doday => {
-    doday._fields.map((doday: APIresponseActivityProgress) => {
-      return {
-        ...doday,
-        date: doday.date && neo4jResponseDateToJSDate(doday.date),
-        completedAt:
-          doday.completedAt && neo4jResponseDateTimeToJSDate(doday.completedAt),
-        tookAt: doday.tookAt && neo4jResponseDateTimeToJSDate(doday.tookAt),
-      };
-    });
-    dodays.push(doday._fields[0]);
+  const dodays = json.map(item => {
+    const nodes = item._fields[0];
+    const dodayNode = nodes.doday && nodes.doday.properties;
+    const progressNode = nodes.progress && nodes.progress.properties;
+    const resourceNode = nodes.resource && nodes.resource.properties;
+    return {
+      ...dodayNode,
+      progress: deserializeProgressNode(progressNode),
+      resource: resourceNode,
+    };
   });
   return dodays;
+};
+
+export const deserializeProgressNode = (progress: APIResponseProgressLike) => {
+  return {
+    ...progress,
+    date: progress.date && neo4jResponseDateTimeToJSDate(progress.date),
+    completedAt:
+      progress.completedAt &&
+      neo4jResponseDateTimeToJSDate(progress.completedAt),
+    tookAt: progress.tookAt && neo4jResponseDateTimeToJSDate(progress.tookAt),
+  };
 };
 
 export type DodaysQueryParams = {
@@ -87,6 +93,7 @@ export type DodaysQueryParams = {
 
 export type DodaysWithProgressQueryParams = {
   dodaytype?: number;
+  exactDate?: number;
   date?: number;
   startdate?: number;
   enddate?: number;

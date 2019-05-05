@@ -1,4 +1,4 @@
-import * as progressController from '../controllers/progress';
+import * as dodaysController from '../controllers/dodays';
 
 module.exports = app => {
   /**
@@ -11,7 +11,10 @@ module.exports = app => {
    * enddate: number - <= enddate
    * completed: boolean - if undefined - both
    */
-  app.get('/api/progress', progressController.getDodaysWithProgressController);
+  app.get('/api/progress', dodaysController.getDodaysWithProgressController);
   /** Get doday with progress node by did */
-  app.get('/api/progress/:did', progressController.getDodaysWithProgressController);
+  app.get(
+    '/api/progress/:did',
+    dodaysController.getDodaysWithProgressController
+  );
 };

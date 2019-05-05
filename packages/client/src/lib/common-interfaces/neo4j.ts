@@ -59,4 +59,13 @@ export interface Neo4jResponseDateTime {
     low: number;
     high: number;
   };
+  nanosecond?: {
+    low: number;
+    high: number;
+  };
+  timeZoneId?: string;
+  timeZoneOffsetSeconds?: {
+    low: number;
+    high: number;
+  };
 }

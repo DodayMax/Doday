@@ -3,8 +3,10 @@ import { SerializedDoday } from '../models/doday';
 import { endDay, startDay } from '../util/date-utils';
 import { SerializedResource } from '../models/resource';
 import { SerializedProgress } from '../models/progress';
-import { DodaysQueryParams } from '../controllers/dodays';
-import { DodaysWithProgressQueryParams } from '../controllers/progress';
+import {
+  DodaysQueryParams,
+  DodaysWithProgressQueryParams,
+} from '../controllers/dodays';
 
 export const dodaysQuery = (
   tx: neo4j.Transaction,
@@ -52,17 +54,19 @@ export const dodaysWithProgressQuery = (
     endDate = props.date;
     dateQuery =
       'AND p.date >= datetime($startdate) AND p.date <= datetime($enddate)';
+  } else if (props.exactDate) {
+    endDate = props.exactDate;
+    dateQuery = 'AND p.date <= datetime($enddate)';
   }
   return tx.run(
     `
       MATCH (d:Doday)-[]-(p:Progress)-[]-(h:Hero)
-      OPTIONAL MATCH (r:Resource)-[]-(d)
       WHERE h.did = $heroDID
       ${dateQuery}
       ${props.dodaytype ? `AND d.type = $dodaytype` : ''}
-      ${props.completed ? `AND p.completed = $completed` : ''}
+      ${props.completed != null ? `AND p.completed = $completed` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
-      OPTIONAL MATCH (p)-[]-(g:Goal)
+      OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
         doday: d,
         progress: p,

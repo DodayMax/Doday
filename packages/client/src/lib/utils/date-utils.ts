@@ -50,8 +50,13 @@ export const neo4jResponseDateToJSDate = (date: Neo4jResponseDate) =>
 
 export const neo4jResponseDateTimeToJSDate = (date: Neo4jResponseDateTime) =>
   new Date(
-    `${date.year.low}-${date.month.low}-${date.day.low}T${date.hour.low ||
-      0}:${date.minute.low || 0}:${date.second.low || 0}`
+    `${date.year.low}-${convertToTwoDigitNumber(
+      date.month.low
+    )}-${convertToTwoDigitNumber(date.day.low)}T${convertToTwoDigitNumber(
+      date.hour.low
+    )}:${convertToTwoDigitNumber(date.minute.low)}:${convertToTwoDigitNumber(
+      date.second.low
+    )}`
   );
 
 export const dateInputStringFromDate = (date: Date) => {
@@ -76,3 +81,8 @@ export const durationToLabel = (duration: string) => {
 
 export const durationToMinutes = (duration: string) =>
   Number(duration.slice(2, -1));
+
+export const convertToTwoDigitNumber = number => {
+  if (!number) return '00';
+  return String(number).length === 1 ? `0${number}` : number;
+};

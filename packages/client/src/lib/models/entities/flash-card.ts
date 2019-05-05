@@ -4,6 +4,7 @@ import {
   APIResponseDodayBase,
   ProgressBase,
   SerializedProgressBase,
+  APIResponseProgressBase,
 } from './common';
 
 export interface FlashCard extends DodayBase {
@@ -25,3 +26,4 @@ export interface APIResponseFlashCard extends APIResponseDodayBase {
 
 export interface FlashCardProgress extends ProgressBase {}
 export interface SerializedFlashCardProgress extends SerializedProgressBase {}
+export interface APIresponseFlashCardProgress extends APIResponseProgressBase {}
