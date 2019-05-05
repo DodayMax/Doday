@@ -2,8 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { actions } from '@ducks/doday-app';
-import { Loader } from '@components';
-import { LayoutBlock } from '../../_atoms/layout-block';
+import { Loader, LayoutBlock } from '@shared';
 import { Space } from '@root/lib/common-interfaces';
 
 const styles = require('./_grid.module.scss');

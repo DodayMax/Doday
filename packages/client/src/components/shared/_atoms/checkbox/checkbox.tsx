@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Icons } from '@components';
+import { Icons } from '@shared';
 
 const css = require('./_checkbox.module.scss');
 

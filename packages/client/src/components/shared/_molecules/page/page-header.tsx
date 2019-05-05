@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutBlock, ClickableIcon, Icons } from '@components';
+import { LayoutBlock, ClickableIcon, Icons } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 
 const vars = require('@styles/_config.scss');

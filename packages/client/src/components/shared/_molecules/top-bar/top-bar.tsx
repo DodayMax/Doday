@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, ACLGuard } from '@components';
+import { Button, ACLGuard } from '@shared';
 import { StripeButton } from '../../_atoms/stripe-button';
 import { Hero } from '@root/lib/models/entities/hero';
 import { RootState } from '@root/lib/models';
@@ -47,17 +47,25 @@ class TopBar extends React.Component<
         {this.renderContent()}
         <ACLGuard
           allowed={
-            <LayoutBlock insideElementsMargin align="flex-end" valign='vflex-center'>
+            <LayoutBlock
+              insideElementsMargin
+              align="flex-end"
+              valign="vflex-center"
+            >
               <StripeButton handleToken={this.props.handleStripeToken} />
               <Button
                 to={'/builder?type=1'}
                 disabled={this.props.location.pathname === '/builder'}
-              >New Goal</Button>
+              >
+                New Goal
+              </Button>
               <Button
                 primary
                 to={'/builder?type=0'}
                 disabled={this.props.location.pathname === '/builder'}
-              >New Doday</Button>
+              >
+                New Doday
+              </Button>
             </LayoutBlock>
           }
         />

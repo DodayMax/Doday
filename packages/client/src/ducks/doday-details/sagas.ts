@@ -3,37 +3,22 @@ import * as _ from 'lodash';
 import {
   ActionConstants,
   FetchSelectedDodayAction,
-  setDirtyStatusActionCreator,
   RequestForSetUpdatesAction,
-  setUpdatesForSelectedDodayActionCreator,
-  FetchSelectedProgressAction,
+  setSelectedDodayActionCreator,
 } from './actions';
 import { api } from '@root/services';
-import { updatesSelector, selectedDoday } from './selectors';
-import { isEmptyObject } from '@root/lib/utils';
 
 /**
  * Fetch selected doday saga
  *
  * @param {FetchSelectedDodayAction} action
  */
-function* fetchSelectedDodaySaga(action: FetchSelectedDodayAction) {
-  // const doday = yield call(api.dodays.queries.getDodayByDID, {
-  //   did: action.payload,
-  // });
-  // yield put(setSelectedDodayActionCreator(doday));
-}
-
-/**
- * Fetch selected doday saga
- *
- * @param {FetchSelectedProgressAction} action
- */
-function* fetchSelectedProgressSaga(action: FetchSelectedProgressAction) {
-  // const progress = yield call(api.dodays.queries.dodayProgressByDID, {
-  //   did: action.payload,
-  // });
-  // yield put(setSelectedDodayActionCreator(progress));
+function* fetchSelectedDodayActionSaga(action: FetchSelectedDodayAction) {
+  const doday = yield call(
+    api.dodays.queries.fetchDodayWithProgressByDID,
+    action.payload
+  );
+  yield put(setSelectedDodayActionCreator(doday));
 }
 
 /**
@@ -55,10 +40,9 @@ function* setUpdatesAndDirtyStatusSaga(action: RequestForSetUpdatesAction) {
 }
 
 export default [
-  takeLatest(ActionConstants.FETCH_SELECTED_DODAY, fetchSelectedDodaySaga),
   takeLatest(
-    ActionConstants.FETCH_SELECTED_PROGRESS,
-    fetchSelectedProgressSaga
+    ActionConstants.FETCH_SELECTED_DODAY,
+    fetchSelectedDodayActionSaga
   ),
   takeLatest(
     ActionConstants.REQUEST_FOR_SET_UPDATES,

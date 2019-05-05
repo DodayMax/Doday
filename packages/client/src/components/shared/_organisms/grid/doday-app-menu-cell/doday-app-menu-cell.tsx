@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Icons, Badge, Text } from '@components';
+import { Icons, Badge, Text } from '@shared';
 import { TypographySize, DrawerMenuItem } from '@root/lib/common-interfaces';
 
 const css = require('./_doday-app-menu-cell.module.scss');

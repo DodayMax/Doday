@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutBlock } from '@components';
+import { LayoutBlock } from '@shared';
 import { withRouter } from 'react-router';
 
 const css = require('./_page.module.scss');

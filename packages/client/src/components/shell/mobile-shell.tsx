@@ -13,7 +13,7 @@ interface ShellProps {
   match?: match;
 }
 
-import { Grid } from '@components';
+import { Grid } from '@shared';
 
 export class MobileShell extends React.Component<
   ShellProps & TranslationProps

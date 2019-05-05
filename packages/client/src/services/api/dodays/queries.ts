@@ -1,4 +1,4 @@
-import { neo4jResponseDateTimeToJSDate } from '@root/lib/utils';
+import { neo4jResponseDateTimeToJSDate, firstItem } from '@root/lib/utils';
 import {
   DodayLike,
   APIResponseProgressLike,
@@ -55,7 +55,7 @@ export const fetchDodayWithProgressByDID = (did: string) => {
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    console.log(res);
+    return firstItem(await parseAPIResponseDodays(res));
   });
 };
 

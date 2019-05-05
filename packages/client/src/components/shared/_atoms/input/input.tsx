@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Icons } from '@root/components';
+import { Icons } from '@shared';
 import { Size } from '@root/lib/common-interfaces';
 
 const styles = require('./_input.module.scss');

@@ -113,7 +113,7 @@ export const dodayWithProgressByDIDQuery = (
 ) => {
   return tx.run(
     `
-      MATCH (p:Progress {ownerDID: $heroDID})-[]-(d:Doday {did: dodayDID})-[]-(h:Hero {did: $heroDID})
+      MATCH (p:Progress {ownerDID: $heroDID})-[]-(d:Doday {did: $dodayDID})-[]-(h:Hero {did: $heroDID})
       OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
         doday: d,

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { noop } from 'lodash';
 import StripeCheckout, { Token } from 'react-stripe-checkout';
-import { Button } from '@root/components';
+import { Button } from '@shared';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 import { ButtonSize } from '../button';
 import { Coins } from '../coins';

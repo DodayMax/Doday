@@ -3,7 +3,7 @@ import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import * as moment from 'moment';
 import { Button } from '../button';
 import { ButtonGroup } from '../../_molecules/button-group';
-import { Icons } from '@root/components';
+import { Icons } from '@shared';
 import { DodayColors } from '@root/lib/common-interfaces';
 
 const css = require('./custom-datepicker.scss');

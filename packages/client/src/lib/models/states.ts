@@ -1,7 +1,7 @@
 import { Hero } from './entities/hero';
 import { BuilderStatus } from '@root/ducks/builder/reducer';
-import { ActivityBuilderState } from '@root/ducks/activities/reducer';
 import { DodayLike, SerializedProgressLike } from './entities/common';
+import { ActivityBuilderState } from '@root/tools/activities/duck/reducer';
 
 export interface RootState {
   auth: AuthState;

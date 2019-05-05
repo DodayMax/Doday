@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { BrowserRouter as Router, RouteComponentProps } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Dashboard, TopBar } from '@components';
+import { Dashboard } from '@components';
+import { TopBar } from '@shared';
 import { RootState } from '@lib/models';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import { actions as authActions } from '@ducks/auth';

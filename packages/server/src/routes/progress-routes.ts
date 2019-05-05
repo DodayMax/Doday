@@ -15,6 +15,6 @@ module.exports = app => {
   /** Get doday with progress node by did */
   app.get(
     '/api/progress/:did',
-    dodaysController.getDodaysWithProgressController
+    dodaysController.getDodaysWithProgressByDIDController
   );
 };
