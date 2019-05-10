@@ -1,9 +1,35 @@
 import * as actions from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 export const initialState: ActivityBuilderState = {};
+export const initialDodayAppState: DodayAppToolState = {
+  inprogress: [],
+  completed: [],
+  created: [],
+};
 
-export default (
+export const dodayAppReducer = (
+  state = initialDodayAppState,
+  action?: actions.ActionTypes
+): DodayAppToolState => {
+  switch (action && action.type) {
+    case actions.ActionConstants.SET_ACTIVITIES_IN_PROGRESS:
+      return {
+        ...state,
+        inprogress: action.payload,
+      };
+    case actions.ActionConstants.SET_COMPLETED_ACTIVITIES:
+      return {
+        ...state,
+        completed: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const builderReducer = (
   state = initialState,
   action?: actions.ActionTypes
 ): ActivityBuilderState => {
@@ -42,3 +68,9 @@ export type ActivityBuilderState = {
   isUrlParsing?: boolean;
   parsedMetadata?: any;
 };
+
+export interface DodayAppToolState {
+  inprogress: DodayLike[];
+  completed: DodayLike[];
+  created: DodayLike[];
+}

@@ -1,6 +1,11 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { TypographySize, DodayColors, Space } from '@lib/common-interfaces';
+import {
+  TypographySize,
+  DodayColors,
+  Space,
+  CellProps,
+} from '@lib/common-interfaces';
 import { Text, Icons } from '@shared';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
@@ -9,13 +14,9 @@ import { durationToMinutes } from '@root/lib/utils';
 
 const css = require('./activity-cell.module.scss');
 
-interface ActivityCellProps {
-  doday: Activity;
-  active?: boolean;
-  onClick?: (route: string, doday: Activity) => void;
-}
+interface ActivityCellProps {}
 
-export const ActivityCell: React.SFC<ActivityCellProps> = ({
+export const ActivityCell: React.SFC<ActivityCellProps & CellProps> = ({
   doday,
   active = false,
   onClick,
@@ -26,11 +27,15 @@ export const ActivityCell: React.SFC<ActivityCellProps> = ({
     [css.active]: active,
   });
 
+  const activity = doday as Activity;
+
   return (
     <li
       className={classNames}
-      key={doday.did}
-      onClick={() => onClick && onClick(`/activities/${doday.did}`, doday)}
+      key={activity.did}
+      onClick={() =>
+        onClick && onClick(`/activities/${activity.did}`, activity)
+      }
     >
       <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
         <Text
@@ -39,7 +44,7 @@ export const ActivityCell: React.SFC<ActivityCellProps> = ({
           size={TypographySize.m}
           className={css.cellTitle}
         >
-          {doday.name}
+          {activity.name}
         </Text>
         <LayoutBlock
           align="flex-end"
@@ -64,14 +69,14 @@ export const ActivityCell: React.SFC<ActivityCellProps> = ({
             bordered
             rounded
             color={DodayColors.gray4}
-            text={doday.activityType}
+            text={activity.activityType}
             size={TypographySize.s}
           />
           <Marker
             bordered
             rounded
             color={DodayColors.blueLight}
-            text={String(Math.floor(durationToMinutes(doday.duration) / 60))}
+            text={String(Math.floor(durationToMinutes(activity.duration) / 60))}
             size={TypographySize.s}
           />
         </LayoutBlock>

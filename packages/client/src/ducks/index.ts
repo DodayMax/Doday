@@ -6,7 +6,7 @@ import * as builder from '@ducks/builder';
 import * as auth from '@ducks/auth';
 import * as herosettings from '@ducks/hero-settings';
 import * as api from '@ducks/api';
-import { tools } from '@tools';
+import { toolBeacons } from '@tools';
 
 const ducks: any = {
   dodayapp,
@@ -18,8 +18,8 @@ const ducks: any = {
   api,
 };
 
-tools.map(tool => {
-  if (tool.duck) ducks[tool.config.name.toLowerCase()] = tool.duck;
+toolBeacons.map(tool => {
+  if (tool.duck) ducks[tool.config.sysname] = tool.duck;
 });
 
 export default ducks;

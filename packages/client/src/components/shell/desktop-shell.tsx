@@ -46,7 +46,6 @@ class DesktopShell extends React.Component<
   render() {
     const {
       hero,
-      history,
       toggleDrawer,
       toggleDodayApp,
       isDrawerCollapsed,
@@ -60,6 +59,7 @@ class DesktopShell extends React.Component<
           <section className={styles.contentContainer}>
             {hero ? (
               <Dashboard
+                activeToolBeacons={hero.tools}
                 toggleDrawer={toggleDrawer}
                 toggleDodayApp={toggleDodayApp}
                 isDodayAppCollapsed={isDodayAppCollapsed}

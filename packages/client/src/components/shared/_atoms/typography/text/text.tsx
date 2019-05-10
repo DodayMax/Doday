@@ -32,6 +32,7 @@ export const Text: React.SFC<
   strikethrough,
   ellipsize,
   wordwrap,
+  fullWidth,
   spaceAbove,
   spaceBelow,
   spaceLeft,
@@ -66,6 +67,7 @@ export const Text: React.SFC<
       [css[`${align}`]]: !!align,
       [css[`text-${size}`]]: !!size,
       [css[`${color}-text`]]: !!color,
+      [css['fullwidth']]: !!fullWidth,
       [className]: !!className,
     }
   );

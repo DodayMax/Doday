@@ -9,7 +9,6 @@ import {
 } from '@root/components/shared/_support/pageflow';
 import { RootState } from '@root/lib/models';
 import { DodayLike, DodayTypes } from '@root/lib/models/entities/common';
-import { activityToolBeacon } from '@tools/activities';
 
 interface DodayDetailsProps {}
 
@@ -45,7 +44,7 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
 
     switch (selectedDoday && selectedDoday.type) {
       case DodayTypes.Activity:
-        return <activityToolBeacon.components.ActivityProgressDetails />;
+        return null;
       default:
         return null;
     }

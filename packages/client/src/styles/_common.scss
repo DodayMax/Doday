@@ -47,7 +47,7 @@
 }
 
 .child-flex {
-  > div {
+  > * {
     flex: 1;
   }
 }

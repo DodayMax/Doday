@@ -16,7 +16,6 @@ import {
   Pageflow,
   PageWrapperChildContext,
 } from '../../shared/_support/pageflow';
-import { ActivityBuilder } from '@root/tools/activities/components';
 
 interface BuilderProps {}
 
@@ -75,7 +74,7 @@ export class Builder extends React.Component<
     const queryParams = queryString.parse(location.search);
 
     if (Number(queryParams.type) === DodayTypes.Activity) {
-      return <ActivityBuilder />;
+      return null;
     }
   };
 

@@ -1,18 +1,19 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Drawer, DodayApp, Builder } from '@components';
+import { Drawer, Builder } from '@components';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
 import { Profile } from '../profile';
-import { tools } from '@tools';
+import { toolBeacons, ToolSysname } from '@tools';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
 
 const css = require('./_dashboard.module.scss');
 
 interface DashboardProps {
+  activeToolBeacons: ToolSysname[];
   toggleDrawer: () => ToggleDrawerAction;
   toggleDodayApp: () => ToggleDodayAppAction;
   isDrawerCollapsed: boolean;
@@ -66,7 +67,10 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   render() {
-    const { isDodayAppCollapsed } = this.props;
+    const { isDodayAppCollapsed, activeToolBeacons } = this.props;
+    const tools = toolBeacons.filter(tool =>
+      activeToolBeacons.find(item => item === tool.config.sysname)
+    );
 
     return (
       <>
@@ -74,10 +78,17 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           <Drawer
             collapsed={this.state.isDrawerCollapsed}
             toggle={() => this.toggleMenu()}
-            tools={tools}
+            toolBeacons={tools}
           />
         </nav>
-        {!isDodayAppCollapsed && <Route path="/" component={DodayApp} />}
+        {!isDodayAppCollapsed &&
+          tools.map((beacon, index) => (
+            <Route
+              key={index}
+              path={beacon.drawerMenuItem.path}
+              component={beacon.components.dodayApp}
+            />
+          ))}
         <Route exact path="/" render={() => <div>Dashboard</div>} />
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/progress/:did" component={ProgressDetails} />

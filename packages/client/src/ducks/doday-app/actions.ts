@@ -1,5 +1,4 @@
 import { AnyAction } from 'redux';
-import { DodayAppPaths } from '@root/lib/common-interfaces';
 import { DodayLike } from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
@@ -43,19 +42,6 @@ export function setAppLoadingState(value: boolean): SetLoadingState {
   return {
     type: ActionConstants.SET_LOADING_STATE,
     payload: value,
-  };
-}
-
-/**
- * Go to path
- *
- * @export
- * @returns {ChangePathAction}
- */
-export function changePath(path: DodayAppPaths): ChangePathAction {
-  return {
-    type: ActionConstants.CHANGE_PATH,
-    payload: path,
   };
 }
 
@@ -191,11 +177,6 @@ export interface SetCompletedDodaysAction extends AnyAction {
   payload: DodayLike[];
 }
 
-export interface ChangePathAction extends AnyAction {
-  type: ActionConstants.CHANGE_PATH;
-  payload: DodayAppPaths;
-}
-
 export interface PushToNavigationStackByDIDAction extends AnyAction {
   type: ActionConstants.PUSH_TO_NAV_STACK_BY_DID;
   payload: string;
@@ -229,7 +210,6 @@ export interface PlanOutAction extends AnyAction {
  */
 
 export type ActionTypes =
-  | ChangePathAction
   | SetLoadingState
   | SetDodaysAction
   | SetCompletedDodaysAction

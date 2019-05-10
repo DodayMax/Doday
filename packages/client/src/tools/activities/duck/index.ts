@@ -1,5 +1,5 @@
-import reducer from './reducer';
-import * as activitiesActions from './actions';
-import activitiesSagas from './sagas';
+import * as reducers from './reducer';
+import * as actions from './actions';
+import sagas from './sagas';
 
-export { activitiesActions, activitiesSagas, reducer };
+export { actions, sagas, reducers };

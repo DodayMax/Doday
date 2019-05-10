@@ -1,5 +1,8 @@
+import { ToolSysname } from '@root/tools';
+
 export interface Hero {
   did: string;
+  tools: ToolSysname[];
   nickname?: string;
   displayName: string;
   google?: string;

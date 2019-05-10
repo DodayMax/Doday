@@ -6,7 +6,7 @@ import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import PieChart from 'react-minimal-pie-chart';
 import { Grid, Icons, ClickableIcon } from '@shared';
 import { actions } from '@ducks/doday-app';
-import { DodayAppPaths, DrawerMenuItem } from '@lib/common-interfaces';
+import { DrawerMenuItem, ToolBeacon } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import {
@@ -15,12 +15,11 @@ import {
 } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../../shared/_atoms/layout-block';
-import { ToolBeacon } from '@tools/activities';
 
 const css = require('./_drawer.module.scss');
 
 interface DrawerProps {
-  tools: ToolBeacon[];
+  toolBeacons: ToolBeacon[];
   match?: match;
   collapsed: boolean;
   toggle: () => void;
@@ -28,28 +27,22 @@ interface DrawerProps {
 
 interface PropsFromConnect {
   badge: number;
-  path: DodayAppPaths;
   pushToNavStackByDIDActionCreator?: (
     did: string
   ) => PushToNavigationStackByDIDAction;
   clearNavStackActionCreator?: () => ClearNavStackAction;
 }
 
-interface Actions {
-  changePath: (path: string) => void;
-}
-
 const items: DrawerMenuItem[] = [
   {
     text: 'Schedule',
+    path: '/schedule',
     icon: 'TodayCalendar',
-    action: 'changePath',
-    path: '/',
   },
 ];
 
 export class DrawerComponent extends React.Component<
-  DrawerProps & PropsFromConnect & RouteComponentProps & Actions,
+  DrawerProps & PropsFromConnect & RouteComponentProps,
   {}
 > {
   constructor(props) {
@@ -103,17 +96,6 @@ export class DrawerComponent extends React.Component<
         </div>
       );
     }
-  };
-
-  handleMenuClick = (item: DrawerMenuItem, index: number) => {
-    const action = this.props[item.action];
-    if (action) {
-      action(item.path);
-      if (item.path === 'goals') {
-        this.props.clearNavStackActionCreator();
-      }
-    }
-    this.setState({ activeIndex: index });
   };
 
   renderDrawerLevel = () => {
@@ -174,16 +156,17 @@ export class DrawerComponent extends React.Component<
   }
 
   toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
-    return tools.map((tool: ToolBeacon) => ({
-      text: tool.config.name,
-      icon: tool.config.icon,
-      action: 'changePath',
-      path: tool.config.path,
-    }));
+    return tools.map((tool: ToolBeacon) => {
+      return {
+        text: tool.drawerMenuItem.text,
+        path: tool.drawerMenuItem.path,
+        icon: tool.drawerMenuItem.icon,
+      };
+    });
   }
 
   render() {
-    const { collapsed, path, tools } = this.props;
+    const { collapsed, toolBeacons, history } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
@@ -195,14 +178,13 @@ export class DrawerComponent extends React.Component<
         {this.renderDrawerLevel()}
         <ul role="navigation" className={css.drawerMenu}>
           <Grid
-            items={items.concat(this.toolsToDrawerMenuItems(tools))}
-            renderCell={(item: DrawerMenuItem, index) => (
+            items={items.concat(this.toolsToDrawerMenuItems(toolBeacons))}
+            renderCell={(item: DrawerMenuItem) => (
               <DodayAppMenuCell
                 key={cuid()}
                 collapsed={this.props.collapsed}
                 item={item}
-                active={item.path === path}
-                onClick={() => this.handleMenuClick(item, index)}
+                onClick={() => history.push(item.path)}
               />
             )}
             collapsed={collapsed}
@@ -217,8 +199,7 @@ export class DrawerComponent extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  badge: state.dodayApp.badge,
-  path: state.dodayApp.path,
+  badge: state.dodayApp.status.badge,
 });
 
 export default withRouter(

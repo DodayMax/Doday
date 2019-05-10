@@ -1,4 +1,8 @@
-import { TypographySize, TypographyColor, TypographyAlignment } from '@lib/common-interfaces';
+import {
+  TypographySize,
+  TypographyColor,
+  TypographyAlignment,
+} from '@lib/common-interfaces';
 export * from './text/text';
 
 export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
@@ -14,4 +18,5 @@ export interface TypographyProps extends React.HTMLAttributes<HTMLElement> {
   ellipsize?: boolean;
   align?: TypographyAlignment;
   wordwrap?: boolean;
+  fullWidth?: boolean;
 }

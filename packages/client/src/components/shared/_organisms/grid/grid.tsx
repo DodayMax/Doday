@@ -4,11 +4,14 @@ import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { actions } from '@ducks/doday-app';
 import { Loader, LayoutBlock } from '@shared';
 import { Space } from '@root/lib/common-interfaces';
+import { FilterItem } from './filter/filter-item';
+import { Filter } from './filter/filter';
 
 const styles = require('./_grid.module.scss');
 
 interface GridProps {
   items: any[];
+  filters?: FilterItem[][];
   loading?: boolean;
   renderCell: (item: any, index: number) => JSX.Element;
   collapsed: boolean;
@@ -43,23 +46,27 @@ export class GridComponent extends React.Component<
   };
 
   render() {
-    const { items, loading, renderCell } = this.props;
+    const { items, loading, renderCell, filters } = this.props;
     return (
-      <ul id="grid" className={styles.gridContainer}>
-        {loading && (
-          <LayoutBlock
-            align="flex-center"
-            paddingAbove={Space.XSmall}
-            paddingBelow={Space.XSmall}
-          >
-            <Loader />
-          </LayoutBlock>
-        )}
-        {!loading &&
-          items.map((item: any, index) => {
-            return renderCell && renderCell(item, index);
-          })}
-      </ul>
+      <>
+        {filters &&
+          filters.map((filter, index) => <Filter key={index} items={filter} />)}
+        <ul id="grid" className={styles.gridContainer}>
+          {loading && (
+            <LayoutBlock
+              align="flex-center"
+              paddingAbove={Space.XSmall}
+              paddingBelow={Space.XSmall}
+            >
+              <Loader />
+            </LayoutBlock>
+          )}
+          {!loading &&
+            items.map((item: any, index) => {
+              return renderCell && renderCell(item, index);
+            })}
+        </ul>
+      </>
     );
   }
 }

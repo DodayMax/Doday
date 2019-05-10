@@ -2,21 +2,71 @@ import { AnyAction } from 'redux';
 import {
   SerializedActivity,
   SerializedActivityProgress,
+  Activity,
 } from '@root/lib/models/entities/Activity';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { SerializedResource } from '@root/lib/models/entities/resource';
+import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 
 export enum ActionConstants {
-  FETCH_ACTIVITY_TYPES = '[builder] FETCH_ACTIVITY_TYPES',
-  SET_ACTIVITY_TYPE = '[builder] SET_ACTIVITY_TYPE',
-  CREATE_ACTIVITY = '[builder] CREATE_ACTIVITY',
-  TAKE_ACTIVITY = '[builder] TAKE_ACTIVITY',
-  CREATE_AND_TAKE_ACTIVITY = '[builder] CREATE_AND_TAKE_ACTIVITY',
-  PARSE_URL = '[builder] PARSE_URL',
-  SET_URL_PARSING_PROGRESS = '[builder] SET_URL_PARSING_PROGRESS',
-  SET_PARSED_URL_METADATA_OBJECT = '[builder] SET_PARSED_URL_METADATA_OBJECT',
-  CLEAR_PARSED_URL_METADATA = '[builder] CLEAR_PARSED_URL_METADATA',
-  CLEAR_ACTIVITIES_BUILDER = '[builder] CLEAR_ACTIVITIES_BUILDER',
+  FETCH_ACTIVITIES_WITH_PROGRESS = '[activities] FETCH_ACTIVITIES_WITH_PROGRESS',
+  SET_ACTIVITIES_IN_PROGRESS = '[activities] SET_ACTIVITIES_IN_PROGRESS',
+  SET_COMPLETED_ACTIVITIES = '[activities] SET_COMPLETED_ACTIVITIES',
+  FETCH_ACTIVITY_TYPES = '[activities] FETCH_ACTIVITY_TYPES',
+  SET_ACTIVITY_TYPE = '[activities] SET_ACTIVITY_TYPE',
+  CREATE_ACTIVITY = '[activities] CREATE_ACTIVITY',
+  TAKE_ACTIVITY = '[activities] TAKE_ACTIVITY',
+  CREATE_AND_TAKE_ACTIVITY = '[activities] CREATE_AND_TAKE_ACTIVITY',
+  PARSE_URL = '[activities] PARSE_URL',
+  SET_URL_PARSING_PROGRESS = '[activities] SET_URL_PARSING_PROGRESS',
+  SET_PARSED_URL_METADATA_OBJECT = '[activities] SET_PARSED_URL_METADATA_OBJECT',
+  CLEAR_PARSED_URL_METADATA = '[activities] CLEAR_PARSED_URL_METADATA',
+  CLEAR_ACTIVITIES_BUILDER = '[activities] CLEAR_ACTIVITIES_BUILDER',
+}
+
+/**
+ * Fetch activities with progress with params
+ *
+ * @export
+ * @returns {FetchActivitiesWithProgressAction}
+ */
+export function fetchActivitiesWithProgressActionCreator(
+  params?: DodaysWithProgressQueryParams
+): FetchActivitiesWithProgressAction {
+  return {
+    type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS,
+    payload: params,
+  };
+}
+
+/**
+ * Set activities in progress to store
+ *
+ * @export
+ * @returns {SetActivitiesInProgressAction}
+ */
+export function setActivitiesInProgressActionCreator(
+  activities: Activity[]
+): SetActivitiesInProgressAction {
+  return {
+    type: ActionConstants.SET_ACTIVITIES_IN_PROGRESS,
+    payload: activities,
+  };
+}
+
+/**
+ * Set completed activities to store
+ *
+ * @export
+ * @returns {SetCompletedActivitiesAction}
+ */
+export function setCompletedActivitiesActionCreator(
+  activities: Activity[]
+): SetCompletedActivitiesAction {
+  return {
+    type: ActionConstants.SET_COMPLETED_ACTIVITIES,
+    payload: activities,
+  };
 }
 
 /**
@@ -175,6 +225,9 @@ export function clearActivitiesBuilderActionCreator(): ClearActivitiesBuilderAct
 }
 
 export const actionCreators = {
+  fetchActivitiesWithProgressActionCreator,
+  setActivitiesInProgressActionCreator,
+  setCompletedActivitiesActionCreator,
   fetchActivityTypesActionCreator,
   setActivityTypeActionCreator,
   createActivityActionCreator,
@@ -190,6 +243,21 @@ export const actionCreators = {
 /**
  * Define return types of actions
  */
+
+export interface FetchActivitiesWithProgressAction extends AnyAction {
+  type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS;
+  payload: DodaysWithProgressQueryParams;
+}
+
+export interface SetActivitiesInProgressAction extends AnyAction {
+  type: ActionConstants.SET_ACTIVITIES_IN_PROGRESS;
+  payload: Activity[];
+}
+
+export interface SetCompletedActivitiesAction extends AnyAction {
+  type: ActionConstants.SET_COMPLETED_ACTIVITIES;
+  payload: Activity[];
+}
 
 export interface FetchActivityTypesAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITY_TYPES;
@@ -252,6 +320,9 @@ export interface ClearActivitiesBuilderAction extends AnyAction {
  */
 
 export type ActionTypes =
+  | FetchActivitiesWithProgressAction
+  | SetActivitiesInProgressAction
+  | SetCompletedActivitiesAction
   | FetchActivityTypesAction
   | SetActivityTypeAction
   | CreateActivityAction

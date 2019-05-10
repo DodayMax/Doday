@@ -3,7 +3,6 @@ import {
   ActionConstants,
   PlanOutAction,
   setAppLoadingState,
-  ChangePathAction,
   ChangeDodayAppDateAction,
   FetchDodaysWithProgressForDateAction,
   fetchDodaysWithProgressForDateActionCreator,
@@ -50,17 +49,6 @@ function* planOutSaga(action: PlanOutAction) {
 }
 
 /**
- * Change doday app path
- * Fetch appropriate data
- *
- * @param {ChangePathAction} action
- */
-function* changePathSaga(action: ChangePathAction) {
-  yield put(setAppLoadingState(true));
-  yield put(setAppLoadingState(false));
-}
-
-/**
  * Fetch appropriate data when chosen date changed
  *
  * @param {ChangeDodayAppDateAction} action
@@ -78,5 +66,4 @@ export default [
   ),
   takeLatest(ActionConstants.CHANGE_DATE, changeDodayAppDateActionSaga),
   takeLatest(ActionConstants.PLAN_OUT, planOutSaga),
-  takeLatest(ActionConstants.CHANGE_PATH, changePathSaga),
 ];

@@ -31,6 +31,7 @@ export const activity: Activity = {
   owner: {
     did: 'did',
     displayName: 'Test name',
+    tools: [],
     created: new Date(),
   },
   ownerDID: 'did',

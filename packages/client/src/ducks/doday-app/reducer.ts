@@ -1,30 +1,42 @@
 import * as actions from './actions';
-import { DodayAppState } from '@lib/models';
+import { DodayAppStatusState, ScheduleState } from '@lib/models';
 
-export const initialState: DodayAppState = {
+export const initialStatusState: DodayAppStatusState = {
   loading: false,
-  path: '',
   badge: 0,
+};
+
+export const initialState: ScheduleState = {
   chosenDate: new Date(),
   dodays: [],
   completed: [],
 };
 
-export default (
-  state = initialState,
+export const dodayAppStatusReducer = (
+  state = initialStatusState,
   action: actions.ActionTypes
-): DodayAppState => {
+): DodayAppStatusState => {
   switch (action && action.type) {
     case actions.ActionConstants.SET_LOADING_STATE:
       return {
         ...state,
         loading: action.payload,
       };
-    case actions.ActionConstants.CHANGE_PATH:
+    case actions.ActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
       return {
         ...state,
-        path: action.payload,
+        badge: action.payload,
       };
+    default:
+      return state;
+  }
+};
+
+export const dodayAppReducer = (
+  state = initialState,
+  action: actions.ActionTypes
+): ScheduleState => {
+  switch (action && action.type) {
     case actions.ActionConstants.CHANGE_DATE:
       return {
         ...state,
@@ -39,11 +51,6 @@ export default (
       return {
         ...state,
         completed: action.payload,
-      };
-    case actions.ActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
-      return {
-        ...state,
-        badge: action.payload,
       };
     default:
       return state;

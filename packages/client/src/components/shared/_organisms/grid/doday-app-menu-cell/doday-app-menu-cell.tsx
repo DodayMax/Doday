@@ -7,23 +7,25 @@ const css = require('./_doday-app-menu-cell.module.scss');
 
 interface DodayAppMenuCellProps {
   item: DrawerMenuItem;
-  onClick: () => void;
-  active: boolean;
+  onClick: (item: DrawerMenuItem) => void;
   collapsed: boolean;
 }
 
 export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
   item,
   onClick,
-  active,
   collapsed,
 }) => {
   const Icon = Icons[item.icon];
+  const active = false;
   const classNames = classnames({
     [css.cell]: true,
     [css.active]: active,
     [css.center]: collapsed,
     [css.paddingLeft]: !collapsed,
+  });
+  const childClassNames = classnames({
+    [css.cell]: true,
   });
   const badgeContainer = classnames({
     [css.badgeContainer]: !collapsed,
@@ -32,7 +34,7 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
 
   if (collapsed) {
     return (
-      <li className={classNames} onClick={onClick}>
+      <li className={classNames} onClick={() => onClick(item)}>
         {item.badge == null && <Icon />}
         {item.badge != null && (
           <div className={badgeContainer}>
@@ -43,17 +45,19 @@ export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
     );
   } else {
     return (
-      <li className={classNames} onClick={onClick}>
-        {<Icon />}
-        <Text size={TypographySize.s} className={css.cellTitle}>
-          {item.text}
-        </Text>
-        {item.badge != null && (
-          <div className={badgeContainer}>
-            <Badge value={item.badge} />
-          </div>
-        )}
-      </li>
+      <>
+        <li className={classNames} onClick={() => onClick(item)}>
+          {<Icon />}
+          <Text size={TypographySize.s} className={css.cellTitle}>
+            {item.text}
+          </Text>
+          {item.badge != null && (
+            <div className={badgeContainer}>
+              <Badge value={item.badge} />
+            </div>
+          )}
+        </li>
+      </>
     );
   }
 };

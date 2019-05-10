@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { TypographySize, DodayColors } from '@lib/common-interfaces';
+import { TypographySize, DodayColors, CellProps } from '@lib/common-interfaces';
 import { Checkbox, Text } from '@shared';
 import { AnyAction } from 'redux';
 import { Marker } from '@root/components/shared/_atoms/marker';
@@ -10,18 +10,12 @@ import { Activity } from '@root/lib/models/entities/Activity';
 const css = require('./activity-cell.module.scss');
 
 interface ActivityProgressCellProps {
-  doday: Activity;
-  active?: boolean;
-  onClick?: (route: string, doday: Activity) => void;
   onComplete?: (doday: Activity) => AnyAction;
 }
 
-export const ActivityProgressCell: React.SFC<ActivityProgressCellProps> = ({
-  doday,
-  active = false,
-  onClick,
-  onComplete,
-}) => {
+export const ActivityProgressCell: React.SFC<
+  ActivityProgressCellProps & CellProps
+> = ({ doday, active = false, onClick, onComplete }) => {
   const classNames = classnames({
     [css.cell]: true,
     [css.completed]: doday.progress && doday.progress.completed,
@@ -29,11 +23,13 @@ export const ActivityProgressCell: React.SFC<ActivityProgressCellProps> = ({
     [css.active]: active,
   });
 
+  const activity = doday as Activity;
+
   return (
     <li
       className={classNames}
-      key={doday.did}
-      onClick={() => onClick && onClick(`/progress/${doday.did}`, doday)}
+      key={activity.did}
+      onClick={() => onClick && onClick(`/progress/${activity.did}`, activity)}
     >
       {
         <Checkbox
@@ -41,19 +37,19 @@ export const ActivityProgressCell: React.SFC<ActivityProgressCellProps> = ({
           onClick={e => {
             e.stopPropagation();
             if (onComplete) {
-              onComplete(doday);
+              onComplete(activity);
             }
           }}
-          checked={doday.progress && doday.progress.completed}
+          checked={activity.progress && activity.progress.completed}
         />
       }
       <Text wordwrap size={TypographySize.s} className={css.cellTitle}>
-        {doday.name}
+        {activity.name}
       </Text>
       <LayoutBlock absolute top="0" right="0">
         <Marker
           color={DodayColors.gray4}
-          text={doday.activityType}
+          text={activity.activityType}
           size={TypographySize.s}
         />
       </LayoutBlock>
