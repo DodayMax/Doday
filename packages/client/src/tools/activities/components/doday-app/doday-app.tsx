@@ -53,7 +53,7 @@ interface PropsFromConnect {
 }
 
 class ActivityDodayApp extends React.Component<
-  ActivityDodayAppProps & Partial<PropsFromConnect>
+  ActivityDodayAppProps & Partial<PropsFromConnect> & RouteComponentProps
 > {
   componentDidMount() {
     const { routeParams } = this.props;
@@ -71,10 +71,15 @@ class ActivityDodayApp extends React.Component<
       });
     } else if (routeParams.published) {
       // Fetch created (published) dodays
+      this.props.fetchPublishedActivitiesActionCreator({
+        dodaytype: DodayTypes.Activity,
+      });
     }
   }
 
-  private handleDodayCellClick = (route: string, doday: DodayLike) => {};
+  private handleDodayCellClick = (route: string, doday: DodayLike) => {
+    this.props.history.push(route);
+  };
 
   private get items() {
     const { routeParams, inprogress, completed, published } = this.props;

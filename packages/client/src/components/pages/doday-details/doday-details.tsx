@@ -8,7 +8,8 @@ import {
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
 import { RootState } from '@root/lib/models';
-import { DodayLike, DodayTypes } from '@root/lib/models/entities/common';
+import { DodayLike } from '@root/lib/models/entities/common';
+import { WithTools } from '@root/lib/common-interfaces';
 
 interface DodayDetailsProps {}
 
@@ -22,6 +23,7 @@ interface PropsFromConnect {
 interface DodayDetailsState {}
 
 type Props = DodayDetailsProps &
+  WithTools &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
@@ -39,15 +41,28 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
     this.props.fetchSelectedDodayActionCreator(did);
   }
 
-  render() {
-    const { selectedDoday } = this.props;
-
-    switch (selectedDoday.type) {
-      case DodayTypes.Activity:
-        return null;
-      default:
-        return null;
+  componentDidUpdate(prevProps) {
+    const did = this.props.match.params.did;
+    if (prevProps.match.params.did !== did) {
+      this.props.fetchSelectedDodayActionCreator(did);
     }
+  }
+
+  render() {
+    const { selectedDoday, activeTools } = this.props;
+
+    const selectedDodayType = selectedDoday && selectedDoday.type;
+
+    const tool = activeTools.find(
+      tool =>
+        !!tool.config.entities.find(entity => entity.type === selectedDodayType)
+    );
+    if (tool) {
+      const Component = tool.components.details[selectedDodayType].public;
+      return <Component />;
+    }
+
+    return null;
   }
 }
 

@@ -20,6 +20,7 @@ import {
   Size,
   Space,
   ActivityType,
+  WithTools,
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
@@ -73,7 +74,7 @@ interface ActivityBuilderState {
   estimateTime: string;
 }
 
-type Props = ActivityBuilderProps & Partial<PropsFromConnect>;
+type Props = ActivityBuilderProps & WithTools & Partial<PropsFromConnect>;
 
 export class ActivityBuilder extends React.Component<
   Props,
@@ -165,6 +166,7 @@ export class ActivityBuilder extends React.Component<
       date: this.state.date.getTime(),
       dateIsLocked: this.state.dateIsLocked,
       completed: false,
+      ownerDID,
     };
 
     if (this.state.isPublic) {

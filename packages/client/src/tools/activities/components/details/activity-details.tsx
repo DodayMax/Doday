@@ -26,54 +26,36 @@ import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
-  UpdateSelectedDodayAction,
-  SetDirtyStatusAction,
-  ClearDirtyStuffAction,
-  RequestForSetUpdatesAction,
+  TakeDodayAction,
+  UnTakeDodayAction,
 } from '@root/ducks/doday-details/actions';
-import {
-  SerializedActivity,
-  Activity,
-} from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/Activity';
 import {
   Pageflow,
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
 import { SerializedProgressLike } from '@root/lib/models/entities/common';
-import {
-  UpdateDodayAction,
-  DeleteDodayAction,
-  UntakeDodayAction,
-} from '@root/ducks/api/dodays-api-actions/actions';
+import { config } from '../../config';
 
 const css = require('./activity-details.module.scss');
 
 interface ActivityDetailsProps {}
 
-interface ActivityDetailsState {}
+interface ActivityDetailsState {
+  date: number;
+  dateIsLocked: boolean;
+}
 
 interface PropsFromConnect {
   loading: boolean;
-  dirty?: boolean;
-  updates?: Partial<SerializedProgressLike>;
   myDID?: string;
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-  updateDodayActionCreator: (
-    did: string,
-    updates: Partial<SerializedProgressLike>
-  ) => UpdateDodayAction;
-  setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
-  clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
-  requestForSetUpdatesActionCreator: (
-    updates: Partial<SerializedProgressLike>
-  ) => RequestForSetUpdatesAction;
-  deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
-  untakeDodayActionCreator: (doday: Activity) => UntakeDodayAction;
-  updateSelectedDodayActionCreator: (
-    did: string,
-    updates: Partial<Activity>
-  ) => UpdateSelectedDodayAction;
+  takeDodayActionCreator: (payload: {
+    dodayDID: string;
+    progress: Partial<SerializedProgressLike>;
+  }) => TakeDodayAction;
+  unTakeDodayActionCreator: (did: string) => UnTakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -84,17 +66,20 @@ type Props = ActivityDetailsProps &
 @Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
 class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      date: Date.now(),
+      dateIsLocked: false,
+    };
+  }
+
   public static contextTypes = {
     requestClose: PropTypes.func,
   };
 
   public context!: PageWrapperChildContext;
-
-  componentDidMount() {
-    //fetch selected doday with graphQL
-    const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
-  }
 
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
@@ -113,29 +98,24 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   };
 
   actions = () => {
-    const {
-      history,
-      selectedDoday,
-      dirty,
-      updateDodayActionCreator,
-      updateSelectedDodayActionCreator,
-      updates,
-      loading,
-    } = this.props;
-    const actions = [
-      <Button
-        key={1}
-        size={ButtonSize.small}
-        onClick={() => {
-          if (this.isOwner) {
-            this.props.deleteDodayActionCreator(selectedDoday);
-          }
-          history.push('/');
-        }}
-      >
-        Delete
-      </Button>,
-    ];
+    const { history, selectedDoday, loading } = this.props;
+    const actions = [];
+
+    if (selectedDoday.progress) {
+      actions.push(
+        <Button
+          key={1}
+          isLoading={loading}
+          size={ButtonSize.small}
+          onClick={() => {
+            this.props.unTakeDodayActionCreator(selectedDoday.did);
+            history.push(config.route);
+          }}
+        >
+          Untake
+        </Button>
+      );
+    }
 
     return actions;
   };
@@ -159,8 +139,61 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
     }
   };
 
+  renderTakeDodayBlock = () => {
+    const { selectedDoday, loading } = this.props;
+    if (selectedDoday.progress) {
+      return <>Already taken</>;
+    }
+
+    return (
+      <>
+        <LayoutBlock>
+          <CustomDatePicker
+            borderless
+            minDate={new Date()}
+            icon={<Icons.Clock />}
+            selected={new Date(this.state.date)}
+            onChange={date => {
+              this.setState({
+                date: date.getTime(),
+              });
+            }}
+          />
+          <Button
+            borderless
+            active={this.state.dateIsLocked}
+            onClick={() => {
+              this.setState({
+                dateIsLocked: !this.state.dateIsLocked,
+              });
+            }}
+          >
+            {this.state.dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+          </Button>
+        </LayoutBlock>
+        <Button
+          isLoading={loading}
+          primary
+          onClick={() => {
+            this.props.takeDodayActionCreator({
+              dodayDID: selectedDoday.did,
+              progress: {
+                date: this.state.date,
+                dateIsLocked: this.state.dateIsLocked,
+                completed: false,
+                ownerDID: this.props.myDID,
+              },
+            });
+          }}
+        >
+          TAKE
+        </Button>
+      </>
+    );
+  };
+
   render() {
-    const { updates, selectedDoday } = this.props;
+    const { selectedDoday } = this.props;
 
     // const goal =
     //   updates && updates.relatedGoal
@@ -180,6 +213,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
       <Page
         header={
           <PageHeader
+            withClose
             status={selectedDoday && this.status()}
             actions={selectedDoday && this.actions()}
             onClose={this.onRequestClose}
@@ -240,7 +274,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
                 }}
               />
             ) : null}
-            <Text>{resource.description}</Text>
+            <Text>{resource && resource.description}</Text>
             <LayoutBlock
               spaceAbove={Space.Medium}
               spaceBelow={Space.Medium}
@@ -251,44 +285,8 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
               direction="column"
               className={css.well}
             >
-              <LayoutBlock
-                spaceBelow={Space.Small}
-                align="space-between"
-                valign="vflex-center"
-              >
-                <CustomDatePicker
-                  borderless
-                  minDate={new Date()}
-                  icon={<Icons.Clock />}
-                  selected={updates && updates.date && new Date(updates.date)}
-                  onChange={date => {
-                    const dateDirty = true;
-                    this.props.requestForSetUpdatesActionCreator({
-                      date: dateDirty ? date.getTime() : undefined,
-                    });
-                  }}
-                />
-                <Button
-                  borderless
-                  active={updates && updates.dateIsLocked}
-                  onClick={() => {
-                    this.props.requestForSetUpdatesActionCreator({
-                      dateIsLocked: !updates.dateIsLocked,
-                    });
-                  }}
-                >
-                  {updates.dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
-                </Button>
-              </LayoutBlock>
-              <LayoutBlock alignSelf="align-self-end">
-                <Button
-                  primary
-                  onClick={() => {
-                    // Take doday action
-                  }}
-                >
-                  DO
-                </Button>
+              <LayoutBlock align="space-between" valign="vflex-center">
+                {this.renderTakeDodayBlock()}
               </LayoutBlock>
             </LayoutBlock>
           </>

@@ -12,6 +12,8 @@ export enum ActionConstants {
   FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
   FETCH_SELECTED_GOAL = '[doday-details] FETCH_SELECTED_GOAL',
   SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
+  TAKE_DODAY = '[doday-details] TAKE_DODAY',
+  UNTAKE_DODAY = '[doday-details] UNTAKE_DODAY',
   SET_SELECTED_GOAL = '[doday-details] SET_SELECTED_GOAL',
   UPDATE_SELECTED_DODAY = '[doday-details] UPDATE_SELECTED_DODAY',
   CLEAR_SELECTED_DODAY = '[doday-details] CLEAR_SELECTED_DODAY',
@@ -78,6 +80,35 @@ export function setSelectedDodayActionCreator(
   return {
     type: ActionConstants.SET_SELECTED_DODAY,
     payload: progress,
+  };
+}
+
+/**
+ * Take doday to Hero dodays
+ *
+ * @export
+ * @returns {TakeDodayAction}
+ */
+export function takeDodayActionCreator(payload: {
+  dodayDID: string;
+  progress: Partial<SerializedProgressLike>;
+}): TakeDodayAction {
+  return {
+    type: ActionConstants.TAKE_DODAY,
+    payload,
+  };
+}
+
+/**
+ * UnTake doday - remove Progress node from Hero
+ *
+ * @export
+ * @returns {UnTakeDodayAction}
+ */
+export function unTakeDodayActionCreator(did: string): UnTakeDodayAction {
+  return {
+    type: ActionConstants.UNTAKE_DODAY,
+    payload: did,
   };
 }
 
@@ -176,6 +207,9 @@ export const actionCreators = {
   setDodayDetailsLoadingStateActionCreator,
   fetchSelectedDodayActionCreator,
   setSelectedDodayActionCreator,
+  fetchSelectedProgressActionCreator,
+  takeDodayActionCreator,
+  unTakeDodayActionCreator,
   updateSelectedDodayActionCreator,
   clearSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
@@ -205,6 +239,19 @@ export interface FetchSelectedProgressAction extends AnyAction {
 
 export interface FetchSelectedGoalAction extends AnyAction {
   type: ActionConstants.FETCH_SELECTED_GOAL;
+  payload: string;
+}
+
+export interface TakeDodayAction extends AnyAction {
+  type: ActionConstants.TAKE_DODAY;
+  payload: {
+    dodayDID: string;
+    progress: Partial<SerializedProgressLike>;
+  };
+}
+
+export interface UnTakeDodayAction extends AnyAction {
+  type: ActionConstants.UNTAKE_DODAY;
   payload: string;
 }
 
@@ -254,6 +301,8 @@ export type ActionTypes =
   | FetchSelectedProgressAction
   | FetchSelectedGoalAction
   | SetSelectedDodayAction
+  | TakeDodayAction
+  | UnTakeDodayAction
   | UpdateSelectedDodayAction
   | ClearSelectedDodayAction
   | SetDirtyStatusAction

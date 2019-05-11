@@ -82,7 +82,12 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
             toolBeacons={activeTools}
           />
         </nav>
-        {!isDodayAppCollapsed && <DodayApp activeTools={activeTools} />}
+        {!isDodayAppCollapsed && (
+          <Route
+            path="/"
+            render={props => <DodayApp {...props} activeTools={activeTools} />}
+          />
+        )}
         {activeTools.map((tool, index) => (
           <Route
             key={index}
@@ -90,11 +95,21 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
             component={tool.components.overview}
           />
         ))}
-        <Route path="/dodays/:did" component={DodayDetails} />
-        <Route path="/progress/:did" component={ProgressDetails} />
+        <Route
+          path="/dodays/:did"
+          render={props => (
+            <DodayDetails {...props} activeTools={activeTools} />
+          )}
+        />
+        <Route
+          path="/progress/:did"
+          render={props => (
+            <ProgressDetails {...props} activeTools={activeTools} />
+          )}
+        />
         <Route
           path="/builder"
-          render={() => <Builder activeTools={activeTools} />}
+          render={props => <Builder {...props} activeTools={activeTools} />}
         />
         <Route path="/profile" component={Profile} />
       </>

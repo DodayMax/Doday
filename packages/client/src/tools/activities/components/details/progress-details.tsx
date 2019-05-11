@@ -21,7 +21,6 @@ import {
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
-  isEmptyObject,
 } from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/resource';
 import { LayoutBlock } from '@shared/_atoms/layout-block';
@@ -33,12 +32,7 @@ import {
   ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
-import Select from 'react-select';
-import {
-  SerializedActivity,
-  Activity,
-  ActivityProgress,
-} from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/Activity';
 import {
   Pageflow,
   PageWrapperChildContext,
@@ -47,7 +41,6 @@ import {
   SerializedProgressLike,
   DodayLike,
   ProgressLike,
-  SerializedDodayLike,
 } from '@root/lib/models/entities/common';
 import {
   UpdateDodayAction,
@@ -99,12 +92,6 @@ class ActivityProgressDetails extends React.Component<
   };
 
   public context!: PageWrapperChildContext;
-
-  componentDidMount() {
-    //fetch selected doday with graphQL
-    const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
-  }
 
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
@@ -221,6 +208,7 @@ class ActivityProgressDetails extends React.Component<
       <Page
         header={
           <PageHeader
+            withClose
             status={selectedDoday && this.status()}
             actions={selectedDoday && this.actions()}
             onClose={this.onRequestClose}

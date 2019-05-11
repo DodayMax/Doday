@@ -14,11 +14,9 @@ import {
   Pageflow,
   PageWrapperChildContext,
 } from '../../shared/_support/pageflow';
-import { ToolBeacon } from '@root/lib/common-interfaces';
+import { ToolBeacon, WithTools } from '@root/lib/common-interfaces';
 
-export interface BuilderProps {
-  activeTools: ToolBeacon[];
-}
+export interface BuilderProps {}
 
 interface PropsFromConnect {
   success?: boolean;
@@ -28,7 +26,7 @@ interface PropsFromConnect {
 
 @Pageflow({ path: '/builder' })
 export class Builder extends React.Component<
-  BuilderProps & Partial<PropsFromConnect> & RouteComponentProps
+  BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
 > {
   public static contextTypes = {
     requestClose: PropTypes.func,

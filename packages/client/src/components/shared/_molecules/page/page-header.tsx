@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { LayoutBlock, ClickableIcon, Icons } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
+import { RootState } from '@root/lib/models';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_page-header.module.scss');
@@ -12,10 +14,16 @@ interface PageHeaderProps extends Partial<RouteComponentProps> {
   onClose?: () => void;
 }
 
+interface PropsFromConnect {
+  route: string;
+}
+
 @(withRouter as any)
-export class PageHeader extends React.Component<PageHeaderProps> {
+class PageHeaderComponentClass extends React.Component<
+  PageHeaderProps & Partial<PropsFromConnect>
+> {
   render() {
-    const { status, actions, onClose, children, withClose } = this.props;
+    const { status, actions, onClose, children, withClose, route } = this.props;
     return (
       <LayoutBlock className={css.headerContainer}>
         <LayoutBlock
@@ -37,7 +45,7 @@ export class PageHeader extends React.Component<PageHeaderProps> {
               hover
               onClick={() => {
                 setTimeout(() => {
-                  this.props.history.goBack();
+                  this.props.history.push(route);
                 }, 200);
                 if (onClose) {
                   onClose();
@@ -52,3 +60,9 @@ export class PageHeader extends React.Component<PageHeaderProps> {
     );
   }
 }
+
+const mapState = (state: RootState) => ({
+  route: state.dodayApp.status.route,
+});
+
+export const PageHeader = connect(mapState)(PageHeaderComponentClass);

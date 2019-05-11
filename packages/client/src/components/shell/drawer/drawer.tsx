@@ -172,7 +172,13 @@ export class DrawerComponent extends React.Component<
   }
 
   render() {
-    const { collapsed, toolBeacons, history, dodayAppRoute } = this.props;
+    const {
+      collapsed,
+      toolBeacons,
+      history,
+      location,
+      dodayAppRoute,
+    } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
@@ -193,7 +199,10 @@ export class DrawerComponent extends React.Component<
                 active={item.route === dodayAppRoute}
                 onClick={() => {
                   this.props.changeDodayAppRouteActionCreator(item.route);
-                  history.push(item.route);
+                  console.log(location.pathname);
+                  if (location.pathname === '/') {
+                    history.push(item.route);
+                  }
                 }}
               />
             )}

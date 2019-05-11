@@ -33,9 +33,7 @@ export const ActivityCell: React.SFC<ActivityCellProps & CellProps> = ({
     <li
       className={classNames}
       key={activity.did}
-      onClick={() =>
-        onClick && onClick(`/activities/${activity.did}`, activity)
-      }
+      onClick={() => onClick && onClick(`/dodays/${activity.did}`, activity)}
     >
       <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
         <Text

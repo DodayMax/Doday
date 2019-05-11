@@ -11,6 +11,7 @@ import {
   ChangeDodayAppDateAction,
   PlanOutAction,
   FetchDodaysWithProgressForDateAction,
+  ChangeDodayAppRouteAction,
 } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
 import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
@@ -19,6 +20,7 @@ import {
   Space,
   ToolBeacon,
   DodayAppQueryParams,
+  WithTools,
 } from '@root/lib/common-interfaces';
 import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
@@ -27,9 +29,7 @@ import { RootState } from '@root/lib/models';
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
 
-interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {
-  activeTools: ToolBeacon[];
-}
+export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 
 interface PropsFromConnect {
   loading: boolean;
@@ -38,6 +38,9 @@ interface PropsFromConnect {
   dodays: DodayLike[];
   chosenDate?: Date;
   changeDodayAppDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
+  changeDodayAppRouteActionCreator: (
+    route: string
+  ) => ChangeDodayAppRouteAction;
   // navStack: Goal[];
   // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
   // popFromNavStack: () => PopFromNavigationStackAction;
@@ -50,8 +53,20 @@ interface PropsFromConnect {
 }
 
 export class DodayAppComponent extends React.Component<
-  DodayAppProps & Partial<PropsFromConnect> & Partial<RouteComponentProps>
+  DodayAppProps &
+    WithTools &
+    Partial<PropsFromConnect> &
+    Partial<RouteComponentProps>
 > {
+  componentDidMount() {
+    const { activeTools, location } = this.props;
+    activeTools.map(tool => {
+      if (location.pathname.startsWith(tool.config.route)) {
+        this.props.changeDodayAppRouteActionCreator(tool.config.route);
+      }
+    });
+  }
+
   getDodaysToRender = () => {
     return this.props.dodays || [];
   };
@@ -75,10 +90,18 @@ export class DodayAppComponent extends React.Component<
   };
 
   private renderDodayApp = () => {
-    const tool = this.props.activeTools.find(
+    const { activeTools, history, location, match } = this.props;
+    const tool = activeTools.find(
       tool => tool.config.route === this.props.route
     );
-    if (tool) return <tool.components.dodayApp />;
+    if (tool)
+      return (
+        <tool.components.dodayApp
+          history={history}
+          location={location}
+          match={match}
+        />
+      );
     return null;
   };
 

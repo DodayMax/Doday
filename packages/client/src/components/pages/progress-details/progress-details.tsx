@@ -8,26 +8,28 @@ import {
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
 import { RootState } from '@root/lib/models';
-import { DodayLike, DodayTypes } from '@root/lib/models/entities/common';
+import { DodayLike } from '@root/lib/models/entities/common';
+import { WithTools } from '@root/lib/common-interfaces';
 
-interface DodayDetailsProps {}
+interface ProgressDetailsProps {}
 
 interface PropsFromConnect {
   selectedDoday: DodayLike;
-  fetchSelectedDodayActionCreator: (
+  fetchSelectedProgressActionCreator: (
     did: string
-  ) => detailsActions.FetchSelectedDodayAction;
+  ) => detailsActions.FetchSelectedProgressAction;
 }
 
-interface DodayDetailsState {}
+interface ProgressDetailsState {}
 
-type Props = DodayDetailsProps &
+type Props = ProgressDetailsProps &
+  WithTools &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
 @Pageflow({ path: '/progress/:did' })
 @(withRouter as any)
-class DodayDetails extends React.Component<Props, DodayDetailsState> {
+class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
   public static contextTypes = {
     requestClose: PropTypes.func,
   };
@@ -36,18 +38,31 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
 
   componentDidMount() {
     const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
+    this.props.fetchSelectedProgressActionCreator(did);
+  }
+
+  componentDidUpdate(prevProps) {
+    const did = this.props.match.params.did;
+    if (prevProps.match.params.did !== did) {
+      this.props.fetchSelectedProgressActionCreator(did);
+    }
   }
 
   render() {
-    const { selectedDoday } = this.props;
+    const { selectedDoday, activeTools } = this.props;
 
-    switch (selectedDoday && selectedDoday.type) {
-      case DodayTypes.Activity:
-        return null;
-      default:
-        return null;
+    const selectedDodayType = selectedDoday && selectedDoday.type;
+
+    const tool = activeTools.find(
+      tool =>
+        !!tool.config.entities.find(entity => entity.type === selectedDodayType)
+    );
+    if (tool) {
+      const Component = tool.components.details[selectedDodayType].progress;
+      return <Component />;
     }
+
+    return null;
   }
 }
 
@@ -58,7 +73,7 @@ const mapState = (state: RootState) => ({
 export default connect(
   mapState,
   {
-    fetchSelectedDodayActionCreator:
-      detailsActions.actionCreators.fetchSelectedDodayActionCreator,
+    fetchSelectedProgressActionCreator:
+      detailsActions.actionCreators.fetchSelectedProgressActionCreator,
   }
-)(DodayDetails);
+)(ProgressDetails);

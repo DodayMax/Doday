@@ -2,19 +2,19 @@ import { CellProps } from './doday-app';
 import { DodayTypes } from '../models/entities/common';
 import { ToolSysname } from '@root/tools';
 import { IconNames } from '@root/components/shared/_atoms/icons';
-import { BuilderProps } from '@root/components/pages/builder';
+import { RouteComponentProps } from 'react-router';
 
 export interface ToolBeacon {
   config: ToolConfig;
   components: {
-    dodayApp: React.ComponentType;
+    dodayApp: React.ComponentType<RouteComponentProps>;
     cells: {
       [K in DodayTypes]?: {
         public: React.ComponentType<CellProps>;
         progress: React.ComponentType<CellProps>;
       }
     };
-    builders: { [K in DodayTypes]?: React.ComponentType<BuilderProps> };
+    builders: { [K in DodayTypes]?: React.ComponentType<WithTools> };
     details: {
       [K in DodayTypes]?: {
         public: React.ComponentType;
@@ -36,4 +36,8 @@ export type ToolConfig = {
   cost: number;
   route: string;
   icon: IconNames;
+};
+
+export type WithTools = {
+  activeTools: ToolBeacon[];
 };

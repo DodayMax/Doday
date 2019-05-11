@@ -92,7 +92,7 @@ export const dodayByDIDQuery = (
 ) => {
   return tx.run(
     `
-      MATCH (d:Doday {did: dodayDID})-[]-(h:Hero {did: $heroDID})
+      MATCH (d:Doday {did: $dodayDID})-[]-(h:Hero {did: $heroDID})
       OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
         doday: d,
@@ -114,7 +114,8 @@ export const dodayWithProgressByDIDQuery = (
 ) => {
   return tx.run(
     `
-      MATCH (p:Progress {ownerDID: $heroDID})-[]-(d:Doday {did: $dodayDID})-[]-(h:Hero {did: $heroDID})
+      MATCH (d:Doday {did: $dodayDID})-[]-(h:Hero {did: $heroDID})
+      OPTIONAL MATCH (p:Progress {ownerDID: $heroDID})-[]-(d)
       OPTIONAL MATCH (r:Resource)-[]-(d)
       RETURN {
         doday: d,
@@ -268,16 +269,14 @@ export const removeDodayTransaction = (
 ) => {
   return tx.run(
     `
-      MATCH (p:Progress {did: $did})
-      MATCH (d:Doday {did: $did})
+      MATCH (d:Doday {did: $dodayDID})
       MATCH (h:Hero {did: $heroDID})
-      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
+      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p:Progress {ownerDID: $heroDID})<-[r3:DOING]-(h)
       OPTIONAL MATCH (p)-[r4:INSIDE]-(:Goal)
       DELETE r2, r3, r4, p
     `,
     {
-      heroDID: props.heroDID,
-      did: props.dodayDID,
+      ...props,
     }
   );
 };

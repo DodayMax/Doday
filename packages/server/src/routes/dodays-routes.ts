@@ -12,7 +12,10 @@ module.exports = app => {
    */
   app.get('/api/dodays', dodaysController.getDodaysController);
   /** Get doday by did */
-  app.get('/api/dodays/:did', dodaysController.getDodaysController);
+  app.get(
+    '/api/dodays/:did',
+    dodaysController.getDodaysWithProgressByDIDController
+  );
 
   /**
    * Create new Doday node

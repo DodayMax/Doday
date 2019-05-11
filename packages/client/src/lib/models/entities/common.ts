@@ -73,6 +73,7 @@ export interface SerializedProgressBase {
   date?: number;
   dateIsLocked?: boolean;
   completedAt?: number;
+  ownerDID?: string;
 }
 
 export interface APIResponseProgressBase {

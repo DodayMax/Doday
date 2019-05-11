@@ -28,7 +28,7 @@ export const fetchDodayByDID = (did: string) => {
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    console.log(res);
+    return firstItem(await parseAPIResponseDodays(res));
   });
 };
 
@@ -61,6 +61,7 @@ export const fetchDodayWithProgressByDID = (did: string) => {
 
 export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
   const json = await res.json();
+  console.log(json);
   const dodays = json.map(item => {
     const nodes = item._fields[0];
     const dodayNode = nodes.doday && nodes.doday.properties;
