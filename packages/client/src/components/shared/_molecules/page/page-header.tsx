@@ -8,13 +8,14 @@ const css = require('./_page-header.module.scss');
 interface PageHeaderProps extends Partial<RouteComponentProps> {
   status?: React.ReactElement<any>[];
   actions?: React.ReactElement<any>[];
+  withClose?: boolean;
   onClose?: () => void;
 }
 
 @(withRouter as any)
 export class PageHeader extends React.Component<PageHeaderProps> {
   render() {
-    const { status, actions, onClose, children } = this.props;
+    const { status, actions, onClose, children, withClose } = this.props;
     return (
       <LayoutBlock className={css.headerContainer}>
         <LayoutBlock
@@ -31,19 +32,21 @@ export class PageHeader extends React.Component<PageHeaderProps> {
           className={css.headerActions}
         >
           {actions || children}
-          <ClickableIcon
-            hover
-            onClick={() => {
-              setTimeout(() => {
-                this.props.history.goBack();
-              }, 200);
-              if (onClose) {
-                onClose();
-              }
-            }}
-          >
-            <Icons.Close color={vars.gray6} width={30} height={30} />
-          </ClickableIcon>
+          {withClose && (
+            <ClickableIcon
+              hover
+              onClick={() => {
+                setTimeout(() => {
+                  this.props.history.goBack();
+                }, 200);
+                if (onClose) {
+                  onClose();
+                }
+              }}
+            >
+              <Icons.Close color={vars.gray6} width={30} height={30} />
+            </ClickableIcon>
+          )}
         </LayoutBlock>
       </LayoutBlock>
     );

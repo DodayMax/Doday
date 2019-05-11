@@ -26,6 +26,7 @@ export const CustomDatePicker = ({
   withLocker,
   isLocked,
   onLocked,
+  disabled,
   ...props
 }: DatePickerProps & ReactDatePickerProps) => {
   return (
@@ -45,6 +46,7 @@ export const CustomDatePicker = ({
           }
           selected={props.selected}
           onChange={props.onChange}
+          disabled={disabled}
           {...props}
         />
         {withLocker ? (
@@ -52,6 +54,7 @@ export const CustomDatePicker = ({
             onClick={onLocked}
             active={isLocked}
             activeColor={DodayColors.gray4}
+            disabled={disabled}
             lightBorder
           >
             {isLocked ? (

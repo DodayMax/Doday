@@ -12,7 +12,6 @@ export const serializedActivity: SerializedActivity = {
   name: 'name',
   duration: 'P60M',
   public: false,
-  owner: 'did',
   ownerDID: 'did',
 };
 

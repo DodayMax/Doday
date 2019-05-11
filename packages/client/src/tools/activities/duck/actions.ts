@@ -6,9 +6,14 @@ import {
 } from '@root/lib/models/entities/Activity';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { SerializedResource } from '@root/lib/models/entities/resource';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
+import {
+  DodaysWithProgressQueryParams,
+  DodaysQueryParams,
+} from '@root/services/api/dodays/queries';
 
 export enum ActionConstants {
+  FETCH_PUBLISHED_ACTIVITIES = '[activities] FETCH_PUBLISHED_ACTIVITIES',
+  SET_PUBLISHED_ACTIVITIES = '[activities] SET_PUBLISHED_ACTIVITIES',
   FETCH_ACTIVITIES_WITH_PROGRESS = '[activities] FETCH_ACTIVITIES_WITH_PROGRESS',
   SET_ACTIVITIES_IN_PROGRESS = '[activities] SET_ACTIVITIES_IN_PROGRESS',
   SET_COMPLETED_ACTIVITIES = '[activities] SET_COMPLETED_ACTIVITIES',
@@ -50,6 +55,36 @@ export function setActivitiesInProgressActionCreator(
 ): SetActivitiesInProgressAction {
   return {
     type: ActionConstants.SET_ACTIVITIES_IN_PROGRESS,
+    payload: activities,
+  };
+}
+
+/**
+ * Fetch published activities with query params
+ *
+ * @export
+ * @returns {FetchPublishedActivitiesAction}
+ */
+export function fetchPublishedActivitiesActionCreator(
+  params?: DodaysQueryParams
+): FetchPublishedActivitiesAction {
+  return {
+    type: ActionConstants.FETCH_PUBLISHED_ACTIVITIES,
+    payload: params,
+  };
+}
+
+/**
+ * Set published activities to store
+ *
+ * @export
+ * @returns {SetPublishedActivitiesAction}
+ */
+export function setPublishedActivitiesActionCreator(
+  activities: Activity[]
+): SetPublishedActivitiesAction {
+  return {
+    type: ActionConstants.SET_PUBLISHED_ACTIVITIES,
     payload: activities,
   };
 }
@@ -227,6 +262,8 @@ export function clearActivitiesBuilderActionCreator(): ClearActivitiesBuilderAct
 export const actionCreators = {
   fetchActivitiesWithProgressActionCreator,
   setActivitiesInProgressActionCreator,
+  fetchPublishedActivitiesActionCreator,
+  setPublishedActivitiesActionCreator,
   setCompletedActivitiesActionCreator,
   fetchActivityTypesActionCreator,
   setActivityTypeActionCreator,
@@ -247,6 +284,16 @@ export const actionCreators = {
 export interface FetchActivitiesWithProgressAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS;
   payload: DodaysWithProgressQueryParams;
+}
+
+export interface FetchPublishedActivitiesAction extends AnyAction {
+  type: ActionConstants.FETCH_PUBLISHED_ACTIVITIES;
+  payload: DodaysQueryParams;
+}
+
+export interface SetPublishedActivitiesAction extends AnyAction {
+  type: ActionConstants.SET_PUBLISHED_ACTIVITIES;
+  payload: Activity[];
 }
 
 export interface SetActivitiesInProgressAction extends AnyAction {
@@ -272,7 +319,7 @@ export interface CreateActivityAction extends AnyAction {
   type: ActionConstants.CREATE_ACTIVITY;
   payload: {
     doday: SerializedActivity;
-    resource: SerializedResource;
+    resource?: SerializedResource;
   };
 }
 
@@ -289,6 +336,7 @@ export interface CreateAndTakeActivityAction extends AnyAction {
   payload: {
     doday: SerializedActivity;
     progress: SerializedActivityProgress;
+    resource?: SerializedResource;
   };
 }
 
@@ -322,6 +370,8 @@ export interface ClearActivitiesBuilderAction extends AnyAction {
 export type ActionTypes =
   | FetchActivitiesWithProgressAction
   | SetActivitiesInProgressAction
+  | FetchPublishedActivitiesAction
+  | SetPublishedActivitiesAction
   | SetCompletedActivitiesAction
   | FetchActivityTypesAction
   | SetActivityTypeAction

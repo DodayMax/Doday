@@ -8,15 +8,24 @@ import {
   FetchActivitiesWithProgressAction,
   setActivitiesInProgressActionCreator,
   setCompletedActivitiesActionCreator,
+  CreateActivityAction,
+  clearActivitiesBuilderActionCreator,
+  CreateAndTakeActivityAction,
+  FetchPublishedActivitiesAction,
+  setPublishedActivitiesActionCreator,
 } from './actions';
 import { detectActivityType } from '@root/lib/utils/regexp';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
+import {
+  DodaysWithProgressQueryParams,
+  DodaysQueryParams,
+} from '@root/services/api/dodays/queries';
 import { api } from '@root/services';
+import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
 
 /**
- * Fetch activities with Progress nodes with params
+ * Fetch Activities with Progress nodes with query params
  *
  * @param {FetchActivitiesWithProgressAction} action
  */
@@ -38,7 +47,48 @@ function* fetchActivitiesWithProgressActionSaga(
 }
 
 /**
- * Fetch activity types for builder saga
+ * Fetch published Activity nodes with query params
+ *
+ * @param {FetchPublishedActivitiesAction} action
+ */
+function* fetchPublishedActivitiesActionSaga(
+  action: FetchPublishedActivitiesAction
+) {
+  yield put(setDodayAppLoadingStateActionCreator(true));
+  const params: DodaysQueryParams = action.payload;
+  const activities = yield call(api.dodays.queries.fetchDodays, params);
+  yield put(setPublishedActivitiesActionCreator(activities));
+  yield put(setDodayAppLoadingStateActionCreator(false));
+}
+
+/**
+ * Parse url metadata from input url
+ *
+ * @param {CreateActivityAction} action
+ */
+function* createActivityActionSaga(action: CreateActivityAction) {
+  yield put(setDodayAppLoadingStateActionCreator(true));
+  yield call(api.dodays.mutations.createDodayMutation, action.payload);
+  yield put(setBuilderSuccessFlag(true));
+  yield put(clearActivitiesBuilderActionCreator());
+  yield put(setDodayAppLoadingStateActionCreator(false));
+}
+
+/**
+ * Parse url metadata from input url
+ *
+ * @param {CreateAndTakeActivityAction} action
+ */
+function* createAndTakeActivityActionSaga(action: CreateAndTakeActivityAction) {
+  yield put(setDodayAppLoadingStateActionCreator(true));
+  yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
+  yield put(setBuilderSuccessFlag(true));
+  yield put(clearActivitiesBuilderActionCreator());
+  yield put(setDodayAppLoadingStateActionCreator(false));
+}
+
+/**
+ * Parse url metadata from input url
  *
  * @param {ParseUrlMetadataAction} action
  */
@@ -54,9 +104,18 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 }
 
 export default [
+  takeLatest(ActionConstants.CREATE_ACTIVITY, createActivityActionSaga),
+  takeLatest(
+    ActionConstants.CREATE_AND_TAKE_ACTIVITY,
+    createAndTakeActivityActionSaga
+  ),
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
   takeLatest(
     ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS,
     fetchActivitiesWithProgressActionSaga
+  ),
+  takeLatest(
+    ActionConstants.FETCH_PUBLISHED_ACTIVITIES,
+    fetchPublishedActivitiesActionSaga
   ),
 ];

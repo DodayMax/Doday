@@ -2,8 +2,10 @@ import * as actions from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { DodayLike } from '@root/lib/models/entities/common';
 
-export const initialState: ActivityBuilderState = {};
-export const initialDodayAppState: DodayAppToolState = {
+export const initialState: ActivityBuilderState = {
+  activityType: 'do',
+};
+export const initialDodayAppState: ActivityDodayAppToolState = {
   inprogress: [],
   completed: [],
   published: [],
@@ -12,7 +14,7 @@ export const initialDodayAppState: DodayAppToolState = {
 export const dodayAppReducer = (
   state = initialDodayAppState,
   action?: actions.ActionTypes
-): DodayAppToolState => {
+): ActivityDodayAppToolState => {
   switch (action && action.type) {
     case actions.ActionConstants.SET_ACTIVITIES_IN_PROGRESS:
       return {
@@ -23,6 +25,11 @@ export const dodayAppReducer = (
       return {
         ...state,
         completed: action.payload,
+      };
+    case actions.ActionConstants.SET_PUBLISHED_ACTIVITIES:
+      return {
+        ...state,
+        published: action.payload,
       };
     default:
       return state;
@@ -52,7 +59,7 @@ export const builderReducer = (
     case actions.ActionConstants.CLEAR_PARSED_URL_METADATA:
       return {
         ...state,
-        activityType: undefined,
+        activityType: 'do',
         isUrlParsing: false,
         parsedMetadata: undefined,
       };
@@ -69,7 +76,7 @@ export type ActivityBuilderState = {
   parsedMetadata?: any;
 };
 
-export interface DodayAppToolState {
+export interface ActivityDodayAppToolState {
   inprogress: DodayLike[];
   completed: DodayLike[];
   published: DodayLike[];

@@ -17,7 +17,7 @@ export const fetchDodays = (params?: DodaysQueryParams) => {
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    console.log(res);
+    return await parseAPIResponseDodays(res);
   });
 };
 
@@ -68,7 +68,7 @@ export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
     const resourceNode = nodes.resource && nodes.resource.properties;
     return {
       ...dodayNode,
-      progress: deserializeProgressNode(progressNode),
+      progress: progressNode && deserializeProgressNode(progressNode),
       resource: resourceNode,
     };
   });
@@ -87,7 +87,7 @@ export const deserializeProgressNode = (progress: APIResponseProgressLike) => {
 };
 
 export type DodaysQueryParams = {
-  type?: number;
+  dodaytype?: number;
   createdBy?: string;
 };
 

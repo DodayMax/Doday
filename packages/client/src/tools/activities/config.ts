@@ -3,7 +3,12 @@ import { DodayTypes } from '@root/lib/models/entities/common';
 
 export const config: ToolConfig = {
   sysname: 'activities',
-  entities: [DodayTypes.Activity],
+  entities: [
+    {
+      type: DodayTypes.Activity,
+      name: 'activity',
+    },
+  ],
   cost: 0,
   route: '/activities',
   icon: 'Activities',

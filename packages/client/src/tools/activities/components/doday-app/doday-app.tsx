@@ -12,8 +12,14 @@ import { Activity } from '@root/lib/models/entities/activity';
 import { RootState } from '@root/lib/models';
 import { actions as dodayAppActions } from '@ducks/doday-app';
 import { actions } from '@tools/activities/duck';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
-import { FetchActivitiesWithProgressAction } from '../../duck/actions';
+import {
+  DodaysWithProgressQueryParams,
+  DodaysQueryParams,
+} from '@root/services/api/dodays/queries';
+import {
+  FetchActivitiesWithProgressAction,
+  FetchPublishedActivitiesAction,
+} from '../../duck/actions';
 import {
   ChangeDodayAppRouteAction,
   SetDodayAppQueryParamsAction,
@@ -35,6 +41,9 @@ interface PropsFromConnect {
   fetchActivitiesWithProgressActionCreator: (
     params: DodaysWithProgressQueryParams
   ) => FetchActivitiesWithProgressAction;
+  fetchPublishedActivitiesActionCreator: (
+    params: DodaysQueryParams
+  ) => FetchPublishedActivitiesAction;
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
@@ -117,7 +126,9 @@ class ActivityDodayApp extends React.Component<
           this.props.setDodayAppQueryParamsActionCreator({
             published: true,
           });
-          // fetch public activities
+          this.props.fetchPublishedActivitiesActionCreator({
+            dodaytype: DodayTypes.Activity,
+          });
         },
         active: () => {
           const { routeParams } = this.props;

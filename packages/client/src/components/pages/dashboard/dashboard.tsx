@@ -83,10 +83,19 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           />
         </nav>
         {!isDodayAppCollapsed && <DodayApp activeTools={activeTools} />}
-        <Route exact path="/" render={() => <div>Dashboard</div>} />
+        {activeTools.map((tool, index) => (
+          <Route
+            key={index}
+            path={tool.config.route}
+            component={tool.components.overview}
+          />
+        ))}
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/progress/:did" component={ProgressDetails} />
-        <Route path="/builder" component={Builder} />
+        <Route
+          path="/builder"
+          render={() => <Builder activeTools={activeTools} />}
+        />
         <Route path="/profile" component={Profile} />
       </>
     );

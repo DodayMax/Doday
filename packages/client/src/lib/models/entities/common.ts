@@ -38,7 +38,6 @@ export interface SerializedDodayBase {
   did: string;
   type: number;
   public: boolean;
-  owner: string;
   ownerDID: string;
   created?: number;
 }

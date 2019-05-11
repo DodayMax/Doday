@@ -53,19 +53,6 @@ class TopBar extends React.Component<
               valign="vflex-center"
             >
               <StripeButton handleToken={this.props.handleStripeToken} />
-              <Button
-                to={'/builder?type=1'}
-                disabled={this.props.location.pathname === '/builder'}
-              >
-                New Goal
-              </Button>
-              <Button
-                primary
-                to={'/builder?type=0'}
-                disabled={this.props.location.pathname === '/builder'}
-              >
-                New Doday
-              </Button>
             </LayoutBlock>
           }
         />

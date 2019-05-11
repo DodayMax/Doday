@@ -7,25 +7,23 @@ const css = require('./_doday-app-menu-cell.module.scss');
 
 interface DodayAppMenuCellProps {
   item: DrawerMenuItem;
+  active: boolean;
   onClick: (item: DrawerMenuItem) => void;
   collapsed: boolean;
 }
 
 export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
   item,
+  active,
   onClick,
   collapsed,
 }) => {
   const Icon = Icons[item.icon];
-  const active = false;
   const classNames = classnames({
     [css.cell]: true,
     [css.active]: active,
     [css.center]: collapsed,
     [css.paddingLeft]: !collapsed,
-  });
-  const childClassNames = classnames({
-    [css.cell]: true,
   });
   const badgeContainer = classnames({
     [css.badgeContainer]: !collapsed,

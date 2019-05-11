@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import * as queryString from 'query-string';
+import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 import { actions as builderActions } from '@ducks/builder';
 import { RootState } from '@root/lib/models';
 import {
@@ -11,18 +10,14 @@ import {
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 
-import { DodayTypes } from '@root/lib/models/entities/common';
 import {
   Pageflow,
   PageWrapperChildContext,
 } from '../../shared/_support/pageflow';
+import { ToolBeacon } from '@root/lib/common-interfaces';
 
-interface BuilderProps {}
-
-interface BuilderState {
-  dodayName: string;
-  visible: boolean;
-  date: Date;
+export interface BuilderProps {
+  activeTools: ToolBeacon[];
 }
 
 interface PropsFromConnect {
@@ -33,21 +28,8 @@ interface PropsFromConnect {
 
 @Pageflow({ path: '/builder' })
 export class Builder extends React.Component<
-  BuilderProps & PropsFromConnect & Partial<RouteComponentProps>,
-  BuilderState
+  BuilderProps & Partial<PropsFromConnect> & RouteComponentProps
 > {
-  constructor(
-    props: BuilderProps & PropsFromConnect & Partial<RouteComponentProps>
-  ) {
-    super(props);
-
-    this.state = {
-      dodayName: '',
-      visible: true,
-      date: new Date(),
-    };
-  }
-
   public static contextTypes = {
     requestClose: PropTypes.func,
   };
@@ -69,18 +51,25 @@ export class Builder extends React.Component<
   };
 
   renderBuilder = () => {
-    const { location } = this.props;
+    const { activeTools } = this.props;
 
-    const queryParams = queryString.parse(location.search);
-
-    if (Number(queryParams.type) === DodayTypes.Activity) {
-      return null;
-    }
+    return activeTools.map(tool =>
+      tool.config.entities.map(entity => {
+        const Builder = tool.components.builders[entity.type];
+        return (
+          <Route
+            key={entity.name}
+            path={`/builder/${entity.name}`}
+            render={() => <Builder activeTools={activeTools} />}
+          />
+        );
+      })
+    );
   };
 
   render() {
     return (
-      <Page header={<PageHeader onClose={this.onRequestClose} />}>
+      <Page header={<PageHeader withClose onClose={this.onRequestClose} />}>
         {this.renderBuilder()}
       </Page>
     );
@@ -91,7 +80,9 @@ const mapState = (state: RootState) => ({
   success: state.builder.status.success,
 });
 
-export default withRouter(connect(
-  mapState,
-  { ...builderActions }
-)(Builder) as any);
+export default withRouter(
+  connect(
+    mapState,
+    { ...builderActions }
+  )(Builder)
+);

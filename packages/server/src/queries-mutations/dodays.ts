@@ -16,6 +16,7 @@ export const dodaysQuery = (
     `
       MATCH (d:Doday)-[]-(h:Hero)
       WHERE h.did = $heroDID
+      AND d.public = true
       ${props.type ? `AND d.type = $type` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       OPTIONAL MATCH (r:Resource)-[]-(d)

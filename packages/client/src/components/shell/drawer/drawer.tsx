@@ -28,6 +28,7 @@ interface DrawerProps {
 }
 
 interface PropsFromConnect {
+  dodayAppRoute: string;
   badge: number;
   changeDodayAppRouteActionCreator: (
     route: string
@@ -171,7 +172,7 @@ export class DrawerComponent extends React.Component<
   }
 
   render() {
-    const { collapsed, toolBeacons, history } = this.props;
+    const { collapsed, toolBeacons, history, dodayAppRoute } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
@@ -189,6 +190,7 @@ export class DrawerComponent extends React.Component<
                 key={cuid()}
                 collapsed={this.props.collapsed}
                 item={item}
+                active={item.route === dodayAppRoute}
                 onClick={() => {
                   this.props.changeDodayAppRouteActionCreator(item.route);
                   history.push(item.route);
@@ -207,6 +209,7 @@ export class DrawerComponent extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
+  dodayAppRoute: state.dodayApp.status.route,
   badge: state.dodayApp.status.badge,
 });
 

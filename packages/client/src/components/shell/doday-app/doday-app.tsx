@@ -62,9 +62,11 @@ export class DodayAppComponent extends React.Component<
 
   renderCellByDodayType = (item: DodayLike, index) => {
     this.props.activeTools.map(tool => {
-      const type = tool.config.entities.find(type => type === item.type);
-      if (type != null) {
-        const Tag = tool.components.cells[type].progress;
+      const entity = tool.config.entities.find(
+        entity => entity.type === item.type
+      );
+      if (entity != null) {
+        const Tag = tool.components.cells[entity.type].progress;
         return (
           <Tag doday={item} key={cuid()} onClick={this.handleDodayCellClick} />
         );

@@ -57,7 +57,7 @@ export const Pageflow = (options: PageflowOptions): any => {
             transitionEnterTimeout={600}
             transitionLeaveTimeout={200}
             transitionName={
-              this.props.match && this.props.match.path === path
+              this.props.match && this.props.match.path.startsWith(path)
                 ? 'loadComponent'
                 : 'leaveComponent'
             }

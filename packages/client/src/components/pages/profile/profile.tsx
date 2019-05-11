@@ -26,7 +26,7 @@ export class Profile extends React.Component {
     return (
       <Page
         header={
-          <PageHeader onClose={this.onRequestClose}>
+          <PageHeader withClose onClose={this.onRequestClose}>
             <a href="/api/logout">Logout</a>
           </PageHeader>
         }

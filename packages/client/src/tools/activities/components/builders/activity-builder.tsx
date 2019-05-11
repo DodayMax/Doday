@@ -14,7 +14,6 @@ import {
   ButtonGroup,
   Icons,
 } from '@shared';
-import Select from 'react-select';
 import {
   TypographySize,
   TypographyColor,
@@ -30,7 +29,7 @@ import {
   SerializedActivity,
   SerializedActivityProgress,
 } from '@root/lib/models/entities/Activity';
-import { ParsedUrlView } from '@root/components/pages/builder';
+import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import {
   CreateActivityAction,
@@ -38,14 +37,13 @@ import {
   ParseUrlMetadataAction,
   ClearActivitiesBuilderAction,
   ClearParsedUrlMetadataAction,
-  FetchActivityTypesAction,
 } from '@tools/activities/duck/actions';
 import * as activityBuilderActions from '@tools/activities/duck/actions';
 import { RootState } from '@root/lib/models';
 
 const css = require('./activity-builder.module.scss');
 
-interface ActivityBuilderProps {}
+interface ActivityBuilderProps extends BuilderProps {}
 
 interface PropsFromConnect {
   loading: boolean;
@@ -53,7 +51,6 @@ interface PropsFromConnect {
   parsedMetadata?: any;
   activityType: ActivityType;
   ownerDID: string;
-  fetchActivityTypesActionCreator: () => FetchActivityTypesAction;
   createActivityActionCreator: (
     activity: SerializedActivity,
     resource: SerializedResource
@@ -146,7 +143,7 @@ export class ActivityBuilder extends React.Component<
   };
 
   handleCreateDoday = () => {
-    const { parsedMetadata, activityType = 'do', ownerDID } = this.props;
+    const { parsedMetadata, activityType, ownerDID } = this.props;
 
     const resource = parsedMetadata && {
       ...parsedMetadata,
@@ -163,13 +160,13 @@ export class ActivityBuilder extends React.Component<
         this.state.selectedTags &&
         this.state.selectedTags.map(tag => tag.value),
       public: this.state.isPublic,
-      owner: ownerDID,
       ownerDID,
     };
 
     const progress: SerializedActivityProgress = {
       date: this.state.date.getTime(),
       dateIsLocked: this.state.dateIsLocked,
+      completed: false,
     };
 
     if (this.state.isPublic) {
@@ -262,30 +259,22 @@ export class ActivityBuilder extends React.Component<
           paddingAbove={Space.Small}
           paddingBelow={Space.Small}
         >
-          <LayoutBlock childFlex flex={'1'}>
-            <Select
-              isDisabled={this.state.isPublic}
-              onChange={this.handleGoalSelect}
-              placeholder="Related to goal"
-            />
-          </LayoutBlock>
-          <LayoutBlock childFlex flex={'1'} spaceLeft={Space.XSmall}>
-            <CustomDatePicker
-              lightBorder
-              withLocker
-              isLocked={this.state.dateIsLocked}
-              icon={<Icons.Clock />}
-              minDate={new Date()}
-              selected={this.state.date}
-              onChange={this.handleChangeDate}
-              onLocked={() =>
-                this.setState({
-                  dateIsLocked: !this.state.dateIsLocked,
-                })
-              }
-              className={css.datePickerInput}
-            />
-          </LayoutBlock>
+          <CustomDatePicker
+            disabled={this.state.isPublic}
+            lightBorder
+            withLocker
+            isLocked={this.state.dateIsLocked}
+            icon={<Icons.Clock />}
+            minDate={new Date()}
+            selected={this.state.date}
+            onChange={this.handleChangeDate}
+            onLocked={() =>
+              this.setState({
+                dateIsLocked: !this.state.dateIsLocked,
+              })
+            }
+            className={css.datePickerInput}
+          />
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
           <Text color={TypographyColor.Disabled}>Estimate time:</Text>
@@ -354,18 +343,12 @@ export class ActivityBuilder extends React.Component<
   }
 }
 
-// export const selectedValueFromGoal = (goal: Goal) => ({
-//   label: goal.name,
-//   value: goal.did,
-// });
-
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
   activityType: state.builder.activity.activityType,
   isUrlParsing: state.builder.activity.isUrlParsing,
   parsedMetadata: state.builder.activity.parsedMetadata,
   loading: state.builder.status.loading,
-  success: state.builder.status.success,
 });
 
 export default connect(
