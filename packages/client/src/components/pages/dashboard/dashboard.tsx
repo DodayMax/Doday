@@ -9,6 +9,7 @@ import { Profile } from '../profile';
 import { toolBeacons, ToolSysname } from '@tools';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
+import { DodayApp } from '@root/components/shell/doday-app';
 
 const css = require('./_dashboard.module.scss');
 
@@ -68,7 +69,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
   render() {
     const { isDodayAppCollapsed, activeToolBeacons } = this.props;
-    const tools = toolBeacons.filter(tool =>
+    const activeTools = toolBeacons.filter(tool =>
       activeToolBeacons.find(item => item === tool.config.sysname)
     );
 
@@ -78,17 +79,10 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           <Drawer
             collapsed={this.state.isDrawerCollapsed}
             toggle={() => this.toggleMenu()}
-            toolBeacons={tools}
+            toolBeacons={activeTools}
           />
         </nav>
-        {!isDodayAppCollapsed &&
-          tools.map((beacon, index) => (
-            <Route
-              key={index}
-              path={beacon.drawerMenuItem.path}
-              component={beacon.components.dodayApp}
-            />
-          ))}
+        {!isDodayAppCollapsed && <DodayApp activeTools={activeTools} />}
         <Route exact path="/" render={() => <div>Dashboard</div>} />
         <Route path="/dodays/:did" component={DodayDetails} />
         <Route path="/progress/:did" component={ProgressDetails} />

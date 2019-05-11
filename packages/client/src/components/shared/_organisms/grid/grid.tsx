@@ -6,11 +6,13 @@ import { Loader, LayoutBlock } from '@shared';
 import { Space } from '@root/lib/common-interfaces';
 import { FilterItem } from './filter/filter-item';
 import { Filter } from './filter/filter';
+import { Input } from '../../_atoms/input';
 
-const styles = require('./_grid.module.scss');
+const css = require('./_grid.module.scss');
 
 interface GridProps {
   items: any[];
+  search?: boolean;
   filters?: FilterItem[][];
   loading?: boolean;
   renderCell: (item: any, index: number) => JSX.Element;
@@ -46,12 +48,15 @@ export class GridComponent extends React.Component<
   };
 
   render() {
-    const { items, loading, renderCell, filters } = this.props;
+    const { items, loading, renderCell, filters, search } = this.props;
     return (
       <>
+        {search && (
+          <Input placeholder="Type for search..." className={css.search} />
+        )}
         {filters &&
           filters.map((filter, index) => <Filter key={index} items={filter} />)}
-        <ul id="grid" className={styles.gridContainer}>
+        <ul id="grid" className={css.gridContainer}>
           {loading && (
             <LayoutBlock
               align="flex-center"

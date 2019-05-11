@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Icons } from '@shared';
 import { Size } from '@root/lib/common-interfaces';
 
-const styles = require('./_input.module.scss');
+const css = require('./_input.module.scss');
 
 interface InputProps {
   size?: Size;
@@ -51,27 +51,29 @@ export class Input extends React.Component<
       isLoading = false,
       size = Size.Medium,
       onPressEnter,
+      className,
       ...props
     } = this.props;
     const classNames = classnames(
       {
-        [styles.input]: true,
-        [styles.loading]: isLoading,
+        [css.input]: true,
+        [css.loading]: isLoading,
       },
-      styles[Size[size]]
+      css[Size[size]],
+      className
     );
 
     return (
-      <div className={styles.inputContainer}>
+      <div className={css.inputContainer}>
         <input
+          {...props}
           className={classNames}
           ref={node => (this.input = node)}
           value={value}
           onChange={onChange}
           onKeyDown={this.onKeyDown}
-          {...props}
         />
-        {isLoading ? <Icons.InlineLoader className={styles.loader} /> : null}
+        {isLoading ? <Icons.InlineLoader className={css.loader} /> : null}
       </div>
     );
   }

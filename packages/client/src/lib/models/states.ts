@@ -3,6 +3,7 @@ import { BuilderStatus } from '@root/ducks/builder/reducer';
 import { DodayLike, SerializedProgressLike } from './entities/common';
 import { ActivityBuilderState } from '@root/tools/activities/duck/reducer';
 import { ToolsState } from '@root/tools';
+import { DodayAppQueryParams } from '../common-interfaces';
 
 export interface RootState {
   auth: AuthState;
@@ -14,6 +15,8 @@ export interface RootState {
 
 export interface DodayAppStatusState {
   loading: boolean;
+  route: string;
+  routeParams: DodayAppQueryParams;
   badge: number;
 }
 

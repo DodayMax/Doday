@@ -6,7 +6,7 @@ export const initialState: ActivityBuilderState = {};
 export const initialDodayAppState: DodayAppToolState = {
   inprogress: [],
   completed: [],
-  created: [],
+  published: [],
 };
 
 export const dodayAppReducer = (
@@ -72,5 +72,5 @@ export type ActivityBuilderState = {
 export interface DodayAppToolState {
   inprogress: DodayLike[];
   completed: DodayLike[];
-  created: DodayLike[];
+  published: DodayLike[];
 }

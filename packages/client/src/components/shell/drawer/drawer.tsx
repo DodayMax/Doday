@@ -12,9 +12,11 @@ import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-ce
 import {
   PushToNavigationStackByDIDAction,
   ClearNavStackAction,
+  ChangeDodayAppRouteAction,
 } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../../shared/_atoms/layout-block';
+import { capitalize } from '@root/lib/utils';
 
 const css = require('./_drawer.module.scss');
 
@@ -27,6 +29,9 @@ interface DrawerProps {
 
 interface PropsFromConnect {
   badge: number;
+  changeDodayAppRouteActionCreator: (
+    route: string
+  ) => ChangeDodayAppRouteAction;
   pushToNavStackByDIDActionCreator?: (
     did: string
   ) => PushToNavigationStackByDIDAction;
@@ -36,7 +41,7 @@ interface PropsFromConnect {
 const items: DrawerMenuItem[] = [
   {
     text: 'Schedule',
-    path: '/schedule',
+    route: '/schedule',
     icon: 'TodayCalendar',
   },
 ];
@@ -158,9 +163,9 @@ export class DrawerComponent extends React.Component<
   toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
     return tools.map((tool: ToolBeacon) => {
       return {
-        text: tool.drawerMenuItem.text,
-        path: tool.drawerMenuItem.path,
-        icon: tool.drawerMenuItem.icon,
+        text: capitalize(tool.config.sysname),
+        route: tool.config.route,
+        icon: tool.config.icon,
       };
     });
   }
@@ -184,7 +189,10 @@ export class DrawerComponent extends React.Component<
                 key={cuid()}
                 collapsed={this.props.collapsed}
                 item={item}
-                onClick={() => history.push(item.path)}
+                onClick={() => {
+                  this.props.changeDodayAppRouteActionCreator(item.route);
+                  history.push(item.route);
+                }}
               />
             )}
             collapsed={collapsed}

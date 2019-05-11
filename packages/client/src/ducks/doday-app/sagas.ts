@@ -2,11 +2,11 @@ import { call, put, takeLatest, select } from 'redux-saga/effects';
 import {
   ActionConstants,
   PlanOutAction,
-  setAppLoadingState,
   ChangeDodayAppDateAction,
   FetchDodaysWithProgressForDateAction,
   fetchDodaysWithProgressForDateActionCreator,
   setDodaysActionCreator,
+  setDodayAppLoadingStateActionCreator,
 } from './actions';
 import { api } from '@services';
 import { chosenDate } from './selectors';
@@ -21,7 +21,7 @@ import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries
 function* fetchDodaysWithProgressForDateActionSaga(
   action: FetchDodaysWithProgressForDateAction
 ) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   const date: Date = yield select(chosenDate);
   const params: DodaysWithProgressQueryParams = {
     completed: false,
@@ -33,7 +33,7 @@ function* fetchDodaysWithProgressForDateActionSaga(
   }
   const dodays = yield call(api.dodays.queries.fetchDodaysWithProgress, params);
   yield put(setDodaysActionCreator(dodays));
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -42,10 +42,10 @@ function* fetchDodaysWithProgressForDateActionSaga(
  * @param {PlanOutAction} action
  */
 function* planOutSaga(action: PlanOutAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.days.queries.planOutStartFromDate, action.payload);
   yield put(fetchDodaysWithProgressForDateActionCreator());
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -54,9 +54,9 @@ function* planOutSaga(action: PlanOutAction) {
  * @param {ChangeDodayAppDateAction} action
  */
 function* changeDodayAppDateActionSaga(action: ChangeDodayAppDateAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   yield put(fetchDodaysWithProgressForDateActionCreator(action.payload));
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 export default [

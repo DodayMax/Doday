@@ -1,10 +1,12 @@
 import { AnyAction } from 'redux';
 import { DodayLike } from '@root/lib/models/entities/common';
+import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 
 export enum ActionConstants {
   FETCH_DODAYS_WITH_PROGRESS_FOR_DATE = '[dodays-app] FETCH_DODAYS_WITH_PROGRESS_FOR_DATE',
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
-  CHANGE_PATH = '[doday-app] CHANGE_PATH',
+  CHANGE_ROUTE = '[doday-app] CHANGE_ROUTE',
+  SET_QUERY_PARAMS = '[doday-app] SET_QUERY_PARAMS',
   PUSH_TO_NAV_STACK = '[doday-app] PUSH_TO_NAV_STACK',
   PUSH_TO_NAV_STACK_BY_DID = '[doday-app] PUSH_TO_NAV_STACK_BY_DID',
   POP_FROM_NAV_STACK = '[doday-app] POP_FROM_NAV_STACK',
@@ -36,12 +38,44 @@ export function fetchDodaysWithProgressForDateActionCreator(
  * Set loading state for doday-app
  *
  * @export
- * @returns {SetLoadingState}
+ * @returns {SetDodayAppLoadingStateAction}
  */
-export function setAppLoadingState(value: boolean): SetLoadingState {
+export function setDodayAppLoadingStateActionCreator(
+  value: boolean
+): SetDodayAppLoadingStateAction {
   return {
     type: ActionConstants.SET_LOADING_STATE,
     payload: value,
+  };
+}
+
+/**
+ * Change route for doday app
+ *
+ * @export
+ * @returns {ChangeDodayAppRouteAction}
+ */
+export function changeDodayAppRouteActionCreator(
+  route: string
+): ChangeDodayAppRouteAction {
+  return {
+    type: ActionConstants.CHANGE_ROUTE,
+    payload: route,
+  };
+}
+
+/**
+ * Set query params for doday app route
+ *
+ * @export
+ * @returns {SetDodayAppQueryParamsAction}
+ */
+export function setDodayAppQueryParamsActionCreator(
+  params: DodayAppQueryParams
+): SetDodayAppQueryParamsAction {
+  return {
+    type: ActionConstants.SET_QUERY_PARAMS,
+    payload: params,
   };
 }
 
@@ -78,7 +112,7 @@ export function pushToNavStackByDIDActionCreator(
  * @export
  * @returns {PopFromNavigationStackAction}
  */
-export function popFromNavStack(): PopFromNavigationStackAction {
+export function popFromNavigationStackActionCreator(): PopFromNavigationStackAction {
   return {
     type: ActionConstants.POP_FROM_NAV_STACK,
   };
@@ -131,9 +165,11 @@ export function setCompletedDodaysActionCreator(
  * Set dodays badge for today
  *
  * @export
- * @returns {SetDodaysBadgeForToday}
+ * @returns {SetDodaysBadgeForTodayAction}
  */
-export function setDodaysBadgeForToday(value: number): SetDodaysBadgeForToday {
+export function setDodaysBadgeForTodayActionCreator(
+  value: number
+): SetDodaysBadgeForTodayAction {
   return {
     type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
     payload: value,
@@ -153,6 +189,21 @@ export function planOutActionCreator(date: number): PlanOutAction {
   };
 }
 
+export const actionCreators = {
+  fetchDodaysWithProgressForDateActionCreator,
+  setDodayAppLoadingStateActionCreator,
+  changeDodayAppRouteActionCreator,
+  setDodayAppQueryParamsActionCreator,
+  clearNavStackActionCreator,
+  popFromNavigationStackActionCreator,
+  pushToNavStackByDIDActionCreator,
+  changeDodayAppDateActionCreator,
+  setDodaysActionCreator,
+  setCompletedDodaysActionCreator,
+  setDodaysBadgeForTodayActionCreator,
+  planOutActionCreator,
+};
+
 /**
  * Define return types of actions
  */
@@ -162,9 +213,19 @@ export interface FetchDodaysWithProgressForDateAction extends AnyAction {
   payload?: Date;
 }
 
-export interface SetLoadingState extends AnyAction {
+export interface SetDodayAppLoadingStateAction extends AnyAction {
   type: ActionConstants.SET_LOADING_STATE;
   payload: boolean;
+}
+
+export interface ChangeDodayAppRouteAction extends AnyAction {
+  type: ActionConstants.CHANGE_ROUTE;
+  payload: string;
+}
+
+export interface SetDodayAppQueryParamsAction extends AnyAction {
+  type: ActionConstants.SET_QUERY_PARAMS;
+  payload: DodayAppQueryParams;
 }
 
 export interface SetDodaysAction extends AnyAction {
@@ -191,7 +252,7 @@ export interface ChangeDodayAppDateAction extends AnyAction {
   payload: Date;
 }
 
-export interface SetDodaysBadgeForToday extends AnyAction {
+export interface SetDodaysBadgeForTodayAction extends AnyAction {
   type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
   payload: number;
 }
@@ -210,11 +271,13 @@ export interface PlanOutAction extends AnyAction {
  */
 
 export type ActionTypes =
-  | SetLoadingState
+  | SetDodayAppLoadingStateAction
   | SetDodaysAction
+  | ChangeDodayAppRouteAction
+  | SetDodayAppQueryParamsAction
   | SetCompletedDodaysAction
   | PushToNavigationStackByDIDAction
   | PopFromNavigationStackAction
   | ClearNavStackAction
   | ChangeDodayAppDateAction
-  | SetDodaysBadgeForToday;
+  | SetDodaysBadgeForTodayAction;

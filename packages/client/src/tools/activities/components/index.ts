@@ -9,12 +9,16 @@ import { DodayTypes } from '@root/lib/models/entities/common';
 export const components = {
   dodayApp: ActivityDodayApp,
   cells: {
-    public: ActivityCell,
-    progress: ActivityProgressCell,
+    [DodayTypes.Activity]: {
+      public: ActivityCell,
+      progress: ActivityProgressCell,
+    }
   },
   builders: { [DodayTypes.Activity]: ActivityBuilder },
   details: {
-    public: ActivityDetails,
-    progress: ActivityProgressDetails,
+    [DodayTypes.Activity]: {
+      public: ActivityDetails,
+      progress: ActivityProgressDetails,
+    }
   },
 };

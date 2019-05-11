@@ -35,7 +35,7 @@ export class PageHeader extends React.Component<PageHeaderProps> {
             hover
             onClick={() => {
               setTimeout(() => {
-                this.props.history.push('/');
+                this.props.history.goBack();
               }, 200);
               if (onClose) {
                 onClose();

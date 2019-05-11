@@ -15,19 +15,26 @@ import {
 import { RouteComponentProps } from 'react-router';
 import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
-import { Space } from '@root/lib/common-interfaces';
+import {
+  Space,
+  ToolBeacon,
+  DodayAppQueryParams,
+} from '@root/lib/common-interfaces';
 import { durationToMinutes, isActivity } from '@root/lib/utils';
 import { Activity } from '@root/lib/models/entities/Activity';
 import { RootState } from '@root/lib/models';
-import { toolBeacons } from '@root/tools';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
 
-interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
+interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {
+  activeTools: ToolBeacon[];
+}
 
 interface PropsFromConnect {
   loading: boolean;
+  route: string;
+  routeParams: DodayAppQueryParams;
   dodays: DodayLike[];
   chosenDate?: Date;
   changeDodayAppDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
@@ -54,17 +61,23 @@ export class DodayAppComponent extends React.Component<
   };
 
   renderCellByDodayType = (item: DodayLike, index) => {
-    toolBeacons.map(tool => {
-      if (tool.config.types.find(type => type === item.type)) {
+    this.props.activeTools.map(tool => {
+      const type = tool.config.entities.find(type => type === item.type);
+      if (type != null) {
+        const Tag = tool.components.cells[type].progress;
         return (
-          <tool.components.cells.progress
-            doday={item}
-            key={cuid()}
-            onClick={this.handleDodayCellClick}
-          />
+          <Tag doday={item} key={cuid()} onClick={this.handleDodayCellClick} />
         );
       }
     });
+  };
+
+  private renderDodayApp = () => {
+    const tool = this.props.activeTools.find(
+      tool => tool.config.route === this.props.route
+    );
+    if (tool) return <tool.components.dodayApp />;
+    return null;
   };
 
   renderContent() {
@@ -119,13 +132,17 @@ export class DodayAppComponent extends React.Component<
 
   render() {
     return (
-      <section className={css.dodayappContainer}>{this.props.children}</section>
+      <section className={css.dodayappContainer}>
+        {this.renderDodayApp()}
+      </section>
     );
   }
 }
 
 const mapState = ({ dodayApp }: RootState) => ({
   loading: dodayApp.status.loading,
+  route: dodayApp.status.route,
+  routeParams: dodayApp.status.routeParams,
   chosenDate: dodayApp.schedule.chosenDate,
   dodays: dodayApp.schedule.dodays,
 });

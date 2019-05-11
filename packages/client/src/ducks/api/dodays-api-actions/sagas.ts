@@ -7,10 +7,9 @@ import {
   FetchDodayByDIDAction,
   FetchDodayWithProgressByDIDAction,
 } from './actions';
-import { chosenDate } from '@ducks/all-selectors';
 import { api } from '@services';
-import { setAppLoadingState } from '@root/ducks/doday-app/actions';
 import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-details/actions';
+import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 
 /**
  * Fetch doday node by DID
@@ -18,9 +17,9 @@ import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-deta
  * @param {FetchDodayByDIDAction} action
  */
 function* fetchDodayByDIDActionSaga(action: FetchDodayByDIDAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   const dodays = yield call(api.dodays.queries.fetchDodayByDID, action.payload);
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -31,12 +30,12 @@ function* fetchDodayByDIDActionSaga(action: FetchDodayByDIDAction) {
 function* fetchDodayWithProgressByDIDActionSaga(
   action: FetchDodayWithProgressByDIDAction
 ) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   const dodays = yield call(
     api.dodays.queries.fetchDodayWithProgressByDID,
     action.payload
   );
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -45,9 +44,9 @@ function* fetchDodayWithProgressByDIDActionSaga(
  * @param {DeleteDodayAction} action
  */
 function* deleteDodayActionSaga(action: DeleteDodayAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.deleteDodayMutation, action.payload);
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -56,9 +55,9 @@ function* deleteDodayActionSaga(action: DeleteDodayAction) {
  * @param {UntakeDodayAction} action
  */
 function* untakeDodayActionSaga(action: UntakeDodayAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.untakeDodayMutation, action.payload);
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
@@ -67,14 +66,14 @@ function* untakeDodayActionSaga(action: UntakeDodayAction) {
  * @param {UpdateDodayAction} action
  */
 function* updateDodayActionSaga(action: UpdateDodayAction) {
-  yield put(setAppLoadingState(true));
+  yield put(setDodayAppLoadingStateActionCreator(true));
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.updateDodayMutation, {
     did: action.payload.doday.did,
     updates: { ...action.payload },
   });
   yield put(setDodayDetailsLoadingStateActionCreator(false));
-  yield put(setAppLoadingState(false));
+  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 export default [
