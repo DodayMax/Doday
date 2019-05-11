@@ -39,6 +39,7 @@ export class Builder extends React.Component<
   componentDidUpdate(prevProps) {
     if (this.props.success) {
       this.props.history.push('/');
+      this.props.clearBuilderActionCreator();
       this.props.setBuilderSuccessFlag(undefined);
     }
   }

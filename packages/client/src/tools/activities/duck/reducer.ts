@@ -1,3 +1,4 @@
+import * as builderActions from '@ducks/builder/actions';
 import * as actions from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { DodayLike } from '@root/lib/models/entities/common';
@@ -63,7 +64,7 @@ export const builderReducer = (
         isUrlParsing: false,
         parsedMetadata: undefined,
       };
-    case actions.ActionConstants.CLEAR_ACTIVITIES_BUILDER:
+    case builderActions.ActionConstants.CLEAR_BUILDER:
       return initialState;
     default:
       return state;

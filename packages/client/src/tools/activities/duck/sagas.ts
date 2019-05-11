@@ -9,7 +9,6 @@ import {
   setActivitiesInProgressActionCreator,
   setCompletedActivitiesActionCreator,
   CreateActivityAction,
-  clearActivitiesBuilderActionCreator,
   CreateAndTakeActivityAction,
   FetchPublishedActivitiesAction,
   setPublishedActivitiesActionCreator,
@@ -70,7 +69,6 @@ function* createActivityActionSaga(action: CreateActivityAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createDodayMutation, action.payload);
   yield put(setBuilderSuccessFlag(true));
-  yield put(clearActivitiesBuilderActionCreator());
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
@@ -83,7 +81,6 @@ function* createAndTakeActivityActionSaga(action: CreateAndTakeActivityAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
   yield put(setBuilderSuccessFlag(true));
-  yield put(clearActivitiesBuilderActionCreator());
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 

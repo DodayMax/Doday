@@ -35,7 +35,6 @@ import {
   CreateActivityAction,
   CreateAndTakeActivityAction,
   ParseUrlMetadataAction,
-  ClearActivitiesBuilderAction,
   ClearParsedUrlMetadataAction,
 } from '@tools/activities/duck/actions';
 import * as activityBuilderActions from '@tools/activities/duck/actions';
@@ -62,7 +61,6 @@ interface PropsFromConnect {
   ) => CreateAndTakeActivityAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
-  clearActivitiesBuilderActionCreator: () => ClearActivitiesBuilderAction;
 }
 
 interface ActivityBuilderState {
@@ -98,17 +96,17 @@ export class ActivityBuilder extends React.Component<
       const parsedTags =
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
       const mappedTags =
-        parsedTags &&
-        parsedTags.map(tag => ({
-          label: tag,
-          value: tag,
-        }));
+        (parsedTags &&
+          parsedTags.map(tag => ({
+            label: tag,
+            value: tag,
+          }))) ||
+        [];
       this.setState({
         dodayName: '',
         selectedTags: this.state.selectedTags
-          ? (mappedTags && this.state.selectedTags.concat(mappedTags)) ||
-            this.state.selectedTags
-          : [],
+          ? this.state.selectedTags.concat(mappedTags)
+          : mappedTags,
       });
     }
 

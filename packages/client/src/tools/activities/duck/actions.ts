@@ -10,6 +10,7 @@ import {
   DodaysWithProgressQueryParams,
   DodaysQueryParams,
 } from '@root/services/api/dodays/queries';
+import { ClearBuilderAction } from '@root/ducks/builder/actions';
 
 export enum ActionConstants {
   FETCH_PUBLISHED_ACTIVITIES = '[activities] FETCH_PUBLISHED_ACTIVITIES',
@@ -247,18 +248,6 @@ export function clearParsedUrlMetadataActionCreator(): ClearParsedUrlMetadataAct
   };
 }
 
-/**
- * Clear activities builder data from store
- *
- * @export
- * @returns {ClearActivitiesBuilderAction}
- */
-export function clearActivitiesBuilderActionCreator(): ClearActivitiesBuilderAction {
-  return {
-    type: ActionConstants.CLEAR_ACTIVITIES_BUILDER,
-  };
-}
-
 export const actionCreators = {
   fetchActivitiesWithProgressActionCreator,
   setActivitiesInProgressActionCreator,
@@ -274,7 +263,6 @@ export const actionCreators = {
   setParsedUrlMetadataObjectActionCreator,
   parseUrlMetadataActionCreator,
   clearParsedUrlMetadataActionCreator,
-  clearActivitiesBuilderActionCreator,
 };
 
 /**
@@ -359,10 +347,6 @@ export interface ClearParsedUrlMetadataAction extends AnyAction {
   type: ActionConstants.CLEAR_PARSED_URL_METADATA;
 }
 
-export interface ClearActivitiesBuilderAction extends AnyAction {
-  type: ActionConstants.CLEAR_ACTIVITIES_BUILDER;
-}
-
 /**
  * Export all action types for reducers
  */
@@ -382,4 +366,4 @@ export type ActionTypes =
   | ParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
   | ClearParsedUrlMetadataAction
-  | ClearActivitiesBuilderAction;
+  | ClearBuilderAction;
