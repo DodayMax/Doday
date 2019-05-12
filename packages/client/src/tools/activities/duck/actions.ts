@@ -1,33 +1,52 @@
 import { AnyAction } from 'redux';
-import {
-  SerializedActivity,
-  SerializedActivityProgress,
-  Activity,
-} from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/Activity';
 import { ActivityType } from '@root/lib/common-interfaces';
-import { SerializedResource } from '@root/lib/models/entities/resource';
 import {
   DodaysWithProgressQueryParams,
   DodaysQueryParams,
 } from '@root/services/api/dodays/queries';
 import { ClearBuilderAction } from '@root/ducks/builder/actions';
+import {
+  DodayLike,
+  ProgressLike,
+  SerializedDodayLike,
+  SerializedProgressLike,
+} from '@root/lib/models/entities/common';
+import {
+  Resource,
+  SerializedResource,
+} from '@root/lib/models/entities/resource';
 
 export enum ActionConstants {
-  FETCH_PUBLISHED_ACTIVITIES = '[activities] FETCH_PUBLISHED_ACTIVITIES',
-  SET_PUBLISHED_ACTIVITIES = '[activities] SET_PUBLISHED_ACTIVITIES',
+  FETCH_ACTIVITIES = '[activities] FETCH_ACTIVITIES',
   FETCH_ACTIVITIES_WITH_PROGRESS = '[activities] FETCH_ACTIVITIES_WITH_PROGRESS',
-  SET_ACTIVITIES_IN_PROGRESS = '[activities] SET_ACTIVITIES_IN_PROGRESS',
-  SET_COMPLETED_ACTIVITIES = '[activities] SET_COMPLETED_ACTIVITIES',
-  FETCH_ACTIVITY_TYPES = '[activities] FETCH_ACTIVITY_TYPES',
-  SET_ACTIVITY_TYPE = '[activities] SET_ACTIVITY_TYPE',
-  CREATE_ACTIVITY = '[activities] CREATE_ACTIVITY',
-  TAKE_ACTIVITY = '[activities] TAKE_ACTIVITY',
-  CREATE_AND_TAKE_ACTIVITY = '[activities] CREATE_AND_TAKE_ACTIVITY',
+  SET_ACTIVITIES = '[activities] SET_ACTIVITIES',
   PARSE_URL = '[activities] PARSE_URL',
+  SET_ACTIVITY_TYPE = '[activities] SET_ACTIVITY_TYPE',
   SET_URL_PARSING_PROGRESS = '[activities] SET_URL_PARSING_PROGRESS',
   SET_PARSED_URL_METADATA_OBJECT = '[activities] SET_PARSED_URL_METADATA_OBJECT',
   CLEAR_PARSED_URL_METADATA = '[activities] CLEAR_PARSED_URL_METADATA',
   CLEAR_ACTIVITIES_BUILDER = '[activities] CLEAR_ACTIVITIES_BUILDER',
+  CREATE_DODAY_OPTIMISTIC_UPDATE = '[activities-side-effect] CREATE_DODAY_OPTIMISTIC_UPDATE',
+  UPDATE_DODAY_OPTIMISTIC_UPDATE = '[activities-side-effect] UPDATE_DODAY_OPTIMISTIC_UPDATE',
+  TAKE_DODAY_OPTIMISTIC_UPDATE = '[activities-side-effect] TAKE_DODAY_OPTIMISTIC_UPDATE',
+  UNTAKE_DODAY_OPTIMISTIC_UPDATE = '[activities-side-effect] UNTAKE_DODAY_OPTIMISTIC_UPDATE',
+  DELETE_DODAY_OPTIMISTIC_UPDATE = '[activities-side-effect] DELETE_DODAY_OPTIMISTIC_UPDATE',
+}
+
+/**
+ * Fetch activities with params
+ *
+ * @export
+ * @returns {FetchActivitiesAction}
+ */
+export function fetchActivitiesActionCreator(
+  params?: DodaysQueryParams
+): FetchActivitiesAction {
+  return {
+    type: ActionConstants.FETCH_ACTIVITIES,
+    payload: params,
+  };
 }
 
 /**
@@ -49,123 +68,14 @@ export function fetchActivitiesWithProgressActionCreator(
  * Set activities in progress to store
  *
  * @export
- * @returns {SetActivitiesInProgressAction}
+ * @returns {SetActivitiesAction}
  */
-export function setActivitiesInProgressActionCreator(
+export function setActivitiesActionCreator(
   activities: Activity[]
-): SetActivitiesInProgressAction {
+): SetActivitiesAction {
   return {
-    type: ActionConstants.SET_ACTIVITIES_IN_PROGRESS,
+    type: ActionConstants.SET_ACTIVITIES,
     payload: activities,
-  };
-}
-
-/**
- * Fetch published activities with query params
- *
- * @export
- * @returns {FetchPublishedActivitiesAction}
- */
-export function fetchPublishedActivitiesActionCreator(
-  params?: DodaysQueryParams
-): FetchPublishedActivitiesAction {
-  return {
-    type: ActionConstants.FETCH_PUBLISHED_ACTIVITIES,
-    payload: params,
-  };
-}
-
-/**
- * Set published activities to store
- *
- * @export
- * @returns {SetPublishedActivitiesAction}
- */
-export function setPublishedActivitiesActionCreator(
-  activities: Activity[]
-): SetPublishedActivitiesAction {
-  return {
-    type: ActionConstants.SET_PUBLISHED_ACTIVITIES,
-    payload: activities,
-  };
-}
-
-/**
- * Set completed activities to store
- *
- * @export
- * @returns {SetCompletedActivitiesAction}
- */
-export function setCompletedActivitiesActionCreator(
-  activities: Activity[]
-): SetCompletedActivitiesAction {
-  return {
-    type: ActionConstants.SET_COMPLETED_ACTIVITIES,
-    payload: activities,
-  };
-}
-
-/**
- * Fetch activity types
- *
- * @export
- * @returns {FetchActivityTypesAction}
- */
-export function fetchActivityTypesActionCreator(): FetchActivityTypesAction {
-  return {
-    type: ActionConstants.FETCH_ACTIVITY_TYPES,
-  };
-}
-
-/**
- * Set activity type to store
- *
- * @export
- * @returns {SetActivityTypeAction}
- */
-export function setActivityTypeActionCreator(
-  type: ActivityType
-): SetActivityTypeAction {
-  return {
-    type: ActionConstants.SET_ACTIVITY_TYPE,
-    payload: type,
-  };
-}
-
-/**
- * Create only Activity(Doday) node and relation to Hero
- *
- * @export
- * @returns {CreateActivityAction}
- */
-export function createActivityActionCreator(
-  doday: SerializedActivity,
-  resource: SerializedResource
-): CreateActivityAction {
-  return {
-    type: ActionConstants.CREATE_ACTIVITY,
-    payload: {
-      doday,
-      resource,
-    },
-  };
-}
-
-/**
- * Create new Activity(Doday)and ActivityProgress(Progress)
- * nodes and connect them to Hero
- *
- * @export
- * @returns {CreateAndTakeActivityAction}
- */
-export function createAndTakeActivityActionCreator(payload: {
-  doday: SerializedActivity;
-  progress: SerializedActivityProgress;
-  resource: SerializedResource;
-}): CreateAndTakeActivityAction {
-  return {
-    type: ActionConstants.CREATE_AND_TAKE_ACTIVITY,
-    payload,
   };
 }
 
@@ -215,6 +125,21 @@ export function parseUrlMetadataActionCreator(
 }
 
 /**
+ * Set activity type to store
+ *
+ * @export
+ * @returns {SetActivityTypeAction}
+ */
+export function setActivityTypeActionCreator(
+  type: ActivityType
+): SetActivityTypeAction {
+  return {
+    type: ActionConstants.SET_ACTIVITY_TYPE,
+    payload: type,
+  };
+}
+
+/**
  * Clear parsed metadata from store
  *
  * @export
@@ -226,80 +151,69 @@ export function clearParsedUrlMetadataActionCreator(): ClearParsedUrlMetadataAct
   };
 }
 
+//////////////////////////////////////////////////////////
+
+/** Side effects */
+
+/**
+ * Clear parsed metadata from store
+ *
+ * @export
+ * @returns {CreateDodayOptimisticUpdateAction}
+ */
+export function createDodayOptimisticUpdateActionCreator(payload: {
+  doday: SerializedDodayLike;
+  progress?: SerializedProgressLike;
+  resource?: SerializedResource;
+}): CreateDodayOptimisticUpdateAction {
+  return {
+    type: ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE,
+    payload,
+  };
+}
+
 export const actionCreators = {
+  fetchActivitiesActionCreator,
   fetchActivitiesWithProgressActionCreator,
-  setActivitiesInProgressActionCreator,
-  fetchPublishedActivitiesActionCreator,
-  setPublishedActivitiesActionCreator,
-  setCompletedActivitiesActionCreator,
-  fetchActivityTypesActionCreator,
+  setActivitiesActionCreator,
   setActivityTypeActionCreator,
-  createActivityActionCreator,
-  createAndTakeActivityActionCreator,
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
   parseUrlMetadataActionCreator,
   clearParsedUrlMetadataActionCreator,
 };
 
+export const optimisticUpdatesActionCreators = {
+  createDodayOptimisticUpdateActionCreator,
+};
+
 /**
  * Define return types of actions
  */
+
+export interface FetchActivitiesAction extends AnyAction {
+  type: ActionConstants.FETCH_ACTIVITIES;
+  payload: DodaysQueryParams;
+}
 
 export interface FetchActivitiesWithProgressAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS;
   payload: DodaysWithProgressQueryParams;
 }
 
-export interface FetchPublishedActivitiesAction extends AnyAction {
-  type: ActionConstants.FETCH_PUBLISHED_ACTIVITIES;
-  payload: DodaysQueryParams;
-}
-
-export interface SetPublishedActivitiesAction extends AnyAction {
-  type: ActionConstants.SET_PUBLISHED_ACTIVITIES;
+export interface SetActivitiesAction extends AnyAction {
+  type: ActionConstants.SET_ACTIVITIES;
   payload: Activity[];
-}
-
-export interface SetActivitiesInProgressAction extends AnyAction {
-  type: ActionConstants.SET_ACTIVITIES_IN_PROGRESS;
-  payload: Activity[];
-}
-
-export interface SetCompletedActivitiesAction extends AnyAction {
-  type: ActionConstants.SET_COMPLETED_ACTIVITIES;
-  payload: Activity[];
-}
-
-export interface FetchActivityTypesAction extends AnyAction {
-  type: ActionConstants.FETCH_ACTIVITY_TYPES;
-}
-
-export interface SetActivityTypeAction extends AnyAction {
-  type: ActionConstants.SET_ACTIVITY_TYPE;
-  payload: ActivityType;
-}
-
-export interface CreateActivityAction extends AnyAction {
-  type: ActionConstants.CREATE_ACTIVITY;
-  payload: {
-    doday: SerializedActivity;
-    resource?: SerializedResource;
-  };
-}
-
-export interface CreateAndTakeActivityAction extends AnyAction {
-  type: ActionConstants.CREATE_AND_TAKE_ACTIVITY;
-  payload: {
-    doday: SerializedActivity;
-    progress: SerializedActivityProgress;
-    resource?: SerializedResource;
-  };
 }
 
 export interface ParseUrlMetadataAction extends AnyAction {
   type: ActionConstants.PARSE_URL;
   payload: string;
+}
+
+export interface SetActivityTypeAction extends AnyAction {
+  type: ActionConstants.SET_ACTIVITY_TYPE;
+  payload: ActivityType;
 }
 
 export interface ParseUrlMetadataProgressAction extends AnyAction {
@@ -316,22 +230,61 @@ export interface ClearParsedUrlMetadataAction extends AnyAction {
   type: ActionConstants.CLEAR_PARSED_URL_METADATA;
 }
 
+/** Side effects */
+
+export interface CreateDodayOptimisticUpdateAction extends AnyAction {
+  type: ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE;
+  payload: {
+    doday: SerializedDodayLike;
+    progress?: SerializedProgressLike;
+    resource?: SerializedResource;
+  };
+}
+
+export interface UpdateDodayOptimisticUpdateAction extends AnyAction {
+  type: ActionConstants.UPDATE_DODAY_OPTIMISTIC_UPDATE;
+  payload: {
+    doday: Partial<SerializedDodayLike>;
+    progress?: Partial<SerializedProgressLike>;
+    resource?: Partial<SerializedResource>;
+  };
+}
+
+export interface TakeDodayOptimisticUpdateAction extends AnyAction {
+  type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE;
+  payload: {
+    doday: Partial<SerializedDodayLike>;
+    progress?: Partial<SerializedProgressLike>;
+    resource?: Partial<SerializedResource>;
+  };
+}
+
+export interface UntakeDodayOptimisticUpdateAction extends AnyAction {
+  type: ActionConstants.UNTAKE_DODAY_OPTIMISTIC_UPDATE;
+  payload: string;
+}
+
+export interface DeleteDodayOptimisticUpdateAction extends AnyAction {
+  type: ActionConstants.DELETE_DODAY_OPTIMISTIC_UPDATE;
+  payload: string;
+}
+
 /**
  * Export all action types for reducers
  */
 
 export type ActionTypes =
+  | FetchActivitiesAction
   | FetchActivitiesWithProgressAction
-  | SetActivitiesInProgressAction
-  | FetchPublishedActivitiesAction
-  | SetPublishedActivitiesAction
-  | SetCompletedActivitiesAction
-  | FetchActivityTypesAction
+  | SetActivitiesAction
   | SetActivityTypeAction
-  | CreateActivityAction
-  | CreateAndTakeActivityAction
   | ParseUrlMetadataAction
   | ParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
   | ClearParsedUrlMetadataAction
-  | ClearBuilderAction;
+  | ClearBuilderAction
+  | CreateDodayOptimisticUpdateAction
+  | UpdateDodayOptimisticUpdateAction
+  | TakeDodayOptimisticUpdateAction
+  | UntakeDodayOptimisticUpdateAction
+  | DeleteDodayOptimisticUpdateAction;

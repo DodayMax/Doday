@@ -1,37 +1,40 @@
 import * as builderActions from '@ducks/builder/actions';
 import * as actions from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
-import { DodayLike } from '@root/lib/models/entities/common';
+import { DodayLike, DodayTypes } from '@root/lib/models/entities/common';
 
 export const initialState: ActivityBuilderState = {
   activityType: 'do',
 };
-export const initialDodayAppState: ActivityDodayAppToolState = {
-  inprogress: [],
-  completed: [],
-  published: [],
+export const initialDodayAppState: ActivityToolState = {
+  dodays: [],
 };
 
-export const dodayAppReducer = (
+export const mainReducer = (
   state = initialDodayAppState,
   action?: actions.ActionTypes
-): ActivityDodayAppToolState => {
+): ActivityToolState => {
   switch (action && action.type) {
-    case actions.ActionConstants.SET_ACTIVITIES_IN_PROGRESS:
+    case actions.ActionConstants.SET_ACTIVITIES:
       return {
         ...state,
-        inprogress: action.payload,
+        dodays: [...state.dodays, ...action.payload],
       };
-    case actions.ActionConstants.SET_COMPLETED_ACTIVITIES:
-      return {
-        ...state,
-        completed: action.payload,
-      };
-    case actions.ActionConstants.SET_PUBLISHED_ACTIVITIES:
-      return {
-        ...state,
-        published: action.payload,
-      };
+    case actions.ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE:
+      if (action.payload.doday.type === DodayTypes.Activity) {
+        return {
+          ...state,
+          dodays: [
+            {
+              ...action.payload.doday,
+              progress: action.payload.progress,
+              resource: action.payload.resource,
+            },
+            ...state.dodays,
+          ],
+        };
+      }
+      return state;
     default:
       return state;
   }
@@ -77,8 +80,6 @@ export type ActivityBuilderState = {
   parsedMetadata?: any;
 };
 
-export interface ActivityDodayAppToolState {
-  inprogress: DodayLike[];
-  completed: DodayLike[];
-  published: DodayLike[];
+export interface ActivityToolState {
+  dodays: DodayLike[];
 }

@@ -125,7 +125,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
 
   status = () => {
     const { selectedDoday } = this.props;
-    return [
+    const markers = [
       <Marker
         key={1}
         rounded
@@ -133,6 +133,15 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
         text={selectedDoday.activityType}
       />,
     ];
+    if (selectedDoday.resource && selectedDoday.resource.icon) {
+      markers.push(
+        <img
+          className={css.resourceStatusIcon}
+          src={selectedDoday.resource.icon}
+        />
+      );
+    }
+    return markers;
   };
 
   onRequestClose = () => {

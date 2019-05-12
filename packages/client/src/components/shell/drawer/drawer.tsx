@@ -199,10 +199,7 @@ export class DrawerComponent extends React.Component<
                 active={item.route === dodayAppRoute}
                 onClick={() => {
                   this.props.changeDodayAppRouteActionCreator(item.route);
-                  console.log(location.pathname);
-                  if (location.pathname === '/') {
-                    history.push(item.route);
-                  }
+                  history.push(item.route);
                 }}
               />
             )}

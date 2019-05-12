@@ -193,17 +193,17 @@ class ActivityProgressDetails extends React.Component<
         text={selectedDoday.activityType}
       />,
     ];
+    if (selectedDoday.progress && selectedDoday.progress.completed) {
+      markers.push(
+        <Marker key={2} rounded color={DodayColors.gray3} text={'completed'} />
+      );
+    }
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
           className={css.resourceStatusIcon}
           src={selectedDoday.resource.icon}
         />
-      );
-    }
-    if (selectedDoday.progress && selectedDoday.progress.completed) {
-      markers.push(
-        <Marker key={2} rounded color={DodayColors.gray3} text={'completed'} />
       );
     }
     return markers;

@@ -11,6 +11,7 @@ export interface RootState {
   dodayDetails: DodayDetailsState;
   builder: BuilderState;
   heroSettings: HeroSettingsState;
+  tools: ToolsState;
 }
 
 export interface DodayAppStatusState {
@@ -30,7 +31,6 @@ export interface ScheduleState {
 export type DodayAppState = {
   status: DodayAppStatusState;
   schedule: ScheduleState;
-  tools: ToolsState;
 };
 
 export interface BuilderState {

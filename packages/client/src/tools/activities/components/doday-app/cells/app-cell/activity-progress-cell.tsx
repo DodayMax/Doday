@@ -7,10 +7,10 @@ import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { Activity } from '@root/lib/models/entities/Activity';
 
-const css = require('./activity-cell.module.scss');
+const css = require('./activity-progress-cell.module.scss');
 
 interface ActivityProgressCellProps {
-  onComplete?: (doday: Activity) => AnyAction;
+  onComplete?: () => void;
 }
 
 export const ActivityProgressCell: React.SFC<
@@ -37,7 +37,7 @@ export const ActivityProgressCell: React.SFC<
           onClick={e => {
             e.stopPropagation();
             if (onComplete) {
-              onComplete(activity);
+              onComplete();
             }
           }}
           checked={activity.progress && activity.progress.completed}

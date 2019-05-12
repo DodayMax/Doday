@@ -1,5 +1,5 @@
 import { activityToolBeacon } from './activities';
-import { ActivityDodayAppToolState } from './activities/duck/reducer';
+import { ActivityToolState } from './activities/duck/reducer';
 
 export const toolBeacons = [activityToolBeacon];
 
@@ -8,5 +8,5 @@ export default {
 };
 
 export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
-export type ToolState = ActivityDodayAppToolState;
+export type ToolState = ActivityToolState;
 export type ToolsState = { [K in ToolSysname]?: ToolState };

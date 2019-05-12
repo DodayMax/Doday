@@ -40,18 +40,14 @@ export function createDodayActionCreator(
  * @export
  * @returns {CreateAndTakeDodayAction}
  */
-export function createAndTakeDodayActionCreator(
-  doday: SerializedDodayLike,
-  progress: SerializedProgressLike,
-  resource?: SerializedResource
-): CreateAndTakeDodayAction {
+export function createAndTakeDodayActionCreator(payload: {
+  doday: SerializedDodayLike;
+  progress: SerializedProgressLike;
+  resource?: SerializedResource;
+}): CreateAndTakeDodayAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_DODAY,
-    payload: {
-      doday,
-      progress,
-      resource,
-    },
+    payload,
   };
 }
 
@@ -151,7 +147,7 @@ export interface CreateAndTakeDodayAction extends AnyAction {
   payload: {
     doday: SerializedDodayLike;
     progress: SerializedProgressLike;
-    resource: SerializedResource;
+    resource?: SerializedResource;
   };
 }
 

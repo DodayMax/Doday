@@ -1,15 +1,20 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as queryString from 'query-string';
 import { RouteComponentProps } from 'react-router';
 import * as cuid from 'cuid';
 import { DefaultTopBar } from '@root/components';
 import { Grid } from '@root/components/shared';
-import { DodayLike, DodayTypes } from '@root/lib/models/entities/common';
+import {
+  DodayLike,
+  DodayTypes,
+  SerializedDodayLike,
+  SerializedProgressLike,
+} from '@root/lib/models/entities/common';
 import { ActivityProgressCell } from './cells/app-cell/activity-progress-cell';
 import { ActivityCell } from './cells/app-cell/activity-cell';
 import { Activity } from '@root/lib/models/entities/activity';
 import { RootState } from '@root/lib/models';
+import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodayAppActions } from '@ducks/doday-app';
 import { actions } from '@tools/activities/duck';
 import {
@@ -17,33 +22,42 @@ import {
   DodaysQueryParams,
 } from '@root/services/api/dodays/queries';
 import {
-  FetchActivitiesWithProgressAction,
-  FetchPublishedActivitiesAction,
-} from '../../duck/actions';
-import {
   ChangeDodayAppRouteAction,
   SetDodayAppQueryParamsAction,
 } from '@root/ducks/doday-app/actions';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { config } from '../../config';
 import { capitalize } from '@root/lib/utils';
+import { SerializedResource } from '@root/lib/models/entities/resource';
+import { UpdateDodayAction } from '@root/ducks/api/dodays-api-actions/actions';
+import {
+  FetchActivitiesAction,
+  FetchActivitiesWithProgressAction,
+} from '../../duck/actions';
 
 interface ActivityDodayAppProps {
   loading: boolean;
 }
 
 interface PropsFromConnect {
+  myDID: string;
   route: string;
   routeParams: DodayAppQueryParams;
-  inprogress: Activity[];
-  completed: Activity[];
-  published: Activity[];
-  fetchActivitiesWithProgressActionCreator: (
-    params: DodaysWithProgressQueryParams
-  ) => FetchActivitiesWithProgressAction;
-  fetchPublishedActivitiesActionCreator: (
+  dodays: Activity[];
+  fetchActivitiesActionCreator: (
     params: DodaysQueryParams
-  ) => FetchPublishedActivitiesAction;
+  ) => FetchActivitiesAction;
+  fetchActivitiesWithProgressActionCreator(
+    params?: DodaysWithProgressQueryParams
+  ): FetchActivitiesWithProgressAction;
+  updateDodayActionCreator(
+    did: string,
+    updates: {
+      doday?: Partial<SerializedDodayLike>;
+      progress?: Partial<SerializedProgressLike>;
+      resource?: Partial<SerializedResource>;
+    }
+  ): UpdateDodayAction;
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
@@ -56,25 +70,12 @@ class ActivityDodayApp extends React.Component<
   ActivityDodayAppProps & Partial<PropsFromConnect> & RouteComponentProps
 > {
   componentDidMount() {
-    const { routeParams } = this.props;
-    if (!routeParams.completed && !routeParams.published) {
-      // Fetch in progress dodays
-      this.props.fetchActivitiesWithProgressActionCreator({
-        dodaytype: DodayTypes.Activity,
-        completed: false,
-      });
-    } else if (routeParams.completed) {
-      // Fetch completed dodays
-      this.props.fetchActivitiesWithProgressActionCreator({
-        dodaytype: DodayTypes.Activity,
-        completed: true,
-      });
-    } else if (routeParams.published) {
-      // Fetch created (published) dodays
-      this.props.fetchPublishedActivitiesActionCreator({
-        dodaytype: DodayTypes.Activity,
-      });
-    }
+    this.props.fetchActivitiesActionCreator({
+      dodaytype: DodayTypes.Activity,
+    });
+    this.props.fetchActivitiesWithProgressActionCreator({
+      dodaytype: DodayTypes.Activity,
+    });
   }
 
   private handleDodayCellClick = (route: string, doday: DodayLike) => {
@@ -82,13 +83,16 @@ class ActivityDodayApp extends React.Component<
   };
 
   private get items() {
-    const { routeParams, inprogress, completed, published } = this.props;
+    const { routeParams, dodays, myDID } = this.props;
+    if (!dodays) return [];
     if (!routeParams.completed && !routeParams.published) {
-      return inprogress;
+      return dodays.filter(
+        doday => doday.progress && !doday.progress.completed
+      );
     } else if (routeParams.completed) {
-      return completed;
+      return dodays.filter(doday => doday.progress && doday.progress.completed);
     } else if (routeParams.published) {
-      return published;
+      return dodays.filter(doday => doday.public && doday.ownerDID === myDID);
     }
   }
 
@@ -99,10 +103,6 @@ class ActivityDodayApp extends React.Component<
         action: () => {
           this.props.changeDodayAppRouteActionCreator(config.route);
           this.props.setDodayAppQueryParamsActionCreator({});
-          this.props.fetchActivitiesWithProgressActionCreator({
-            dodaytype: DodayTypes.Activity,
-            completed: false,
-          });
         },
         active: () => {
           const { routeParams } = this.props;
@@ -113,10 +113,6 @@ class ActivityDodayApp extends React.Component<
         name: 'completed',
         action: () => {
           this.props.setDodayAppQueryParamsActionCreator({
-            completed: true,
-          });
-          this.props.fetchActivitiesWithProgressActionCreator({
-            dodaytype: DodayTypes.Activity,
             completed: true,
           });
         },
@@ -130,9 +126,6 @@ class ActivityDodayApp extends React.Component<
         action: () => {
           this.props.setDodayAppQueryParamsActionCreator({
             published: true,
-          });
-          this.props.fetchPublishedActivitiesActionCreator({
-            dodaytype: DodayTypes.Activity,
           });
         },
         active: () => {
@@ -150,6 +143,11 @@ class ActivityDodayApp extends React.Component<
           doday={item as Activity}
           key={cuid()}
           onClick={this.handleDodayCellClick}
+          onComplete={() => {
+            this.props.updateDodayActionCreator(item.did, {
+              progress: { completed: !item.progress.completed },
+            });
+          }}
         />
       );
     }
@@ -182,15 +180,15 @@ class ActivityDodayApp extends React.Component<
 const mapState = (state: RootState) => ({
   route: state.dodayApp.status.route,
   routeParams: state.dodayApp.status.routeParams,
-  inprogress: state.dodayApp.tools.activities.inprogress,
-  completed: state.dodayApp.tools.activities.completed,
-  published: state.dodayApp.tools.activities.published,
+  dodays: state.tools.activities && state.tools.activities.dodays,
+  myDID: state.auth.hero && state.auth.hero.did,
 });
 
 export default connect(
   mapState,
   {
     ...actions,
+    ...dodaysApiActions,
     ...dodayAppActions,
   }
 )(ActivityDodayApp);

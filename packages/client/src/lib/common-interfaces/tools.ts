@@ -24,7 +24,19 @@ export interface ToolBeacon {
     overview: React.ComponentType;
   };
   api?: any;
-  duck?: any;
+  duck?: {
+    actions: {
+      actionCreators: any;
+      optimisticUpdatesActionCreators: {
+        createDodayOptimisticUpdateActionCreator: any;
+      };
+    };
+    sagas: any;
+    reducers: {
+      mainReducer: any;
+      builderReducer: any;
+    };
+  };
 }
 
 export type ToolConfig = {

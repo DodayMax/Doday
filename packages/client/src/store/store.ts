@@ -9,8 +9,7 @@ import { toolBeacons, ToolsState } from '@root/tools';
 const spreadDodayAppToolsReducers = () => {
   const toolReducers = {};
   toolBeacons.map(
-    tool =>
-      (toolReducers[tool.config.sysname] = tool.duck.reducers.dodayAppReducer)
+    tool => (toolReducers[tool.config.sysname] = tool.duck.reducers.mainReducer)
   );
   return toolReducers;
 };
@@ -28,11 +27,6 @@ const rootReducer = combineReducers<RootState>({
   dodayApp: combineReducers<DodayAppState>({
     status: ducks.dodayapp.reducers.dodayAppStatusReducer,
     schedule: ducks.dodayapp.reducers.dodayAppReducer,
-    tools: toolBeacons.length
-      ? combineReducers<ToolsState>({
-          ...spreadDodayAppToolsReducers(),
-        })
-      : undefined,
   }),
   dodayDetails: ducks.dodayDetails.default,
   builder: combineReducers<BuilderState>({
@@ -40,6 +34,11 @@ const rootReducer = combineReducers<RootState>({
     activity: ducks.activities.reducers.builderReducer,
   }),
   heroSettings: ducks.herosettings.default,
+  tools: toolBeacons.length
+    ? combineReducers<ToolsState>({
+        ...spreadDodayAppToolsReducers(),
+      })
+    : undefined,
 });
 
 function* rootSaga() {

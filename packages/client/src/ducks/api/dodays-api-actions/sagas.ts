@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {
   ActionConstants,
   DeleteDodayAction,
@@ -11,6 +11,8 @@ import {
 import { api } from '@services';
 import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
+import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
+import { toolBeacons } from '@root/tools';
 
 /**
  * Create Doday node and relations to Hero
@@ -20,6 +22,23 @@ import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/acti
 function* createDodayActionSaga(action: CreateDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createDodayMutation, action.payload);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  toolBeacons.map(tool => {
+    // deserialize payload or not serialized in builder
+    sideEffects.push(
+      put(
+        tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+          action.payload
+        )
+      )
+    );
+  });
+  yield all(sideEffects);
+  yield put(setBuilderSuccessFlag(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
@@ -31,6 +50,23 @@ function* createDodayActionSaga(action: CreateDodayAction) {
 function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  toolBeacons.map(tool => {
+    // deserialize payload or not serialized in builder
+    sideEffects.push(
+      put(
+        tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+          action.payload
+        )
+      )
+    );
+  });
+  yield all(sideEffects);
+  yield put(setBuilderSuccessFlag(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 

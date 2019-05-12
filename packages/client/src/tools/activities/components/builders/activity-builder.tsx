@@ -24,7 +24,11 @@ import {
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
-import { DodayTypes } from '@root/lib/models/entities/common';
+import {
+  DodayTypes,
+  SerializedDodayLike,
+  SerializedProgressLike,
+} from '@root/lib/models/entities/common';
 import { CustomDatePicker } from '@root/components/shared/_atoms/custom-datepicker';
 import {
   SerializedActivity,
@@ -33,13 +37,16 @@ import {
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import {
-  CreateActivityAction,
-  CreateAndTakeActivityAction,
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,
 } from '@tools/activities/duck/actions';
+import * as dodaysApi from '@ducks/api/dodays-api-actions';
 import * as activityBuilderActions from '@tools/activities/duck/actions';
 import { RootState } from '@root/lib/models';
+import {
+  CreateDodayAction,
+  CreateAndTakeDodayAction,
+} from '@root/ducks/api/dodays-api-actions/actions';
 
 const css = require('./activity-builder.module.scss');
 
@@ -51,15 +58,15 @@ interface PropsFromConnect {
   parsedMetadata?: any;
   activityType: ActivityType;
   ownerDID: string;
-  createActivityActionCreator: (
-    doday: SerializedActivity,
+  createDodayActionCreator(
+    doday: SerializedDodayLike,
     resource: SerializedResource
-  ) => CreateActivityAction;
-  createAndTakeActivityActionCreator: (payload: {
-    doday: SerializedActivity;
-    progress: SerializedActivityProgress;
+  ): CreateDodayAction;
+  createAndTakeDodayActionCreator(payload: {
+    doday: SerializedDodayLike;
+    progress: SerializedProgressLike;
     resource?: SerializedResource;
-  }) => CreateAndTakeActivityAction;
+  }): CreateAndTakeDodayAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
@@ -171,11 +178,11 @@ export class ActivityBuilder extends React.Component<
 
     if (this.state.isPublic) {
       /** Just create Activity(Doday) node */
-      this.props.createActivityActionCreator(activity, resource);
+      this.props.createDodayActionCreator(activity, resource);
     } else {
       /** Create Activity(Doday) node and Progress node */
       console.log(resource);
-      this.props.createAndTakeActivityActionCreator({
+      this.props.createAndTakeDodayActionCreator({
         doday: activity,
         progress,
         resource,
@@ -354,5 +361,8 @@ const mapState = (state: RootState) => ({
 
 export default connect(
   mapState,
-  { ...activityBuilderActions.actionCreators }
+  {
+    ...dodaysApi.actions.actionCreators,
+    ...activityBuilderActions.actionCreators,
+  }
 )(ActivityBuilder);
