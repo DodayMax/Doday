@@ -7,11 +7,18 @@ import {
   TypographySize,
   TypographyColor,
   Space,
+  DodayColors,
 } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Text, Icons, CustomDatePicker } from '@shared';
+import {
+  Text,
+  Icons,
+  CustomDatePicker,
+  Checkbox,
+  ClickableIcon,
+} from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
@@ -177,14 +184,29 @@ class ActivityProgressDetails extends React.Component<
   };
 
   status = () => {
-    return [
+    const { selectedDoday } = this.props;
+    const markers = [
       <Marker
         key={1}
         rounded
-        color={activityTypeColor(this.props.selectedDoday.activityType)}
-        text={this.props.selectedDoday.activityType}
+        color={activityTypeColor(selectedDoday.activityType)}
+        text={selectedDoday.activityType}
       />,
     ];
+    if (selectedDoday.resource && selectedDoday.resource.icon) {
+      markers.push(
+        <img
+          className={css.resourceStatusIcon}
+          src={selectedDoday.resource.icon}
+        />
+      );
+    }
+    if (selectedDoday.progress && selectedDoday.progress.completed) {
+      markers.push(
+        <Marker key={2} rounded color={DodayColors.gray3} text={'completed'} />
+      );
+    }
+    return markers;
   };
 
   onRequestClose = () => {
@@ -228,7 +250,9 @@ class ActivityProgressDetails extends React.Component<
                 icon={<Icons.Clock />}
                 selected={
                   (updates && updates.date && new Date(updates.date)) ||
-                  selectedDoday.progress.date
+                  (selectedDoday &&
+                    selectedDoday.progress &&
+                    selectedDoday.progress.date)
                 }
                 onChange={date => {
                   const dateDirty =
@@ -270,7 +294,32 @@ class ActivityProgressDetails extends React.Component<
                 </LayoutBlock>
               )}
             </LayoutBlock>
-            <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
+            <LayoutBlock spaceAbove={Space.XSmall} valign="vflex-center">
+              <ClickableIcon
+                onClick={() => {
+                  this.props.updateDodayActionCreator(selectedDoday.did, {
+                    progress: { completed: !selectedDoday.progress.completed },
+                  });
+                  this.props.updateSelectedDodayProgressActionCreator(
+                    selectedDoday.did,
+                    { completed: !selectedDoday.progress.completed }
+                  );
+                }}
+              >
+                <Icons.Checkbox
+                  width={50}
+                  height={50}
+                  checked={
+                    selectedDoday &&
+                    selectedDoday.progress &&
+                    selectedDoday.progress.completed
+                  }
+                />
+              </ClickableIcon>
+              <Text size={TypographySize.h1} spaceLeft={Space.Small}>
+                {selectedDoday.name}
+              </Text>
+            </LayoutBlock>
             {youtubeLink ? (
               <div
                 className={css.videoWrapper}
@@ -298,7 +347,7 @@ class ActivityProgressDetails extends React.Component<
             <Text>{resource && resource.description}</Text>
             {selectedDoday.activityType === 'read' ? (
               <LayoutBlock
-                spaceAbove={Space.Small}
+                spaceAbove={Space.Large}
                 spaceBelow={Space.Small}
                 align="flex-center"
               >

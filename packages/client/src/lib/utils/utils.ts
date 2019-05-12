@@ -65,12 +65,8 @@ export const detectColor: (color?: DodayColors) => string = color => {
 
 export const activityTypeColor = (type: ActivityType) => {
   switch (type) {
-    case 'read':
-      return DodayColors.gray3;
-    case 'watch':
-      return DodayColors.redLight;
     default:
-      return DodayColors.yellowLight;
+      return DodayColors.gray3;
   }
 };
 

@@ -6,7 +6,7 @@ const css = require('./_checkbox.module.scss');
 interface CheckboxProps {
   checked?: boolean;
   colorMarker?: string;
-  onClick: (e: React.MouseEvent<HTMLDivElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 export const Checkbox = ({
