@@ -20,12 +20,15 @@ export default (
         ...state,
         selectedDoday: action.payload,
       };
-    case actions.ActionConstants.UPDATE_SELECTED_DODAY:
+    case actions.ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS:
       return {
         ...state,
         selectedDoday: {
           ...state.selectedDoday,
-          ...action.payload.updates,
+          progress: {
+            ...state.selectedDoday.progress,
+            ...action.payload.updates,
+          },
         },
       };
     case actions.ActionConstants.CLEAR_SELECTED_DODAY:

@@ -135,6 +135,7 @@ export const createAndTakeDodayController = (req: Request, res: Response) => {
   const session = driver.session();
 
   const body = req.body as any;
+  console.log(body, '******');
   const take = req.query.take;
 
   session

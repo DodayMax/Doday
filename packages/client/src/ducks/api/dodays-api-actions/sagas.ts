@@ -1,63 +1,70 @@
-import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   ActionConstants,
   DeleteDodayAction,
   UntakeDodayAction,
   UpdateDodayAction,
-  FetchDodayByDIDAction,
-  FetchDodayWithProgressByDIDAction,
+  TakeDodayAction,
+  CreateDodayAction,
+  CreateAndTakeDodayAction,
 } from './actions';
 import { api } from '@services';
 import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 
 /**
- * Fetch doday node by DID
+ * Create Doday node and relations to Hero
  *
- * @param {FetchDodayByDIDAction} action
+ * @param {CreateDodayAction} action
  */
-function* fetchDodayByDIDActionSaga(action: FetchDodayByDIDAction) {
+function* createDodayActionSaga(action: CreateDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
-  const dodays = yield call(api.dodays.queries.fetchDodayByDID, action.payload);
+  yield call(api.dodays.mutations.createDodayMutation, action.payload);
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
- * Fetch doday with Progress node by DID
+ * Create Doday and Progress nodes and relations to Hero
  *
- * @param {FetchDodayWithProgressByDIDAction} action
+ * @param {CreateAndTakeDodayAction} action
  */
-function* fetchDodayWithProgressByDIDActionSaga(
-  action: FetchDodayWithProgressByDIDAction
-) {
+function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
-  const dodays = yield call(
-    api.dodays.queries.fetchDodayWithProgressByDID,
-    action.payload
-  );
+  yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 /**
- * Delete doday saga
+ * Take Doday - create Progress node and connect to Hero
+ *
+ * @param {TakeDodayAction} action
+ */
+function* takeDodayActionSaga(action: TakeDodayAction) {
+  yield put(setDodayDetailsLoadingStateActionCreator(true));
+  yield call(api.dodays.mutations.takeDodayMutation, action.payload);
+  yield put(setDodayDetailsLoadingStateActionCreator(false));
+}
+
+/**
+ * Delete Doday - delete Doday and all related nodes from graph
  *
  * @param {DeleteDodayAction} action
  */
 function* deleteDodayActionSaga(action: DeleteDodayAction) {
-  yield put(setDodayAppLoadingStateActionCreator(true));
+  yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.deleteDodayMutation, action.payload);
-  yield put(setDodayAppLoadingStateActionCreator(false));
+  yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
 /**
- * Remove doday from app saga
+ * UnTake Doday - remove Progress node and relations to Hero
  *
- * @param {UntakeDodayAction} action
+ * @param {UnTakeDodayAction} action
  */
-function* untakeDodayActionSaga(action: UntakeDodayAction) {
-  yield put(setDodayAppLoadingStateActionCreator(true));
+function* unTakeDodayActionSaga(action: UntakeDodayAction) {
+  yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.untakeDodayMutation, action.payload);
-  yield put(setDodayAppLoadingStateActionCreator(false));
+  yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
 /**
@@ -66,23 +73,22 @@ function* untakeDodayActionSaga(action: UntakeDodayAction) {
  * @param {UpdateDodayAction} action
  */
 function* updateDodayActionSaga(action: UpdateDodayAction) {
-  yield put(setDodayAppLoadingStateActionCreator(true));
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.updateDodayMutation, {
-    did: action.payload.doday.did,
-    updates: { ...action.payload },
+    did: action.payload.did,
+    updates: action.payload.updates,
   });
   yield put(setDodayDetailsLoadingStateActionCreator(false));
-  yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
 export default [
-  takeLatest(ActionConstants.FETCH_DODAY_BY_DID, fetchDodayByDIDActionSaga),
+  takeLatest(ActionConstants.CREATE_DODAY, createDodayActionSaga),
   takeLatest(
-    ActionConstants.FETCH_DODAYS_WITH_PROGRESS_BY_DID,
-    fetchDodayWithProgressByDIDActionSaga
+    ActionConstants.CREATE_AND_TAKE_DODAY,
+    createAndTakeDodayActionSaga
   ),
+  takeLatest(ActionConstants.TAKE_DODAY, takeDodayActionSaga),
   takeLatest(ActionConstants.UPDATE_DODAY, updateDodayActionSaga),
   takeLatest(ActionConstants.DELETE_DODAY, deleteDodayActionSaga),
-  takeLatest(ActionConstants.UNTAKE_DODAY, untakeDodayActionSaga),
+  takeLatest(ActionConstants.UNTAKE_DODAY, unTakeDodayActionSaga),
 ];

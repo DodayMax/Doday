@@ -11,6 +11,7 @@ import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { Text, Icons, CustomDatePicker } from '@shared';
+import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Button, ButtonSize } from '@shared/_atoms/button';
@@ -26,8 +27,6 @@ import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
-  TakeDodayAction,
-  UnTakeDodayAction,
 } from '@root/ducks/doday-details/actions';
 import { Activity } from '@root/lib/models/entities/Activity';
 import {
@@ -36,6 +35,10 @@ import {
 } from '@root/components/shared/_support/pageflow';
 import { SerializedProgressLike } from '@root/lib/models/entities/common';
 import { config } from '../../config';
+import {
+  TakeDodayAction,
+  UntakeDodayAction,
+} from '@root/ducks/api/dodays-api-actions/actions';
 
 const css = require('./activity-details.module.scss');
 
@@ -51,11 +54,11 @@ interface PropsFromConnect {
   myDID?: string;
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-  takeDodayActionCreator: (payload: {
+  takeDodayActionCreator(payload: {
     dodayDID: string;
     progress: Partial<SerializedProgressLike>;
-  }) => TakeDodayAction;
-  unTakeDodayActionCreator: (did: string) => UnTakeDodayAction;
+  }): TakeDodayAction;
+  untakeDodayActionCreator(dodayDID: string): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -108,7 +111,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
           isLoading={loading}
           size={ButtonSize.small}
           onClick={() => {
-            this.props.unTakeDodayActionCreator(selectedDoday.did);
+            this.props.untakeDodayActionCreator(selectedDoday.did);
             history.push(config.route);
           }}
         >
@@ -309,5 +312,6 @@ export default connect(
   {
     ...dodaysActions,
     ...dodayDetailsActions,
+    ...dodaysApiActions,
   }
 )(ActivityDetails);

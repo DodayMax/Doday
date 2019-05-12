@@ -12,10 +12,8 @@ export enum ActionConstants {
   FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
   FETCH_SELECTED_GOAL = '[doday-details] FETCH_SELECTED_GOAL',
   SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
-  TAKE_DODAY = '[doday-details] TAKE_DODAY',
-  UNTAKE_DODAY = '[doday-details] UNTAKE_DODAY',
   SET_SELECTED_GOAL = '[doday-details] SET_SELECTED_GOAL',
-  UPDATE_SELECTED_DODAY = '[doday-details] UPDATE_SELECTED_DODAY',
+  UPDATE_SELECTED_DODAY_PROGRESS = '[doday-details] UPDATE_SELECTED_DODAY_PROGRESS',
   CLEAR_SELECTED_DODAY = '[doday-details] CLEAR_SELECTED_DODAY',
   SET_DIRTY_STATUS = '[doday-details] SET_DIRTY_STATUS',
   REQUEST_FOR_SET_UPDATES = '[doday-details] REQUEST_FOR_SET_UPDATES',
@@ -84,46 +82,17 @@ export function setSelectedDodayActionCreator(
 }
 
 /**
- * Take doday to Hero dodays
- *
- * @export
- * @returns {TakeDodayAction}
- */
-export function takeDodayActionCreator(payload: {
-  dodayDID: string;
-  progress: Partial<SerializedProgressLike>;
-}): TakeDodayAction {
-  return {
-    type: ActionConstants.TAKE_DODAY,
-    payload,
-  };
-}
-
-/**
- * UnTake doday - remove Progress node from Hero
- *
- * @export
- * @returns {UnTakeDodayAction}
- */
-export function unTakeDodayActionCreator(did: string): UnTakeDodayAction {
-  return {
-    type: ActionConstants.UNTAKE_DODAY,
-    payload: did,
-  };
-}
-
-/**
  * Update selected doday optimistically
  *
  * @export
- * @returns {UpdateSelectedDodayAction}
+ * @returns {UpdateSelectedDodayProgressAction}
  */
-export function updateSelectedDodayActionCreator(
+export function updateSelectedDodayProgressActionCreator(
   did: string,
   updates: Partial<ProgressLike>
-): UpdateSelectedDodayAction {
+): UpdateSelectedDodayProgressAction {
   return {
-    type: ActionConstants.UPDATE_SELECTED_DODAY,
+    type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS,
     payload: {
       did,
       updates,
@@ -208,9 +177,7 @@ export const actionCreators = {
   fetchSelectedDodayActionCreator,
   setSelectedDodayActionCreator,
   fetchSelectedProgressActionCreator,
-  takeDodayActionCreator,
-  unTakeDodayActionCreator,
-  updateSelectedDodayActionCreator,
+  updateSelectedDodayProgressActionCreator,
   clearSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
   requestForSetUpdatesActionCreator,
@@ -242,26 +209,13 @@ export interface FetchSelectedGoalAction extends AnyAction {
   payload: string;
 }
 
-export interface TakeDodayAction extends AnyAction {
-  type: ActionConstants.TAKE_DODAY;
-  payload: {
-    dodayDID: string;
-    progress: Partial<SerializedProgressLike>;
-  };
-}
-
-export interface UnTakeDodayAction extends AnyAction {
-  type: ActionConstants.UNTAKE_DODAY;
-  payload: string;
-}
-
 export interface SetSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_SELECTED_DODAY;
   payload: DodayLike;
 }
 
-export interface UpdateSelectedDodayAction extends AnyAction {
-  type: ActionConstants.UPDATE_SELECTED_DODAY;
+export interface UpdateSelectedDodayProgressAction extends AnyAction {
+  type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS;
   payload: {
     did: string;
     updates: Partial<ProgressLike>;
@@ -301,9 +255,7 @@ export type ActionTypes =
   | FetchSelectedProgressAction
   | FetchSelectedGoalAction
   | SetSelectedDodayAction
-  | TakeDodayAction
-  | UnTakeDodayAction
-  | UpdateSelectedDodayAction
+  | UpdateSelectedDodayProgressAction
   | ClearSelectedDodayAction
   | SetDirtyStatusAction
   | RequestForSetUpdatesAction

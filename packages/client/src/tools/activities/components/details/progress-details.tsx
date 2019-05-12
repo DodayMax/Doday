@@ -12,6 +12,7 @@ import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { Text, Icons, CustomDatePicker } from '@shared';
+import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Button, ButtonSize } from '@shared/_atoms/button';
@@ -22,12 +23,15 @@ import {
   durationToLabel,
   durationToMinutes,
 } from '@root/lib/utils';
-import { Resource } from '@root/lib/models/entities/resource';
+import {
+  Resource,
+  SerializedResource,
+} from '@root/lib/models/entities/resource';
 import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
-  UpdateSelectedDodayAction,
+  UpdateSelectedDodayProgressAction,
   SetDirtyStatusAction,
   ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
@@ -39,8 +43,8 @@ import {
 } from '@root/components/shared/_support/pageflow';
 import {
   SerializedProgressLike,
-  DodayLike,
   ProgressLike,
+  SerializedDodayLike,
 } from '@root/lib/models/entities/common';
 import {
   UpdateDodayAction,
@@ -57,25 +61,29 @@ interface ActivityProgressDetailsState {}
 interface PropsFromConnect {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedProgressLike>;
+  updates: Partial<SerializedProgressLike>;
   myDID?: string;
-  selectedDoday: DodayLike;
+  selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-  updateDodayActionCreator: (
+  updateDodayActionCreator(
     did: string,
-    updates: Partial<SerializedProgressLike>
-  ) => UpdateDodayAction;
+    updates: {
+      doday?: Partial<SerializedDodayLike>;
+      progress?: Partial<SerializedProgressLike>;
+      resource?: Partial<SerializedResource>;
+    }
+  ): UpdateDodayAction;
+  deleteDodayActionCreator: (did: string) => DeleteDodayAction;
+  untakeDodayActionCreator: (did: string) => UntakeDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
-  requestForSetUpdatesActionCreator: (
+  requestForSetUpdatesActionCreator(
     updates: Partial<SerializedProgressLike>
-  ) => RequestForSetUpdatesAction;
-  deleteDodayActionCreator: (doday: Activity) => DeleteDodayAction;
-  untakeDodayActionCreator: (doday: Activity) => UntakeDodayAction;
-  updateSelectedDodayActionCreator: (
+  ): RequestForSetUpdatesAction;
+  updateSelectedDodayProgressActionCreator(
     did: string,
     updates: Partial<ProgressLike>
-  ) => UpdateSelectedDodayAction;
+  ): UpdateSelectedDodayProgressAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -92,6 +100,12 @@ class ActivityProgressDetails extends React.Component<
   };
 
   public context!: PageWrapperChildContext;
+
+  componentDidMount() {
+    //fetch selected doday with graphQL
+    const did = this.props.match.params.did;
+    this.props.fetchSelectedDodayActionCreator(did);
+  }
 
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
@@ -115,29 +129,30 @@ class ActivityProgressDetails extends React.Component<
       selectedDoday,
       dirty,
       updateDodayActionCreator,
-      updateSelectedDodayActionCreator,
+      updateSelectedDodayProgressActionCreator,
       updates,
       loading,
     } = this.props;
+
     const actions = [
       <Button
         key={1}
         size={ButtonSize.small}
         onClick={() => {
           if (this.isOwner) {
-            this.props.deleteDodayActionCreator(selectedDoday as Activity);
+            this.props.deleteDodayActionCreator(selectedDoday.did);
           } else {
-            this.props.untakeDodayActionCreator(selectedDoday as Activity);
+            this.props.untakeDodayActionCreator(selectedDoday.did);
           }
           history.push('/');
         }}
       >
-        Delete
+        {this.isOwner ? 'Delete' : 'Untake'}
       </Button>,
     ];
 
     // Add owner actions
-    if (this.isOwner && dirty) {
+    if (dirty) {
       actions.unshift(
         <Button
           primary
@@ -145,8 +160,8 @@ class ActivityProgressDetails extends React.Component<
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
-            updateDodayActionCreator(selectedDoday.did, updates);
-            updateSelectedDodayActionCreator(selectedDoday.did, {
+            updateDodayActionCreator(selectedDoday.did, { progress: updates });
+            updateSelectedDodayProgressActionCreator(selectedDoday.did, {
               ...updates,
               date: updates && updates.date && new Date(updates.date),
             } as any);
@@ -162,13 +177,12 @@ class ActivityProgressDetails extends React.Component<
   };
 
   status = () => {
-    const { selectedDoday } = this.props;
     return [
       <Marker
         key={1}
         rounded
-        color={activityTypeColor((selectedDoday as Activity).activityType)}
-        text={(selectedDoday as Activity).activityType}
+        color={activityTypeColor(this.props.selectedDoday.activityType)}
+        text={this.props.selectedDoday.activityType}
       />,
     ];
   };
@@ -183,19 +197,9 @@ class ActivityProgressDetails extends React.Component<
   render() {
     const { updates, selectedDoday } = this.props;
 
-    // const goal =
-    //   updates && updates.relatedGoal
-    //     ? goals && goals.find(goal => goal.did === updates.relatedGoal)
-    //     : undefined;
-
-    const resource = selectedDoday && (selectedDoday as Activity).resource;
+    const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
-
-    // const goalsForSelect = goals.map(goal => ({
-    //   label: goal.name,
-    //   value: goal.did,
-    // }));
 
     const dateIsLocked =
       updates && updates.dateIsLocked != null
@@ -218,11 +222,39 @@ class ActivityProgressDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
-              {(selectedDoday as Activity).duration && (
+              <CustomDatePicker
+                borderless
+                minDate={new Date()}
+                icon={<Icons.Clock />}
+                selected={
+                  (updates && updates.date && new Date(updates.date)) ||
+                  selectedDoday.progress.date
+                }
+                onChange={date => {
+                  const dateDirty =
+                    moment(date).format('ll') !==
+                    moment(selectedDoday.progress.date).format('ll');
+                  this.props.requestForSetUpdatesActionCreator({
+                    date: dateDirty ? date.getTime() : undefined,
+                  });
+                }}
+              />
+              <Button
+                borderless
+                active={updates && updates.dateIsLocked}
+                onClick={() => {
+                  this.props.requestForSetUpdatesActionCreator({
+                    dateIsLocked: !dateIsLocked,
+                  });
+                }}
+              >
+                {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+              </Button>
+              {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel((selectedDoday as Activity).duration)}
+                    {durationToLabel(selectedDoday.duration)}
                   </Text>
                   <Text
                     size={TypographySize.s}
@@ -230,8 +262,7 @@ class ActivityProgressDetails extends React.Component<
                   >
                     (
                     {Math.round(
-                      (durationToMinutes((selectedDoday as Activity).duration) /
-                        (8 * 60)) *
+                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
                         100
                     )}
                     % of your day)
@@ -239,13 +270,7 @@ class ActivityProgressDetails extends React.Component<
                 </LayoutBlock>
               )}
             </LayoutBlock>
-            <Text
-              spaceAbove={Space.Medium}
-              spaceBelow={Space.Medium}
-              size={TypographySize.h1}
-            >
-              {(selectedDoday as Activity).name}
-            </Text>
+            <Text size={TypographySize.h1}>{selectedDoday.name}</Text>
             {youtubeLink ? (
               <div
                 className={css.videoWrapper}
@@ -271,67 +296,17 @@ class ActivityProgressDetails extends React.Component<
               />
             ) : null}
             <Text>{resource && resource.description}</Text>
-            <LayoutBlock
-              spaceAbove={Space.Medium}
-              spaceBelow={Space.Medium}
-              paddingAbove={Space.Medium}
-              paddingBelow={Space.Medium}
-              paddingLeft={Space.Medium}
-              paddingRight={Space.Medium}
-              direction="column"
-              className={css.well}
-            >
+            {selectedDoday.activityType === 'read' ? (
               <LayoutBlock
+                spaceAbove={Space.Small}
                 spaceBelow={Space.Small}
-                align="space-between"
-                valign="vflex-center"
+                align="flex-center"
               >
-                <CustomDatePicker
-                  borderless
-                  minDate={new Date()}
-                  icon={<Icons.Clock />}
-                  selected={
-                    (updates && updates.date && new Date(updates.date)) ||
-                    (selectedDoday &&
-                      selectedDoday.progress &&
-                      selectedDoday.progress.date)
-                  }
-                  onChange={date => {
-                    const dateDirty =
-                      moment(date).format('ll') !==
-                      moment(
-                        selectedDoday &&
-                          selectedDoday.progress &&
-                          selectedDoday.progress.date
-                      ).format('ll');
-                    this.props.requestForSetUpdatesActionCreator({
-                      date: dateDirty ? date.getTime() : undefined,
-                    });
-                  }}
-                />
-                <Button
-                  borderless
-                  active={updates && updates.dateIsLocked}
-                  onClick={() => {
-                    this.props.requestForSetUpdatesActionCreator({
-                      dateIsLocked: !dateIsLocked,
-                    });
-                  }}
-                >
-                  {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+                <Button primary href={resource && resource.url} target="_blank">
+                  Read full article
                 </Button>
               </LayoutBlock>
-              <LayoutBlock alignSelf="align-self-end">
-                <Button
-                  primary
-                  onClick={() => {
-                    // Take doday action
-                  }}
-                >
-                  DO
-                </Button>
-              </LayoutBlock>
-            </LayoutBlock>
+            ) : null}
           </>
         ) : null}
       </Page>
@@ -352,5 +327,6 @@ export default connect(
   {
     ...dodaysActions,
     ...dodayDetailsActions,
+    ...dodaysApiActions,
   }
 )(ActivityProgressDetails);

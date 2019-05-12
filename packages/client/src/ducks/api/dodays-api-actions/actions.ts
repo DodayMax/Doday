@@ -4,50 +4,14 @@ import {
   SerializedDodayLike,
   SerializedProgressLike,
 } from '@root/lib/models/entities/common';
-import {
-  DodaysQueryParams,
-  DodaysWithProgressQueryParams,
-} from '@root/services/api/dodays/queries';
 
 export enum ActionConstants {
-  FETCH_DODAY_BY_DID = '[dodays-api] FETCH_DODAY_BY_DID',
-  FETCH_DODAYS_WITH_PROGRESS_BY_DID = '[dodays-api] FETCH_DODAYS_WITH_PROGRESS_BY_DID',
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
-  TAKE_DODAY = '[dodays-api] TAKE_DODAY',
   CREATE_AND_TAKE_DODAY = '[dodays-api] CREATE_AND_TAKE_DODAY',
+  TAKE_DODAY = '[dodays-api] TAKE_DODAY',
   UPDATE_DODAY = '[dodays-api] UPDATE_DODAY',
   UNTAKE_DODAY = '[dodays-api] UNTAKE_DODAY',
   DELETE_DODAY = '[dodays-api] DELETE_DODAY',
-}
-
-/**
- * Fetch doday node by DID
- *
- * @export
- * @returns {FetchDodayByDIDAction}
- */
-export function fetchDodayByDIDActionCreator(
-  did: string
-): FetchDodayByDIDAction {
-  return {
-    type: ActionConstants.FETCH_DODAY_BY_DID,
-    payload: did,
-  };
-}
-
-/**
- * Fetch doday with progress node by DID
- *
- * @export
- * @returns {FetchDodayWithProgressByDIDAction}
- */
-export function fetchDodayWithProgressByDIDActionCreator(
-  did: string
-): FetchDodayWithProgressByDIDAction {
-  return {
-    type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_BY_DID,
-    payload: did,
-  };
 }
 
 /**
@@ -65,26 +29,6 @@ export function createDodayActionCreator(
     payload: {
       doday,
       resource,
-    },
-  };
-}
-
-/**
- * Take created(public or my own) Doday, create Progress
- * node and DOING, ORIGIN relations
- *
- * @export
- * @returns {TakeDodayAction}
- */
-export function takeDodayActionCreator(
-  dodayDID: string,
-  progress: Partial<SerializedProgressLike>
-): TakeDodayAction {
-  return {
-    type: ActionConstants.TAKE_DODAY,
-    payload: {
-      dodayDID,
-      progress,
     },
   };
 }
@@ -112,22 +56,41 @@ export function createAndTakeDodayActionCreator(
 }
 
 /**
+ * Take created(public or my own) Doday, create Progress
+ * node and DOING, ORIGIN relations
+ *
+ * @export
+ * @returns {TakeDodayAction}
+ */
+export function takeDodayActionCreator(payload: {
+  dodayDID: string;
+  progress: Partial<SerializedProgressLike>;
+}): TakeDodayAction {
+  return {
+    type: ActionConstants.TAKE_DODAY,
+    payload,
+  };
+}
+
+/**
  * Update Doday, Progress, Resource nodes
  *
  * @export
  * @returns {UpdateDodayAction}
  */
 export function updateDodayActionCreator(
-  doday: Partial<SerializedDodayLike>,
-  progress: Partial<SerializedProgressLike>,
-  resource?: Partial<SerializedResource>
+  did: string,
+  updates: {
+    doday?: Partial<SerializedDodayLike>;
+    progress?: Partial<SerializedProgressLike>;
+    resource?: Partial<SerializedResource>;
+  }
 ): UpdateDodayAction {
   return {
     type: ActionConstants.UPDATE_DODAY,
     payload: {
-      doday,
-      progress,
-      resource,
+      did,
+      updates,
     },
   };
 }
@@ -167,16 +130,6 @@ export const actionCreators = {
   deleteDodayActionCreator,
 };
 
-export interface FetchDodayByDIDAction extends AnyAction {
-  type: ActionConstants.FETCH_DODAY_BY_DID;
-  payload: string;
-}
-
-export interface FetchDodayWithProgressByDIDAction extends AnyAction {
-  type: ActionConstants.FETCH_DODAYS_WITH_PROGRESS_BY_DID;
-  payload: string;
-}
-
 export interface CreateDodayAction extends AnyAction {
   type: ActionConstants.CREATE_DODAY;
   payload: {
@@ -205,9 +158,12 @@ export interface CreateAndTakeDodayAction extends AnyAction {
 export interface UpdateDodayAction extends AnyAction {
   type: ActionConstants.UPDATE_DODAY;
   payload: {
-    doday: Partial<SerializedDodayLike>;
-    progress: Partial<SerializedProgressLike>;
-    resource: Partial<SerializedResource>;
+    did: string;
+    updates: {
+      doday?: Partial<SerializedDodayLike>;
+      progress?: Partial<SerializedProgressLike>;
+      resource?: Partial<SerializedResource>;
+    };
   };
 }
 
@@ -227,8 +183,8 @@ export interface DeleteDodayAction extends AnyAction {
 
 export type ActionTypes =
   | CreateDodayAction
-  | TakeDodayAction
   | CreateAndTakeDodayAction
+  | TakeDodayAction
   | UpdateDodayAction
   | UntakeDodayAction
   | DeleteDodayAction;

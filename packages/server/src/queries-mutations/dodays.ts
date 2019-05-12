@@ -245,8 +245,8 @@ export const deleteDodayTransaction = (
 ) => {
   return tx.run(
     `
-      MATCH (p:Progress {did: $did})
-      MATCH (d:Doday {did: $did})
+      MATCH (p:Progress {ownerDID: $heroDID})
+      MATCH (d:Doday {did: $dodayDID})
       MATCH (h:Hero {did: $heroDID})
       MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
       OPTIONAL MATCH (d)-[r4:RESOURCE]-(:Resource)
@@ -254,8 +254,7 @@ export const deleteDodayTransaction = (
       DELETE r1, r2, r3, r4, r5, d, p
     `,
     {
-      heroDID: props.heroDID,
-      did: props.dodayDID,
+      ...props,
     }
   );
 };
@@ -297,12 +296,11 @@ export const updateDodayTransaction = (
   const { date, ...passthrough } = props.updates.progress;
   return tx.run(
     `
-      MATCH (p:Progress {did: $did})
       MATCH (d:Doday {did: $did})
       MATCH (h:Hero {did: $heroDID})
-      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p)<-[r3:DOING]-(h)
-      SET d += $doday
-      SET p += $progress
+      MATCH (h)-[r1:CREATE]->(d)<-[r2:ORIGIN]-(p:Progress {ownerDID: $heroDID})<-[r3:DOING]-(h)
+      ${props.updates.doday ? 'SET d += $doday' : ''}
+      ${props.updates.progress ? 'SET p += $progress' : ''}
       ${date ? 'SET p.date = datetime($date)' : ''}
       ${
         props.updates.progress.completed
@@ -314,11 +312,11 @@ export const updateDodayTransaction = (
           ? `
             MERGE (r:Resource {url: {resourceURL}})
             ON CREATE SET r = {resource}
+            WITH d, p, r
+            CREATE (d)-[:RESOURCE]->(r)
           `
           : ''
       }
-      WITH d, p ${props.updates.resource ? ', r' : ''}
-      ${props.updates.resource ? ' CREATE (d)-[:RESOURCE]->(r)' : ''}
     `,
     {
       heroDID: props.heroDID,

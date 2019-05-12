@@ -152,42 +152,20 @@ export function createActivityActionCreator(
 }
 
 /**
- * Take created(public or my own) Activity(Doday), create Progress
- * node and DOING, ORIGIN relations
- *
- * @export
- * @returns {TakeActivityAction}
- */
-export function takeActivityActionCreator(
-  dodayDID: string,
-  progress: Partial<SerializedActivityProgress>
-): TakeActivityAction {
-  return {
-    type: ActionConstants.TAKE_ACTIVITY,
-    payload: {
-      dodayDID,
-      progress,
-    },
-  };
-}
-
-/**
  * Create new Activity(Doday)and ActivityProgress(Progress)
  * nodes and connect them to Hero
  *
  * @export
  * @returns {CreateAndTakeActivityAction}
  */
-export function createAndTakeActivityActionCreator(
-  doday: SerializedActivity,
-  progress: SerializedActivityProgress
-): CreateAndTakeActivityAction {
+export function createAndTakeActivityActionCreator(payload: {
+  doday: SerializedActivity;
+  progress: SerializedActivityProgress;
+  resource: SerializedResource;
+}): CreateAndTakeActivityAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_ACTIVITY,
-    payload: {
-      doday,
-      progress,
-    },
+    payload,
   };
 }
 
@@ -257,7 +235,6 @@ export const actionCreators = {
   fetchActivityTypesActionCreator,
   setActivityTypeActionCreator,
   createActivityActionCreator,
-  takeActivityActionCreator,
   createAndTakeActivityActionCreator,
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
@@ -311,14 +288,6 @@ export interface CreateActivityAction extends AnyAction {
   };
 }
 
-export interface TakeActivityAction extends AnyAction {
-  type: ActionConstants.TAKE_ACTIVITY;
-  payload: {
-    dodayDID: string;
-    progress: Partial<SerializedActivityProgress>;
-  };
-}
-
 export interface CreateAndTakeActivityAction extends AnyAction {
   type: ActionConstants.CREATE_AND_TAKE_ACTIVITY;
   payload: {
@@ -360,7 +329,6 @@ export type ActionTypes =
   | FetchActivityTypesAction
   | SetActivityTypeAction
   | CreateActivityAction
-  | TakeActivityAction
   | CreateAndTakeActivityAction
   | ParseUrlMetadataAction
   | ParseUrlMetadataProgressAction

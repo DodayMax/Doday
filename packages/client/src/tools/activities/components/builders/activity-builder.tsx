@@ -52,14 +52,14 @@ interface PropsFromConnect {
   activityType: ActivityType;
   ownerDID: string;
   createActivityActionCreator: (
-    activity: SerializedActivity,
+    doday: SerializedActivity,
     resource: SerializedResource
   ) => CreateActivityAction;
-  createAndTakeActivityActionCreator: (
-    activity: SerializedActivity,
-    progress: SerializedActivityProgress,
-    resource?: SerializedResource
-  ) => CreateAndTakeActivityAction;
+  createAndTakeActivityActionCreator: (payload: {
+    doday: SerializedActivity;
+    progress: SerializedActivityProgress;
+    resource?: SerializedResource;
+  }) => CreateAndTakeActivityAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
@@ -174,11 +174,12 @@ export class ActivityBuilder extends React.Component<
       this.props.createActivityActionCreator(activity, resource);
     } else {
       /** Create Activity(Doday) node and Progress node */
-      this.props.createAndTakeActivityActionCreator(
-        activity,
+      console.log(resource);
+      this.props.createAndTakeActivityActionCreator({
+        doday: activity,
         progress,
-        resource
-      );
+        resource,
+      });
     }
   };
 

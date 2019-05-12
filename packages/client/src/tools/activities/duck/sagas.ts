@@ -61,7 +61,7 @@ function* fetchPublishedActivitiesActionSaga(
 }
 
 /**
- * Parse url metadata from input url
+ * Create Activity(Doday) node and relations to Hero
  *
  * @param {CreateActivityAction} action
  */
@@ -73,12 +73,13 @@ function* createActivityActionSaga(action: CreateActivityAction) {
 }
 
 /**
- * Parse url metadata from input url
+ * Create Activity(Doday) and Progress nodes and relations to Hero
  *
  * @param {CreateAndTakeActivityAction} action
  */
 function* createAndTakeActivityActionSaga(action: CreateAndTakeActivityAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
+  yield call(console.log, action.payload);
   yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
   yield put(setBuilderSuccessFlag(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
