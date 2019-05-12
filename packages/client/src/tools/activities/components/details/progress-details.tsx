@@ -143,30 +143,47 @@ class ActivityProgressDetails extends React.Component<
       loading,
     } = this.props;
 
-    const actions = [
-      <Button
-        key={1}
-        size={ButtonSize.small}
-        onClick={() => {
-          if (this.isOwner) {
-            this.props.deleteDodayActionCreator({
-              did: selectedDoday.did,
-              type: selectedDoday.type,
-            });
-          } else {
+    const actions = [];
+
+    // Add untake action for public dodays
+    if (selectedDoday.public) {
+      actions.push(
+        <Button
+          key={1}
+          size={ButtonSize.small}
+          onClick={() => {
             this.props.untakeDodayActionCreator({
               did: selectedDoday.did,
               type: selectedDoday.type,
             });
-          }
-          history.push('/');
-        }}
-      >
-        {this.isOwner ? 'Delete' : 'Untake'}
-      </Button>,
-    ];
+            history.push('/');
+          }}
+        >
+          Untake
+        </Button>
+      );
+    }
 
     // Add owner actions
+    if (this.isOwner) {
+      actions.push(
+        <Button
+          key={1}
+          size={ButtonSize.small}
+          onClick={() => {
+            this.props.deleteDodayActionCreator({
+              did: selectedDoday.did,
+              type: selectedDoday.type,
+            });
+            history.push('/');
+          }}
+        >
+          Delete
+        </Button>
+      );
+    }
+
+    // Add save action
     if (dirty) {
       actions.unshift(
         <Button
@@ -211,6 +228,7 @@ class ActivityProgressDetails extends React.Component<
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
+          key={3}
           className={css.resourceStatusIcon}
           src={selectedDoday.resource.icon}
         />
@@ -361,13 +379,14 @@ class ActivityProgressDetails extends React.Component<
               />
             ) : null}
             <Text>{resource && resource.description}</Text>
-            {selectedDoday.activityType === 'read' ? (
+            {selectedDoday.activityType !== 'watch' &&
+            (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}
                 spaceBelow={Space.Small}
                 align="flex-center"
               >
-                <Button primary href={resource && resource.url} target="_blank">
+                <Button primary href={resource.url} target="_blank">
                   Read full article
                 </Button>
               </LayoutBlock>
