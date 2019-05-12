@@ -12,13 +12,7 @@ import {
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import {
-  Text,
-  Icons,
-  CustomDatePicker,
-  Checkbox,
-  ClickableIcon,
-} from '@shared';
+import { Text, Icons, CustomDatePicker, ClickableIcon } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
@@ -52,6 +46,7 @@ import {
   SerializedProgressLike,
   ProgressLike,
   SerializedDodayLike,
+  DodayType,
 } from '@root/lib/models/entities/common';
 import {
   UpdateDodayAction,
@@ -74,14 +69,21 @@ interface PropsFromConnect {
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   updateDodayActionCreator(
     did: string,
+    type: DodayType,
     updates: {
       doday?: Partial<SerializedDodayLike>;
       progress?: Partial<SerializedProgressLike>;
       resource?: Partial<SerializedResource>;
     }
   ): UpdateDodayAction;
-  deleteDodayActionCreator: (did: string) => DeleteDodayAction;
-  untakeDodayActionCreator: (did: string) => UntakeDodayAction;
+  deleteDodayActionCreator: ({
+    did: string,
+    type: DodayType,
+  }) => DeleteDodayAction;
+  untakeDodayActionCreator: ({
+    did: string,
+    type: DodayType,
+  }) => UntakeDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
   requestForSetUpdatesActionCreator(
@@ -147,9 +149,15 @@ class ActivityProgressDetails extends React.Component<
         size={ButtonSize.small}
         onClick={() => {
           if (this.isOwner) {
-            this.props.deleteDodayActionCreator(selectedDoday.did);
+            this.props.deleteDodayActionCreator({
+              did: selectedDoday.did,
+              type: selectedDoday.type,
+            });
           } else {
-            this.props.untakeDodayActionCreator(selectedDoday.did);
+            this.props.untakeDodayActionCreator({
+              did: selectedDoday.did,
+              type: selectedDoday.type,
+            });
           }
           history.push('/');
         }}
@@ -167,7 +175,9 @@ class ActivityProgressDetails extends React.Component<
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
-            updateDodayActionCreator(selectedDoday.did, { progress: updates });
+            updateDodayActionCreator(selectedDoday.did, selectedDoday.type, {
+              progress: updates,
+            });
             updateSelectedDodayProgressActionCreator(selectedDoday.did, {
               ...updates,
               date: updates && updates.date && new Date(updates.date),
@@ -297,9 +307,15 @@ class ActivityProgressDetails extends React.Component<
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflex-center">
               <ClickableIcon
                 onClick={() => {
-                  this.props.updateDodayActionCreator(selectedDoday.did, {
-                    progress: { completed: !selectedDoday.progress.completed },
-                  });
+                  this.props.updateDodayActionCreator(
+                    selectedDoday.did,
+                    selectedDoday.type,
+                    {
+                      progress: {
+                        completed: !selectedDoday.progress.completed,
+                      },
+                    }
+                  );
                   this.props.updateSelectedDodayProgressActionCreator(
                     selectedDoday.did,
                     { completed: !selectedDoday.progress.completed }

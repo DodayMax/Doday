@@ -1,5 +1,5 @@
 export const sysnames = {
-  dodayTypes: {
+  DodayType: {
     todo: 'todo',
     watch: 'watch',
     read: 'read',

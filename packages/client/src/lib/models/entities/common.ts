@@ -21,7 +21,7 @@ export interface DodayBase {
   /** Doday inner ID */
   did: string;
   /** Doday type */
-  type: DodayTypes;
+  type: DodayType;
   /** Public or private doday */
   public: boolean;
   /** [:CREATE] relation */
@@ -86,7 +86,7 @@ export interface APIResponseProgressBase {
 
 /** Other common interfaces */
 
-export enum DodayTypes {
+export enum DodayType {
   Activity,
   FlashCard,
 }

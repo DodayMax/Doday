@@ -13,6 +13,7 @@ import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
+import { ToolBeacon } from '@root/lib/common-interfaces';
 
 const styles = require('./_desktop-shell.module.scss');
 
@@ -22,6 +23,7 @@ interface PropsFromConnect {
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
   hero: Hero;
+  activeTools: ToolBeacon[];
   toggleDrawer: () => ToggleDrawerAction;
   toggleDodayApp: () => ToggleDodayAppAction;
   fetchHero: () => FetchHeroAction;
@@ -46,6 +48,7 @@ class DesktopShell extends React.Component<
   render() {
     const {
       hero,
+      activeTools,
       toggleDrawer,
       toggleDodayApp,
       isDrawerCollapsed,
@@ -59,7 +62,7 @@ class DesktopShell extends React.Component<
           <section className={styles.contentContainer}>
             {hero ? (
               <Dashboard
-                activeToolBeacons={hero.tools}
+                activeTools={activeTools}
                 toggleDrawer={toggleDrawer}
                 toggleDodayApp={toggleDodayApp}
                 isDodayAppCollapsed={isDodayAppCollapsed}
@@ -79,6 +82,7 @@ const mapState = (state: RootState) => ({
   isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
   isDodayAppCollapsed: state.heroSettings.isDodayAppCollapsed,
   hero: state.auth.hero,
+  activeTools: state.auth.activeTools,
 });
 
 export default connect(

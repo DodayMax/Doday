@@ -1,5 +1,5 @@
 import { DodayColors, ActivityType } from '../common-interfaces';
-import { DodayTypes, DodayLike } from '../models/entities/common';
+import { DodayType, DodayLike } from '../models/entities/common';
 import { Activity } from '../models/entities/Activity';
 
 const vars = require('@styles/_config.scss');
@@ -71,7 +71,7 @@ export const activityTypeColor = (type: ActivityType) => {
 };
 
 export function isActivity(doday: DodayLike): doday is Activity {
-  return doday.type === DodayTypes.Activity;
+  return doday.type === DodayType.Activity;
 }
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
@@ -106,6 +106,19 @@ export const isEmptyObject = (obj: Object) => {
 };
 
 export const capitalize = s => s[0].toUpperCase() + s.slice(1);
+
+export const filterObject = (obj, predicate) => {
+  var result = {};
+  var key;
+
+  for (key in obj) {
+    if (obj.hasOwnProperty(key) && predicate(obj[key])) {
+      result[key] = obj[key];
+    }
+  }
+
+  return result;
+};
 
 const standartColorsForGoalsChart = [
   vars.yellow,

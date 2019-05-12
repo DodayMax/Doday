@@ -1,7 +1,9 @@
 import * as actions from './actions';
 import { AuthState } from '@lib/models';
 
-export const initialState: AuthState = {};
+export const initialState: AuthState = {
+  activeTools: [],
+};
 
 export default (
   state = initialState,
@@ -12,6 +14,11 @@ export default (
       return {
         ...state,
         hero: action.payload || false,
+      };
+    case actions.ActionConstants.SET_ACTIVE_TOOL_BEACONS:
+      return {
+        ...state,
+        activeTools: action.payload || [],
       };
     default:
       return state;

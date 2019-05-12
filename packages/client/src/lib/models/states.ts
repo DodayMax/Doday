@@ -3,7 +3,7 @@ import { BuilderStatus } from '@root/ducks/builder/reducer';
 import { DodayLike, SerializedProgressLike } from './entities/common';
 import { ActivityBuilderState } from '@root/tools/activities/duck/reducer';
 import { ToolsState } from '@root/tools';
-import { DodayAppQueryParams } from '../common-interfaces';
+import { DodayAppQueryParams, ToolBeacon } from '../common-interfaces';
 
 export interface RootState {
   auth: AuthState;
@@ -40,6 +40,7 @@ export interface BuilderState {
 
 export interface AuthState {
   hero?: Hero;
+  activeTools: ToolBeacon[];
 }
 
 export interface HeroSettingsState {

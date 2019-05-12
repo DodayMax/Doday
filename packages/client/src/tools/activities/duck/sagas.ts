@@ -7,15 +7,11 @@ import {
   setActivityTypeActionCreator,
   FetchActivitiesAction,
   setActivitiesActionCreator,
-  FetchActivitiesWithProgressAction,
 } from './actions';
 import { detectActivityType } from '@root/lib/utils/regexp';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
-import {
-  DodaysWithProgressQueryParams,
-  DodaysQueryParams,
-} from '@root/services/api/dodays/queries';
+import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { api } from '@root/services';
 
 /**
@@ -27,25 +23,13 @@ function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   const params: DodaysQueryParams = action.payload;
   const activities = yield call(api.dodays.queries.fetchDodays, params);
-  yield put(setActivitiesActionCreator(activities));
-  yield put(setDodayAppLoadingStateActionCreator(false));
-}
-
-/**
- * Fetch Activities(Dodays) with Progress nodes with query params
- *
- * @param {FetchActivitiesWithProgressAction} action
- */
-function* fetchActivitiesWithProgressActionSaga(
-  action: FetchActivitiesWithProgressAction
-) {
-  yield put(setDodayAppLoadingStateActionCreator(true));
-  const params: DodaysWithProgressQueryParams = action.payload;
-  const activities = yield call(
+  const activitiesWithProgress = yield call(
     api.dodays.queries.fetchDodaysWithProgress,
     params
   );
-  yield put(setActivitiesActionCreator(activities));
+  yield put(
+    setActivitiesActionCreator(activities.concat(activitiesWithProgress))
+  );
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
@@ -68,8 +52,4 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 export default [
   takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
   takeLatest(ActionConstants.FETCH_ACTIVITIES, fetchActivitiesActionSaga),
-  takeLatest(
-    ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS,
-    fetchActivitiesWithProgressActionSaga
-  ),
 ];

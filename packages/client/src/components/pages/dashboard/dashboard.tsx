@@ -6,15 +6,15 @@ import {
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
 import { Profile } from '../profile';
-import { toolBeacons, ToolSysname } from '@tools';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
 import { DodayApp } from '@root/components/shell/doday-app';
+import { ToolBeacon } from '@root/lib/common-interfaces';
 
 const css = require('./_dashboard.module.scss');
 
 interface DashboardProps {
-  activeToolBeacons: ToolSysname[];
+  activeTools: ToolBeacon[];
   toggleDrawer: () => ToggleDrawerAction;
   toggleDodayApp: () => ToggleDodayAppAction;
   isDrawerCollapsed: boolean;
@@ -68,10 +68,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
   }
 
   render() {
-    const { isDodayAppCollapsed, activeToolBeacons } = this.props;
-    const activeTools = toolBeacons.filter(tool =>
-      activeToolBeacons.find(item => item === tool.config.sysname)
-    );
+    const { isDodayAppCollapsed, activeTools } = this.props;
 
     return (
       <>

@@ -21,10 +21,10 @@ export const createDodayMutation = async (payload: {
 };
 
 export const takeDodayMutation = async (payload: {
-  dodayDID: string;
+  did: string;
   progress: Partial<SerializedProgressLike>;
 }) => {
-  return fetch(`/api/dodays/${payload.dodayDID}/take`, {
+  return fetch(`/api/dodays/${payload.did}/take`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

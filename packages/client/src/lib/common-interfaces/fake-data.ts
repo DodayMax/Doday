@@ -1,4 +1,4 @@
-import { DodayTypes } from '../models/entities/common';
+import { DodayType } from '../models/entities/common';
 import {
   SerializedActivity,
   Activity,
@@ -8,7 +8,7 @@ import {
 export const serializedActivity: SerializedActivity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayTypes.Activity,
+  type: DodayType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
@@ -23,7 +23,7 @@ export const partialProgress: Partial<SerializedActivityProgress> = {
 export const activity: Activity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayTypes.Activity,
+  type: DodayType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,

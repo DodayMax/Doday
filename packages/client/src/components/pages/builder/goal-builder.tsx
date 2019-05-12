@@ -8,7 +8,7 @@
 //   Space,
 // } from '@root/lib/common-interfaces';
 // import { SerializedGoal } from '@root/lib/models/entities/Goal';
-// import { DodayTypes } from '@root/lib/models/entities/common';
+// import { DodayType } from '@root/lib/models/entities/common';
 // import { CreateGoalAction } from '@root/ducks/builder/actions';
 // import { getRandomColor } from '@root/lib/utils';
 // import { CustomDatePicker } from '../shared/_atoms/custom-datepicker';
@@ -46,7 +46,7 @@
 //     this.props.createGoalActionCreator({
 //       did: cuid(),
 //       public: false,
-//       type: DodayTypes.Goal,
+//       type: DodayType.Goal,
 //       name: this.state.goalName,
 //       ownerDID: this.props.ownerDID,
 //       color: getRandomColor(this.props.goalNumber),

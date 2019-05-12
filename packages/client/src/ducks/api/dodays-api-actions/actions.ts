@@ -3,6 +3,7 @@ import { SerializedResource } from '@root/lib/models/entities/resource';
 import {
   SerializedDodayLike,
   SerializedProgressLike,
+  DodayType,
 } from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
@@ -59,7 +60,8 @@ export function createAndTakeDodayActionCreator(payload: {
  * @returns {TakeDodayAction}
  */
 export function takeDodayActionCreator(payload: {
-  dodayDID: string;
+  did: string;
+  type: DodayType;
   progress: Partial<SerializedProgressLike>;
 }): TakeDodayAction {
   return {
@@ -76,6 +78,7 @@ export function takeDodayActionCreator(payload: {
  */
 export function updateDodayActionCreator(
   did: string,
+  type: DodayType,
   updates: {
     doday?: Partial<SerializedDodayLike>;
     progress?: Partial<SerializedProgressLike>;
@@ -86,6 +89,7 @@ export function updateDodayActionCreator(
     type: ActionConstants.UPDATE_DODAY,
     payload: {
       did,
+      type,
       updates,
     },
   };
@@ -97,10 +101,13 @@ export function updateDodayActionCreator(
  * @export
  * @returns {UntakeDodayAction}
  */
-export function untakeDodayActionCreator(dodayDID: string): UntakeDodayAction {
+export function untakeDodayActionCreator(payload: {
+  did: string;
+  type: DodayType;
+}): UntakeDodayAction {
   return {
     type: ActionConstants.UNTAKE_DODAY,
-    payload: dodayDID,
+    payload,
   };
 }
 
@@ -110,10 +117,13 @@ export function untakeDodayActionCreator(dodayDID: string): UntakeDodayAction {
  * @export
  * @returns {DeleteDodayAction}
  */
-export function deleteDodayActionCreator(dodayDID: string): DeleteDodayAction {
+export function deleteDodayActionCreator(payload: {
+  did: string;
+  type: DodayType;
+}): DeleteDodayAction {
   return {
     type: ActionConstants.DELETE_DODAY,
-    payload: dodayDID,
+    payload,
   };
 }
 
@@ -137,7 +147,8 @@ export interface CreateDodayAction extends AnyAction {
 export interface TakeDodayAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY;
   payload: {
-    dodayDID: string;
+    did: string;
+    type: DodayType;
     progress: Partial<SerializedProgressLike>;
   };
 }
@@ -155,6 +166,7 @@ export interface UpdateDodayAction extends AnyAction {
   type: ActionConstants.UPDATE_DODAY;
   payload: {
     did: string;
+    type: DodayType;
     updates: {
       doday?: Partial<SerializedDodayLike>;
       progress?: Partial<SerializedProgressLike>;
@@ -165,12 +177,18 @@ export interface UpdateDodayAction extends AnyAction {
 
 export interface UntakeDodayAction extends AnyAction {
   type: ActionConstants.UNTAKE_DODAY;
-  payload: string;
+  payload: {
+    did: string;
+    type: DodayType;
+  };
 }
 
 export interface DeleteDodayAction extends AnyAction {
   type: ActionConstants.DELETE_DODAY;
-  payload: string;
+  payload: {
+    did: string;
+    type: DodayType;
+  };
 }
 
 /**

@@ -14,7 +14,7 @@ import {
   ChangeDodayAppRouteAction,
 } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
-import { DodayTypes, DodayLike } from '@root/lib/models/entities/common';
+import { DodayType, DodayLike } from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import {
   Space,
@@ -111,7 +111,7 @@ export class DodayAppComponent extends React.Component<
     const totalDurationOfTheDay = this.getDodaysToRender()
       .filter(
         doday =>
-          doday.type === DodayTypes.Activity &&
+          doday.type === DodayType.Activity &&
           doday.progress &&
           !doday.progress.completed
       )

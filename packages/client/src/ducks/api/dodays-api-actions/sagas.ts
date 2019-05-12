@@ -1,4 +1,4 @@
-import { call, put, takeLatest, all } from 'redux-saga/effects';
+import { call, put, takeLatest, select, all } from 'redux-saga/effects';
 import {
   ActionConstants,
   DeleteDodayAction,
@@ -12,7 +12,8 @@ import { api } from '@services';
 import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
-import { toolBeacons } from '@root/tools';
+import { activeTools } from '@root/ducks/auth/selectors';
+import { ToolBeacon } from '@root/lib/common-interfaces';
 
 /**
  * Create Doday node and relations to Hero
@@ -22,20 +23,27 @@ import { toolBeacons } from '@root/tools';
 function* createDodayActionSaga(action: CreateDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createDodayMutation, action.payload);
+  const tools = yield select(activeTools);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
    * related to this action
    */
-  toolBeacons.map(tool => {
+  tools.map((tool: ToolBeacon) => {
     // deserialize payload or not serialized in builder
-    sideEffects.push(
-      put(
-        tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-          action.payload
-        )
+    if (
+      tool.config.entities.find(
+        entity => entity.type === action.payload.doday.type
       )
-    );
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+            action.payload
+          )
+        )
+      );
+    }
   });
   yield all(sideEffects);
   yield put(setBuilderSuccessFlag(true));
@@ -50,20 +58,27 @@ function* createDodayActionSaga(action: CreateDodayAction) {
 function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
+  const tools = yield select(activeTools);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
    * related to this action
    */
-  toolBeacons.map(tool => {
+  tools.map((tool: ToolBeacon) => {
     // deserialize payload or not serialized in builder
-    sideEffects.push(
-      put(
-        tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-          action.payload
-        )
+    if (
+      tool.config.entities.find(
+        entity => entity.type === action.payload.doday.type
       )
-    );
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+            action.payload
+          )
+        )
+      );
+    }
   });
   yield all(sideEffects);
   yield put(setBuilderSuccessFlag(true));
@@ -77,7 +92,34 @@ function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
  */
 function* takeDodayActionSaga(action: TakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.takeDodayMutation, action.payload);
+  yield call(api.dodays.mutations.takeDodayMutation, {
+    did: action.payload.did,
+    progress: action.payload.progress,
+  });
+  const tools = yield select(activeTools);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  tools.map((tool: ToolBeacon) => {
+    // deserialize payload or not serialized in builder
+    if (
+      tool.config.entities.find(entity => entity.type === action.payload.type)
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
+            {
+              did: action.payload.did,
+              progress: action.payload.progress,
+            }
+          )
+        )
+      );
+    }
+  });
+  yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -88,7 +130,28 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
  */
 function* deleteDodayActionSaga(action: DeleteDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.deleteDodayMutation, action.payload);
+  yield call(api.dodays.mutations.deleteDodayMutation, action.payload.did);
+  const tools = yield select(activeTools);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  tools.map((tool: ToolBeacon) => {
+    // deserialize payload or not serialized in builder
+    if (
+      tool.config.entities.find(entity => entity.type === action.payload.type)
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
+        )
+      );
+    }
+  });
+  yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -99,7 +162,28 @@ function* deleteDodayActionSaga(action: DeleteDodayAction) {
  */
 function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.untakeDodayMutation, action.payload);
+  yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
+  const tools = yield select(activeTools);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  tools.map((tool: ToolBeacon) => {
+    // deserialize payload or not serialized in builder
+    if (
+      tool.config.entities.find(entity => entity.type === action.payload.type)
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
+        )
+      );
+    }
+  });
+  yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -114,6 +198,30 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
     did: action.payload.did,
     updates: action.payload.updates,
   });
+  const tools = yield select(activeTools);
+  const sideEffects = [];
+  /**
+   * Collect all sideeffects from active tools
+   * related to this action
+   */
+  tools.map((tool: ToolBeacon) => {
+    // deserialize payload or not serialized in builder
+    if (
+      tool.config.entities.find(entity => entity.type === action.payload.type)
+    ) {
+      sideEffects.push(
+        put(
+          tool.duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+            {
+              did: action.payload.did,
+              updates: action.payload.updates,
+            }
+          )
+        )
+      );
+    }
+  });
+  yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 

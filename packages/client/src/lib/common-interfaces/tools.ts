@@ -1,5 +1,5 @@
 import { CellProps } from './doday-app';
-import { DodayTypes } from '../models/entities/common';
+import { DodayType } from '../models/entities/common';
 import { ToolSysname } from '@root/tools';
 import { IconNames } from '@root/components/shared/_atoms/icons';
 import { RouteComponentProps } from 'react-router';
@@ -9,14 +9,14 @@ export interface ToolBeacon {
   components: {
     dodayApp: React.ComponentType<RouteComponentProps>;
     cells: {
-      [K in DodayTypes]?: {
+      [K in DodayType]?: {
         public: React.ComponentType<CellProps>;
         progress: React.ComponentType<CellProps>;
       }
     };
-    builders: { [K in DodayTypes]?: React.ComponentType<WithTools> };
+    builders: { [K in DodayType]?: React.ComponentType<WithTools> };
     details: {
-      [K in DodayTypes]?: {
+      [K in DodayType]?: {
         public: React.ComponentType;
         progress: React.ComponentType;
       }
@@ -29,6 +29,10 @@ export interface ToolBeacon {
       actionCreators: any;
       optimisticUpdatesActionCreators: {
         createDodayOptimisticUpdateActionCreator: any;
+        updateDodayOptimisticUpdateActionCreator: any;
+        takeDodayOptimisticUpdateActionCreator: any;
+        untakeDodayOptimisticUpdateActionCreator: any;
+        deleteDodayOptimisticUpdateActionCreator: any;
       };
     };
     sagas: any;
@@ -42,7 +46,7 @@ export interface ToolBeacon {
 export type ToolConfig = {
   sysname: ToolSysname;
   entities: {
-    type: DodayTypes;
+    type: DodayType;
     name: string;
   }[];
   cost: number;

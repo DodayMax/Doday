@@ -33,7 +33,10 @@ import {
   Pageflow,
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
-import { SerializedProgressLike } from '@root/lib/models/entities/common';
+import {
+  SerializedProgressLike,
+  DodayType,
+} from '@root/lib/models/entities/common';
 import { config } from '../../config';
 import {
   TakeDodayAction,
@@ -55,10 +58,14 @@ interface PropsFromConnect {
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
   takeDodayActionCreator(payload: {
-    dodayDID: string;
+    did: string;
+    type: DodayType;
     progress: Partial<SerializedProgressLike>;
   }): TakeDodayAction;
-  untakeDodayActionCreator(dodayDID: string): UntakeDodayAction;
+  untakeDodayActionCreator(payload: {
+    did: string;
+    type: DodayType;
+  }): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -111,7 +118,10 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
           isLoading={loading}
           size={ButtonSize.small}
           onClick={() => {
-            this.props.untakeDodayActionCreator(selectedDoday.did);
+            this.props.untakeDodayActionCreator({
+              did: selectedDoday.did,
+              type: selectedDoday.type,
+            });
             history.push(config.route);
           }}
         >
@@ -188,7 +198,8 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
           primary
           onClick={() => {
             this.props.takeDodayActionCreator({
-              dodayDID: selectedDoday.did,
+              did: selectedDoday.did,
+              type: selectedDoday.type,
               progress: {
                 date: this.state.date,
                 dateIsLocked: this.state.dateIsLocked,

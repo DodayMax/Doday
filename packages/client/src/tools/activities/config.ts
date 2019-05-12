@@ -1,11 +1,11 @@
 import { ToolConfig } from '@root/lib/common-interfaces';
-import { DodayTypes } from '@root/lib/models/entities/common';
+import { DodayType } from '@root/lib/models/entities/common';
 
 export const config: ToolConfig = {
   sysname: 'activities',
   entities: [
     {
-      type: DodayTypes.Activity,
+      type: DodayType.Activity,
       name: 'activity',
     },
   ],

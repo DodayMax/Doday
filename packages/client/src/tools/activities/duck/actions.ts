@@ -50,21 +50,6 @@ export function fetchActivitiesActionCreator(
 }
 
 /**
- * Fetch activities with progress with params
- *
- * @export
- * @returns {FetchActivitiesWithProgressAction}
- */
-export function fetchActivitiesWithProgressActionCreator(
-  params?: DodaysWithProgressQueryParams
-): FetchActivitiesWithProgressAction {
-  return {
-    type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS,
-    payload: params,
-  };
-}
-
-/**
  * Set activities in progress to store
  *
  * @export
@@ -156,7 +141,7 @@ export function clearParsedUrlMetadataActionCreator(): ClearParsedUrlMetadataAct
 /** Side effects */
 
 /**
- * Clear parsed metadata from store
+ * Add new Doday to Activity's beacon dodays
  *
  * @export
  * @returns {CreateDodayOptimisticUpdateAction}
@@ -172,9 +157,74 @@ export function createDodayOptimisticUpdateActionCreator(payload: {
   };
 }
 
+/**
+ * Update Doday in Activity's beacon dodays
+ *
+ * @export
+ * @returns {UpdateDodayOptimisticUpdateAction}
+ */
+export function updateDodayOptimisticUpdateActionCreator(payload: {
+  did: string;
+  updates: {
+    doday?: Partial<SerializedDodayLike>;
+    progress?: Partial<SerializedProgressLike>;
+    resource?: Partial<SerializedResource>;
+  };
+}): UpdateDodayOptimisticUpdateAction {
+  return {
+    type: ActionConstants.UPDATE_DODAY_OPTIMISTIC_UPDATE,
+    payload,
+  };
+}
+
+/**
+ * Take Doday side effect in Activity's beacon dodays
+ *
+ * @export
+ * @returns {TakeDodayOptimisticUpdateAction}
+ */
+export function takeDodayOptimisticUpdateActionCreator(payload: {
+  did: string;
+  progress: Partial<SerializedProgressLike>;
+}): TakeDodayOptimisticUpdateAction {
+  return {
+    type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE,
+    payload,
+  };
+}
+
+/**
+ * Untake Doday side effect in Activity's beacon dodays
+ *
+ * @export
+ * @returns {UntakeDodayOptimisticUpdateAction}
+ */
+export function untakeDodayOptimisticUpdateActionCreator(
+  did: string
+): UntakeDodayOptimisticUpdateAction {
+  return {
+    type: ActionConstants.UNTAKE_DODAY_OPTIMISTIC_UPDATE,
+    payload: did,
+  };
+}
+
+/**
+ * Delete Doday side effect in Activity's beacon dodays
+ *
+ * @export
+ * @returns {DeleteDodayOptimisticUpdateAction}
+ */
+export function deleteDodayOptimisticUpdateActionCreator(
+  did: string
+): DeleteDodayOptimisticUpdateAction {
+  return {
+    type: ActionConstants.DELETE_DODAY_OPTIMISTIC_UPDATE,
+    payload: did,
+  };
+}
+
 export const actionCreators = {
   fetchActivitiesActionCreator,
-  fetchActivitiesWithProgressActionCreator,
   setActivitiesActionCreator,
   setActivityTypeActionCreator,
   setUrlParsingProgressActionCreator,
@@ -185,6 +235,10 @@ export const actionCreators = {
 
 export const optimisticUpdatesActionCreators = {
   createDodayOptimisticUpdateActionCreator,
+  updateDodayOptimisticUpdateActionCreator,
+  takeDodayOptimisticUpdateActionCreator,
+  untakeDodayOptimisticUpdateActionCreator,
+  deleteDodayOptimisticUpdateActionCreator,
 };
 
 /**
@@ -194,11 +248,6 @@ export const optimisticUpdatesActionCreators = {
 export interface FetchActivitiesAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITIES;
   payload: DodaysQueryParams;
-}
-
-export interface FetchActivitiesWithProgressAction extends AnyAction {
-  type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS;
-  payload: DodaysWithProgressQueryParams;
 }
 
 export interface SetActivitiesAction extends AnyAction {
@@ -244,18 +293,20 @@ export interface CreateDodayOptimisticUpdateAction extends AnyAction {
 export interface UpdateDodayOptimisticUpdateAction extends AnyAction {
   type: ActionConstants.UPDATE_DODAY_OPTIMISTIC_UPDATE;
   payload: {
-    doday: Partial<SerializedDodayLike>;
-    progress?: Partial<SerializedProgressLike>;
-    resource?: Partial<SerializedResource>;
+    did: string;
+    updates: {
+      doday?: Partial<SerializedDodayLike>;
+      progress?: Partial<SerializedProgressLike>;
+      resource?: Partial<SerializedResource>;
+    };
   };
 }
 
 export interface TakeDodayOptimisticUpdateAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE;
   payload: {
-    doday: Partial<SerializedDodayLike>;
-    progress?: Partial<SerializedProgressLike>;
-    resource?: Partial<SerializedResource>;
+    did: string;
+    progress: Partial<SerializedProgressLike>;
   };
 }
 
@@ -275,7 +326,6 @@ export interface DeleteDodayOptimisticUpdateAction extends AnyAction {
 
 export type ActionTypes =
   | FetchActivitiesAction
-  | FetchActivitiesWithProgressAction
   | SetActivitiesAction
   | SetActivityTypeAction
   | ParseUrlMetadataAction

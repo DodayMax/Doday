@@ -4,20 +4,20 @@ import ActivityDetails from './details/activity-details';
 import ActivityProgressDetails from './details/progress-details';
 import { ActivityCell } from './doday-app/cells/app-cell/activity-cell';
 import { ActivityProgressCell } from './doday-app/cells/app-cell/activity-progress-cell';
-import { DodayTypes } from '@root/lib/models/entities/common';
+import { DodayType } from '@root/lib/models/entities/common';
 import { ActivityOverview } from './overview/overview';
 
 export const components = {
   dodayApp: ActivityDodayApp,
   cells: {
-    [DodayTypes.Activity]: {
+    [DodayType.Activity]: {
       public: ActivityCell,
       progress: ActivityProgressCell,
     },
   },
-  builders: { [DodayTypes.Activity]: ActivityBuilder },
+  builders: { [DodayType.Activity]: ActivityBuilder },
   details: {
-    [DodayTypes.Activity]: {
+    [DodayType.Activity]: {
       public: ActivityDetails,
       progress: ActivityProgressDetails,
     },

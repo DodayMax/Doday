@@ -6,7 +6,7 @@ import { DefaultTopBar } from '@root/components';
 import { Grid } from '@root/components/shared';
 import {
   DodayLike,
-  DodayTypes,
+  DodayType,
   SerializedDodayLike,
   SerializedProgressLike,
 } from '@root/lib/models/entities/common';
@@ -17,23 +17,17 @@ import { RootState } from '@root/lib/models';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodayAppActions } from '@ducks/doday-app';
 import { actions } from '@tools/activities/duck';
-import {
-  DodaysWithProgressQueryParams,
-  DodaysQueryParams,
-} from '@root/services/api/dodays/queries';
+import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import {
   ChangeDodayAppRouteAction,
   SetDodayAppQueryParamsAction,
 } from '@root/ducks/doday-app/actions';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { config } from '../../config';
-import { capitalize } from '@root/lib/utils';
+import { capitalize, filterObject } from '@root/lib/utils';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import { UpdateDodayAction } from '@root/ducks/api/dodays-api-actions/actions';
-import {
-  FetchActivitiesAction,
-  FetchActivitiesWithProgressAction,
-} from '../../duck/actions';
+import { FetchActivitiesAction } from '../../duck/actions';
 
 interface ActivityDodayAppProps {
   loading: boolean;
@@ -47,11 +41,9 @@ interface PropsFromConnect {
   fetchActivitiesActionCreator: (
     params: DodaysQueryParams
   ) => FetchActivitiesAction;
-  fetchActivitiesWithProgressActionCreator(
-    params?: DodaysWithProgressQueryParams
-  ): FetchActivitiesWithProgressAction;
   updateDodayActionCreator(
     did: string,
+    type: DodayType,
     updates: {
       doday?: Partial<SerializedDodayLike>;
       progress?: Partial<SerializedProgressLike>;
@@ -71,10 +63,7 @@ class ActivityDodayApp extends React.Component<
 > {
   componentDidMount() {
     this.props.fetchActivitiesActionCreator({
-      dodaytype: DodayTypes.Activity,
-    });
-    this.props.fetchActivitiesWithProgressActionCreator({
-      dodaytype: DodayTypes.Activity,
+      dodaytype: DodayType.Activity,
     });
   }
 
@@ -86,13 +75,23 @@ class ActivityDodayApp extends React.Component<
     const { routeParams, dodays, myDID } = this.props;
     if (!dodays) return [];
     if (!routeParams.completed && !routeParams.published) {
-      return dodays.filter(
-        doday => doday.progress && !doday.progress.completed
+      return Object.values(
+        filterObject(
+          dodays,
+          doday => doday.progress && !doday.progress.completed
+        )
       );
     } else if (routeParams.completed) {
-      return dodays.filter(doday => doday.progress && doday.progress.completed);
+      return Object.values(
+        filterObject(
+          dodays,
+          doday => doday.progress && doday.progress.completed
+        )
+      );
     } else if (routeParams.published) {
-      return dodays.filter(doday => doday.public && doday.ownerDID === myDID);
+      return Object.values(
+        filterObject(dodays, doday => doday.public && doday.ownerDID === myDID)
+      );
     }
   }
 
@@ -137,25 +136,26 @@ class ActivityDodayApp extends React.Component<
   }
 
   private renderCell = (item: DodayLike) => {
-    if (item.progress) {
+    const { routeParams } = this.props;
+    if (routeParams.published) {
       return (
-        <ActivityProgressCell
+        <ActivityCell
           doday={item as Activity}
           key={cuid()}
           onClick={this.handleDodayCellClick}
-          onComplete={() => {
-            this.props.updateDodayActionCreator(item.did, {
-              progress: { completed: !item.progress.completed },
-            });
-          }}
         />
       );
     }
     return (
-      <ActivityCell
+      <ActivityProgressCell
         doday={item as Activity}
         key={cuid()}
         onClick={this.handleDodayCellClick}
+        onComplete={() => {
+          this.props.updateDodayActionCreator(item.did, item.type, {
+            progress: { completed: !item.progress.completed },
+          });
+        }}
       />
     );
   };

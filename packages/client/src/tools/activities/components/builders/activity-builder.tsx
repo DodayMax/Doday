@@ -25,7 +25,7 @@ import {
 import { activityTypeColor, detectURL } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
 import {
-  DodayTypes,
+  DodayType,
   SerializedDodayLike,
   SerializedProgressLike,
 } from '@root/lib/models/entities/common';
@@ -159,7 +159,7 @@ export class ActivityBuilder extends React.Component<
     const activity: SerializedActivity = {
       did: cuid(),
       activityType,
-      type: DodayTypes.Activity,
+      type: DodayType.Activity,
       duration: this.state.estimateTime,
       name: this.state.dodayName || parsedMetadata.title,
       tags:
