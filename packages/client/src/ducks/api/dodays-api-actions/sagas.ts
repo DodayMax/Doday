@@ -9,11 +9,16 @@ import {
   CreateAndTakeDodayAction,
 } from './actions';
 import { api } from '@services';
-import { setDodayDetailsLoadingStateActionCreator } from '@root/ducks/doday-details/actions';
+import {
+  setDodayDetailsLoadingStateActionCreator,
+  updateSelectedDodayProgressActionCreator,
+} from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
 import { activeTools } from '@root/ducks/auth/selectors';
 import { ToolBeacon } from '@root/lib/common-interfaces';
+import { selectedDoday } from '@root/ducks/doday-details/selectors';
+import { deserializeActivityProgress } from '@root/lib/models/entities/activity';
 
 /**
  * Create Doday node and relations to Hero
@@ -97,6 +102,7 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
     progress: action.payload.progress,
   });
   const tools = yield select(activeTools);
+  const selected = yield select(selectedDoday);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
@@ -119,6 +125,13 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
       );
     }
   });
+  if (selected && selected.did === action.payload.did) {
+    yield put(
+      updateSelectedDodayProgressActionCreator(
+        deserializeActivityProgress(action.payload.progress)
+      )
+    );
+  }
   yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
@@ -164,6 +177,7 @@ function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
   const tools = yield select(activeTools);
+  const selected = yield select(selectedDoday);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
@@ -183,6 +197,9 @@ function* unTakeDodayActionSaga(action: UntakeDodayAction) {
       );
     }
   });
+  if (selected && selected.did === action.payload.did) {
+    yield put(updateSelectedDodayProgressActionCreator(undefined));
+  }
   yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
@@ -199,6 +216,7 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
     updates: action.payload.updates,
   });
   const tools = yield select(activeTools);
+  const selected = yield select(selectedDoday);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
@@ -221,6 +239,13 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
       );
     }
   });
+  if (selected && selected.did === action.payload.did) {
+    yield put(
+      updateSelectedDodayProgressActionCreator(
+        deserializeActivityProgress(action.payload.updates.progress)
+      )
+    );
+  }
   yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }

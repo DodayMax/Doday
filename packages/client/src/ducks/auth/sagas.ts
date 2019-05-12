@@ -7,7 +7,7 @@ import {
 } from './actions';
 import { api } from '@root/services';
 import { toolBeacons } from '@root/tools';
-import { Hero } from '@root/lib/models/entities/Hero';
+import { Hero } from '@root/lib/models/entities/hero';
 
 /**
  * Fetch Hero

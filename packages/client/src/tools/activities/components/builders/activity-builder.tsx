@@ -33,7 +33,7 @@ import { CustomDatePicker } from '@root/components/shared/_atoms/custom-datepick
 import {
   SerializedActivity,
   SerializedActivityProgress,
-} from '@root/lib/models/entities/Activity';
+} from '@root/lib/models/entities/activity';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import {

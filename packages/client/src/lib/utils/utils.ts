@@ -1,6 +1,6 @@
 import { DodayColors, ActivityType } from '../common-interfaces';
 import { DodayType, DodayLike } from '../models/entities/common';
-import { Activity } from '../models/entities/Activity';
+import { Activity } from '../models/entities/activity';
 
 const vars = require('@styles/_config.scss');
 

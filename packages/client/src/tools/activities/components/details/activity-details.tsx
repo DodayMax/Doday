@@ -28,7 +28,7 @@ import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
 } from '@root/ducks/doday-details/actions';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 import {
   Pageflow,
   PageWrapperChildContext,
@@ -122,7 +122,6 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
               did: selectedDoday.did,
               type: selectedDoday.type,
             });
-            history.push(config.route);
           }}
         >
           Untake

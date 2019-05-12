@@ -5,7 +5,7 @@ import { Checkbox, Text } from '@shared';
 import { AnyAction } from 'redux';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 
 const css = require('./activity-progress-cell.module.scss');
 

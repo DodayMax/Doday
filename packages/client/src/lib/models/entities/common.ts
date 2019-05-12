@@ -5,7 +5,7 @@ import {
   SerializedActivityProgress,
   APIresponseActivityProgress,
 } from './activity';
-import { Hero, APIResponseHero } from './Hero';
+import { Hero, APIResponseHero } from './hero';
 import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
 import {
   FlashCard,
@@ -24,12 +24,12 @@ export interface DodayBase {
   type: DodayType;
   /** Public or private doday */
   public: boolean;
-  /** [:CREATE] relation */
-  owner: Hero;
   /** Owner DID for graphQL queries */
   ownerDID: string;
   /** Datetime when doday was created */
   created: Date;
+  /** [:CREATE] relation */
+  owner?: Hero;
   /** Progress node for this Doday */
   progress?: ProgressBase;
 }

@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 import { ActivityType } from '@root/lib/common-interfaces';
 import {
   DodaysWithProgressQueryParams,

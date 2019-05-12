@@ -9,7 +9,7 @@ import {
 import { Text, Icons } from '@shared';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 import { durationToMinutes } from '@root/lib/utils';
 
 const css = require('./activity-cell.module.scss');

@@ -49,3 +49,46 @@ export interface ActivityProgress extends ProgressBase {}
 export interface SerializedActivityProgress extends SerializedProgressBase {}
 
 export interface APIresponseActivityProgress extends APIResponseProgressBase {}
+
+export const serializeActivity = (activity: Activity): SerializedActivity => {
+  const { owner, progress, ...omitted } = activity;
+  const serialized: SerializedActivity = {
+    ...omitted,
+    created: activity.created.getTime(),
+  };
+
+  return serialized;
+};
+
+export const deserializeActivity = (activity: SerializedActivity): Activity => {
+  const deserialized: Activity = {
+    ...activity,
+    created: new Date(activity.created),
+  };
+
+  return deserialized;
+};
+
+export const serializeActivityProgress = (
+  progress: ActivityProgress
+): SerializedActivityProgress => {
+  const serialized: SerializedActivityProgress = {
+    ...progress,
+    date: progress.date && progress.date.getTime(),
+    tookAt: progress.tookAt && progress.tookAt.getTime(),
+    completedAt: progress.completedAt && progress.completedAt.getTime(),
+  };
+  return serialized;
+};
+
+export const deserializeActivityProgress = (
+  progress: SerializedActivityProgress
+): ActivityProgress => {
+  const deserialized: ActivityProgress = {
+    ...progress,
+    date: progress.date && new Date(progress.date),
+    tookAt: progress.tookAt && new Date(progress.tookAt),
+    completedAt: progress.completedAt && new Date(progress.completedAt),
+  };
+  return deserialized;
+};

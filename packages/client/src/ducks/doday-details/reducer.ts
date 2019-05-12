@@ -21,15 +21,22 @@ export default (
         selectedDoday: action.payload,
       };
     case actions.ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS:
+      if (action.payload) {
+        return {
+          ...state,
+          selectedDoday: {
+            ...state.selectedDoday,
+            progress: {
+              ...state.selectedDoday.progress,
+              ...action.payload,
+            },
+          },
+        };
+      }
+      const { progress, ...omitted } = state.selectedDoday;
       return {
         ...state,
-        selectedDoday: {
-          ...state.selectedDoday,
-          progress: {
-            ...state.selectedDoday.progress,
-            ...action.payload.updates,
-          },
-        },
+        selectedDoday: omitted,
       };
     case actions.ActionConstants.CLEAR_SELECTED_DODAY:
       return {

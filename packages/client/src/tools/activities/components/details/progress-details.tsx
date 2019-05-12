@@ -37,7 +37,7 @@ import {
   ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 import {
   Pageflow,
   PageWrapperChildContext,

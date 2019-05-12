@@ -88,15 +88,11 @@ export function setSelectedDodayActionCreator(
  * @returns {UpdateSelectedDodayProgressAction}
  */
 export function updateSelectedDodayProgressActionCreator(
-  did: string,
-  updates: Partial<ProgressLike>
+  progress: Partial<ProgressLike>
 ): UpdateSelectedDodayProgressAction {
   return {
     type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS,
-    payload: {
-      did,
-      updates,
-    },
+    payload: progress,
   };
 }
 
@@ -216,10 +212,7 @@ export interface SetSelectedDodayAction extends AnyAction {
 
 export interface UpdateSelectedDodayProgressAction extends AnyAction {
   type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS;
-  payload: {
-    did: string;
-    updates: Partial<ProgressLike>;
-  };
+  payload: Partial<ProgressLike>;
 }
 
 export interface ClearSelectedDodayAction extends AnyAction {

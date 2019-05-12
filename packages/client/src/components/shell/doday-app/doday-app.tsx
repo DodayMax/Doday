@@ -23,7 +23,7 @@ import {
   WithTools,
 } from '@root/lib/common-interfaces';
 import { durationToMinutes, isActivity } from '@root/lib/utils';
-import { Activity } from '@root/lib/models/entities/Activity';
+import { Activity } from '@root/lib/models/entities/activity';
 import { RootState } from '@root/lib/models';
 
 const vars = require('@styles/_config.scss');

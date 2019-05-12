@@ -3,7 +3,7 @@ import {
   SerializedActivity,
   Activity,
   SerializedActivityProgress,
-} from '../models/entities/Activity';
+} from '../models/entities/activity';
 
 export const serializedActivity: SerializedActivity = {
   did: 'test did',
