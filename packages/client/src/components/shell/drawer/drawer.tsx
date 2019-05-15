@@ -10,7 +10,7 @@ import {
   clearSelectedDodayActionCreator,
   ClearSelectedDodayAction,
 } from '@ducks/doday-details/actions';
-import { DrawerMenuItem, ToolBeacon } from '@lib/common-interfaces';
+import { DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import {
@@ -21,6 +21,7 @@ import {
 import Media from 'react-media';
 import { LayoutBlock } from '../../shared/_atoms/layout-block';
 import { capitalize } from '@root/lib/utils';
+import { ToolBeacon } from '@root/tools/types';
 
 const css = require('./_drawer.module.scss');
 

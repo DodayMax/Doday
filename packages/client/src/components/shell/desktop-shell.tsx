@@ -13,7 +13,7 @@ import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
 } from '@root/ducks/hero-settings/actions';
-import { ToolBeacon } from '@root/lib/common-interfaces';
+import { ToolBeacon } from '@root/tools/types';
 
 const styles = require('./_desktop-shell.module.scss');
 

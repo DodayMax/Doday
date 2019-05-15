@@ -1,9 +1,13 @@
 import { Hero } from './entities/hero';
 import { BuilderStatus } from '@root/ducks/builder/reducer';
-import { DodayLike, SerializedProgressLike } from './entities/common';
-import { ActivityBuilderState } from '@root/tools/activities/duck/reducer';
-import { ToolsState } from '@root/tools';
-import { DodayAppQueryParams, ToolBeacon } from '../common-interfaces';
+import {
+  ToolsState,
+  ToolBeacon,
+  SerializedProgressLike,
+  DodayLike,
+  ToolsBuilderState,
+} from '@root/tools/types';
+import { DodayAppQueryParams } from '../common-interfaces';
 
 export interface RootState {
   auth: AuthState;
@@ -21,21 +25,13 @@ export interface DodayAppStatusState {
   badge: number;
 }
 
-export interface ScheduleState {
-  chosenDate: Date;
-  // navStack: Doday[];
-  dodays: DodayLike[];
-  completed: DodayLike[];
-}
-
 export type DodayAppState = {
   status: DodayAppStatusState;
-  schedule: ScheduleState;
 };
 
 export interface BuilderState {
   status: BuilderStatus;
-  activity: ActivityBuilderState;
+  tools: ToolsBuilderState;
 }
 
 export interface AuthState {

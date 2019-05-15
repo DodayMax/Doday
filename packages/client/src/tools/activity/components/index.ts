@@ -4,8 +4,8 @@ import ActivityDetails from './details/activity-details';
 import ActivityProgressDetails from './details/progress-details';
 import { ActivityCell } from './doday-app/cells/app-cell/activity-cell';
 import { ActivityProgressCell } from './doday-app/cells/app-cell/activity-progress-cell';
-import { DodayType } from '@root/lib/models/entities/common';
 import { ActivityOverview } from './overview/overview';
+import { DodayType } from '@root/tools/types';
 
 export const components = {
   dodayApp: ActivityDodayApp,

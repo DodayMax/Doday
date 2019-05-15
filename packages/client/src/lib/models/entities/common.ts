@@ -1,19 +1,6 @@
-import {
-  Activity,
-  ActivityProgress,
-  SerializedActivity,
-  SerializedActivityProgress,
-  APIresponseActivityProgress,
-} from './activity';
 import { Hero, APIResponseHero } from './hero';
 import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
-import {
-  FlashCard,
-  FlashCardProgress,
-  SerializedFlashCard,
-  SerializedFlashCardProgress,
-  APIresponseFlashCardProgress,
-} from './flash-card';
+import { DodayType } from '@root/tools/types';
 
 /** Doday base abstract interface */
 
@@ -83,20 +70,3 @@ export interface APIResponseProgressBase {
   completedAt?: Neo4jResponseDateTime;
   tookAt: Neo4jResponseDateTime;
 }
-
-/** Other common interfaces */
-
-export enum DodayType {
-  Activity,
-  FlashCard,
-}
-
-export type DodayLike = Activity | FlashCard;
-export type SerializedDodayLike = SerializedActivity | SerializedFlashCard;
-export type ProgressLike = ActivityProgress | FlashCardProgress;
-export type SerializedProgressLike =
-  | SerializedActivityProgress
-  | SerializedFlashCardProgress;
-export type APIResponseProgressLike =
-  | APIresponseActivityProgress
-  | APIresponseFlashCardProgress;

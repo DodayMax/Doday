@@ -1,8 +1,34 @@
-import { CellProps } from './doday-app';
-import { DodayType } from '../models/entities/common';
-import { ToolSysname } from '@root/tools';
 import { IconNames } from '@root/components/shared/_atoms/icons';
+import {
+  ActivityToolState,
+  ActivityBuilderState,
+} from './activity/duck/reducer';
+import {
+  Activity,
+  SerializedActivity,
+  ActivityProgress,
+  SerializedActivityProgress,
+  APIresponseActivityProgress,
+} from './activity/entities/activity';
 import { RouteComponentProps } from 'react-router';
+import { CellProps } from '@root/lib/common-interfaces';
+
+export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
+export type ToolState = ActivityToolState;
+export type ToolBuilderState = ActivityBuilderState;
+export type ToolsBuilderState = { [K in ToolSysname]?: ToolBuilderState };
+export type ToolsState = { [K in ToolSysname]?: ToolState };
+
+export enum DodayType {
+  Activity,
+  FlashCard,
+}
+
+export type DodayLike = Activity;
+export type SerializedDodayLike = SerializedActivity;
+export type ProgressLike = ActivityProgress;
+export type SerializedProgressLike = SerializedActivityProgress;
+export type APIResponseProgressLike = APIresponseActivityProgress;
 
 export interface ToolBeacon {
   config: ToolConfig;
@@ -48,6 +74,11 @@ export type ToolConfig = {
   entities: {
     type: DodayType;
     name: string;
+    serialize: (doday: DodayLike) => SerializedDodayLike;
+    deserialize: (doday: SerializedDodayLike) => DodayLike;
+    serializeProgress: (progress: ProgressLike) => SerializedProgressLike;
+    deserializeProgress: (progress: SerializedProgressLike) => ProgressLike;
+    isActivity: (doday: DodayLike) => doday is DodayLike;
   }[];
   price: number;
   route: string;

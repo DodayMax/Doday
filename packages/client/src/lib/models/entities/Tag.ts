@@ -1,5 +1,5 @@
 import { Hero } from './hero';
-import { DodayLike } from './common';
+import { DodayLike } from '@root/tools/types';
 
 export interface Tag {
   label: string;

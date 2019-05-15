@@ -1,7 +1,5 @@
 import { IconNames } from '@root/components/shared/_atoms/icons';
-import { DodayLike } from '../models/entities/common';
-
-export type DodayToolBeaconNames = 'Activities' | 'Paths' | 'Memorizer';
+import { DodayLike } from '@root/tools/types';
 
 export type DrawerMenuItem = {
   text: string;

@@ -9,7 +9,7 @@ import { Profile } from '../profile';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
 import { DodayApp } from '@root/components/shell/doday-app';
-import { ToolBeacon } from '@root/lib/common-interfaces';
+import { ToolBeacon } from '@root/tools/types';
 
 const css = require('./_dashboard.module.scss');
 

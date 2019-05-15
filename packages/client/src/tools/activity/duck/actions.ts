@@ -1,21 +1,10 @@
 import { AnyAction } from 'redux';
-import { Activity } from '@root/lib/models/entities/activity';
 import { ActivityType } from '@root/lib/common-interfaces';
-import {
-  DodaysWithProgressQueryParams,
-  DodaysQueryParams,
-} from '@root/services/api/dodays/queries';
+import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { ClearBuilderAction } from '@root/ducks/builder/actions';
-import {
-  DodayLike,
-  ProgressLike,
-  SerializedDodayLike,
-  SerializedProgressLike,
-} from '@root/lib/models/entities/common';
-import {
-  Resource,
-  SerializedResource,
-} from '@root/lib/models/entities/resource';
+import { SerializedResource } from '@root/lib/models/entities/resource';
+import { Activity } from '../entities/activity';
+import { SerializedDodayLike, SerializedProgressLike } from '@root/tools/types';
 
 export enum ActionConstants {
   FETCH_ACTIVITIES = '[activities] FETCH_ACTIVITIES',

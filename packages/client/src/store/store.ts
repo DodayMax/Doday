@@ -4,9 +4,19 @@ import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import ducks from '@ducks';
 import { RootState, BuilderState, DodayAppState } from '@lib/models';
-import { toolBeacons, ToolsState } from '@root/tools';
+import { ToolsState, ToolsBuilderState } from '@root/tools/types';
+import { toolBeacons } from '@root/tools';
 
-const spreadDodayAppToolsReducers = () => {
+const spreadToolsBuilderReducers = () => {
+  const toolReducers = {};
+  toolBeacons.map(
+    tool =>
+      (toolReducers[tool.config.sysname] = tool.duck.reducers.builderReducer)
+  );
+  return toolReducers;
+};
+
+const spreadToolsMainReducers = () => {
   const toolReducers = {};
   toolBeacons.map(
     tool => (toolReducers[tool.config.sysname] = tool.duck.reducers.mainReducer)
@@ -26,17 +36,18 @@ const rootReducer = combineReducers<RootState>({
   auth: ducks.auth.default,
   dodayApp: combineReducers<DodayAppState>({
     status: ducks.dodayapp.reducers.dodayAppStatusReducer,
-    schedule: ducks.dodayapp.reducers.dodayAppReducer,
   }),
   dodayDetails: ducks.dodayDetails.default,
   builder: combineReducers<BuilderState>({
     status: ducks.builder.default,
-    activity: ducks.activities.reducers.builderReducer,
+    tools: combineReducers<ToolsBuilderState>({
+      ...spreadToolsBuilderReducers(),
+    }),
   }),
   heroSettings: ducks.herosettings.default,
   tools: toolBeacons.length
     ? combineReducers<ToolsState>({
-        ...spreadDodayAppToolsReducers(),
+        ...spreadToolsMainReducers(),
       })
     : undefined,
 });

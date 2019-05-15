@@ -14,7 +14,7 @@ import {
   Pageflow,
   PageWrapperChildContext,
 } from '../../shared/_support/pageflow';
-import { ToolBeacon, WithTools } from '@root/lib/common-interfaces';
+import { WithTools } from '@root/tools/types';
 
 export interface BuilderProps {}
 

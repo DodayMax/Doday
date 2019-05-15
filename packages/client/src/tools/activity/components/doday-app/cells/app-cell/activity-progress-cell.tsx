@@ -2,10 +2,9 @@ import * as React from 'react';
 import classnames from 'classnames';
 import { TypographySize, DodayColors, CellProps } from '@lib/common-interfaces';
 import { Checkbox, Text } from '@shared';
-import { AnyAction } from 'redux';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity } from '@root/lib/models/entities/activity';
+import { Activity } from '@root/tools/activity/entities/activity';
 
 const css = require('./activity-progress-cell.module.scss');
 

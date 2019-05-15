@@ -20,33 +20,33 @@ import {
   Size,
   Space,
   ActivityType,
-  WithTools,
 } from '@root/lib/common-interfaces';
 import { activityTypeColor, detectURL } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
-import {
-  DodayType,
-  SerializedDodayLike,
-  SerializedProgressLike,
-} from '@root/lib/models/entities/common';
 import { CustomDatePicker } from '@root/components/shared/_atoms/custom-datepicker';
-import {
-  SerializedActivity,
-  SerializedActivityProgress,
-} from '@root/lib/models/entities/activity';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { SerializedResource } from '@root/lib/models/entities/resource';
-import {
-  ParseUrlMetadataAction,
-  ClearParsedUrlMetadataAction,
-} from '@tools/activities/duck/actions';
-import * as dodaysApi from '@ducks/api/dodays-api-actions';
-import * as activityBuilderActions from '@tools/activities/duck/actions';
+import * as activitiesBuilderActions from '../../duck';
+import * as dodaysApiActions from '@ducks/api/dodays-api-actions';
 import { RootState } from '@root/lib/models';
 import {
   CreateDodayAction,
   CreateAndTakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
+import {
+  SerializedDodayLike,
+  SerializedProgressLike,
+  WithTools,
+  DodayType,
+} from '@root/tools/types';
+import {
+  ParseUrlMetadataAction,
+  ClearParsedUrlMetadataAction,
+} from '../../duck/actions';
+import {
+  SerializedActivity,
+  SerializedActivityProgress,
+} from '../../entities/activity';
 
 const css = require('./activity-builder.module.scss');
 
@@ -353,16 +353,16 @@ export class ActivityBuilder extends React.Component<
 
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
-  activityType: state.builder.activity.activityType,
-  isUrlParsing: state.builder.activity.isUrlParsing,
-  parsedMetadata: state.builder.activity.parsedMetadata,
+  activityType: state.builder.tools.activities.activityType,
+  isUrlParsing: state.builder.tools.activities.isUrlParsing,
+  parsedMetadata: state.builder.tools.activities.parsedMetadata,
   loading: state.builder.status.loading,
 });
 
 export default connect(
   mapState,
   {
-    ...dodaysApi.actions.actionCreators,
-    ...activityBuilderActions.actionCreators,
+    ...dodaysApiActions.actions.actionCreators,
+    ...activitiesBuilderActions.actions.actionCreators,
   }
 )(ActivityBuilder);

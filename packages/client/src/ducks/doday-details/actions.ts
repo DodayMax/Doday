@@ -1,10 +1,10 @@
 import { AnyAction } from 'redux';
 import {
   DodayLike,
-  SerializedDodayLike,
-  SerializedProgressLike,
   ProgressLike,
-} from '@root/lib/models/entities/common';
+  SerializedProgressLike,
+  SerializedDodayLike,
+} from '@root/tools/types';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',

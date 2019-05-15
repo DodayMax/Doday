@@ -9,8 +9,8 @@ import {
 import { Text, Icons } from '@shared';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity } from '@root/lib/models/entities/activity';
 import { durationToMinutes } from '@root/lib/utils';
+import { Activity } from '@root/tools/activity/entities/activity';
 
 const css = require('./activity-cell.module.scss');
 

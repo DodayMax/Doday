@@ -4,19 +4,12 @@ import { RouteComponentProps } from 'react-router';
 import * as cuid from 'cuid';
 import { DefaultTopBar } from '@root/components';
 import { Grid } from '@root/components/shared';
-import {
-  DodayLike,
-  DodayType,
-  SerializedDodayLike,
-  SerializedProgressLike,
-} from '@root/lib/models/entities/common';
 import { ActivityProgressCell } from './cells/app-cell/activity-progress-cell';
 import { ActivityCell } from './cells/app-cell/activity-cell';
-import { Activity } from '@root/lib/models/entities/activity';
 import { RootState } from '@root/lib/models';
+import { actions } from '../../duck';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodayAppActions } from '@ducks/doday-app';
-import { actions } from '@tools/activities/duck';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import {
   ChangeDodayAppRouteAction,
@@ -28,6 +21,13 @@ import { capitalize, filterObject } from '@root/lib/utils';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import { UpdateDodayAction } from '@root/ducks/api/dodays-api-actions/actions';
 import { FetchActivitiesAction } from '../../duck/actions';
+import { Activity } from '../../entities/activity';
+import {
+  DodayType,
+  SerializedDodayLike,
+  SerializedProgressLike,
+  DodayLike,
+} from '@root/tools/types';
 
 interface ActivityDodayAppProps {
   loading: boolean;

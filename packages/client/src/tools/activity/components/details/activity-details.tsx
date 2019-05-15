@@ -28,20 +28,16 @@ import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
 } from '@root/ducks/doday-details/actions';
-import { Activity } from '@root/lib/models/entities/activity';
 import {
   Pageflow,
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
 import {
-  SerializedProgressLike,
-  DodayType,
-} from '@root/lib/models/entities/common';
-import { config } from '../../config';
-import {
   TakeDodayAction,
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
+import { Activity } from '../../entities/activity';
+import { DodayType, SerializedProgressLike } from '@root/tools/types';
 
 const css = require('./activity-details.module.scss');
 

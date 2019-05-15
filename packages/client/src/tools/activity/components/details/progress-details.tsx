@@ -37,22 +37,22 @@ import {
   ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
-import { Activity } from '@root/lib/models/entities/activity';
 import {
   Pageflow,
   PageWrapperChildContext,
 } from '@root/components/shared/_support/pageflow';
 import {
-  SerializedProgressLike,
-  ProgressLike,
-  SerializedDodayLike,
-  DodayType,
-} from '@root/lib/models/entities/common';
-import {
   UpdateDodayAction,
   DeleteDodayAction,
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
+import {
+  SerializedProgressLike,
+  DodayType,
+  SerializedDodayLike,
+  ProgressLike,
+} from '@root/tools/types';
+import { Activity } from '../../entities/activity';
 
 const css = require('./progress-details.module.scss');
 

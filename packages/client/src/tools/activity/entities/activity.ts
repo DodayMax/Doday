@@ -1,13 +1,14 @@
-import { Resource } from './resource';
+import { ActivityType } from '@root/lib/common-interfaces';
 import {
   DodayBase,
   SerializedDodayBase,
-  APIResponseDodayBase,
   ProgressBase,
+  APIResponseDodayBase,
   SerializedProgressBase,
   APIResponseProgressBase,
-} from './common';
-import { ActivityType } from '@root/lib/common-interfaces';
+} from '@root/lib/models/entities/common';
+import { Resource } from '@root/lib/models/entities/resource';
+import { DodayLike, DodayType } from '@root/tools/types';
 
 export interface Activity extends DodayBase {
   /** Activity type of the doday based on Resource */
@@ -92,3 +93,7 @@ export const deserializeActivityProgress = (
   };
   return deserialized;
 };
+
+export function isActivity(doday: DodayLike): doday is Activity {
+  return doday.type === DodayType.Activity;
+}

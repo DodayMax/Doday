@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
-import { DodayLike } from '@root/lib/models/entities/common';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
+import { DodayLike } from '@root/tools/types';
 
 export enum ActionConstants {
   FETCH_DODAYS_WITH_PROGRESS_FOR_DATE = '[dodays-app] FETCH_DODAYS_WITH_PROGRESS_FOR_DATE',

@@ -4,7 +4,7 @@ import {
   SerializedDodayLike,
   SerializedProgressLike,
   DodayType,
-} from '@root/lib/models/entities/common';
+} from '@root/tools/types';
 
 export enum ActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',

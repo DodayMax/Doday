@@ -1,8 +1,8 @@
 import * as builderActions from '@ducks/builder/actions';
 import * as actions from './actions';
 import { ActivityType } from '@root/lib/common-interfaces';
-import { DodayType } from '@root/lib/models/entities/common';
-import { Activity } from '@root/lib/models/entities/activity';
+import { DodayType } from '@root/tools/types';
+import { Activity } from '../entities/activity';
 
 export const initialState: ActivityBuilderState = {
   activityType: 'do',

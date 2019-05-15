@@ -11,11 +11,8 @@ import {
 } from './actions';
 import { api } from '@root/services';
 import { updatesSelector, selectedDoday } from './selectors';
-import {
-  SerializedProgressLike,
-  DodayLike,
-} from '@root/lib/models/entities/common';
 import { isEmptyObject } from '@root/lib/utils';
+import { DodayLike, SerializedProgressLike } from '@root/tools/types';
 
 /**
  * Fetch selected published Doday node saga

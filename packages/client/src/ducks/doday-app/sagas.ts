@@ -9,7 +9,6 @@ import {
   setDodayAppLoadingStateActionCreator,
 } from './actions';
 import { api } from '@services';
-import { chosenDate } from './selectors';
 import { isToday } from '@root/lib/utils';
 import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 
@@ -22,15 +21,15 @@ function* fetchDodaysWithProgressForDateActionSaga(
   action: FetchDodaysWithProgressForDateAction
 ) {
   yield put(setDodayAppLoadingStateActionCreator(true));
-  const date: Date = yield select(chosenDate);
+  // const date: Date = yield select(chosenDate);
   const params: DodaysWithProgressQueryParams = {
     completed: false,
   };
-  if (isToday(date)) {
-    params.exactDate = date.getTime();
-  } else {
-    params.date = date.getTime();
-  }
+  // if (isToday(date)) {
+  //   params.exactDate = date.getTime();
+  // } else {
+  //   params.date = date.getTime();
+  // }
   const dodays = yield call(api.dodays.queries.fetchDodaysWithProgress, params);
   yield put(setDodaysActionCreator(dodays));
   yield put(setDodayAppLoadingStateActionCreator(false));

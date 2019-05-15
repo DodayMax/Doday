@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { Hero } from '@root/lib/models/entities/hero';
-import { ToolBeacon } from '@root/lib/common-interfaces';
+import { ToolBeacon } from '@root/tools/types';
 
 export enum ActionConstants {
   FETCH_HERO = '[auth] FETCH_HERO',

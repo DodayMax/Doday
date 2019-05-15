@@ -1,11 +1,6 @@
-import { DodayType } from '../models/entities/common';
-import {
-  SerializedActivity,
-  Activity,
-  SerializedActivityProgress,
-} from '../models/entities/activity';
+import { DodayType } from '@root/tools/types';
 
-export const serializedActivity: SerializedActivity = {
+export const serializedActivity = {
   did: 'test did',
   activityType: 'do',
   type: DodayType.Activity,
@@ -15,12 +10,12 @@ export const serializedActivity: SerializedActivity = {
   ownerDID: 'did',
 };
 
-export const partialProgress: Partial<SerializedActivityProgress> = {
+export const partialProgress = {
   date: Date.now(),
   dateIsLocked: true,
 };
 
-export const activity: Activity = {
+export const activity = {
   did: 'test did',
   activityType: 'do',
   type: DodayType.Activity,

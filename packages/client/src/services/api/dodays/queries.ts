@@ -1,9 +1,6 @@
 import { neo4jResponseDateTimeToJSDate, firstItem } from '@root/lib/utils';
-import {
-  DodayLike,
-  APIResponseProgressLike,
-} from '@root/lib/models/entities/common';
 import { encodeQueryData } from '@root/lib/utils/api-utils';
+import { DodayLike, APIResponseProgressLike } from '@root/tools/types';
 
 // Dodays
 

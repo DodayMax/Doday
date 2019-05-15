@@ -16,9 +16,8 @@ import {
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
 import { activeTools } from '@root/ducks/auth/selectors';
-import { ToolBeacon } from '@root/lib/common-interfaces';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
-import { deserializeActivityProgress } from '@root/lib/models/entities/activity';
+import { ToolBeacon } from '@root/tools/types';
 
 /**
  * Create Doday node and relations to Hero
@@ -35,12 +34,10 @@ function* createDodayActionSaga(action: CreateDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(
-        entity => entity.type === action.payload.doday.type
-      )
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.doday.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
@@ -70,12 +67,10 @@ function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(
-        entity => entity.type === action.payload.doday.type
-      )
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.doday.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
@@ -109,10 +104,10 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(entity => entity.type === action.payload.type)
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
@@ -123,15 +118,17 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
           )
         )
       );
+      if (selected && selected.did === action.payload.did) {
+        sideEffects.push(
+          put(
+            updateSelectedDodayProgressActionCreator(
+              entity.deserializeProgress(action.payload.progress)
+            )
+          )
+        );
+      }
     }
   });
-  if (selected && selected.did === action.payload.did) {
-    yield put(
-      updateSelectedDodayProgressActionCreator(
-        deserializeActivityProgress(action.payload.progress)
-      )
-    );
-  }
   yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
@@ -151,10 +148,10 @@ function* deleteDodayActionSaga(action: DeleteDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(entity => entity.type === action.payload.type)
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
@@ -184,10 +181,10 @@ function* unTakeDodayActionSaga(action: UntakeDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(entity => entity.type === action.payload.type)
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
@@ -223,10 +220,10 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    // deserialize payload or not serialized in builder
-    if (
-      tool.config.entities.find(entity => entity.type === action.payload.type)
-    ) {
+    const entity = tool.config.entities.find(
+      entity => entity.type === action.payload.type
+    );
+    if (entity) {
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
@@ -237,15 +234,15 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
           )
         )
       );
+      if (selected && selected.did === action.payload.did) {
+        put(
+          updateSelectedDodayProgressActionCreator(
+            entity.deserializeProgress(action.payload.updates.progress)
+          )
+        );
+      }
     }
   });
-  if (selected && selected.did === action.payload.did) {
-    yield put(
-      updateSelectedDodayProgressActionCreator(
-        deserializeActivityProgress(action.payload.updates.progress)
-      )
-    );
-  }
   yield all(sideEffects);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }

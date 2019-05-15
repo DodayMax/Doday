@@ -5,8 +5,6 @@ import { actions as appActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import * as api from '@ducks/api';
-import { TodayTopBar } from './today-top-bar/today-top-bar';
-import { Grid, LayoutBlock, Text, Button, ButtonSize } from '@shared';
 import {
   ChangeDodayAppDateAction,
   PlanOutAction,
@@ -14,17 +12,10 @@ import {
   ChangeDodayAppRouteAction,
 } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
-import { DodayType, DodayLike } from '@root/lib/models/entities/common';
 import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
-import {
-  Space,
-  ToolBeacon,
-  DodayAppQueryParams,
-  WithTools,
-} from '@root/lib/common-interfaces';
-import { durationToMinutes, isActivity } from '@root/lib/utils';
-import { Activity } from '@root/lib/models/entities/activity';
+import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
+import { DodayLike, WithTools } from '@root/tools/types';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
@@ -36,7 +27,6 @@ interface PropsFromConnect {
   route: string;
   routeParams: DodayAppQueryParams;
   dodays: DodayLike[];
-  chosenDate?: Date;
   changeDodayAppDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
   changeDodayAppRouteActionCreator: (
     route: string
@@ -105,55 +95,54 @@ export class DodayAppComponent extends React.Component<
     return null;
   };
 
-  renderContent() {
-    const { chosenDate, changeDodayAppDateActionCreator, loading } = this.props;
+  // renderContent() {
+  //   const { changeDodayAppDateActionCreator, loading } = this.props;
 
-    const totalDurationOfTheDay = this.getDodaysToRender()
-      .filter(
-        doday =>
-          doday.type === DodayType.Activity &&
-          doday.progress &&
-          !doday.progress.completed
-      )
-      .map((doday: DodayLike) => {
-        const activity = isActivity(doday);
-        return activity && durationToMinutes((doday as Activity).duration);
-      })
-      .reduce((a, b) => a + b, 0);
+  //   const totalDurationOfTheDay = this.getDodaysToRender()
+  //     .filter(
+  //       doday =>
+  //         doday.type === DodayType.Activity &&
+  //         doday.progress &&
+  //         !doday.progress.completed
+  //     )
+  //     .map((doday: DodayLike) => {
+  //       return doday && durationToMinutes(doday.duration);
+  //     })
+  //     .reduce((a, b) => a + b, 0);
 
-    return (
-      <>
-        <TodayTopBar
-          date={chosenDate!}
-          changeDate={changeDodayAppDateActionCreator!}
-        />
-        {totalDurationOfTheDay > 8 * 60 ? (
-          <LayoutBlock
-            className={css.bannerContainer}
-            spaceAbove={Space.Small}
-            direction="column"
-            valign="vflex-center"
-          >
-            <Text>Your day is overloading!</Text>
-            <Button
-              onClick={() =>
-                this.props.planOutActionCreator(chosenDate.getTime())
-              }
-              primary
-              size={ButtonSize.small}
-            >
-              Plan out!
-            </Button>
-          </LayoutBlock>
-        ) : null}
-        <Grid
-          loading={loading}
-          items={this.getDodaysToRender()}
-          renderCell={this.renderCellByDodayType}
-        />
-      </>
-    );
-  }
+  //   return (
+  //     <>
+  //       <TodayTopBar
+  //         date={chosenDate!}
+  //         changeDate={changeDodayAppDateActionCreator!}
+  //       />
+  //       {totalDurationOfTheDay > 8 * 60 ? (
+  //         <LayoutBlock
+  //           className={css.bannerContainer}
+  //           spaceAbove={Space.Small}
+  //           direction="column"
+  //           valign="vflex-center"
+  //         >
+  //           <Text>Your day is overloading!</Text>
+  //           <Button
+  //             onClick={() =>
+  //               this.props.planOutActionCreator(chosenDate.getTime())
+  //             }
+  //             primary
+  //             size={ButtonSize.small}
+  //           >
+  //             Plan out!
+  //           </Button>
+  //         </LayoutBlock>
+  //       ) : null}
+  //       <Grid
+  //         loading={loading}
+  //         items={this.getDodaysToRender()}
+  //         renderCell={this.renderCellByDodayType}
+  //       />
+  //     </>
+  //   );
+  // }
 
   render() {
     return (
@@ -168,8 +157,6 @@ const mapState = ({ dodayApp }: RootState) => ({
   loading: dodayApp.status.loading,
   route: dodayApp.status.route,
   routeParams: dodayApp.status.routeParams,
-  chosenDate: dodayApp.schedule.chosenDate,
-  dodays: dodayApp.schedule.dodays,
 });
 
 export default connect(
