@@ -6,6 +6,10 @@ import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import PieChart from 'react-minimal-pie-chart';
 import { Grid, Icons, ClickableIcon } from '@shared';
 import { actions } from '@ducks/doday-app';
+import {
+  clearSelectedDodayActionCreator,
+  ClearSelectedDodayAction,
+} from '@ducks/doday-details/actions';
 import { DrawerMenuItem, ToolBeacon } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
@@ -37,6 +41,7 @@ interface PropsFromConnect {
     did: string
   ) => PushToNavigationStackByDIDAction;
   clearNavStackActionCreator?: () => ClearNavStackAction;
+  clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
 const items: DrawerMenuItem[] = [
@@ -200,6 +205,7 @@ export class DrawerComponent extends React.Component<
                 onClick={() => {
                   this.props.changeDodayAppRouteActionCreator(item.route);
                   history.push(item.route);
+                  this.props.clearSelectedDodayActionCreator();
                 }}
               />
             )}
@@ -222,6 +228,6 @@ const mapState = (state: RootState) => ({
 export default withRouter(
   connect(
     mapState,
-    { ...actions }
+    { ...actions, clearSelectedDodayActionCreator }
   )(DrawerComponent)
 );

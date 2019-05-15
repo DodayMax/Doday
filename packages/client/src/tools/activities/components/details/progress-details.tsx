@@ -222,7 +222,14 @@ class ActivityProgressDetails extends React.Component<
     ];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
-        <Marker key={2} rounded color={DodayColors.gray3} text={'completed'} />
+        <Marker
+          key={2}
+          rounded
+          color={DodayColors.gray3}
+          text={`completed: ${moment(selectedDoday.progress.completedAt).format(
+            'll'
+          )}`}
+        />
       );
     }
     if (selectedDoday.resource && selectedDoday.resource.icon) {
@@ -272,36 +279,40 @@ class ActivityProgressDetails extends React.Component<
         {selectedDoday ? (
           <>
             <LayoutBlock insideElementsMargin>
-              <CustomDatePicker
-                borderless
-                minDate={new Date()}
-                icon={<Icons.Clock />}
-                selected={
-                  (updates && updates.date && new Date(updates.date)) ||
-                  (selectedDoday &&
-                    selectedDoday.progress &&
-                    selectedDoday.progress.date)
-                }
-                onChange={date => {
-                  const dateDirty =
-                    moment(date).format('ll') !==
-                    moment(selectedDoday.progress.date).format('ll');
-                  this.props.requestForSetUpdatesActionCreator({
-                    date: dateDirty ? date.getTime() : undefined,
-                  });
-                }}
-              />
-              <Button
-                borderless
-                active={updates && updates.dateIsLocked}
-                onClick={() => {
-                  this.props.requestForSetUpdatesActionCreator({
-                    dateIsLocked: !dateIsLocked,
-                  });
-                }}
-              >
-                {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
-              </Button>
+              {!selectedDoday.progress.completed && (
+                <>
+                  <CustomDatePicker
+                    borderless
+                    minDate={new Date()}
+                    icon={<Icons.Clock />}
+                    selected={
+                      (updates && updates.date && new Date(updates.date)) ||
+                      (selectedDoday &&
+                        selectedDoday.progress &&
+                        selectedDoday.progress.date)
+                    }
+                    onChange={date => {
+                      const dateDirty =
+                        moment(date).format('ll') !==
+                        moment(selectedDoday.progress.date).format('ll');
+                      this.props.requestForSetUpdatesActionCreator({
+                        date: dateDirty ? date.getTime() : undefined,
+                      });
+                    }}
+                  />
+                  <Button
+                    borderless
+                    active={updates && updates.dateIsLocked}
+                    onClick={() => {
+                      this.props.requestForSetUpdatesActionCreator({
+                        dateIsLocked: !dateIsLocked,
+                      });
+                    }}
+                  >
+                    {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
+                  </Button>
+                </>
+              )}
               {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />

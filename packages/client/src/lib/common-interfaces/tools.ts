@@ -49,7 +49,7 @@ export type ToolConfig = {
     type: DodayType;
     name: string;
   }[];
-  cost: number;
+  price: number;
   route: string;
   icon: IconNames;
 };
