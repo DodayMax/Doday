@@ -250,7 +250,7 @@ class ActivityProgressDetails extends React.Component<
           />
         }
       >
-        {selectedDoday ? (
+        {selectedDoday && selectedDoday.progress ? (
           <>
             <LayoutBlock insideElementsMargin>
               {!selectedDoday.progress.completed && (

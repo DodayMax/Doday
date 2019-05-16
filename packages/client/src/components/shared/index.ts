@@ -17,6 +17,7 @@ export * from './_atoms/layout-block/layout-block';
 export * from './_molecules/button-group/button-group';
 export * from './_molecules/top-bar';
 export * from './_molecules/page';
+export * from './_molecules/switcher/switcher';
 import * as Icons from './_atoms/icons';
 export * from './_organisms/grid';
 export * from './_support/pageflow/pageflow';

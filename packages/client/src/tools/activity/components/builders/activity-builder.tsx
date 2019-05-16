@@ -13,6 +13,8 @@ import {
   ButtonSize,
   ButtonGroup,
   Icons,
+  Switcher,
+  SwitcherItem,
 } from '@shared';
 import {
   TypographySize,
@@ -42,6 +44,7 @@ import {
 import {
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,
+  SetActivityTypeAction,
 } from '../../duck/actions';
 import {
   SerializedActivity,
@@ -67,6 +70,7 @@ interface PropsFromConnect {
     progress: SerializedProgressLike;
     resource?: SerializedResource;
   }): CreateAndTakeDodayAction;
+  setActivityTypeActionCreator(type: ActivityType): SetActivityTypeAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
@@ -181,7 +185,6 @@ export class ActivityBuilder extends React.Component<
       this.props.createDodayActionCreator(activity, resource);
     } else {
       /** Create Activity(Doday) node and Progress node */
-      console.log(resource);
       this.props.createAndTakeDodayActionCreator({
         doday: activity,
         progress,
@@ -216,16 +219,23 @@ export class ActivityBuilder extends React.Component<
     );
   };
 
+  private get activitTypesSwitcherItems(): SwitcherItem[] {
+    return ['do', 'read', 'watch'];
+  }
+
   render() {
     const {
       loading,
-      activityType,
       clearParsedUrlMetadataActionCreator,
+      setActivityTypeActionCreator,
       isUrlParsing,
       parsedMetadata,
+      activityType,
     } = this.props;
 
     const { isPublic } = this.state;
+
+    console.log(activityType);
 
     // const goalsForSelect = goals.map(goal => ({
     //   label: goal.name,
@@ -238,11 +248,17 @@ export class ActivityBuilder extends React.Component<
           <Text size={TypographySize.s} color={TypographyColor.Disabled}>
             activity type:
           </Text>
-          <Marker
-            rounded
-            color={activityTypeColor(this.props.activityType)}
-            text={activityType}
-          />
+          {loading || isUrlParsing ? (
+            <Icons.InlineLoader />
+          ) : (
+            <Switcher
+              items={this.activitTypesSwitcherItems}
+              onChange={item => setActivityTypeActionCreator(item)}
+              render={(item: SwitcherItem) => (
+                <Marker rounded color={activityTypeColor(item)} text={item} />
+              )}
+            />
+          )}
         </LayoutBlock>
         <Input
           size={Size.Large}

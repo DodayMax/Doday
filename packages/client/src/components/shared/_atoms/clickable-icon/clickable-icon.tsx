@@ -40,7 +40,6 @@ export const ClickableIcon: React.FC<
     [className || '']: true,
   });
 
-  console.log(loading);
   if (loading) {
     return (
       <div className={classNames}>

@@ -4,6 +4,12 @@ import { storiesOf } from '@storybook/react';
 import { Icons } from '@shared';
 
 storiesOf('Icons', module)
+  .add('ArrowIcon', () => (
+    <>
+      <Icons.Arrow />
+      <Icons.Arrow right />
+    </>
+  ))
   .add('DoubleChevronIcon', () => (
     <>
       <Icons.DoubleChevronIcon />

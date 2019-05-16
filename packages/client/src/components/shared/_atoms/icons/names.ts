@@ -1,4 +1,5 @@
 export type IconNames =
+  | 'Arrow'
   | 'Checkbox'
   | 'DoubleChevron'
   | 'InlineLoader'
