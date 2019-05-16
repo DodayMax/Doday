@@ -12,7 +12,7 @@ interface DodayAppMenuCellProps {
   collapsed: boolean;
 }
 
-export const DodayAppMenuCell: React.SFC<DodayAppMenuCellProps> = ({
+export const DodayAppMenuCell: React.FC<DodayAppMenuCellProps> = ({
   item,
   active,
   onClick,

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 import { actions as builderActions } from '@ducks/builder';
@@ -10,10 +9,7 @@ import {
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '../../shared/_support/pageflow';
+import { Pageflow } from '../../shared/_support/pageflow';
 import { WithTools } from '@root/tools/types';
 
 export interface BuilderProps {}
@@ -28,12 +24,6 @@ interface PropsFromConnect {
 export class Builder extends React.Component<
   BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
 > {
-  public static contextTypes = {
-    requestClose: PropTypes.func,
-  };
-
-  public context!: PageWrapperChildContext;
-
   componentDidUpdate(prevProps) {
     if (this.props.success) {
       this.props.history.push('/');
@@ -44,9 +34,6 @@ export class Builder extends React.Component<
 
   onRequestClose = () => {
     this.props.clearBuilderActionCreator();
-    if (this.context.requestClose) {
-      this.context.requestClose();
-    }
   };
 
   renderBuilder = () => {

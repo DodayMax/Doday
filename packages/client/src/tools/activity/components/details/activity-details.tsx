@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import {
@@ -28,10 +27,7 @@ import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
 } from '@root/ducks/doday-details/actions';
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '@root/components/shared/_support/pageflow';
+import { Pageflow } from '@root/components/shared/_support/pageflow';
 import {
   TakeDodayAction,
   UntakeDodayAction,
@@ -69,8 +65,8 @@ type Props = ActivityDetailsProps &
   Partial<PropsFromConnect> &
   Partial<RouteComponentProps<any>>;
 
-@Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
+@Pageflow({ path: '/dodays/:did' })
 class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   constructor(props) {
     super(props);
@@ -80,12 +76,6 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
       dateIsLocked: false,
     };
   }
-
-  public static contextTypes = {
-    requestClose: PropTypes.func,
-  };
-
-  public context!: PageWrapperChildContext;
 
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
@@ -151,9 +141,6 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
 
   onRequestClose = () => {
     this.props.clearSelectedDodayActionCreator();
-    if (this.context.requestClose) {
-      this.context.requestClose();
-    }
   };
 
   renderTakeDodayBlock = () => {

@@ -15,7 +15,7 @@ export interface MarkerProps {
   bordered?: boolean;
 }
 
-export const Marker: React.SFC<MarkerProps> = ({
+export const Marker: React.FC<MarkerProps> = ({
   text,
   color,
   rounded,

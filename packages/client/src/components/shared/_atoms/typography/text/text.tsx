@@ -17,7 +17,7 @@ const css = require('@styles/_typography.module.scss');
 
 interface TextProps {}
 
-export const Text: React.SFC<
+export const Text: React.FC<
   TextProps & TypographyProps & SpacingProps & React.HTMLAttributes<HTMLElement>
 > = ({
   color,

@@ -12,6 +12,7 @@ import { api } from '@services';
 import {
   setDodayDetailsLoadingStateActionCreator,
   updateSelectedDodayProgressActionCreator,
+  clearDodayDetailsDirtyStuffActionCreator,
 } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
@@ -235,15 +236,17 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
         )
       );
       if (selected && selected.did === action.payload.did) {
-        put(
-          updateSelectedDodayProgressActionCreator(
-            entity.deserializeProgress(action.payload.updates.progress)
-          )
+        const deserializedProgress = entity.deserializeProgress(
+          action.payload.updates.progress
+        );
+        sideEffects.push(
+          put(updateSelectedDodayProgressActionCreator(deserializedProgress))
         );
       }
     }
   });
   yield all(sideEffects);
+  yield put(clearDodayDetailsDirtyStuffActionCreator());
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 

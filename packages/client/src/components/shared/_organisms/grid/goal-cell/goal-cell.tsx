@@ -12,7 +12,7 @@
 //   onClick?: (goal: Goal) => void;
 // }
 
-// export const GoalCell: React.SFC<GoalCellProps> = ({
+// export const GoalCell: React.FC<GoalCellProps> = ({
 //   goal,
 //   active = false,
 //   onClick,

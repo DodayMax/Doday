@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { ActivityType } from '@root/lib/common-interfaces';
-import { DodaysQueryParams } from '@root/services/api/dodays/queries';
+import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 import { ClearBuilderAction } from '@root/ducks/builder/actions';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import { Activity } from '../entities/activity';
@@ -8,7 +8,6 @@ import { SerializedDodayLike, SerializedProgressLike } from '@root/tools/types';
 
 export enum ActionConstants {
   FETCH_ACTIVITIES = '[activities] FETCH_ACTIVITIES',
-  FETCH_ACTIVITIES_WITH_PROGRESS = '[activities] FETCH_ACTIVITIES_WITH_PROGRESS',
   SET_ACTIVITIES = '[activities] SET_ACTIVITIES',
   PARSE_URL = '[activities] PARSE_URL',
   SET_ACTIVITY_TYPE = '[activities] SET_ACTIVITY_TYPE',
@@ -30,7 +29,7 @@ export enum ActionConstants {
  * @returns {FetchActivitiesAction}
  */
 export function fetchActivitiesActionCreator(
-  params?: DodaysQueryParams
+  params?: DodaysWithProgressQueryParams
 ): FetchActivitiesAction {
   return {
     type: ActionConstants.FETCH_ACTIVITIES,
@@ -236,7 +235,7 @@ export const optimisticUpdatesActionCreators = {
 
 export interface FetchActivitiesAction extends AnyAction {
   type: ActionConstants.FETCH_ACTIVITIES;
-  payload: DodaysQueryParams;
+  payload: DodaysWithProgressQueryParams;
 }
 
 export interface SetActivitiesAction extends AnyAction {

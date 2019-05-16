@@ -38,5 +38,11 @@
   border-radius: $radius-4;
 }
 
+.loading {
+  & > * {
+    opacity: 0.6;
+  }
+}
+
 .hover {
 }

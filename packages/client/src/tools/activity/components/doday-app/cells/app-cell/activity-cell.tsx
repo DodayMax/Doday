@@ -16,7 +16,7 @@ const css = require('./activity-cell.module.scss');
 
 interface ActivityCellProps {}
 
-export const ActivityCell: React.SFC<ActivityCellProps & CellProps> = ({
+export const ActivityCell: React.FC<ActivityCellProps & CellProps> = ({
   doday,
   active = false,
   onClick,

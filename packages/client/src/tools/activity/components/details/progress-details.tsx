@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
+import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -32,15 +32,10 @@ import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
-  UpdateSelectedDodayProgressAction,
   SetDirtyStatusAction,
-  ClearDirtyStuffAction,
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '@root/components/shared/_support/pageflow';
+import { Pageflow } from '@root/components/shared/_support/pageflow';
 import {
   UpdateDodayAction,
   DeleteDodayAction,
@@ -50,7 +45,6 @@ import {
   SerializedProgressLike,
   DodayType,
   SerializedDodayLike,
-  ProgressLike,
 } from '@root/tools/types';
 import { Activity } from '../../entities/activity';
 
@@ -85,31 +79,20 @@ interface PropsFromConnect {
     type: DodayType,
   }) => UntakeDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
-  clearDirtyStuffActionCreator: () => ClearDirtyStuffAction;
   requestForSetUpdatesActionCreator(
     updates: Partial<SerializedProgressLike>
   ): RequestForSetUpdatesAction;
-  updateSelectedDodayProgressActionCreator(
-    did: string,
-    updates: Partial<ProgressLike>
-  ): UpdateSelectedDodayProgressAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
-@Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
+@Pageflow({ path: '/progress/:did' })
 class ActivityProgressDetails extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps<any>>,
   ActivityProgressDetailsState
 > {
-  public static contextTypes = {
-    requestClose: PropTypes.func,
-  };
-
-  public context!: PageWrapperChildContext;
-
   componentDidMount() {
     //fetch selected doday with graphQL
     const did = this.props.match.params.did;
@@ -138,7 +121,6 @@ class ActivityProgressDetails extends React.Component<
       selectedDoday,
       dirty,
       updateDodayActionCreator,
-      updateSelectedDodayProgressActionCreator,
       updates,
       loading,
     } = this.props;
@@ -168,7 +150,7 @@ class ActivityProgressDetails extends React.Component<
     if (this.isOwner) {
       actions.push(
         <Button
-          key={1}
+          key={cuid()}
           size={ButtonSize.small}
           onClick={() => {
             this.props.deleteDodayActionCreator({
@@ -188,18 +170,13 @@ class ActivityProgressDetails extends React.Component<
       actions.unshift(
         <Button
           primary
-          key={2}
+          key={cuid()}
           disabled={!dirty}
           size={ButtonSize.small}
           onClick={() => {
             updateDodayActionCreator(selectedDoday.did, selectedDoday.type, {
               progress: updates,
             });
-            updateSelectedDodayProgressActionCreator(selectedDoday.did, {
-              ...updates,
-              date: updates && updates.date && new Date(updates.date),
-            } as any);
-            this.props.clearDirtyStuffActionCreator();
           }}
         >
           {loading ? 'Saving...' : 'Save'}
@@ -214,7 +191,7 @@ class ActivityProgressDetails extends React.Component<
     const { selectedDoday } = this.props;
     const markers = [
       <Marker
-        key={1}
+        key={cuid()}
         rounded
         color={activityTypeColor(selectedDoday.activityType)}
         text={selectedDoday.activityType}
@@ -223,7 +200,7 @@ class ActivityProgressDetails extends React.Component<
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
         <Marker
-          key={2}
+          key={cuid()}
           rounded
           color={DodayColors.gray3}
           text={`completed: ${moment(selectedDoday.progress.completedAt).format(
@@ -235,7 +212,7 @@ class ActivityProgressDetails extends React.Component<
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
-          key={3}
+          key={cuid()}
           className={css.resourceStatusIcon}
           src={selectedDoday.resource.icon}
         />
@@ -246,13 +223,10 @@ class ActivityProgressDetails extends React.Component<
 
   onRequestClose = () => {
     this.props.clearSelectedDodayActionCreator();
-    if (this.context.requestClose) {
-      this.context.requestClose();
-    }
   };
 
   render() {
-    const { updates, selectedDoday } = this.props;
+    const { updates, selectedDoday, loading } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -335,6 +309,7 @@ class ActivityProgressDetails extends React.Component<
             </LayoutBlock>
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflex-center">
               <ClickableIcon
+                loading={loading}
                 onClick={() => {
                   this.props.updateDodayActionCreator(
                     selectedDoday.did,
@@ -344,10 +319,6 @@ class ActivityProgressDetails extends React.Component<
                         completed: !selectedDoday.progress.completed,
                       },
                     }
-                  );
-                  this.props.updateSelectedDodayProgressActionCreator(
-                    selectedDoday.did,
-                    { completed: !selectedDoday.progress.completed }
                   );
                 }}
               >

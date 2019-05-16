@@ -1,8 +1,10 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { LayoutBlock, ClickableIcon, Icons } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
+import { PageWrapperChildContext } from '../../_support/pageflow';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_page-header.module.scss');
@@ -22,6 +24,12 @@ interface PropsFromConnect {
 class PageHeaderComponentClass extends React.Component<
   PageHeaderProps & Partial<PropsFromConnect>
 > {
+  public static contextTypes = {
+    requestClose: PropTypes.func,
+  };
+
+  public context!: PageWrapperChildContext;
+
   render() {
     const { status, actions, onClose, children, withClose, route } = this.props;
     return (
@@ -44,12 +52,13 @@ class PageHeaderComponentClass extends React.Component<
             <ClickableIcon
               hover
               onClick={() => {
+                if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
                   this.props.history.push(route);
+                  if (onClose) {
+                    onClose();
+                  }
                 }, 200);
-                if (onClose) {
-                  onClose();
-                }
               }}
             >
               <Icons.Close color={vars.gray6} width={30} height={30} />

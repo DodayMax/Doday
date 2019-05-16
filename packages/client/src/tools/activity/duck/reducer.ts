@@ -49,13 +49,13 @@ export const mainReducer = (
       );
       withoutUpdated.splice(updatedindex, 0, {
         ...updated,
-        progress: action.payload.updates.progress
+        progress: action.payload.updates && action.payload.updates.progress
           ? {
               ...updated.progress,
               ...action.payload.updates.progress,
             }
           : undefined,
-        resource: action.payload.updates.resource
+        resource: action.payload.updates && action.payload.updates.resource
           ? {
               ...updated.resource,
               ...action.payload.updates.resource,

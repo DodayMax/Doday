@@ -12,7 +12,7 @@ interface ActivityProgressCellProps {
   onComplete?: () => void;
 }
 
-export const ActivityProgressCell: React.SFC<
+export const ActivityProgressCell: React.FC<
   ActivityProgressCellProps & CellProps
 > = ({ doday, active = false, onClick, onComplete }) => {
   const classNames = classnames({

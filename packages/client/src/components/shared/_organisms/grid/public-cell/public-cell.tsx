@@ -17,7 +17,7 @@
 //   onComplete?: (doday: Doday) => AnyAction;
 // }
 
-// export const PublicCell: React.SFC<PublicCellProps> = ({
+// export const PublicCell: React.FC<PublicCellProps> = ({
 //   doday,
 //   active = false,
 //   onClick,

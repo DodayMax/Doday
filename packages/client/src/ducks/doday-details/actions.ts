@@ -160,9 +160,9 @@ export function setUpdatesForSelectedDodayActionCreator(
  * Clear all updates and dirty status for selected doday
  *
  * @export
- * @returns {ClearDirtyStuffAction}
+ * @returns {ClearDodayDetailsDirtyStuffAction}
  */
-export function clearDirtyStuffActionCreator(): ClearDirtyStuffAction {
+export function clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction {
   return {
     type: ActionConstants.CLEAR_DIRTY_STUFF,
   };
@@ -178,7 +178,7 @@ export const actionCreators = {
   setDirtyStatusActionCreator,
   requestForSetUpdatesActionCreator,
   setUpdatesForSelectedDodayActionCreator,
-  clearDirtyStuffActionCreator,
+  clearDodayDetailsDirtyStuffActionCreator,
 };
 
 /**
@@ -234,7 +234,7 @@ export interface RequestForSetUpdatesAction extends AnyAction {
   payload: Partial<SerializedProgressLike>;
 }
 
-export interface ClearDirtyStuffAction extends AnyAction {
+export interface ClearDodayDetailsDirtyStuffAction extends AnyAction {
   type: ActionConstants.CLEAR_DIRTY_STUFF;
 }
 
@@ -253,4 +253,4 @@ export type ActionTypes =
   | SetDirtyStatusAction
   | RequestForSetUpdatesAction
   | SetUpdatesForSelectedDodayAction
-  | ClearDirtyStuffAction;
+  | ClearDodayDetailsDirtyStuffAction;

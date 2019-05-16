@@ -3,10 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import * as detailsActions from '@ducks/doday-details/actions';
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '@root/components/shared/_support/pageflow';
+import { PageWrapperChildContext } from '@root/components/shared/_support/pageflow';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
 
@@ -26,7 +23,6 @@ type Props = DodayDetailsProps &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
-@Pageflow({ path: '/dodays/:did' })
 @(withRouter as any)
 class DodayDetails extends React.Component<Props, DodayDetailsState> {
   public static contextTypes = {
