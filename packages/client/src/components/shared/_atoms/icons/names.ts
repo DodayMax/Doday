@@ -1,4 +1,7 @@
 export type IconNames =
+  | 'ActivityDoType'
+  | 'ActivityReadType'
+  | 'ActivityWatchType'
   | 'Arrow'
   | 'Checkbox'
   | 'DoubleChevron'
@@ -25,3 +28,9 @@ export type IconNames =
   | 'Duration'
   | 'Flag'
   | 'Score';
+
+export type IconProps = {
+  width?: number;
+  height?: number;
+  color?: string;
+};

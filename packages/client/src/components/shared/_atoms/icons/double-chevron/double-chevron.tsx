@@ -1,12 +1,10 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { IconProps } from '../names';
 
-const styles = require('./_double-chevron.module.scss');
+const css = require('./_double-chevron.module.scss');
 
-interface DoubleChevronIconProps {
-  width?: number | string;
-  height?: number | string;
-  color?: string;
+interface DoubleChevronIconProps extends IconProps {
   className?: string;
   right?: boolean;
   left?: boolean;
@@ -21,9 +19,9 @@ export const DoubleChevronIcon: React.FC<DoubleChevronIconProps> = ({
   right,
 }) => {
   const classNames = classnames({
-    [styles.icon]: true,
+    [css.icon]: true,
     [className || '']: true,
-    [styles.flip]: right,
+    [css.flip]: right,
   });
 
   return (

@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface SettingsProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface SettingsProps extends IconProps {}
 
 export const Settings = ({
   width = 20,

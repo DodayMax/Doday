@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface CloseCircleProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface CloseCircleProps extends IconProps {}
 
 export const CloseCircle = ({
   width = 20,

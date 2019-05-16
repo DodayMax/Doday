@@ -5,7 +5,9 @@ import { Checkbox, Text } from '@shared';
 import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { Activity } from '@root/tools/activity/entities/activity';
+import { activityIconByType } from '../../../builders/activity-builder';
 
+const vars = require('@styles/_config.scss');
 const css = require('./activity-progress-cell.module.scss');
 
 interface ActivityProgressCellProps {
@@ -46,11 +48,7 @@ export const ActivityProgressCell: React.FC<
         {activity.name}
       </Text>
       <LayoutBlock absolute top="0" right="0">
-        <Marker
-          color={DodayColors.gray4}
-          text={activity.activityType}
-          size={TypographySize.s}
-        />
+        {activityIconByType(activity.activityType, undefined, vars.gray8)}
       </LayoutBlock>
     </li>
   );

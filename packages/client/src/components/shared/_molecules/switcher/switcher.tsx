@@ -35,7 +35,7 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
     const { currentIndex } = this.state;
 
     return (
-      <LayoutBlock>
+      <LayoutBlock valign="vflex-center">
         <ClickableIcon
           onClick={() => {
             let newIndex = currentIndex - 1;

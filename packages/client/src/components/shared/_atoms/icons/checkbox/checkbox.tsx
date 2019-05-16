@@ -1,11 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface CheckboxProps {
-  width?: number;
-  height?: number;
-  color?: string;
+interface CheckboxProps extends IconProps {
   checked?: boolean;
 }
 

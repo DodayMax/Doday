@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface LightingProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface LightingProps extends IconProps {}
 
 export const Lighting = ({
   width = 20,

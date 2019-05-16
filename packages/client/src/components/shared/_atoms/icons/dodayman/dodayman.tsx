@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface DodaymanProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface DodaymanProps extends IconProps {}
 
 export const Dodayman = ({
   width = 20,

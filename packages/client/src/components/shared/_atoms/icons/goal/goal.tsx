@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface GoalProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface GoalProps extends IconProps {}
 
 export const Goal = ({
   width = 20,

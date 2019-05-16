@@ -1,21 +1,23 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 const styles = require('./_pie-chart.module.scss');
 
-interface PieChartProps {
-  color?: string;
+interface PieChartProps extends IconProps {
   active?: boolean;
 }
 
 export const PieChart = ({
+  width = 20,
+  height = 20,
   active = false,
   color = vars.black,
 }: PieChartProps) => {
   return (
     <svg
-      width="20"
-      height="20"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
     >

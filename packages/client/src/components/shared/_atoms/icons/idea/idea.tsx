@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface IdeaProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface IdeaProps extends IconProps {}
 
 export const Idea = ({
   width = 20,

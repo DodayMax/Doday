@@ -34,7 +34,9 @@ import {
 } from '@root/ducks/api/dodays-api-actions/actions';
 import { Activity } from '../../entities/activity';
 import { DodayType, SerializedProgressLike } from '@root/tools/types';
+import { activityIconByType } from '../builders/activity-builder';
 
+const vars = require('@styles/_config.scss');
 const css = require('./activity-details.module.scss');
 
 interface ActivityDetailsProps {}
@@ -121,12 +123,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   status = () => {
     const { selectedDoday } = this.props;
     const markers = [
-      <Marker
-        key={1}
-        rounded
-        color={activityTypeColor(selectedDoday.activityType)}
-        text={selectedDoday.activityType}
-      />,
+      activityIconByType(selectedDoday.activityType, 30, vars.gray8),
     ];
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(

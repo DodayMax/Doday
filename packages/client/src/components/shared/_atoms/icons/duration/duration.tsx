@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface DurationProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface DurationProps extends IconProps {}
 
 export const Duration = ({
   width = 20,

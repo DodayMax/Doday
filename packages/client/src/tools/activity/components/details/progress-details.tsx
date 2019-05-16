@@ -47,7 +47,9 @@ import {
   SerializedDodayLike,
 } from '@root/tools/types';
 import { Activity } from '../../entities/activity';
+import { activityIconByType } from '../builders/activity-builder';
 
+const vars = require('@styles/_config.scss');
 const css = require('./progress-details.module.scss');
 
 interface ActivityProgressDetailsProps {}
@@ -190,12 +192,7 @@ class ActivityProgressDetails extends React.Component<
   status = () => {
     const { selectedDoday } = this.props;
     const markers = [
-      <Marker
-        key={cuid()}
-        rounded
-        color={activityTypeColor(selectedDoday.activityType)}
-        text={selectedDoday.activityType}
-      />,
+      activityIconByType(selectedDoday.activityType, 30, vars.gray8),
     ];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(

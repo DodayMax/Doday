@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface ScoreProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface ScoreProps extends IconProps {}
 
 export const Score = ({
   width = 20,

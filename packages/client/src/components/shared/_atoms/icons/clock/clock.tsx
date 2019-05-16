@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface ClockProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface ClockProps extends IconProps {}
 
 export const Clock = ({
   width = 20,

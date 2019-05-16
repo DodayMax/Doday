@@ -1,13 +1,11 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { IconProps } from '../names';
 
 const css = require('./arrow.module.scss');
 const vars = require('@styles/_config.scss');
 
-interface ArrowProps {
-  width?: number;
-  height?: number;
-  color?: string;
+interface ArrowProps extends IconProps {
   left?: boolean;
   right?: boolean;
 }

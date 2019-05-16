@@ -1,12 +1,9 @@
 import * as React from 'react';
+import { IconProps } from '../names';
 
 const vars = require('@styles/_config.scss');
 
-interface CloseProps {
-  width?: number;
-  height?: number;
-  color?: string;
-}
+interface CloseProps extends IconProps {}
 
 export const Close = ({ width = 20, height = 20, color = vars.black }) => {
   return (

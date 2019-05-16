@@ -8,7 +8,6 @@ import {
   LayoutBlock,
   Input,
   Text,
-  Marker,
   Button,
   ButtonSize,
   ButtonGroup,
@@ -23,7 +22,7 @@ import {
   Space,
   ActivityType,
 } from '@root/lib/common-interfaces';
-import { activityTypeColor, detectURL } from '@root/lib/utils';
+import { detectURL } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
 import { CustomDatePicker } from '@root/components/shared/_atoms/custom-datepicker';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
@@ -51,6 +50,7 @@ import {
   SerializedActivityProgress,
 } from '../../entities/activity';
 
+const vars = require('@styles/_config.scss');
 const css = require('./activity-builder.module.scss');
 
 interface ActivityBuilderProps extends BuilderProps {}
@@ -235,8 +235,6 @@ export class ActivityBuilder extends React.Component<
 
     const { isPublic } = this.state;
 
-    console.log(activityType);
-
     // const goalsForSelect = goals.map(goal => ({
     //   label: goal.name,
     //   value: goal.did,
@@ -244,7 +242,7 @@ export class ActivityBuilder extends React.Component<
 
     return (
       <>
-        <LayoutBlock insideElementsMargin valign="vflex-end">
+        <LayoutBlock insideElementsMargin valign="vflex-center">
           <Text size={TypographySize.s} color={TypographyColor.Disabled}>
             activity type:
           </Text>
@@ -254,9 +252,7 @@ export class ActivityBuilder extends React.Component<
             <Switcher
               items={this.activitTypesSwitcherItems}
               onChange={item => setActivityTypeActionCreator(item)}
-              render={(item: SwitcherItem) => (
-                <Marker rounded color={activityTypeColor(item)} text={item} />
-              )}
+              render={type => activityIconByType(type, 30, vars.gray8)}
             />
           )}
         </LayoutBlock>
@@ -366,6 +362,25 @@ export class ActivityBuilder extends React.Component<
     );
   }
 }
+
+export const activityIconByType = (
+  type: ActivityType,
+  size = 20,
+  color = vars.black
+) => {
+  switch (type) {
+    case 'do':
+      return <Icons.ActivityDoType width={size} height={size} color={color} />;
+    case 'read':
+      return (
+        <Icons.ActivityReadType width={size} height={size} color={color} />
+      );
+    case 'watch':
+      return (
+        <Icons.ActivityWatchType width={size} height={size} color={color} />
+      );
+  }
+};
 
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
