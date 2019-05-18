@@ -1,6 +1,6 @@
 // import * as React from 'react';
 // import classnames from 'classnames';
-// import { TypographySize, DodayColors, Space } from '@lib/common-interfaces';
+// import { TypographySize, DodayColor, Space } from '@lib/common-interfaces';
 // import { Text, Icons } from '@components';
 // import { Doday } from '@root/lib/models/entities/Doday';
 // import { AnyAction } from 'redux';
@@ -65,14 +65,14 @@
 //           <Marker
 //             bordered
 //             rounded
-//             color={DodayColors.gray4}
+//             color={DodayColor.gray4}
 //             text={doday.activityType}
 //             size={TypographySize.s}
 //           />
 //           <Marker
 //             bordered
 //             rounded
-//             color={DodayColors.blueLight}
+//             color={DodayColor.blueLight}
 //             text={String(Math.floor(durationToMinutes(doday.duration) / 60))}
 //             size={TypographySize.s}
 //           />

@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { Button } from '../button';
 import { ButtonGroup } from '../../_molecules/button-group';
 import { Icons } from '@shared';
-import { DodayColors } from '@root/lib/common-interfaces';
+import { DodayColor } from '@root/lib/common-interfaces';
 
 const css = require('./custom-datepicker.scss');
 
@@ -53,7 +53,7 @@ export const CustomDatePicker = ({
           <Button
             onClick={onLocked}
             active={isLocked}
-            activeColor={DodayColors.gray4}
+            activeColor={DodayColor.gray4}
             disabled={disabled}
             lightBorder
           >

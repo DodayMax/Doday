@@ -4,6 +4,8 @@ import { Marker } from '../../_atoms/marker';
 import { Icons } from '../..';
 import { LayoutBlock } from '../../_atoms/layout-block';
 
+const vars = require('@styles/_config.scss');
+
 interface SwitcherProps {
   /** Items to switch between */
   items: SwitcherItem[];
@@ -48,7 +50,7 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
             }
           }}
         >
-          <Icons.Arrow left />
+          <Icons.Arrow left hover />
         </ClickableIcon>
         {render ? (
           render(items[currentIndex])
@@ -67,7 +69,7 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
             }
           }}
         >
-          <Icons.Arrow right />
+          <Icons.Arrow right hover />
         </ClickableIcon>
       </LayoutBlock>
     );

@@ -2,6 +2,8 @@ const vars = require('@styles/_config.scss');
 const utils = require('@styles/_spaces.module.scss');
 
 export enum TypographySize {
+  xxs = 'xxs',
+  xs = 'xs',
   s = 's',
   m = 'm',
   l = 'l',

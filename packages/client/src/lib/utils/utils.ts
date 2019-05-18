@@ -1,59 +1,59 @@
-import { DodayColors, ActivityType } from '../common-interfaces';
+import { DodayColor, ActivityType } from '../common-interfaces';
 
 const vars = require('@styles/_config.scss');
 
-export const detectColor: (color?: DodayColors) => string = color => {
+export const detectColor: (color?: DodayColor) => string = color => {
   if (color != null) {
     switch (color) {
-      case DodayColors.blue:
+      case DodayColor.blue:
         return vars.blue;
-      case DodayColors.blueLight:
+      case DodayColor.blueLight:
         return vars.blueLight;
-      case DodayColors.blueDark:
+      case DodayColor.blueDark:
         return vars.blueDark;
-      case DodayColors.yellow:
+      case DodayColor.yellow:
         return vars.yellow;
-      case DodayColors.yellowLight:
+      case DodayColor.yellowLight:
         return vars.yellowLight;
-      case DodayColors.yellowDark:
+      case DodayColor.yellowDark:
         return vars.yellowDark;
-      case DodayColors.green:
+      case DodayColor.green:
         return vars.green;
-      case DodayColors.greenLight:
+      case DodayColor.greenLight:
         return vars.greenLight;
-      case DodayColors.greenDark:
+      case DodayColor.greenDark:
         return vars.greenDark;
-      case DodayColors.violet:
+      case DodayColor.violet:
         return vars.violet;
-      case DodayColors.violetLight:
+      case DodayColor.violetLight:
         return vars.violetLight;
-      case DodayColors.violetDark:
+      case DodayColor.violetDark:
         return vars.violetDark;
-      case DodayColors.red:
+      case DodayColor.red:
         return vars.red;
-      case DodayColors.redLight:
+      case DodayColor.redLight:
         return vars.redLight;
-      case DodayColors.redDark:
+      case DodayColor.redDark:
         return vars.redDark;
-      case DodayColors.gray1:
+      case DodayColor.gray1:
         return vars.gray1;
-      case DodayColors.gray2:
+      case DodayColor.gray2:
         return vars.gray2;
-      case DodayColors.gray3:
+      case DodayColor.gray3:
         return vars.gray3;
-      case DodayColors.gray4:
+      case DodayColor.gray4:
         return vars.gray4;
-      case DodayColors.gray5:
+      case DodayColor.gray5:
         return vars.gray5;
-      case DodayColors.gray6:
+      case DodayColor.gray6:
         return vars.gray6;
-      case DodayColors.gray7:
+      case DodayColor.gray7:
         return vars.gray7;
-      case DodayColors.gray8:
+      case DodayColor.gray8:
         return vars.gray8;
-      case DodayColors.gray9:
+      case DodayColor.gray9:
         return vars.gray9;
-      case DodayColors.gray10:
+      case DodayColor.gray10:
         return vars.gray10;
       default:
         return undefined;
@@ -64,7 +64,7 @@ export const detectColor: (color?: DodayColors) => string = color => {
 export const activityTypeColor = (type: ActivityType) => {
   switch (type) {
     default:
-      return DodayColors.gray3;
+      return DodayColor.gray3;
   }
 };
 

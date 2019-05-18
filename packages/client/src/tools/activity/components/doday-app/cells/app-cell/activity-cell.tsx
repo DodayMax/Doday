@@ -2,7 +2,7 @@ import * as React from 'react';
 import classnames from 'classnames';
 import {
   TypographySize,
-  DodayColors,
+  DodayColor,
   Space,
   CellProps,
 } from '@lib/common-interfaces';
@@ -66,14 +66,14 @@ export const ActivityCell: React.FC<ActivityCellProps & CellProps> = ({
           <Marker
             bordered
             rounded
-            color={DodayColors.gray4}
+            color={DodayColor.gray4}
             text={activity.activityType}
             size={TypographySize.s}
           />
           <Marker
             bordered
             rounded
-            color={DodayColors.blueLight}
+            color={DodayColor.blueLight}
             text={String(Math.floor(durationToMinutes(activity.duration) / 60))}
             size={TypographySize.s}
           />

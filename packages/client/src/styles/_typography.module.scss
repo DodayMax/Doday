@@ -86,6 +86,16 @@
   width: 100%;
 }
 
+.text-xxs {
+  font-size: $body-xxs;
+  line-height: 0.8rem;
+}
+
+.text-xs {
+  font-size: $body-xs;
+  line-height: 1rem;
+}
+
 .text-s {
   font-size: $body-s;
   line-height: 1.6rem;

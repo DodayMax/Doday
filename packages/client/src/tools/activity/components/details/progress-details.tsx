@@ -7,7 +7,7 @@ import {
   TypographySize,
   TypographyColor,
   Space,
-  DodayColors,
+  DodayColor,
 } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -199,7 +199,7 @@ class ActivityProgressDetails extends React.Component<
         <Marker
           key={cuid()}
           rounded
-          color={DodayColors.gray3}
+          color={DodayColor.gray3}
           text={`completed: ${moment(selectedDoday.progress.completedAt).format(
             'll'
           )}`}
@@ -353,20 +353,20 @@ class ActivityProgressDetails extends React.Component<
                 className={css.videoWrapper}
                 style={{
                   background: `url(${preview})`,
-                  backgroundSize: 'contain',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
                 }}
               />
             ) : null}
             <Text>{resource && resource.description}</Text>
-            {selectedDoday.activityType !== 'watch' &&
-            (resource && resource.url) ? (
+            {!youtubeLink && (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}
                 spaceBelow={Space.Small}
                 align="flex-center"
               >
                 <Button primary href={resource.url} target="_blank">
-                  Read full article
+                  Go to resource
                 </Button>
               </LayoutBlock>
             ) : null}

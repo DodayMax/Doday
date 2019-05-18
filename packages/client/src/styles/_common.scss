@@ -64,6 +64,17 @@
   transition: all 300ms ease;
 }
 
+.icon-hover {
+  path {
+    fill: $gray-6;
+  }
+  &:hover {
+    path {
+      fill: $gray-8;
+    }
+  }
+}
+
 a {
   text-decoration: none;
   color: $primary-text;

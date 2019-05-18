@@ -16,9 +16,11 @@ export const Arrow = ({
   width = 20,
   height = 20,
   color = vars.black,
+  hover = false,
 }: ArrowProps) => {
   const cx = classnames({
     [css.flip]: right,
+    [css.hover]: hover,
   });
 
   return (
@@ -29,7 +31,7 @@ export const Arrow = ({
       className={cx}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M10 12l4-3v6z" fill={color} fillRule="evenodd" />
+      <path d="M8 12l8-6v12z" fill={color} fillRule="evenodd" />
     </svg>
   );
 };

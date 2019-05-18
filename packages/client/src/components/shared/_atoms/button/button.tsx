@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { Icons } from '@shared';
-import { DodayColors } from '@root/lib/common-interfaces';
+import { DodayColor } from '@root/lib/common-interfaces';
 import { detectColor } from '@root/lib/utils';
 
 const vars = require('@styles/_config.scss');
@@ -17,7 +17,7 @@ export enum ButtonSize {
 
 export interface ButtonProps {
   active?: boolean;
-  activeColor?: DodayColors;
+  activeColor?: DodayColor;
   size?: ButtonSize;
   icon?: React.ReactElement<any>;
   primary?: boolean;

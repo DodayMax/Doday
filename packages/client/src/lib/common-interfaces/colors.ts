@@ -8,7 +8,7 @@ export enum TypographyColor {
   Link = 'link',
 }
 
-export enum DodayColors {
+export enum DodayColor {
   yellow,
   yellowLight,
   yellowDark,

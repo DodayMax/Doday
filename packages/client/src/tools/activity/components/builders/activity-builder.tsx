@@ -308,7 +308,7 @@ export class ActivityBuilder extends React.Component<
               })
             }
             handle={this.handleEstimateTimeChange}
-            step={10}
+            step={5}
           />
         </LayoutBlock>
         <LayoutBlock childFlex flex={'1'} paddingBelow={Space.Small}>

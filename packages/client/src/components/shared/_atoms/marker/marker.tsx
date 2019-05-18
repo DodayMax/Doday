@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DodayColors, TypographySize } from '@root/lib/common-interfaces';
+import { DodayColor, TypographySize } from '@root/lib/common-interfaces';
 import { Text } from '../typography';
 import { detectColor } from '@root/lib/utils';
 import classnames from 'classnames';
@@ -9,7 +9,7 @@ const css = require('./_marker.module.scss');
 
 export interface MarkerProps {
   text: string;
-  color?: DodayColors;
+  color?: DodayColor;
   size?: TypographySize;
   rounded?: boolean;
   bordered?: boolean;
