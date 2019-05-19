@@ -32,6 +32,7 @@ describe("Test DodayDetails's sagas", () => {
     expect(gen.next(activity).value).toEqual(
       put(setSelectedDodayActionCreator(activity))
     );
+    expect(gen.next().done).toBe(true);
   });
 
   it('fetchSelectedProgressActionSaga', () => {
@@ -46,6 +47,7 @@ describe("Test DodayDetails's sagas", () => {
     expect(gen.next(activity).value).toEqual(
       put(setSelectedDodayActionCreator(activity))
     );
+    expect(gen.next().done).toBe(true);
   });
 
   it('setUpdatesAndDirtyStatusSaga', () => {
@@ -65,5 +67,6 @@ describe("Test DodayDetails's sagas", () => {
     expect(gen.next().value).toEqual(select(updatesSelector));
     expect(gen.next().value).toEqual(call(isDirty, activity, updates));
     expect(gen.next().value).toEqual(put(setDirtyStatusActionCreator(dirty)));
+    expect(gen.next().done).toBe(true);
   });
 });

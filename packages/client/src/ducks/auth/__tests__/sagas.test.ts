@@ -23,5 +23,6 @@ describe("Test Auth's sagas", () => {
     expect(gen.next(activeTools).value).toEqual(
       put(setActiveToolBeaconsActionCreator(activeTools))
     );
+    expect(gen.next().done).toBe(true);
   });
 });

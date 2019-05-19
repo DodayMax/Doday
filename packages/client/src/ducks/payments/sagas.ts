@@ -8,7 +8,7 @@ import { setHeroActionCreator } from '../auth/actions';
  *
  * @param {HandleTokenAction} action
  */
-function* handleTokenSaga(action: HandleTokenAction) {
+export function* handleTokenSaga(action: HandleTokenAction) {
   const res = yield call(
     api.payments.mutations.handleStripeToken,
     action.payload

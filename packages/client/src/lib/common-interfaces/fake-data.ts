@@ -12,6 +12,7 @@ import { initialDodayDetailsState } from '@root/ducks/doday-details/reducer';
 import { initialBuilderStatusState } from '@root/ducks/builder/reducer';
 import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
 import { initialStoreState } from '@root/ducks/store/reducer';
+import { Token } from 'react-stripe-checkout';
 
 export const hero: Hero = {
   did: 'test did',
@@ -73,4 +74,38 @@ export const rootState: RootState = {
   heroSettings: initialHeroSettingsState,
   tools: {},
   store: initialStoreState,
+};
+
+export const stripeToken: Token = {
+  id: 'id',
+  object: 'some object',
+  card: {
+    id: 'string',
+    object: 'string',
+    address_city: null,
+    address_country: null,
+    address_line1: null,
+    address_line1_check: null,
+    address_line2: null,
+    address_state: null,
+    address_zip: null,
+    address_zip_check: null,
+    brand: 'string',
+    country: 'string',
+    cvc_check: 'string',
+    dynamic_last4: null,
+    exp_month: 0,
+    exp_year: 0,
+    funding: 'string',
+    last4: 'string',
+    metadata: {},
+    name: 'string',
+    tokenization_method: null,
+  },
+  client_ip: 'string',
+  created: 0,
+  email: 'string',
+  livemode: false,
+  type: 'string',
+  used: false,
 };

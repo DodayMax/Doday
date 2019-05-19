@@ -63,7 +63,9 @@ class TopBar extends React.Component<
               align="flex-end"
               valign="vflex-center"
             >
-              <StripeButton handleToken={this.props.handleStripeToken} />
+              <StripeButton
+                handleTokenActionCreator={this.props.handleStripeToken}
+              />
             </LayoutBlock>
           }
         />
@@ -78,5 +80,5 @@ const mapState = (state: RootState) => ({
 
 export default connect(
   mapState,
-  { handleStripeToken: coinActions.handleToken }
+  { handleStripeToken: coinActions.handleTokenActionCreator }
 )(TopBar);

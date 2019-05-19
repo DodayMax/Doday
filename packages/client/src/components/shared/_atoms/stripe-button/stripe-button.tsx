@@ -7,7 +7,7 @@ import { ButtonSize } from '../button';
 import { Coins } from '../coins';
 
 interface StripeButtonProps {
-  handleToken: (token: Token) => HandleTokenAction;
+  handleTokenActionCreator: (token: Token) => HandleTokenAction;
 }
 
 export class StripeButton extends React.Component<StripeButtonProps> {
@@ -17,7 +17,7 @@ export class StripeButton extends React.Component<StripeButtonProps> {
         name={'Buy doday coins:'}
         description={'1$ for 10 doday coins.'}
         amount={500}
-        token={token => this.props.handleToken(token)}
+        token={token => this.props.handleTokenActionCreator(token)}
         stripeKey={process.env.REACT_APP_STRIPE_KEY}
       >
         <Button borderless size={ButtonSize.small}>

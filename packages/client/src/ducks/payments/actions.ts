@@ -11,12 +11,16 @@ export enum ActionConstants {
  * @export
  * @returns {HandleTokenAction}
  */
-export function handleToken(token: Token): HandleTokenAction {
+export function handleTokenActionCreator(token: Token): HandleTokenAction {
   return {
     type: ActionConstants.HANDLE_TOKEN,
     payload: token,
   };
 }
+
+export const actionCreators = {
+  handleTokenActionCreator,
+};
 
 /**
  * Define return types of actions
