@@ -1,18 +1,11 @@
 import { AnyAction } from 'redux';
-import {
-  DodayLike,
-  ProgressLike,
-  SerializedProgressLike,
-  SerializedDodayLike,
-} from '@root/tools/types';
+import { DodayLike, ProgressLike } from '@root/tools/types';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
   FETCH_SELECTED_DODAY = '[doday-details] FETCH_SELECTED_DODAY',
   FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
-  FETCH_SELECTED_GOAL = '[doday-details] FETCH_SELECTED_GOAL',
   SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
-  SET_SELECTED_GOAL = '[doday-details] SET_SELECTED_GOAL',
   UPDATE_SELECTED_DODAY_PROGRESS = '[doday-details] UPDATE_SELECTED_DODAY_PROGRESS',
   CLEAR_SELECTED_DODAY = '[doday-details] CLEAR_SELECTED_DODAY',
   SET_DIRTY_STATUS = '[doday-details] SET_DIRTY_STATUS',
@@ -82,13 +75,14 @@ export function setSelectedDodayActionCreator(
 }
 
 /**
- * Update selected doday optimistically
+ * Update selected doday optimistically or remove progress from
+ * selected doday when undefined is passed
  *
  * @export
  * @returns {UpdateSelectedDodayProgressAction}
  */
 export function updateSelectedDodayProgressActionCreator(
-  progress: Partial<ProgressLike>
+  progress?: Partial<ProgressLike>
 ): UpdateSelectedDodayProgressAction {
   return {
     type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS,
@@ -126,14 +120,14 @@ export function setDirtyStatusActionCreator(
 
 /**
  * Request for set updates to store
- * Needed for set updates to store in saga and then
+ * Needed for set updates to store in saga before
  * set dirty status
  *
  * @export
  * @returns {RequestForSetUpdatesAction}
  */
 export function requestForSetUpdatesActionCreator(
-  updates: Partial<SerializedProgressLike>
+  updates: Partial<ProgressLike>
 ): RequestForSetUpdatesAction {
   return {
     type: ActionConstants.REQUEST_FOR_SET_UPDATES,
@@ -142,13 +136,13 @@ export function requestForSetUpdatesActionCreator(
 }
 
 /**
- * Set updates for selected doday to store
+ * Set updates for selected doday after requestForSetUpdates was called
  *
  * @export
  * @returns {SetUpdatesForSelectedDodayAction}
  */
 export function setUpdatesForSelectedDodayActionCreator(
-  updates: Partial<SerializedDodayLike>
+  updates: Partial<ProgressLike>
 ): SetUpdatesForSelectedDodayAction {
   return {
     type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
@@ -200,11 +194,6 @@ export interface FetchSelectedProgressAction extends AnyAction {
   payload: string;
 }
 
-export interface FetchSelectedGoalAction extends AnyAction {
-  type: ActionConstants.FETCH_SELECTED_GOAL;
-  payload: string;
-}
-
 export interface SetSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_SELECTED_DODAY;
   payload: DodayLike;
@@ -226,12 +215,12 @@ export interface SetDirtyStatusAction extends AnyAction {
 
 export interface SetUpdatesForSelectedDodayAction extends AnyAction {
   type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY;
-  payload: Partial<SerializedDodayLike>;
+  payload: Partial<ProgressLike>;
 }
 
 export interface RequestForSetUpdatesAction extends AnyAction {
   type: ActionConstants.REQUEST_FOR_SET_UPDATES;
-  payload: Partial<SerializedProgressLike>;
+  payload: Partial<ProgressLike>;
 }
 
 export interface ClearDodayDetailsDirtyStuffAction extends AnyAction {
@@ -246,7 +235,6 @@ export type ActionTypes =
   | SetDodayDetailsLoadingStateAction
   | FetchSelectedDodayAction
   | FetchSelectedProgressAction
-  | FetchSelectedGoalAction
   | SetSelectedDodayAction
   | UpdateSelectedDodayProgressAction
   | ClearSelectedDodayAction

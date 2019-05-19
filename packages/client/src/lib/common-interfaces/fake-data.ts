@@ -50,6 +50,11 @@ export const activity: Activity = {
   },
   ownerDID: 'did',
   created: new Date('2019-02-15'),
+  progress: {
+    date: new Date('2019-02-15'),
+    completed: false,
+    ownerDID: 'test hero did',
+  },
 };
 
 export const rootState: RootState = {

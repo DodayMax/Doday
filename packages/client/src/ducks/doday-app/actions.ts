@@ -2,14 +2,10 @@ import { AnyAction } from 'redux';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 
 export enum ActionConstants {
-  FETCH_DODAYS_WITH_PROGRESS_FOR_DATE = '[dodays-app] FETCH_DODAYS_WITH_PROGRESS_FOR_DATE',
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_ROUTE = '[doday-app] CHANGE_ROUTE',
   SET_QUERY_PARAMS = '[doday-app] SET_QUERY_PARAMS',
-  CHANGE_DATE = '[heroSettings] CHANGE_DATE',
-  SET_DODAYS = '[doday-app] SET_DODAYS',
   SET_DODAYS_BADGE_FOR_TODAY = '[doday-app] SET_DODAYS_BADGE_FOR_TODAY',
-  PLAN_OUT = '[doday-app] PLAN_OUT',
 }
 
 /**

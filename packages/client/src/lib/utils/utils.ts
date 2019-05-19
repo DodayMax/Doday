@@ -1,6 +1,6 @@
 import { DodayColor, ActivityType } from '../common-interfaces';
 import { Hero } from '../models/entities/hero';
-import { ToolBeacon } from '@root/tools/types';
+import { ToolBeacon, ProgressLike, DodayLike } from '@root/tools/types';
 import { toolBeacons } from '@root/tools';
 
 const vars = require('@styles/_config.scss');
@@ -121,6 +121,14 @@ export const activeToolsForHero = (hero: Hero): ToolBeacon[] =>
   toolBeacons.filter(tool =>
     hero.tools.find(item => item === tool.config.sysname)
   );
+
+export const isDirty = (
+  initialObject: DodayLike,
+  updates: Partial<ProgressLike>
+): boolean =>
+  !isEmptyObject(updates) &&
+  (updates.dateIsLocked !== initialObject.progress.dateIsLocked ||
+    updates.date != null);
 
 const standartColorsForGoalsChart = [
   vars.yellow,

@@ -3,9 +3,9 @@ import { BuilderStatus } from '@root/ducks/builder/reducer';
 import {
   ToolsState,
   ToolBeacon,
-  SerializedProgressLike,
   DodayLike,
   ToolsBuilderState,
+  ProgressLike,
 } from '@root/tools/types';
 import { DodayAppQueryParams } from '../common-interfaces';
 
@@ -52,6 +52,6 @@ export interface StoreState {
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<SerializedProgressLike>;
+  updates?: Partial<ProgressLike>;
   selectedDoday?: DodayLike;
 }

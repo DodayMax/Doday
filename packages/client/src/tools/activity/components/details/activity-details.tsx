@@ -33,7 +33,7 @@ import {
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
 import { Activity } from '../../entities/activity';
-import { DodayType, SerializedProgressLike } from '@root/tools/types';
+import { DodayType, ProgressLike } from '@root/tools/types';
 import { activityIconByType } from '../builders/activity-builder';
 
 const vars = require('@styles/_config.scss');
@@ -42,7 +42,7 @@ const css = require('./activity-details.module.scss');
 interface ActivityDetailsProps {}
 
 interface ActivityDetailsState {
-  date: number;
+  date: Date;
   dateIsLocked: boolean;
 }
 
@@ -54,7 +54,7 @@ interface PropsFromConnect {
   takeDodayActionCreator(payload: {
     did: string;
     type: DodayType;
-    progress: Partial<SerializedProgressLike>;
+    progress: Partial<ProgressLike>;
   }): TakeDodayAction;
   untakeDodayActionCreator(payload: {
     did: string;
@@ -74,7 +74,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
     super(props);
 
     this.state = {
-      date: Date.now(),
+      date: new Date(),
       dateIsLocked: false,
     };
   }
@@ -156,7 +156,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
             selected={new Date(this.state.date)}
             onChange={date => {
               this.setState({
-                date: date.getTime(),
+                date,
               });
             }}
           />

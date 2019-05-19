@@ -95,12 +95,6 @@ class ActivityProgressDetails extends React.Component<
     Partial<RouteComponentProps<any>>,
   ActivityProgressDetailsState
 > {
-  componentDidMount() {
-    //fetch selected doday with graphQL
-    const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
-  }
-
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
       const youtubeID = youtubeIDFromURL(resource.url);

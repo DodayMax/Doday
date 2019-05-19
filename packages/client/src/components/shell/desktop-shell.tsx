@@ -26,7 +26,7 @@ interface PropsFromConnect {
   activeTools: ToolBeacon[];
   toggleDrawer: () => ToggleDrawerAction;
   toggleDodayApp: () => ToggleDodayAppAction;
-  fetchHeroActionCreator: () => FetchHeroAction;
+  fetchHeroActionCreator(): FetchHeroAction;
 }
 
 class DesktopShell extends React.Component<
@@ -90,6 +90,6 @@ export default connect(
   {
     toggleDrawer: settingsActions.toggleDrawer,
     toggleDodayApp: settingsActions.toggleDodayApp,
-    fetchHero: authActions.fetchHeroActionCreator,
+    fetchHeroActionCreator: authActions.actionCreators.fetchHeroActionCreator,
   }
 )(DesktopShell);

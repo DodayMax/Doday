@@ -51,6 +51,8 @@ export interface ProgressBase {
   dateIsLocked?: boolean;
   /** Datetime when Doday is completed */
   completedAt?: Date;
+  /** Owner DID to filter by owner */
+  ownerDID?: string;
 }
 
 /** Which data we send to API */

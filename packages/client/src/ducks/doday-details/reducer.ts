@@ -21,6 +21,7 @@ export default (
         selectedDoday: action.payload,
       };
     case actions.ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS:
+      /** if there is updates in action = update selected doday progress */
       if (action.payload) {
         return {
           ...state,
@@ -33,6 +34,7 @@ export default (
           },
         };
       }
+      /** if there is no updates in action - remove progress from selected doday (untake) */
       const { progress, ...omitted } = state.selectedDoday;
       return {
         ...state,

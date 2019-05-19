@@ -13,11 +13,7 @@ import {
 import { DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
-import {
-  PushToNavigationStackByDIDAction,
-  ClearNavStackAction,
-  ChangeDodayAppRouteAction,
-} from '@root/ducks/doday-app/actions';
+import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../../shared/_atoms/layout-block';
 import { capitalize } from '@root/lib/utils';

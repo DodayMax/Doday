@@ -11,15 +11,17 @@ import {
 } from './actions';
 import { api } from '@root/services';
 import { updatesSelector, selectedDoday } from './selectors';
-import { isEmptyObject } from '@root/lib/utils';
-import { DodayLike, SerializedProgressLike } from '@root/tools/types';
+import { isDirty } from '@root/lib/utils';
+import { DodayLike, ProgressLike } from '@root/tools/types';
 
 /**
  * Fetch selected published Doday node saga
  *
  * @param {FetchSelectedDodayAction} action
  */
-function* fetchSelectedDodayActionSaga(action: FetchSelectedDodayAction) {
+export function* fetchSelectedDodayActionSaga(
+  action: FetchSelectedDodayAction
+) {
   const doday = yield call(api.dodays.queries.fetchDodayByDID, action.payload);
   yield put(setSelectedDodayActionCreator(doday));
 }
@@ -29,7 +31,9 @@ function* fetchSelectedDodayActionSaga(action: FetchSelectedDodayAction) {
  *
  * @param {FetchSelectedProgressAction} action
  */
-function* fetchSelectedProgressActionSaga(action: FetchSelectedProgressAction) {
+export function* fetchSelectedProgressActionSaga(
+  action: FetchSelectedProgressAction
+) {
   const doday = yield call(
     api.dodays.queries.fetchDodayWithProgressByDID,
     action.payload
@@ -43,16 +47,13 @@ function* fetchSelectedProgressActionSaga(action: FetchSelectedProgressAction) {
  *
  * @param {RequestForSetUpdatesAction} action
  */
-function* setUpdatesAndDirtyStatusSaga(action: RequestForSetUpdatesAction) {
+export function* setUpdatesAndDirtyStatusSaga(
+  action: RequestForSetUpdatesAction
+) {
   yield put(setUpdatesForSelectedDodayActionCreator(action.payload));
-  const updates: Partial<SerializedProgressLike> = yield select(
-    updatesSelector
-  );
+  const updates: Partial<ProgressLike> = yield select(updatesSelector);
   const selected: DodayLike = yield select(selectedDoday);
-  const dirty =
-    !isEmptyObject(updates) &&
-    (updates.dateIsLocked !== selected.progress.dateIsLocked ||
-      updates.date != null);
+  const dirty = yield call(isDirty, selected, updates);
   yield put(setDirtyStatusActionCreator(dirty));
 }
 

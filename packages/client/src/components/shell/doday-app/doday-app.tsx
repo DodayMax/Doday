@@ -5,14 +5,8 @@ import { actions as appActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { actions as settingsActions } from '@ducks/hero-settings';
 import * as api from '@ducks/api';
-import {
-  ChangeDodayAppDateAction,
-  PlanOutAction,
-  FetchDodaysWithProgressForDateAction,
-  ChangeDodayAppRouteAction,
-} from '@root/ducks/doday-app/actions';
+import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
-import { FetchSelectedDodayAction } from '@root/ducks/doday-details/actions';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
@@ -27,7 +21,6 @@ interface PropsFromConnect {
   route: string;
   routeParams: DodayAppQueryParams;
   dodays: DodayLike[];
-  changeDodayAppDateActionCreator?: (date: Date) => ChangeDodayAppDateAction;
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
