@@ -24,8 +24,8 @@ interface PropsFromConnect {
   isDodayAppCollapsed: boolean;
   hero: Hero;
   activeTools: ToolBeacon[];
-  toggleDrawer: () => ToggleDrawerAction;
-  toggleDodayApp: () => ToggleDodayAppAction;
+  toggleDrawerActionCreator: () => ToggleDrawerAction;
+  toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   fetchHeroActionCreator(): FetchHeroAction;
 }
 
@@ -42,15 +42,15 @@ class DesktopShell extends React.Component<
   }
 
   toggleMenu() {
-    this.props.toggleDrawer();
+    this.props.toggleDrawerActionCreator();
   }
 
   render() {
     const {
       hero,
       activeTools,
-      toggleDrawer,
-      toggleDodayApp,
+      toggleDrawerActionCreator,
+      toggleDodayAppActionCreator,
       isDrawerCollapsed,
       isDodayAppCollapsed,
     } = this.props;
@@ -63,8 +63,8 @@ class DesktopShell extends React.Component<
             {hero ? (
               <Dashboard
                 activeTools={activeTools}
-                toggleDrawer={toggleDrawer}
-                toggleDodayApp={toggleDodayApp}
+                toggleDrawerActionCreator={toggleDrawerActionCreator}
+                toggleDodayAppActionCreator={toggleDodayAppActionCreator}
                 isDodayAppCollapsed={isDodayAppCollapsed}
                 isDrawerCollapsed={isDrawerCollapsed}
               />
@@ -88,8 +88,8 @@ const mapState = (state: RootState) => ({
 export default connect(
   mapState,
   {
-    toggleDrawer: settingsActions.toggleDrawer,
-    toggleDodayApp: settingsActions.toggleDodayApp,
+    toggleDrawerActionCreator: settingsActions.toggleDrawerActionCreator,
+    toggleDodayAppActionCreator: settingsActions.toggleDodayAppActionCreator,
     fetchHeroActionCreator: authActions.actionCreators.fetchHeroActionCreator,
   }
 )(DesktopShell);

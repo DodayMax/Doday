@@ -16,8 +16,8 @@ const css = require('./_dashboard.module.scss');
 
 interface DashboardProps {
   activeTools: ToolBeacon[];
-  toggleDrawer: () => ToggleDrawerAction;
-  toggleDodayApp: () => ToggleDodayAppAction;
+  toggleDrawerActionCreator: () => ToggleDrawerAction;
+  toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
 }

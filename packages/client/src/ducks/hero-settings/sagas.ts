@@ -6,10 +6,10 @@ import { ActionConstants, ToggleDrawerAction } from './actions';
  *
  * @param {ToggleDrawerAction} action
  */
-function* toggleDrawer(action: ToggleDrawerAction) {
+function* toggleDrawerActionCreator(action: ToggleDrawerAction) {
   // yield call(console.log, 'toggle drawer saga')
 }
 
 export default [
-  takeEvery(ActionConstants.TOGGLE_DRAWER, toggleDrawer),
+  takeEvery(ActionConstants.TOGGLE_DRAWER, toggleDrawerActionCreator),
 ];

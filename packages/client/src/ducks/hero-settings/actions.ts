@@ -11,7 +11,7 @@ export enum ActionConstants {
  * @export
  * @returns {ToggleDrawerAction}
  */
-export function toggleDrawer(): ToggleDrawerAction {
+export function toggleDrawerActionCreator(): ToggleDrawerAction {
   return {
     type: ActionConstants.TOGGLE_DRAWER,
   };
@@ -23,12 +23,16 @@ export function toggleDrawer(): ToggleDrawerAction {
  * @export
  * @returns {ToggleDodayAppAction}
  */
-export function toggleDodayApp(value: boolean): ToggleDodayAppAction {
+export function toggleDodayAppActionCreator(): ToggleDodayAppAction {
   return {
     type: ActionConstants.TOGGLE_DODAY_APP,
-    payload: value,
   };
 }
+
+export const actionCreators = {
+  toggleDrawerActionCreator,
+  toggleDodayAppActionCreator,
+};
 
 /**
  * Define return types of actions
@@ -40,7 +44,6 @@ export interface ToggleDrawerAction extends AnyAction {
 
 export interface ToggleDodayAppAction extends AnyAction {
   type: ActionConstants.TOGGLE_DODAY_APP;
-  payload: boolean;
 }
 
 /**
