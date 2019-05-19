@@ -2,9 +2,9 @@ import { AnyAction } from 'redux';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 import { ClearBuilderAction } from '@root/ducks/builder/actions';
-import { SerializedResource } from '@root/lib/models/entities/resource';
+import { Resource } from '@root/lib/models/entities/resource';
 import { Activity } from '../entities/activity';
-import { SerializedDodayLike, SerializedProgressLike } from '@root/tools/types';
+import { DodayLike, ProgressLike } from '@root/tools/types';
 
 export enum ActionConstants {
   FETCH_ACTIVITIES = '[activities] FETCH_ACTIVITIES',
@@ -56,11 +56,11 @@ export function setActivitiesActionCreator(
  * Set url parsing progress state
  *
  * @export
- * @returns {ParseUrlMetadataProgressAction}
+ * @returns {SetParseUrlMetadataProgressAction}
  */
 export function setUrlParsingProgressActionCreator(
   state?: boolean
-): ParseUrlMetadataProgressAction {
+): SetParseUrlMetadataProgressAction {
   return {
     type: ActionConstants.SET_URL_PARSING_PROGRESS,
     payload: state,
@@ -135,9 +135,9 @@ export function clearParsedUrlMetadataActionCreator(): ClearParsedUrlMetadataAct
  * @returns {CreateDodayOptimisticUpdateAction}
  */
 export function createDodayOptimisticUpdateActionCreator(payload: {
-  doday: SerializedDodayLike;
-  progress?: SerializedProgressLike;
-  resource?: SerializedResource;
+  doday: DodayLike;
+  progress?: ProgressLike;
+  resource?: Resource;
 }): CreateDodayOptimisticUpdateAction {
   return {
     type: ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE,
@@ -154,9 +154,9 @@ export function createDodayOptimisticUpdateActionCreator(payload: {
 export function updateDodayOptimisticUpdateActionCreator(payload: {
   did: string;
   updates: {
-    doday?: Partial<SerializedDodayLike>;
-    progress?: Partial<SerializedProgressLike>;
-    resource?: Partial<SerializedResource>;
+    doday?: Partial<DodayLike>;
+    progress?: Partial<ProgressLike>;
+    resource?: Partial<Resource>;
   };
 }): UpdateDodayOptimisticUpdateAction {
   return {
@@ -173,7 +173,7 @@ export function updateDodayOptimisticUpdateActionCreator(payload: {
  */
 export function takeDodayOptimisticUpdateActionCreator(payload: {
   did: string;
-  progress: Partial<SerializedProgressLike>;
+  progress: Partial<ProgressLike>;
 }): TakeDodayOptimisticUpdateAction {
   return {
     type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE,
@@ -253,7 +253,7 @@ export interface SetActivityTypeAction extends AnyAction {
   payload: ActivityType;
 }
 
-export interface ParseUrlMetadataProgressAction extends AnyAction {
+export interface SetParseUrlMetadataProgressAction extends AnyAction {
   type: ActionConstants.SET_URL_PARSING_PROGRESS;
   payload?: boolean;
 }
@@ -272,9 +272,9 @@ export interface ClearParsedUrlMetadataAction extends AnyAction {
 export interface CreateDodayOptimisticUpdateAction extends AnyAction {
   type: ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE;
   payload: {
-    doday: SerializedDodayLike;
-    progress?: SerializedProgressLike;
-    resource?: SerializedResource;
+    doday: DodayLike;
+    progress?: ProgressLike;
+    resource?: Resource;
   };
 }
 
@@ -283,9 +283,9 @@ export interface UpdateDodayOptimisticUpdateAction extends AnyAction {
   payload: {
     did: string;
     updates: {
-      doday?: Partial<SerializedDodayLike>;
-      progress?: Partial<SerializedProgressLike>;
-      resource?: Partial<SerializedResource>;
+      doday?: Partial<DodayLike>;
+      progress?: Partial<ProgressLike>;
+      resource?: Partial<Resource>;
     };
   };
 }
@@ -294,7 +294,7 @@ export interface TakeDodayOptimisticUpdateAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE;
   payload: {
     did: string;
-    progress: Partial<SerializedProgressLike>;
+    progress: Partial<ProgressLike>;
   };
 }
 
@@ -317,7 +317,7 @@ export type ActionTypes =
   | SetActivitiesAction
   | SetActivityTypeAction
   | ParseUrlMetadataAction
-  | ParseUrlMetadataProgressAction
+  | SetParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction
   | ClearParsedUrlMetadataAction
   | ClearBuilderAction

@@ -19,7 +19,7 @@ import { api } from '@root/services';
  *
  * @param {FetchActivitiesAction} action
  */
-function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
+export function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
   const params: DodaysWithProgressQueryParams = action.payload;
   const activities = yield call(api.dodays.queries.fetchDodays, params);
@@ -38,10 +38,10 @@ function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
  *
  * @param {ParseUrlMetadataAction} action
  */
-function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
+export function* parseUrlMetadataActionSaga(action: ParseUrlMetadataAction) {
   yield put(setUrlParsingProgressActionCreator(true));
   const metadata = yield call(parseMetadataFromUrl, action.payload);
-  const activityType = detectActivityType(metadata);
+  const activityType = yield call(detectActivityType, metadata);
   if (metadata) {
     yield put(setParsedUrlMetadataObjectActionCreator(metadata));
     yield put(setActivityTypeActionCreator(activityType));
@@ -50,6 +50,6 @@ function* parseUrlMetadataSaga(action: ParseUrlMetadataAction) {
 }
 
 export default [
-  takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataSaga),
+  takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataActionSaga),
   takeLatest(ActionConstants.FETCH_ACTIVITIES, fetchActivitiesActionSaga),
 ];

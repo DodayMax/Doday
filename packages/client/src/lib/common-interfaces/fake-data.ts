@@ -1,4 +1,4 @@
-import { DodayType } from '@root/tools/types';
+import { DodayType, DodayLike, ProgressLike } from '@root/tools/types';
 import {
   SerializedActivity,
   SerializedActivityProgress,
@@ -13,6 +13,7 @@ import { initialBuilderStatusState } from '@root/ducks/builder/reducer';
 import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
 import { initialStoreState } from '@root/ducks/store/reducer';
 import { Token } from 'react-stripe-checkout';
+import { Resource, SerializedResource } from '../models/entities/resource';
 
 export const hero: Hero = {
   did: 'test did',
@@ -57,6 +58,37 @@ export const activity: Activity = {
     ownerDID: 'test hero did',
   },
 };
+
+export const doday: DodayLike = {
+  did: 'test did',
+  activityType: 'do',
+  type: DodayType.Activity,
+  name: 'name',
+  duration: 'P60M',
+  public: false,
+  ownerDID: 'did',
+  created: new Date('2019-02-15'),
+};
+
+export const progress: ProgressLike = {
+  date: new Date('2019-02-15'),
+  completed: false,
+  ownerDID: 'test hero did',
+};
+
+export const parsedResource: Resource = {
+  did: 'did',
+  description: 'string',
+  icon: 'string',
+  image: 'string',
+  keywords: ['string'],
+  provider: 'string',
+  title: 'string',
+  type: 'string',
+  url: 'string',
+};
+
+export const serializedResource: SerializedResource = parsedResource;
 
 export const rootState: RootState = {
   auth: {

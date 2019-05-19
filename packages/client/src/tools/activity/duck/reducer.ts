@@ -4,18 +4,18 @@ import { ActivityType } from '@root/lib/common-interfaces';
 import { DodayType } from '@root/tools/types';
 import { Activity } from '../entities/activity';
 
-export const initialState: ActivityBuilderState = {
+export const initialActivityBuilderState: ActivityBuilderState = {
   activityType: 'do',
 };
-export const initialDodayAppState: ActivityToolState = {
+export const initialActivityToolState: ActivityToolState = {
   dodays: [],
 };
 
 export const mainReducer = (
-  state = initialDodayAppState,
+  state = initialActivityToolState,
   action?: actions.ActionTypes
 ): ActivityToolState => {
-  switch (action && action.type) {
+  switch (action.type) {
     case actions.ActionConstants.SET_ACTIVITIES:
       return {
         ...state,
@@ -115,10 +115,10 @@ export const mainReducer = (
 };
 
 export const builderReducer = (
-  state = initialState,
+  state = initialActivityBuilderState,
   action?: actions.ActionTypes
 ): ActivityBuilderState => {
-  switch (action && action.type) {
+  switch (action.type) {
     case actions.ActionConstants.SET_ACTIVITY_TYPE:
       return {
         ...state,
@@ -142,7 +142,7 @@ export const builderReducer = (
         parsedMetadata: undefined,
       };
     case builderActions.ActionConstants.CLEAR_BUILDER:
-      return initialState;
+      return initialActivityBuilderState;
     default:
       return state;
   }
