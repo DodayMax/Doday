@@ -9,24 +9,24 @@ export enum ActionConstants {
 }
 
 /**
- * Fetch Hero
+ * Fetch Hero node
  *
  * @export
  * @returns {FetchHeroAction}
  */
-export function fetchHero(): FetchHeroAction {
+export function fetchHeroActionCreator(): FetchHeroAction {
   return {
     type: ActionConstants.FETCH_HERO,
   };
 }
 
 /**
- * Set Hero
+ * Set Hero to store
  *
  * @export
  * @returns {SetHeroAction}
  */
-export function setHero(hero: Hero): SetHeroAction {
+export function setHeroActionCreator(hero: Hero): SetHeroAction {
   return {
     type: ActionConstants.SET_HERO,
     payload: hero,
@@ -34,7 +34,8 @@ export function setHero(hero: Hero): SetHeroAction {
 }
 
 /**
- * Set active tool beacons
+ * Filter tools accordingly to the Hero's active tools and
+ * set they to store
  *
  * @export
  * @returns {SetActiveToolBeaconsAction}

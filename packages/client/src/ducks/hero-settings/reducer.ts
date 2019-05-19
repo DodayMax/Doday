@@ -1,13 +1,13 @@
 import * as actions from './actions';
 import { HeroSettingsState } from '@lib/models';
 
-export const initialState: HeroSettingsState = {
+export const initialHeroSettingsState: HeroSettingsState = {
   isDrawerCollapsed: false,
   isDodayAppCollapsed: false,
 };
 
 export default (
-  state = initialState,
+  state = initialHeroSettingsState,
   action?: actions.ActionTypes
 ): HeroSettingsState => {
   switch (action && action.type) {

@@ -45,6 +45,7 @@ const rootReducer = combineReducers<RootState>({
     }),
   }),
   heroSettings: ducks.herosettings.default,
+  store: ducks.store.default,
   tools: toolBeacons.length
     ? combineReducers<ToolsState>({
         ...spreadToolsMainReducers(),
@@ -61,6 +62,7 @@ function* rootSaga() {
     ...ducks.herosettings.herosettingsSagas,
     ...ducks.payments.coinsSagas,
     ...ducks.api.dodays.apisagas,
+    ...ducks.store.storeSagas,
     ...spreadToolsSagas(),
   ]);
 }

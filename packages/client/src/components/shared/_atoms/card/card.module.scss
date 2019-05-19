@@ -1,0 +1,7 @@
+@import '@styles/_config.scss';
+
+.card {
+  &-container {
+    border: 1px solid $gray-6;
+  }
+}

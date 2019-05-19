@@ -60,7 +60,7 @@ export class Button extends React.Component<ButtonProps> {
       {
         [css.default]: !primary,
         [css.primary]: primary,
-        [css.disabled]: location.pathname === to || disabled,
+        [css.disabled]: disabled != null ? disabled : location.pathname === to,
         [css.borderless]: borderless,
         [css.lightBorder]: lightBorder,
         [css.withIcon]: !!icon,
@@ -72,7 +72,7 @@ export class Button extends React.Component<ButtonProps> {
     const styles = active
       ? {
           backgroundColor: `${
-            activeColor != null ? detectColor(activeColor) : vars.gray4
+            activeColor != null ? detectColor(activeColor) : vars.gray3
           }`,
         }
       : {};

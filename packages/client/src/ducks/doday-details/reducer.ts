@@ -1,12 +1,12 @@
 import * as actions from './actions';
 import { DodayDetailsState } from '@lib/models';
 
-export const initialState: DodayDetailsState = {
+export const initialDodayDetailsState: DodayDetailsState = {
   loading: false,
 };
 
 export default (
-  state = initialState,
+  state = initialDodayDetailsState,
   action?: actions.ActionTypes
 ): DodayDetailsState => {
   switch (action && action.type) {

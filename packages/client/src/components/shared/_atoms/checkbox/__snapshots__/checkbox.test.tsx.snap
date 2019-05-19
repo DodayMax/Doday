@@ -21,48 +21,22 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": <Unknown
-        checked={true}
-        height={30}
-        width={30}
-      />,
-      "className": "checkboxConainer",
-      "onClick": [Function],
-      "role": "checkbox",
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "checked": true,
-        "height": 30,
-        "width": 30,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <Unknown
+      "children": Array [
+        undefined,
+        <Unknown
           checked={true}
           height={30}
           width={30}
         />,
-        "className": "checkboxConainer",
-        "onClick": [Function],
-        "role": "checkbox",
-      },
-      "ref": null,
-      "rendered": Object {
+      ],
+      "className": "checkboxContainer",
+      "onClick": [Function],
+      "role": "checkbox",
+    },
+    "ref": null,
+    "rendered": Array [
+      undefined,
+      Object {
         "instance": null,
         "key": undefined,
         "nodeType": "function",
@@ -75,6 +49,44 @@ ShallowWrapper {
         "rendered": null,
         "type": [Function],
       },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          undefined,
+          <Unknown
+            checked={true}
+            height={30}
+            width={30}
+          />,
+        ],
+        "className": "checkboxContainer",
+        "onClick": [Function],
+        "role": "checkbox",
+      },
+      "ref": null,
+      "rendered": Array [
+        undefined,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "checked": true,
+            "height": 30,
+            "width": 30,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
       "type": "div",
     },
   ],
@@ -125,48 +137,22 @@ ShallowWrapper {
     "key": undefined,
     "nodeType": "host",
     "props": Object {
-      "children": <Unknown
-        checked={false}
-        height={30}
-        width={30}
-      />,
-      "className": "checkboxConainer",
-      "onClick": [Function],
-      "role": "checkbox",
-    },
-    "ref": null,
-    "rendered": Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "function",
-      "props": Object {
-        "checked": false,
-        "height": 30,
-        "width": 30,
-      },
-      "ref": null,
-      "rendered": null,
-      "type": [Function],
-    },
-    "type": "div",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "children": <Unknown
+      "children": Array [
+        undefined,
+        <Unknown
           checked={false}
           height={30}
           width={30}
         />,
-        "className": "checkboxConainer",
-        "onClick": [Function],
-        "role": "checkbox",
-      },
-      "ref": null,
-      "rendered": Object {
+      ],
+      "className": "checkboxContainer",
+      "onClick": [Function],
+      "role": "checkbox",
+    },
+    "ref": null,
+    "rendered": Array [
+      undefined,
+      Object {
         "instance": null,
         "key": undefined,
         "nodeType": "function",
@@ -179,6 +165,44 @@ ShallowWrapper {
         "rendered": null,
         "type": [Function],
       },
+    ],
+    "type": "div",
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "host",
+      "props": Object {
+        "children": Array [
+          undefined,
+          <Unknown
+            checked={false}
+            height={30}
+            width={30}
+          />,
+        ],
+        "className": "checkboxContainer",
+        "onClick": [Function],
+        "role": "checkbox",
+      },
+      "ref": null,
+      "rendered": Array [
+        undefined,
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "function",
+          "props": Object {
+            "checked": false,
+            "height": 30,
+            "width": 30,
+          },
+          "ref": null,
+          "rendered": null,
+          "type": [Function],
+        },
+      ],
       "type": "div",
     },
   ],

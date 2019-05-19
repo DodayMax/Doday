@@ -1,9 +1,9 @@
 import * as actions from './actions';
 
-export const initialState: BuilderStatus = {};
+export const initialBuilderStatusState: BuilderStatus = {};
 
 export default (
-  state = initialState,
+  state = initialBuilderStatusState,
   action?: actions.ActionTypes
 ): BuilderStatus => {
   switch (action && action.type) {
@@ -18,7 +18,7 @@ export default (
         success: action.payload,
       };
     case actions.ActionConstants.CLEAR_BUILDER:
-      return initialState;
+      return initialBuilderStatusState;
     default:
       return state;
   }

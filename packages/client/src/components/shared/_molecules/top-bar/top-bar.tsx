@@ -9,9 +9,10 @@ import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { LayoutBlock } from '../../_atoms/layout-block';
+import { Space, DodayColor } from '@root/lib/common-interfaces';
 
+const vars = require('@styles/_config.scss');
 const css = require('./_top-bar.module.scss');
-const logo = require('@root/assets/png/app-icon-96x96.png');
 
 interface TopBarProps {}
 
@@ -37,13 +38,23 @@ class TopBar extends React.Component<
   }
 
   render() {
+    const { location } = this.props;
+    console.log(location.pathname);
     return (
       <nav className={css.navBar}>
-        <div>
-          <Link to="/">
-            <img className={css.logo} src={logo} />
-          </Link>
-        </div>
+        <LayoutBlock valign="vflex-center">
+          <Link to="/" />
+          <LayoutBlock insideElementsMargin paddingLeft={Space.Medium}>
+            <Button
+              disabled={false}
+              active={location.pathname.startsWith('/store')}
+              to="/store"
+              borderless
+            >
+              Store
+            </Button>
+          </LayoutBlock>
+        </LayoutBlock>
         {this.renderContent()}
         <ACLGuard
           allowed={

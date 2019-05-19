@@ -10,6 +10,7 @@ import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
 import { DodayApp } from '@root/components/shell/doday-app';
 import { ToolBeacon } from '@root/tools/types';
+import { Store } from '../store';
 
 const css = require('./_dashboard.module.scss');
 
@@ -109,6 +110,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
           render={props => <Builder {...props} activeTools={activeTools} />}
         />
         <Route path="/profile" component={Profile} />
+        <Route path="/store" component={Store} />
       </>
     );
   }

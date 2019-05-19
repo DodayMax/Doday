@@ -7,6 +7,7 @@ export * from './_atoms/loader';
 export * from './_atoms/coins';
 export * from './_atoms/button';
 export * from './_atoms/checkbox';
+export * from './_atoms/card';
 export * from './_atoms/badge';
 export * from './_atoms/button';
 export * from './_atoms/marker';

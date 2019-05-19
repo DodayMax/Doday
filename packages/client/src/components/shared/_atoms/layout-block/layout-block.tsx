@@ -16,7 +16,7 @@ import {
   SpacingProps,
 } from '@lib/common-interfaces';
 
-const styles = require('./_layout-block.module.scss');
+const css = require('./_layout-block.module.scss');
 
 interface LayoutBlockProps {
   align?: AlignTypes;
@@ -34,6 +34,7 @@ interface LayoutBlockProps {
   bottom?: string;
   insideElementsMargin?: boolean;
   className?: string;
+  styles?: { [key: string]: string };
   children?: React.ReactNode;
 }
 
@@ -48,16 +49,16 @@ export const LayoutBlock = (props: LayoutBlockProps & SpacingProps) => {
     paddingLeftClassNames[props.paddingLeft!],
     paddingRightClassNames[props.paddingRight!],
     {
-      [styles.layoutBlock]: true,
-      [styles.childFlex]: !!props.childFlex,
-      [styles[props.align || '']]: !!props.align,
-      [styles[props.valign || '']]: !!props.valign,
-      [styles[props.alignSelf || '']]: !!props.alignSelf,
-      [styles[props.direction || '']]: !!props.direction,
-      [styles.absolute]: !!props.absolute,
-      [styles.relative]: !!props.relative,
-      [styles.insideElementsMargin]: !!props.insideElementsMargin,
-      [styles.fullHeight]: !!props.fullHeight,
+      [css.layoutBlock]: true,
+      [css.childFlex]: !!props.childFlex,
+      [css[props.align || '']]: !!props.align,
+      [css[props.valign || '']]: !!props.valign,
+      [css[props.alignSelf || '']]: !!props.alignSelf,
+      [css[props.direction || '']]: !!props.direction,
+      [css.absolute]: !!props.absolute,
+      [css.relative]: !!props.relative,
+      [css.insideElementsMargin]: !!props.insideElementsMargin,
+      [css.fullHeight]: !!props.fullHeight,
       [props.className]: !!props.className,
     }
   );
@@ -70,6 +71,7 @@ export const LayoutBlock = (props: LayoutBlockProps & SpacingProps) => {
         left: props.left,
         right: props.right,
         bottom: props.bottom,
+        ...props.styles,
       }}
     >
       {props.children}

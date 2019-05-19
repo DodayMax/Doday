@@ -22,8 +22,9 @@ ShallowWrapper {
     "props": Object {
       "children": Array [
         <input
-          className="input"
+          className="input Medium"
           onChange={[Function]}
+          onKeyDown={[Function]}
         />,
         null,
       ],
@@ -36,8 +37,9 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "host",
         "props": Object {
-          "className": "input",
+          "className": "input Medium",
           "onChange": [Function],
+          "onKeyDown": [Function],
           "value": undefined,
         },
         "ref": [Function],
@@ -56,8 +58,9 @@ ShallowWrapper {
       "props": Object {
         "children": Array [
           <input
-            className="input"
+            className="input Medium"
             onChange={[Function]}
+            onKeyDown={[Function]}
           />,
           null,
         ],
@@ -70,8 +73,9 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "host",
           "props": Object {
-            "className": "input",
+            "className": "input Medium",
             "onChange": [Function],
+            "onKeyDown": [Function],
             "value": undefined,
           },
           "ref": [Function],

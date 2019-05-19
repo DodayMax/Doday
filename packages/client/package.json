@@ -124,6 +124,7 @@
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@services(.*)$": "<rootDir>/src/services$1",
       "^@styles(.*)$": "<rootDir>/src/styles$1",
+      "^@shared(.*)$": "<rootDir>/src/components/shared$1",
       "^@stores(.*)$": "<rootDir>/src/stores$1",
       "^@lib(.*)$": "<rootDir>/src/lib$1",
       "^@ducks(.*)$": "<rootDir>/src/ducks$1"

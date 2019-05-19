@@ -20,15 +20,8 @@ import {
   fetchPublicDodaysActionCreator,
   setPublicDodaysActionCreator,
 } from './actions';
-import { Doday } from '@root/lib/models/entities/Doday';
-import { Goal } from '@root/lib/models/entities/Goal';
 import { deleteDoday } from '@root/services/api/dodays/mutations';
-import {
-  serializedGoal,
-  serializedDoday,
-  doday,
-  goal,
-} from '@root/lib/common-interfaces/fake-data';
+import { doday, goal } from '@root/lib/common-interfaces/fake-data';
 
 describe('doday-app duck', () => {
   describe('doday-app action creators', () => {

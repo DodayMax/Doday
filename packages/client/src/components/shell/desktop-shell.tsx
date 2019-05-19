@@ -26,7 +26,7 @@ interface PropsFromConnect {
   activeTools: ToolBeacon[];
   toggleDrawer: () => ToggleDrawerAction;
   toggleDodayApp: () => ToggleDodayAppAction;
-  fetchHero: () => FetchHeroAction;
+  fetchHeroActionCreator: () => FetchHeroAction;
 }
 
 class DesktopShell extends React.Component<
@@ -38,7 +38,7 @@ class DesktopShell extends React.Component<
   }
 
   componentDidMount() {
-    this.props.fetchHero();
+    this.props.fetchHeroActionCreator();
   }
 
   toggleMenu() {
@@ -90,6 +90,6 @@ export default connect(
   {
     toggleDrawer: settingsActions.toggleDrawer,
     toggleDodayApp: settingsActions.toggleDodayApp,
-    fetchHero: authActions.fetchHero,
+    fetchHero: authActions.fetchHeroActionCreator,
   }
 )(DesktopShell);

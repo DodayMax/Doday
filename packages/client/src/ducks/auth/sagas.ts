@@ -2,25 +2,23 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import {
   ActionConstants,
   FetchHeroAction,
-  setHero,
+  setHeroActionCreator,
   setActiveToolBeaconsActionCreator,
 } from './actions';
 import { api } from '@root/services';
-import { toolBeacons } from '@root/tools';
 import { Hero } from '@root/lib/models/entities/hero';
+import { activeToolsForHero } from '@root/lib/utils';
 
 /**
  * Fetch Hero
  *
  * @param {FetchHeroAction} action
  */
-function* fetchHeroSaga(action: FetchHeroAction) {
+export function* fetchHeroActionSaga(action: FetchHeroAction) {
   const hero: Hero = yield call(api.heroes.queries.fetchCurrentHero);
-  yield put(setHero(hero));
-  const activeTools = toolBeacons.filter(tool =>
-    hero.tools.find(item => item === tool.config.sysname)
-  );
+  yield put(setHeroActionCreator(hero));
+  const activeTools = yield call(activeToolsForHero, hero);
   yield put(setActiveToolBeaconsActionCreator(activeTools));
 }
 
-export default [takeLatest(ActionConstants.FETCH_HERO, fetchHeroSaga)];
+export default [takeLatest(ActionConstants.FETCH_HERO, fetchHeroActionSaga)];

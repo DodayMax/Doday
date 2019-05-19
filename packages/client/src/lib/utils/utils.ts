@@ -1,4 +1,7 @@
 import { DodayColor, ActivityType } from '../common-interfaces';
+import { Hero } from '../models/entities/hero';
+import { ToolBeacon } from '@root/tools/types';
+import { toolBeacons } from '@root/tools';
 
 const vars = require('@styles/_config.scss');
 
@@ -113,6 +116,11 @@ export const filterObject = (obj, predicate) => {
 
   return result;
 };
+
+export const activeToolsForHero = (hero: Hero): ToolBeacon[] =>
+  toolBeacons.filter(tool =>
+    hero.tools.find(item => item === tool.config.sysname)
+  );
 
 const standartColorsForGoalsChart = [
   vars.yellow,

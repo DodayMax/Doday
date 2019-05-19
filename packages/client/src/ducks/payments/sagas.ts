@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { ActionConstants, HandleTokenAction } from './actions';
 import { api } from '@root/services';
-import { setHero } from '../auth/actions';
+import { setHeroActionCreator } from '../auth/actions';
 
 /**
  * Fetch Hero
@@ -14,7 +14,7 @@ function* handleTokenSaga(action: HandleTokenAction) {
     action.payload
   );
 
-  yield put(setHero(res));
+  yield put(setHeroActionCreator(res));
 }
 
 export default [takeLatest(ActionConstants.HANDLE_TOKEN, handleTokenSaga)];

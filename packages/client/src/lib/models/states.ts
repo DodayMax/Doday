@@ -15,6 +15,7 @@ export interface RootState {
   dodayDetails: DodayDetailsState;
   builder: BuilderState;
   heroSettings: HeroSettingsState;
+  store: StoreState;
   tools: ToolsState;
 }
 
@@ -42,6 +43,10 @@ export interface AuthState {
 export interface HeroSettingsState {
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
+}
+
+export interface StoreState {
+  dodays: DodayLike[];
 }
 
 export interface DodayDetailsState {

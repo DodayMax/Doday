@@ -6,6 +6,7 @@ import * as builder from '@ducks/builder';
 import * as auth from '@ducks/auth';
 import * as herosettings from '@ducks/hero-settings';
 import * as api from '@ducks/api';
+import * as store from '@ducks/store';
 import { toolBeacons } from '@tools';
 
 const ducks: any = {
@@ -16,6 +17,7 @@ const ducks: any = {
   herosettings,
   payments,
   api,
+  store,
 };
 
 toolBeacons.map(tool => {

@@ -11,7 +11,6 @@ import {
   clearDirtyStuffActionCreator,
 } from './actions';
 import { testDoday, testGoal } from '@root/lib/common-interfaces/fake-data';
-import { Doday, SerializedDoday } from '@root/lib/models/entities/Doday';
 
 describe('doday details page duck', () => {
   describe('action creators', () => {
