@@ -48,6 +48,12 @@ export function clearBuilderActionCreator(): ClearBuilderAction {
   };
 }
 
+export const actionCreators = {
+  setBuilderLoadingStateActionCreator,
+  setBuilderSuccessFlagActionCreator,
+  clearBuilderActionCreator,
+};
+
 /**
  * Define return types of actions
  */

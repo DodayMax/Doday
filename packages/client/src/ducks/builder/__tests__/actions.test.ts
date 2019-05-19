@@ -1,9 +1,4 @@
-import {
-  ActionConstants,
-  setBuilderLoadingStateActionCreator,
-  setBuilderSuccessFlagActionCreator,
-  clearBuilderActionCreator,
-} from '../actions';
+import { ActionConstants, actionCreators } from '../actions';
 
 describe('builder action creators', () => {
   it('set builder loading state action creator', () => {
@@ -12,7 +7,7 @@ describe('builder action creators', () => {
       type: ActionConstants.SET_BUILDER_LOADING_STATE,
       payload: state,
     };
-    expect(setBuilderLoadingStateActionCreator(state)).toEqual(
+    expect(actionCreators.setBuilderLoadingStateActionCreator(state)).toEqual(
       expectedActionObject
     );
   });
@@ -23,7 +18,7 @@ describe('builder action creators', () => {
       type: ActionConstants.SET_BUILDER_SUCCESS_FLAG,
       payload: state,
     };
-    expect(setBuilderSuccessFlagActionCreator(state)).toEqual(
+    expect(actionCreators.setBuilderSuccessFlagActionCreator(state)).toEqual(
       expectedActionObject
     );
   });
@@ -32,6 +27,8 @@ describe('builder action creators', () => {
     const expectedActionObject = {
       type: ActionConstants.CLEAR_BUILDER,
     };
-    expect(clearBuilderActionCreator()).toEqual(expectedActionObject);
+    expect(actionCreators.clearBuilderActionCreator()).toEqual(
+      expectedActionObject
+    );
   });
 });

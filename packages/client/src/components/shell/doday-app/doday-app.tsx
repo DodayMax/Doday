@@ -31,15 +31,6 @@ interface PropsFromConnect {
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
-  // navStack: Goal[];
-  // pushToNavStack: (doday: Goal) => PushToNavigationStackAction;
-  // popFromNavStack: () => PopFromNavigationStackAction;
-  fetchDodaysWithProgressForDateActionCreator: () => FetchDodaysWithProgressForDateAction;
-  fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-  fetchSelectedDodayWithProgressActionCreator: (
-    did: string
-  ) => FetchSelectedDodayAction;
-  planOutActionCreator: (date: number) => PlanOutAction;
 }
 
 export class DodayAppComponent extends React.Component<

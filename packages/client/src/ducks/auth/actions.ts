@@ -49,6 +49,12 @@ export function setActiveToolBeaconsActionCreator(
   };
 }
 
+export const actionCreators = {
+  fetchHeroActionCreator,
+  setHeroActionCreator,
+  setActiveToolBeaconsActionCreator,
+};
+
 /**
  * Define return types of actions
  */

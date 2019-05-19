@@ -85,16 +85,25 @@ export const deserializeProgressNode = (progress: APIResponseProgressLike) => {
 };
 
 export type DodaysQueryParams = {
+  /** filter by DodayType */
   dodaytype?: number;
+  /** filter by Hero created doday */
   createdBy?: string;
 };
 
 export type DodaysWithProgressQueryParams = {
+  /** filter by DodayType */
   dodaytype?: number;
+  /** fetch dodays <= endOf(exactDate) */
   exactDate?: number;
+  /** fetch dodays for whole day (>= startOf(date) AND <= endOf(date)) */
   date?: number;
+  /** >= startdate */
   startdate?: number;
+  /** <= enddate */
   enddate?: number;
+  /** filter by completion */
   completed?: boolean;
+  /** filter by Hero created doday */
   createdBy?: string;
 };

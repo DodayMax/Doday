@@ -38,10 +38,6 @@ interface PropsFromConnect {
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
-  pushToNavStackByDIDActionCreator?: (
-    did: string
-  ) => PushToNavigationStackByDIDAction;
-  clearNavStackActionCreator?: () => ClearNavStackAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -94,9 +90,7 @@ export class DrawerComponent extends React.Component<
               lineWidth={20}
               paddingAngle={5}
               data={this.pieGoalsData}
-              onClick={(event, data, index) => {
-                this.props.pushToNavStackByDIDActionCreator(data[index].did);
-              }}
+              onClick={(event, data, index) => {}}
               style={{
                 width: '20rem',
                 height: '20rem',

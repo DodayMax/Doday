@@ -8,11 +8,11 @@ export const initialStatusState: DodayAppStatusState = {
   badge: 0,
 };
 
-export const dodayAppStatusReducer = (
+export default (
   state = initialStatusState,
   action: actions.ActionTypes
 ): DodayAppStatusState => {
-  switch (action && action.type) {
+  switch (action.type) {
     case actions.ActionConstants.SET_LOADING_STATE:
       return {
         ...state,

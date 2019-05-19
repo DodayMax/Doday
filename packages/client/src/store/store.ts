@@ -35,7 +35,7 @@ const spreadToolsSagas = () => {
 const rootReducer = combineReducers<RootState>({
   auth: ducks.auth.default,
   dodayApp: combineReducers<DodayAppState>({
-    status: ducks.dodayapp.reducers.dodayAppStatusReducer,
+    status: ducks.dodayapp.default,
   }),
   dodayDetails: ducks.dodayDetails.default,
   builder: combineReducers<BuilderState>({
@@ -56,7 +56,6 @@ const rootReducer = combineReducers<RootState>({
 function* rootSaga() {
   yield all([
     ...ducks.auth.authSagas,
-    ...ducks.dodayapp.dodayappSagas,
     ...ducks.dodayDetails.dodayDetailsSagas,
     ...ducks.herosettings.herosettingsSagas,
     ...ducks.payments.coinsSagas,
