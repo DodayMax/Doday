@@ -3,6 +3,7 @@ import {
   SerializedActivity,
   SerializedActivityProgress,
   Activity,
+  ActivityProgress,
 } from '@root/tools/activity/entities/activity';
 import { Hero } from '../models/entities/hero';
 import { RootState } from '../models';
@@ -30,10 +31,34 @@ export const serializedActivity: SerializedActivity = {
   duration: 'P60M',
   public: false,
   ownerDID: 'did',
+  created: new Date('2019-02-15').getTime(),
+};
+
+export const deserializedActivity: Activity = {
+  did: 'test did',
+  activityType: 'do',
+  type: DodayType.Activity,
+  name: 'name',
+  duration: 'P60M',
+  public: false,
+  ownerDID: 'did',
+  created: new Date('2019-02-15'),
+};
+
+export const serializedActivityProgress: SerializedActivityProgress = {
+  date: new Date('2019-02-15').getTime(),
+  tookAt: new Date('2019-02-15').getTime(),
+  completedAt: new Date('2019-02-15').getTime(),
+};
+
+export const deserialzedActivityProgress: ActivityProgress = {
+  date: new Date('2019-02-15'),
+  tookAt: new Date('2019-02-15'),
+  completedAt: new Date('2019-02-15'),
 };
 
 export const partialProgress: Partial<SerializedActivityProgress> = {
-  date: Date.now(),
+  date: new Date('2019-02-15').getTime(),
   dateIsLocked: true,
 };
 
