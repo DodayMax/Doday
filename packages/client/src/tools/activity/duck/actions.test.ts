@@ -13,15 +13,4 @@ describe('Activity tool action creators tests', () => {
     };
     expect(fetchActivitiesActionCreator(params)).toEqual(expectedActionObject);
   });
-
-  it('FETCH_ACTIVITIES_WITH_PROGRESS', () => {
-    const params: DodaysWithProgressQueryParams = {
-      dodaytype: DodayType.Activity,
-    };
-    const expectedActionObject = {
-      type: ActionConstants.FETCH_ACTIVITIES_WITH_PROGRESS,
-      payload: params,
-    };
-    expect(fetchActivitiesActionCreator(params)).toEqual(expectedActionObject);
-  });
 });

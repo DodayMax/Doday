@@ -37,6 +37,11 @@ export function setPublicDodaysForStoreActionCreator(
   };
 }
 
+export const actionCreators = {
+  fetchPublicDodaysForStoreActionCreator,
+  setPublicDodaysForStoreActionCreator,
+};
+
 /**
  * Define return types of actions
  */

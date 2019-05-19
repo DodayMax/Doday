@@ -3,9 +3,9 @@
 exports[`Text renders correctly without props 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown
-    text="test"
-  />,
+  Symbol(enzyme.__unrendered__): <Unknown>
+    test
+  </Unknown>,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "checkPropTypes": [Function],
@@ -21,7 +21,7 @@ ShallowWrapper {
     "nodeType": "host",
     "props": Object {
       "children": "test",
-      "className": "text-l ",
+      "className": "text-l",
     },
     "ref": null,
     "rendered": "test",
@@ -34,7 +34,7 @@ ShallowWrapper {
       "nodeType": "host",
       "props": Object {
         "children": "test",
-        "className": "text-l ",
+        "className": "text-l",
       },
       "ref": null,
       "rendered": "test",

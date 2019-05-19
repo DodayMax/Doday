@@ -15,7 +15,7 @@ describe("Test Auth's sagas", () => {
     expect(gen.next().value).toEqual(
       call(api.payments.mutations.handleStripeToken, action.payload)
     );
-    expect(gen.next().value).toEqual(put(setHeroActionCreator(hero)));
+    expect(gen.next(hero).value).toEqual(put(setHeroActionCreator(hero)));
     expect(gen.next().done).toBe(true);
   });
 });

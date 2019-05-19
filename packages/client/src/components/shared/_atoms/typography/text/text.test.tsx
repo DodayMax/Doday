@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Text } from '@components';
+import { Text } from '@shared';
 
 import {
   TypographySize,
@@ -13,8 +13,8 @@ describe('Text', () => {
     const text = shallow(<Text>test</Text>);
 
     expect(text).toMatchSnapshot();
-    expect(text.find('div').contains('test')).toBe(true);
-    expect(text.find('div').hasClass('text-l')).toBe(true);
+    expect(text.find('span').contains('test')).toBe(true);
+    expect(text.find('span').hasClass('text-l')).toBe(true);
   });
 
   it('renders correctly with props', () => {
@@ -28,9 +28,9 @@ describe('Text', () => {
       </Text>
     );
 
-    expect(text.find('div').contains('test')).toBe(true);
-    expect(text.find('div').hasClass('text-s')).toBe(true);
-    expect(text.find('div').hasClass('primary-text')).toBe(true);
-    expect(text.find('div').hasClass('align-center')).toBe(true);
+    expect(text.find('span').contains('test')).toBe(true);
+    expect(text.find('span').hasClass('text-s')).toBe(true);
+    expect(text.find('span').hasClass('primary-text')).toBe(true);
+    expect(text.find('span').hasClass('align-center')).toBe(true);
   });
 });

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
-import { Icons } from '@components';
+import { Icons } from '@shared';
 
 describe('Checkbox', () => {
   it('renders correctly without props', () => {

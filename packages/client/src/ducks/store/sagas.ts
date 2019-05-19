@@ -11,7 +11,7 @@ import {
  *
  * @param {FetchPublicDodaysForStoreAction} action
  */
-function* fetchPublicDodaysForStoreActionSaga(
+export function* fetchPublicDodaysForStoreActionSaga(
   action: FetchPublicDodaysForStoreAction
 ) {
   const res = yield call(api.dodays.queries.fetchDodays, action.payload);

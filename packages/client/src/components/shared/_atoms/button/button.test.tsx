@@ -25,8 +25,8 @@ describe('Button', () => {
       </Router>
     ).dive() as any;
 
-    expect(wrapper.find('withRouter()').props().text).toEqual(text);
-    wrapper.find('withRouter()').simulate('click');
+    expect(wrapper.find('Button').props().children).toEqual(text);
+    wrapper.find('Button').simulate('click');
     expect(onClick.mock.calls.length).toBe(1);
   });
 
@@ -35,7 +35,9 @@ describe('Button', () => {
     const text = 'text';
     const button = mount(
       <Router>
-        <Button onClick={onClick} isLoading={true}>{text}</Button>
+        <Button onClick={onClick} isLoading={true}>
+          {text}
+        </Button>
       </Router>
     );
 

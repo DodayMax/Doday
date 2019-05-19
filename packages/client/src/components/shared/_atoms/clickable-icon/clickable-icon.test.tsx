@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { ClickableIcon, Icons } from '@components';
+import { ClickableIcon, Icons } from '@shared';
 
 describe('Clickable icon', () => {
   it('renders correctly', () => {
