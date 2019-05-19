@@ -12,7 +12,7 @@ export enum ActionConstants {
  * @export
  * @returns {SetBuilderLoadingStateAction}
  */
-export function setBuilderLoadingState(
+export function setBuilderLoadingStateActionCreator(
   state: boolean
 ): SetBuilderLoadingStateAction {
   return {
@@ -27,7 +27,7 @@ export function setBuilderLoadingState(
  * @export
  * @returns {SetBuilderSuccessFlagAction}
  */
-export function setBuilderSuccessFlag(
+export function setBuilderSuccessFlagActionCreator(
   state?: boolean
 ): SetBuilderSuccessFlagAction {
   return {

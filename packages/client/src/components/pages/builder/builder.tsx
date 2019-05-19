@@ -16,7 +16,9 @@ export interface BuilderProps {}
 
 interface PropsFromConnect {
   success?: boolean;
-  setBuilderSuccessFlag: (state?: boolean) => SetBuilderSuccessFlagAction;
+  setBuilderSuccessFlagActionCreator: (
+    state?: boolean
+  ) => SetBuilderSuccessFlagAction;
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
@@ -28,7 +30,7 @@ export class Builder extends React.Component<
     if (this.props.success) {
       this.props.history.push('/');
       this.props.clearBuilderActionCreator();
-      this.props.setBuilderSuccessFlag(undefined);
+      this.props.setBuilderSuccessFlagActionCreator(undefined);
     }
   }
 

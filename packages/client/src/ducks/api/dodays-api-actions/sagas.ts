@@ -15,7 +15,7 @@ import {
   clearDodayDetailsDirtyStuffActionCreator,
 } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
-import { setBuilderSuccessFlag } from '@root/ducks/builder/actions';
+import { setBuilderSuccessFlagActionCreator } from '@root/ducks/builder/actions';
 import { activeTools } from '@root/ducks/auth/selectors';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
 import { ToolBeacon } from '@root/tools/types';
@@ -49,7 +49,7 @@ function* createDodayActionSaga(action: CreateDodayAction) {
     }
   });
   yield all(sideEffects);
-  yield put(setBuilderSuccessFlag(true));
+  yield put(setBuilderSuccessFlagActionCreator(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
@@ -82,7 +82,7 @@ function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
     }
   });
   yield all(sideEffects);
-  yield put(setBuilderSuccessFlag(true));
+  yield put(setBuilderSuccessFlagActionCreator(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 

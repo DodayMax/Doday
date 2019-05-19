@@ -56,7 +56,6 @@ const rootReducer = combineReducers<RootState>({
 function* rootSaga() {
   yield all([
     ...ducks.auth.authSagas,
-    ...ducks.builder.builderSagas,
     ...ducks.dodayapp.dodayappSagas,
     ...ducks.dodayDetails.dodayDetailsSagas,
     ...ducks.herosettings.herosettingsSagas,
