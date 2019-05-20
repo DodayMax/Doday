@@ -15,9 +15,10 @@ import {
   fetchSelectedProgressActionSaga,
   setUpdatesAndDirtyStatusSaga,
 } from '../sagas';
-import { ProgressLike } from '@root/tools/types';
+import { SerializedProgressLike } from '@root/tools/types';
 import { updatesSelector, selectedDoday } from '../selectors';
 import { isDirty } from '@root/lib/utils';
+import { deserializeActivityProgress } from '@root/tools/activity/entities/activity';
 
 describe("Test DodayDetails's sagas", () => {
   it('fetchSelectedDodayActionSaga', () => {
@@ -51,21 +52,30 @@ describe("Test DodayDetails's sagas", () => {
   });
 
   it('setUpdatesAndDirtyStatusSaga', () => {
-    const updates: Partial<ProgressLike> = {
+    const updates: Partial<SerializedProgressLike> = {
       completed: false,
     };
     const action: RequestForSetUpdatesAction = {
       type: ActionConstants.REQUEST_FOR_SET_UPDATES,
-      payload: updates,
+      payload: {
+        progress: updates,
+        deserialize: deserializeActivityProgress,
+      },
     };
     const gen = setUpdatesAndDirtyStatusSaga(action);
-    const dirty = isDirty(activity, updates);
+    const deserialized = action.payload.deserialize(action.payload.progress);
+    const dirty = isDirty(activity, deserialized);
     expect(gen.next().value).toEqual(
-      put(setUpdatesForSelectedDodayActionCreator(action.payload))
+      call(action.payload.deserialize, action.payload.progress)
+    );
+    expect(gen.next(deserialized).value).toEqual(
+      put(setUpdatesForSelectedDodayActionCreator(deserialized))
     );
     expect(gen.next().value).toEqual(select(updatesSelector));
-    expect(gen.next(updates).value).toEqual(select(selectedDoday));
-    expect(gen.next(activity).value).toEqual(call(isDirty, activity, updates));
+    expect(gen.next(deserialized).value).toEqual(select(selectedDoday));
+    expect(gen.next(activity).value).toEqual(
+      call(isDirty, activity, deserialized)
+    );
     expect(gen.next(dirty).value).toEqual(
       put(setDirtyStatusActionCreator(dirty))
     );

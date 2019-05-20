@@ -50,7 +50,11 @@ export function* fetchSelectedProgressActionSaga(
 export function* setUpdatesAndDirtyStatusSaga(
   action: RequestForSetUpdatesAction
 ) {
-  yield put(setUpdatesForSelectedDodayActionCreator(action.payload));
+  const deserialized = yield call(
+    action.payload.deserialize,
+    action.payload.progress
+  );
+  yield put(setUpdatesForSelectedDodayActionCreator(deserialized));
   const updates: Partial<ProgressLike> = yield select(updatesSelector);
   const selected: DodayLike = yield select(selectedDoday);
   const dirty = yield call(isDirty, selected, updates);

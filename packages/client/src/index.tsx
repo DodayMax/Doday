@@ -3,6 +3,8 @@ import * as ReactDOM from 'react-dom';
 import { App } from './app';
 import * as serviceWorker from './serviceWorker';
 
+import '@root/services/i18n';
+
 import '@root/styles/styles.scss';
 import 'react-datepicker/dist/react-datepicker.css';
 

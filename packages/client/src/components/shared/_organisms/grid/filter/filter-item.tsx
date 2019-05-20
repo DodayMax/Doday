@@ -6,8 +6,9 @@ import {
   TypographySize,
   TypographyAlignment,
 } from '@root/lib/common-interfaces';
-import { Location, LocationDescriptor } from 'history';
+import { Location } from 'history';
 import { withRouter, RouteComponentProps, match } from 'react-router';
+import { WithTranslation } from 'react-i18next';
 
 const css = require('./filter-item.module.scss');
 
@@ -16,11 +17,11 @@ interface FilterItemProps {
 }
 
 @(withRouter as any)
-export class FilterItem extends React.Component<
-  FilterItemProps & Partial<RouteComponentProps>
+export class FilterItemComponentClass extends React.Component<
+  FilterItemProps & Partial<RouteComponentProps> & Partial<WithTranslation>
 > {
   render() {
-    const { item, location, match } = this.props;
+    const { item, location, match, t } = this.props;
     const active = item.active(location, match);
     const cx = classnames({
       [css.filterItem]: true,
@@ -29,7 +30,7 @@ export class FilterItem extends React.Component<
     return (
       <span className={cx} onClick={() => !active && item.action(item.payload)}>
         <Text size={TypographySize.s} align={TypographyAlignment.Center}>
-          {item.name}
+          {(t && t(`dodayapp.filter.${item.name}`)) || item.name}
         </Text>
       </span>
     );
@@ -38,7 +39,7 @@ export class FilterItem extends React.Component<
 
 export interface FilterItem {
   name: string;
-  action: (...args: any) => AnyAction;
-  payload: any;
+  action: (...args: any) => void;
+  payload?: any;
   active: (location: Location, match: match) => boolean;
 }

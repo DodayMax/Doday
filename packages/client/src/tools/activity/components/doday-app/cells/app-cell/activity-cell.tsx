@@ -11,74 +11,77 @@ import { Marker } from '@root/components/shared/_atoms/marker';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { durationToMinutes } from '@root/lib/utils';
 import { Activity } from '@root/tools/activity/entities/activity';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const css = require('./activity-cell.module.scss');
 
 interface ActivityCellProps {}
 
-export const ActivityCell: React.FC<ActivityCellProps & CellProps> = ({
-  doday,
-  active = false,
-  onClick,
-}) => {
-  const classNames = classnames({
-    [css.cell]: true,
-    [css.padded]: true,
-    [css.active]: active,
-  });
+type Props = ActivityCellProps & CellProps & WithTranslation;
 
-  const activity = doday as Activity;
+export const ActivityCell = withTranslation('activities')(
+  ({ doday, active = false, onClick, t }: Props) => {
+    const classNames = classnames({
+      [css.cell]: true,
+      [css.padded]: true,
+      [css.active]: active,
+    });
 
-  return (
-    <li
-      className={classNames}
-      key={activity.did}
-      onClick={() => onClick && onClick(`/dodays/${activity.did}`, activity)}
-    >
-      <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
-        <Text
-          spaceLeft={Space.Small}
-          wordwrap
-          size={TypographySize.m}
-          className={css.cellTitle}
-        >
-          {activity.name}
-        </Text>
-        <LayoutBlock
-          align="flex-end"
-          spaceRight={Space.XSmall}
-          valign="vflex-center"
-        >
-          <Text spaceRight={Space.XXSmall} size={TypographySize.s}>
-            {24}
+    const activity = doday as Activity;
+
+    return (
+      <li
+        className={classNames}
+        key={activity.did}
+        onClick={() => onClick && onClick(`/dodays/${activity.did}`, activity)}
+      >
+        <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
+          <Text
+            spaceLeft={Space.Small}
+            wordwrap
+            size={TypographySize.m}
+            className={css.cellTitle}
+          >
+            {activity.name}
           </Text>
-          <Icons.Score width={16} height={16} />
+          <LayoutBlock
+            align="flex-end"
+            spaceRight={Space.XSmall}
+            valign="vflex-center"
+          >
+            <Text spaceRight={Space.XXSmall} size={TypographySize.s}>
+              {24}
+            </Text>
+            <Icons.Score width={16} height={16} />
+          </LayoutBlock>
+          <LayoutBlock
+            className={css.markersContainer}
+            spaceAbove={Space.XSmall}
+            paddingLeft={Space.XSmall}
+            paddingRight={Space.XSmall}
+            paddingAbove={Space.XXSmall}
+            paddingBelow={Space.XXSmall}
+            align="space-between"
+          >
+            <Marker
+              bordered
+              rounded
+              color={DodayColor.gray4}
+              text={t(`activityType.${activity.activityType}`)}
+              size={TypographySize.s}
+            />
+            <Marker
+              bordered
+              rounded
+              color={DodayColor.blueLight}
+              text={String(
+                Math.floor(durationToMinutes(activity.duration) / 60)
+              )}
+              size={TypographySize.s}
+            />
+          </LayoutBlock>
         </LayoutBlock>
-        <LayoutBlock
-          className={css.markersContainer}
-          spaceAbove={Space.XSmall}
-          paddingLeft={Space.XSmall}
-          paddingRight={Space.XSmall}
-          paddingAbove={Space.XXSmall}
-          paddingBelow={Space.XXSmall}
-          align="space-between"
-        >
-          <Marker
-            bordered
-            rounded
-            color={DodayColor.gray4}
-            text={activity.activityType}
-            size={TypographySize.s}
-          />
-          <Marker
-            bordered
-            rounded
-            color={DodayColor.blueLight}
-            text={String(Math.floor(durationToMinutes(activity.duration) / 60))}
-            size={TypographySize.s}
-          />
-        </LayoutBlock>
-      </LayoutBlock>
-    </li>
-  );
-};
+      </li>
+    );
+  }
+);

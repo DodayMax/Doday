@@ -13,7 +13,8 @@ import {
   ClearDodayDetailsDirtyStuffAction,
 } from '../actions';
 import { activity } from '@root/lib/common-interfaces/fake-data';
-import { ProgressLike } from '@root/tools/types';
+import { ProgressLike, SerializedProgressLike } from '@root/tools/types';
+import { deserializeActivityProgress } from '@root/tools/activity/entities/activity';
 
 describe('Doday details action creators', () => {
   it('Set loading state for doday details peace of state', () => {
@@ -104,16 +105,23 @@ describe('Doday details action creators', () => {
   });
 
   it('Request updates for selected doday', () => {
-    const updates: Partial<ProgressLike> = {
+    const updates: Partial<SerializedProgressLike> = {
       completed: false,
+    };
+    const payload = {
+      progress: updates,
+      deserialize: deserializeActivityProgress,
     };
     const expectedActionObject: RequestForSetUpdatesAction = {
       type: ActionConstants.REQUEST_FOR_SET_UPDATES,
-      payload: updates,
+      payload,
     };
-    expect(actionCreators.requestForSetUpdatesActionCreator(updates)).toEqual(
-      expectedActionObject
-    );
+    expect(
+      actionCreators.requestForSetUpdatesActionCreator(
+        payload.progress,
+        payload.deserialize
+      )
+    ).toEqual(expectedActionObject);
   });
 
   it('Set updates for selected doday to store', () => {

@@ -1,5 +1,9 @@
 import { AnyAction } from 'redux';
-import { DodayLike, ProgressLike } from '@root/tools/types';
+import {
+  DodayLike,
+  ProgressLike,
+  SerializedProgressLike,
+} from '@root/tools/types';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
@@ -127,11 +131,15 @@ export function setDirtyStatusActionCreator(
  * @returns {RequestForSetUpdatesAction}
  */
 export function requestForSetUpdatesActionCreator(
-  updates: Partial<ProgressLike>
+  progress: Partial<SerializedProgressLike>,
+  deserialize: (progress: SerializedProgressLike) => ProgressLike
 ): RequestForSetUpdatesAction {
   return {
     type: ActionConstants.REQUEST_FOR_SET_UPDATES,
-    payload: updates,
+    payload: {
+      progress,
+      deserialize,
+    },
   };
 }
 
@@ -220,7 +228,10 @@ export interface SetUpdatesForSelectedDodayAction extends AnyAction {
 
 export interface RequestForSetUpdatesAction extends AnyAction {
   type: ActionConstants.REQUEST_FOR_SET_UPDATES;
-  payload: Partial<ProgressLike>;
+  payload: {
+    progress: Partial<SerializedProgressLike>;
+    deserialize: (progress: SerializedProgressLike) => ProgressLike;
+  };
 }
 
 export interface ClearDodayDetailsDirtyStuffAction extends AnyAction {

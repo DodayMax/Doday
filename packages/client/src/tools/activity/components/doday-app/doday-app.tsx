@@ -28,6 +28,7 @@ import {
   SerializedProgressLike,
   DodayLike,
 } from '@root/tools/types';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 interface ActivityDodayAppProps {
   loading: boolean;
@@ -58,8 +59,11 @@ interface PropsFromConnect {
   ) => SetDodayAppQueryParamsAction;
 }
 
-class ActivityDodayApp extends React.Component<
-  ActivityDodayAppProps & Partial<PropsFromConnect> & RouteComponentProps
+export class ActivityDodayAppComponentClass extends React.Component<
+  ActivityDodayAppProps &
+    Partial<PropsFromConnect> &
+    RouteComponentProps &
+    WithTranslation
 > {
   componentDidMount() {
     this.props.fetchActivitiesActionCreator({
@@ -98,7 +102,7 @@ class ActivityDodayApp extends React.Component<
   private get progressFilterItems() {
     return [
       {
-        name: 'in progress',
+        name: 'inprogress',
         action: () => {
           this.props.changeDodayAppRouteActionCreator(config.route);
           this.props.setDodayAppQueryParamsActionCreator({});
@@ -161,11 +165,12 @@ class ActivityDodayApp extends React.Component<
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, t } = this.props;
     return (
       <>
-        <DefaultTopBar title={capitalize(config.sysname)} />
+        <DefaultTopBar title={t('name')} />
         <Grid
+          t={t}
           search
           filters={[this.progressFilterItems]}
           loading={loading}
@@ -184,11 +189,11 @@ const mapState = (state: RootState) => ({
   myDID: state.auth.hero && state.auth.hero.did,
 });
 
-export default connect(
+export const ActivityDodayApp = connect(
   mapState,
   {
     ...actions,
     ...dodaysApiActions,
     ...dodayAppActions,
   }
-)(ActivityDodayApp);
+)(withTranslation('activities')(ActivityDodayAppComponentClass));

@@ -19,15 +19,10 @@ import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import { Button, ButtonSize } from '@shared/_atoms/button';
 import { Marker } from '@shared/_atoms/marker';
 import {
-  activityTypeColor,
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
 } from '@root/lib/utils';
-import {
-  Resource,
-  SerializedResource,
-} from '@root/lib/models/entities/resource';
 import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
@@ -42,12 +37,18 @@ import {
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
 import {
-  SerializedProgressLike,
   DodayType,
+  SerializedProgressLike,
   SerializedDodayLike,
+  ProgressLike,
 } from '@root/tools/types';
-import { Activity } from '../../entities/activity';
+import { Activity, deserializeActivityProgress } from '../../entities/activity';
 import { activityIconByType } from '../builders/activity-builder';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import {
+  SerializedResource,
+  Resource,
+} from '@root/lib/models/entities/resource';
 
 const vars = require('@styles/_config.scss');
 const css = require('./progress-details.module.scss');
@@ -82,17 +83,19 @@ interface PropsFromConnect {
   }) => UntakeDodayAction;
   setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   requestForSetUpdatesActionCreator(
-    updates: Partial<SerializedProgressLike>
+    progress: Partial<SerializedProgressLike>,
+    deserialize: (progress: SerializedProgressLike) => ProgressLike
   ): RequestForSetUpdatesAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
 @(withRouter as any)
 @Pageflow({ path: '/progress/:did' })
-class ActivityProgressDetails extends React.Component<
+export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
-    Partial<RouteComponentProps<any>>,
+    Partial<RouteComponentProps<any>> &
+    WithTranslation,
   ActivityProgressDetailsState
 > {
   getYouTubeLink = (resource: Resource) => {
@@ -119,6 +122,7 @@ class ActivityProgressDetails extends React.Component<
       updateDodayActionCreator,
       updates,
       loading,
+      t,
     } = this.props;
 
     const actions = [];
@@ -137,7 +141,7 @@ class ActivityProgressDetails extends React.Component<
             history.push('/');
           }}
         >
-          Untake
+          {t('details.actions.untake')}
         </Button>
       );
     }
@@ -156,7 +160,7 @@ class ActivityProgressDetails extends React.Component<
             history.push('/');
           }}
         >
-          Delete
+          {t('details.actions.delete')}
         </Button>
       );
     }
@@ -175,7 +179,7 @@ class ActivityProgressDetails extends React.Component<
             });
           }}
         >
-          {loading ? 'Saving...' : 'Save'}
+          {loading ? t('details.actions.saving') : t('details.actions.save')}
         </Button>
       );
     }
@@ -184,7 +188,7 @@ class ActivityProgressDetails extends React.Component<
   };
 
   status = () => {
-    const { selectedDoday } = this.props;
+    const { selectedDoday, t } = this.props;
     const markers = [
       activityIconByType(selectedDoday.activityType, 30, vars.gray8),
     ];
@@ -194,9 +198,9 @@ class ActivityProgressDetails extends React.Component<
           key={cuid()}
           rounded
           color={DodayColor.gray3}
-          text={`completed: ${moment(selectedDoday.progress.completedAt).format(
-            'll'
-          )}`}
+          text={`${t('details.status.completed')}: ${moment(
+            selectedDoday.progress.completedAt
+          ).format('ll')}`}
         />
       );
     }
@@ -217,7 +221,7 @@ class ActivityProgressDetails extends React.Component<
   };
 
   render() {
-    const { updates, selectedDoday, loading } = this.props;
+    const { updates, selectedDoday, loading, t } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -260,18 +264,24 @@ class ActivityProgressDetails extends React.Component<
                       const dateDirty =
                         moment(date).format('ll') !==
                         moment(selectedDoday.progress.date).format('ll');
-                      this.props.requestForSetUpdatesActionCreator({
-                        date: dateDirty ? date.getTime() : undefined,
-                      });
+                      this.props.requestForSetUpdatesActionCreator(
+                        {
+                          date: dateDirty ? date.getTime() : undefined,
+                        },
+                        deserializeActivityProgress
+                      );
                     }}
                   />
                   <Button
                     borderless
                     active={updates && updates.dateIsLocked}
                     onClick={() => {
-                      this.props.requestForSetUpdatesActionCreator({
-                        dateIsLocked: !dateIsLocked,
-                      });
+                      this.props.requestForSetUpdatesActionCreator(
+                        {
+                          dateIsLocked: !dateIsLocked,
+                        },
+                        deserializeActivityProgress
+                      );
                     }}
                   >
                     {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
@@ -282,18 +292,23 @@ class ActivityProgressDetails extends React.Component<
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel(selectedDoday.duration)}
+                    {durationToLabel(selectedDoday.duration, {
+                      hour: t('time.h'),
+                      minute: t('time.m'),
+                    })}
                   </Text>
                   <Text
                     size={TypographySize.s}
                     color={TypographyColor.Disabled}
                   >
                     (
-                    {Math.round(
-                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
-                        100
-                    )}
-                    % of your day)
+                    {t('details.status.percentOfTheDay', {
+                      percent: Math.round(
+                        (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                          100
+                      ),
+                    })}
+                    )
                   </Text>
                 </LayoutBlock>
               )}
@@ -360,7 +375,7 @@ class ActivityProgressDetails extends React.Component<
                 align="flex-center"
               >
                 <Button primary href={resource.url} target="_blank">
-                  Go to resource
+                  {t('details.actions.goToResource')}
                 </Button>
               </LayoutBlock>
             ) : null}
@@ -379,11 +394,11 @@ const mapState = (state: RootState) => ({
   selectedDoday: state.dodayDetails.selectedDoday,
 });
 
-export default connect(
+export const ActivityProgressDetails = connect(
   mapState,
   {
     ...dodaysActions,
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(ActivityProgressDetails);
+)(withTranslation('activities')(ActivityProgressDetailsComponentClass));

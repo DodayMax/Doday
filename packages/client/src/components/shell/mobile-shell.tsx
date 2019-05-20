@@ -21,11 +21,7 @@ export class MobileShell extends React.Component<
   render() {
     return (
       <>
-        <Route
-          exact
-          path={`/`}
-          render={() => <Grid items={[]} cellType="DodayCell" />}
-        />
+        <Route exact path={`/`} render={() => null} />
         <Route path={`/paths`} render={() => <div>Paths</div>} />
         <Route path={`/store`} render={() => <div>Store</div>} />
         <button className="control_button" onClick={() => {}} />

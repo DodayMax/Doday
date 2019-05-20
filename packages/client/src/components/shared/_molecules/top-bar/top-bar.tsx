@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { Button, ACLGuard } from '@shared';
 import { StripeButton } from '../../_atoms/stripe-button';
 import { Hero } from '@root/lib/models/entities/hero';
@@ -9,7 +10,7 @@ import { Token } from 'react-stripe-checkout';
 import { HandleTokenAction } from '@root/ducks/payments/actions';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { LayoutBlock } from '../../_atoms/layout-block';
-import { Space, DodayColor } from '@root/lib/common-interfaces';
+import { Space } from '@root/lib/common-interfaces';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_top-bar.module.scss');
@@ -23,7 +24,10 @@ interface PropsFromConnect {
 
 @(withRouter as any)
 class TopBar extends React.Component<
-  TopBarProps & PropsFromConnect & Partial<RouteComponentProps>,
+  TopBarProps &
+    PropsFromConnect &
+    WithTranslation &
+    Partial<RouteComponentProps>,
   any
 > {
   renderContent() {
@@ -38,8 +42,8 @@ class TopBar extends React.Component<
   }
 
   render() {
-    const { location } = this.props;
-    console.log(location.pathname);
+    const { location, t } = this.props;
+
     return (
       <nav className={css.navBar}>
         <LayoutBlock valign="vflex-center">
@@ -51,7 +55,7 @@ class TopBar extends React.Component<
               to="/store"
               borderless
             >
-              Store
+              {t('topbar.store')}
             </Button>
           </LayoutBlock>
         </LayoutBlock>
@@ -81,4 +85,4 @@ const mapState = (state: RootState) => ({
 export default connect(
   mapState,
   { handleStripeToken: coinActions.handleTokenActionCreator }
-)(TopBar);
+)(withTranslation('shell')(TopBar));

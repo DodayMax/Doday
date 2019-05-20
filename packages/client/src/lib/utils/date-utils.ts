@@ -72,11 +72,16 @@ export const isToday = (date: Date) => {
   );
 };
 
-export const durationToLabel = (duration: string) => {
+export const durationToLabel = (
+  duration: string,
+  strings: { hour: string; minute: string }
+) => {
   const totalMinutes = Number(duration.slice(2, -1));
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-  return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+  return hours
+    ? `${hours}${strings.hour} ${minutes}${strings.minute}`
+    : `${minutes}${strings.minute}`;
 };
 
 export const durationToMinutes = (duration: string) =>

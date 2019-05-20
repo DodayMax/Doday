@@ -58,16 +58,20 @@ class DesktopShell extends React.Component<
     return (
       <Router>
         <div className={styles.desktopContainer}>
-          <TopBar />
+          <React.Suspense fallback={null}>
+            <TopBar />
+          </React.Suspense>
           <section className={styles.contentContainer}>
             {hero ? (
-              <Dashboard
-                activeTools={activeTools}
-                toggleDrawerActionCreator={toggleDrawerActionCreator}
-                toggleDodayAppActionCreator={toggleDodayAppActionCreator}
-                isDodayAppCollapsed={isDodayAppCollapsed}
-                isDrawerCollapsed={isDrawerCollapsed}
-              />
+              <React.Suspense fallback={null}>
+                <Dashboard
+                  activeTools={activeTools}
+                  toggleDrawerActionCreator={toggleDrawerActionCreator}
+                  toggleDodayAppActionCreator={toggleDodayAppActionCreator}
+                  isDodayAppCollapsed={isDodayAppCollapsed}
+                  isDrawerCollapsed={isDrawerCollapsed}
+                />
+              </React.Suspense>
             ) : (
               <Landing />
             )}

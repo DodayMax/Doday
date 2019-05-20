@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { SerializedResource } from '@root/lib/models/entities/resource';
+import { Resource } from '@root/lib/models/entities/resource';
 import {
   SerializedDodayLike,
   SerializedProgressLike,
@@ -23,7 +23,7 @@ export enum ActionConstants {
  */
 export function createDodayActionCreator(
   doday: SerializedDodayLike,
-  resource: SerializedResource
+  resource: Resource
 ): CreateDodayAction {
   return {
     type: ActionConstants.CREATE_DODAY,
@@ -44,7 +44,7 @@ export function createDodayActionCreator(
 export function createAndTakeDodayActionCreator(payload: {
   doday: SerializedDodayLike;
   progress: SerializedProgressLike;
-  resource?: SerializedResource;
+  resource?: Resource;
 }): CreateAndTakeDodayAction {
   return {
     type: ActionConstants.CREATE_AND_TAKE_DODAY,
@@ -82,7 +82,7 @@ export function updateDodayActionCreator(
   updates: {
     doday?: Partial<SerializedDodayLike>;
     progress?: Partial<SerializedProgressLike>;
-    resource?: Partial<SerializedResource>;
+    resource?: Partial<Resource>;
   }
 ): UpdateDodayAction {
   return {
@@ -140,7 +140,7 @@ export interface CreateDodayAction extends AnyAction {
   type: ActionConstants.CREATE_DODAY;
   payload: {
     doday: SerializedDodayLike;
-    resource: SerializedResource;
+    resource: Resource;
   };
 }
 
@@ -158,7 +158,7 @@ export interface CreateAndTakeDodayAction extends AnyAction {
   payload: {
     doday: SerializedDodayLike;
     progress: SerializedProgressLike;
-    resource?: SerializedResource;
+    resource?: Resource;
   };
 }
 
@@ -170,7 +170,7 @@ export interface UpdateDodayAction extends AnyAction {
     updates: {
       doday?: Partial<SerializedDodayLike>;
       progress?: Partial<SerializedProgressLike>;
-      resource?: Partial<SerializedResource>;
+      resource?: Partial<Resource>;
     };
   };
 }

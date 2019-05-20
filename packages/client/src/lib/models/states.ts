@@ -5,7 +5,7 @@ import {
   ToolBeacon,
   DodayLike,
   ToolsBuilderState,
-  ProgressLike,
+  SerializedProgressLike,
 } from '@root/tools/types';
 import { DodayAppQueryParams } from '../common-interfaces';
 
@@ -52,6 +52,6 @@ export interface StoreState {
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<ProgressLike>;
+  updates?: Partial<SerializedProgressLike>;
   selectedDoday?: DodayLike;
 }

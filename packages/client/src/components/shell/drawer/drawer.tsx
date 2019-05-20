@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { Trans, withTranslation, WithTranslation } from 'react-i18next';
 import * as cuid from 'cuid';
 import { match, withRouter, RouteComponentProps } from 'react-router-dom';
 import PieChart from 'react-minimal-pie-chart';
@@ -45,8 +46,12 @@ const items: DrawerMenuItem[] = [
   },
 ];
 
+@(withRouter as any)
 export class DrawerComponent extends React.Component<
-  DrawerProps & PropsFromConnect & RouteComponentProps,
+  DrawerProps &
+    PropsFromConnect &
+    WithTranslation &
+    Partial<RouteComponentProps>,
   {}
 > {
   constructor(props) {
@@ -109,7 +114,9 @@ export class DrawerComponent extends React.Component<
           onClick={() => this.props.history.push('/profile')}
           className={css.drawerLevel}
         >
-          <span className={css.drawerLevelLabel}>1 Level, Novice</span>
+          <span className={css.drawerLevelLabel}>{`${1} ${this.props.t(
+            'level'
+          )}, ${this.props.t('ranks.novice')}`}</span>
           <div
             className={css.drawerLevelProgress}
             style={{ width: `${42}%` }}
@@ -168,13 +175,7 @@ export class DrawerComponent extends React.Component<
   }
 
   render() {
-    const {
-      collapsed,
-      toolBeacons,
-      history,
-      location,
-      dodayAppRoute,
-    } = this.props;
+    const { collapsed, toolBeacons, history, dodayAppRoute, t } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
@@ -186,6 +187,7 @@ export class DrawerComponent extends React.Component<
         {this.renderDrawerLevel()}
         <ul role="navigation" className={css.drawerMenu}>
           <Grid
+            t={t}
             items={items.concat(this.toolsToDrawerMenuItems(toolBeacons))}
             renderCell={(item: DrawerMenuItem) => (
               <DodayAppMenuCell
@@ -216,9 +218,7 @@ const mapState = (state: RootState) => ({
   badge: state.dodayApp.status.badge,
 });
 
-export default withRouter(
-  connect(
-    mapState,
-    { ...actions, clearSelectedDodayActionCreator }
-  )(DrawerComponent)
-);
+export default connect(
+  mapState,
+  { ...actions, clearSelectedDodayActionCreator }
+)(withTranslation('profile')(DrawerComponent));

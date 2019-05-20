@@ -49,6 +49,7 @@ import {
   SerializedActivity,
   SerializedActivityProgress,
 } from '../../entities/activity';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const vars = require('@styles/_config.scss');
 const css = require('./activity-builder.module.scss');
@@ -85,9 +86,12 @@ interface ActivityBuilderState {
   estimateTime: string;
 }
 
-type Props = ActivityBuilderProps & WithTools & Partial<PropsFromConnect>;
+type Props = ActivityBuilderProps &
+  WithTools &
+  Partial<PropsFromConnect> &
+  WithTranslation;
 
-export class ActivityBuilder extends React.Component<
+export class ActivityBuilderComponentClass extends React.Component<
   Props,
   ActivityBuilderState
 > {
@@ -230,7 +234,7 @@ export class ActivityBuilder extends React.Component<
       setActivityTypeActionCreator,
       isUrlParsing,
       parsedMetadata,
-      activityType,
+      t,
     } = this.props;
 
     const { isPublic } = this.state;
@@ -244,7 +248,7 @@ export class ActivityBuilder extends React.Component<
       <>
         <LayoutBlock insideElementsMargin valign="vflex-center">
           <Text size={TypographySize.s} color={TypographyColor.Disabled}>
-            activity type:
+            {t('builder.activityType')}:
           </Text>
           {loading || isUrlParsing ? (
             <Icons.InlineLoader />
@@ -261,7 +265,7 @@ export class ActivityBuilder extends React.Component<
           value={this.state.dodayName}
           onChange={this.onChangeInput}
           onPressEnter={this.handleCreateDoday}
-          placeholder="Enter name or paste link..."
+          placeholder={t('builder.namePlaceholder')}
         />
         <ParsedUrlView
           onClose={() => {
@@ -297,7 +301,9 @@ export class ActivityBuilder extends React.Component<
           />
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
-          <Text color={TypographyColor.Disabled}>Estimate time:</Text>
+          <Text color={TypographyColor.Disabled}>
+            {t('builder.estimateTime')}:
+          </Text>
           <Slider
             min={0}
             max={8 * 60}
@@ -318,7 +324,7 @@ export class ActivityBuilder extends React.Component<
               onChange={(value: Tag[]) => {
                 this.setState({ selectedTags: value });
               }}
-              placeholder="Add tags that other people can easily find your doday"
+              placeholder={t('builder.tagsPlaceholder')}
               isMulti
               cacheOptions
               defaultOptions
@@ -337,7 +343,7 @@ export class ActivityBuilder extends React.Component<
               size={ButtonSize.small}
               onClick={() => this.setState({ isPublic: false })}
             >
-              Private
+              {t('builder.private')}
             </Button>
             <Button
               active={isPublic}
@@ -346,7 +352,7 @@ export class ActivityBuilder extends React.Component<
                 this.setState({ isPublic: true });
               }}
             >
-              Public
+              {t('builder.public')}
             </Button>
           </ButtonGroup>
           <Button
@@ -355,7 +361,7 @@ export class ActivityBuilder extends React.Component<
             isLoading={loading}
             onClick={this.handleCreateDoday}
           >
-            Create
+            {t('builder.create')}
           </Button>
         </LayoutBlock>
       </>
@@ -390,10 +396,10 @@ const mapState = (state: RootState) => ({
   loading: state.builder.status.loading,
 });
 
-export default connect(
+export const ActivityBuilder = connect(
   mapState,
   {
     ...dodaysApiActions.actions.actionCreators,
     ...activitiesBuilderActions.actions.actionCreators,
   }
-)(ActivityBuilder);
+)(withTranslation('activities')(ActivityBuilderComponentClass));

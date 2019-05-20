@@ -35,6 +35,7 @@ import {
 import { Activity } from '../../entities/activity';
 import { DodayType, ProgressLike } from '@root/tools/types';
 import { activityIconByType } from '../builders/activity-builder';
+import { WithTranslation, withTranslation } from 'react-i18next';
 
 const vars = require('@styles/_config.scss');
 const css = require('./activity-details.module.scss');
@@ -65,11 +66,15 @@ interface PropsFromConnect {
 
 type Props = ActivityDetailsProps &
   Partial<PropsFromConnect> &
-  Partial<RouteComponentProps<any>>;
+  Partial<RouteComponentProps<any>> &
+  WithTranslation;
 
 @(withRouter as any)
 @Pageflow({ path: '/dodays/:did' })
-class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
+export class ActivityDetailsComponentClass extends React.Component<
+  Props,
+  ActivityDetailsState
+> {
   constructor(props) {
     super(props);
 
@@ -96,7 +101,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   };
 
   actions = () => {
-    const { history, selectedDoday, loading } = this.props;
+    const { history, selectedDoday, loading, t } = this.props;
     const actions = [];
 
     if (selectedDoday.progress) {
@@ -112,7 +117,7 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
             });
           }}
         >
-          Untake
+          {t('details.actions.untake')}
         </Button>
       );
     }
@@ -141,9 +146,9 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
   };
 
   renderTakeDodayBlock = () => {
-    const { selectedDoday, loading } = this.props;
+    const { selectedDoday, loading, t } = this.props;
     if (selectedDoday.progress) {
-      return <>Already taken</>;
+      return <>{t('details.status.alreadyTaken')}</>;
     }
 
     return (
@@ -188,14 +193,14 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
             });
           }}
         >
-          TAKE
+          {t('details.actions.take')}
         </Button>
       </>
     );
   };
 
   render() {
-    const { selectedDoday } = this.props;
+    const { selectedDoday, t } = this.props;
 
     // const goal =
     //   updates && updates.relatedGoal
@@ -229,18 +234,23 @@ class ActivityDetails extends React.Component<Props, ActivityDetailsState> {
                 <LayoutBlock insideElementsMargin valign="vflex-center">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
-                    {durationToLabel(selectedDoday.duration)}
+                    {durationToLabel(selectedDoday.duration, {
+                      hour: t('time.h'),
+                      minute: t('time.m'),
+                    })}
                   </Text>
                   <Text
                     size={TypographySize.s}
                     color={TypographyColor.Disabled}
                   >
                     (
-                    {Math.round(
-                      (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
-                        100
-                    )}
-                    % of your day)
+                    {t('details.status.percentOfTheDay', {
+                      percent: Math.round(
+                        (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                          100
+                      ),
+                    })}
+                    )
                   </Text>
                 </LayoutBlock>
               )}
@@ -306,11 +316,11 @@ const mapState = (state: RootState) => ({
   selectedDoday: state.dodayDetails.selectedDoday,
 });
 
-export default connect(
+export const ActivityDetails = connect(
   mapState,
   {
     ...dodaysActions,
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(ActivityDetails);
+)(withTranslation('activities')(ActivityDetailsComponentClass));

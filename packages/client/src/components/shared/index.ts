@@ -1,4 +1,4 @@
-import Grid from './_organisms/grid/grid';
+import { Grid } from './_organisms/grid/grid';
 
 export * from './_atoms/typography';
 export * from './_atoms/input';

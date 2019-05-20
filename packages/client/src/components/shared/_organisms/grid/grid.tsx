@@ -7,6 +7,7 @@ import { Space } from '@root/lib/common-interfaces';
 import { FilterItem } from './filter/filter-item';
 import { Filter } from './filter/filter';
 import { Input } from '../../_atoms/input';
+import { WithTranslation } from 'react-i18next';
 
 const css = require('./_grid.module.scss');
 
@@ -23,8 +24,9 @@ interface GridState {
   activeIndex: number;
 }
 
-export class GridComponent extends React.Component<
-  GridProps & RouteComponentProps,
+@(withRouter as any)
+export class GridComponentClass extends React.Component<
+  GridProps & Partial<RouteComponentProps> & Partial<WithTranslation>,
   GridState
 > {
   constructor(props) {
@@ -48,14 +50,19 @@ export class GridComponent extends React.Component<
   };
 
   render() {
-    const { items, loading, renderCell, filters, search } = this.props;
+    const { items, loading, renderCell, filters, search, t } = this.props;
     return (
       <>
         {search && (
-          <Input placeholder="Type for search..." className={css.search} />
+          <Input
+            placeholder={t('dodayapp.search.placeholder')}
+            className={css.search}
+          />
         )}
         {filters &&
-          filters.map((filter, index) => <Filter key={index} items={filter} />)}
+          filters.map((filter, index) => (
+            <Filter key={index} items={filter} t={t} />
+          ))}
         <ul id="grid" className={css.gridContainer}>
           {loading && (
             <LayoutBlock
@@ -76,7 +83,7 @@ export class GridComponent extends React.Component<
   }
 }
 
-export default withRouter(connect(
+export const Grid = connect(
   undefined,
   { ...actions }
-)(GridComponent) as any) as any;
+)(GridComponentClass);

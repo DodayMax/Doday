@@ -1,0 +1,52 @@
+{
+  "name": "Activities",
+  "time": {
+    "h": "h",
+    "m": "m"
+  },
+  "activityType": {
+    "do": "do",
+    "read": "read",
+    "watch": "watch"
+  },
+  "dodayapp": {
+    "search": {
+      "placeholder": "type for search activity..."
+    },
+    "filter": {
+      "inprogress": "in progress",
+      "completed": "completed",
+      "published": "published"
+    }
+  },
+  "overview": {
+    "title": "Overview",
+    "actions": {
+      "create": "New Activity"
+    }
+  },
+  "builder": {
+    "activityType": "activity type",
+    "namePlaceholder": "Enter name or paste link",
+    "estimateTime": "estimate time",
+    "tagsPlaceholder": "Add tags that other people can easily find your doday",
+    "public": "Public",
+    "private": "Private",
+    "create": "Create"
+  },
+  "details": {
+    "status": {
+      "completed": "completed",
+      "percentOfTheDay": "{{percent}}% of your day",
+      "alreadyTaken": "Already taken"
+    },
+    "actions": {
+      "save": "Save",
+      "saving": "Saving...",
+      "take": "Take",
+      "untake": "Untake",
+      "delete": "Delete",
+      "goToResource": "Go to resource"
+    }
+  }
+}
