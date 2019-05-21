@@ -376,14 +376,31 @@ export const activityIconByType = (
 ) => {
   switch (type) {
     case 'do':
-      return <Icons.ActivityDoType width={size} height={size} color={color} />;
+      return (
+        <Icons.ActivityDoType
+          key={cuid()}
+          width={size}
+          height={size}
+          color={color}
+        />
+      );
     case 'read':
       return (
-        <Icons.ActivityReadType width={size} height={size} color={color} />
+        <Icons.ActivityReadType
+          key={cuid()}
+          width={size}
+          height={size}
+          color={color}
+        />
       );
     case 'watch':
       return (
-        <Icons.ActivityWatchType width={size} height={size} color={color} />
+        <Icons.ActivityWatchType
+          key={cuid()}
+          width={size}
+          height={size}
+          color={color}
+        />
       );
   }
 };

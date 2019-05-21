@@ -73,23 +73,29 @@ export const deserializeActivity = (activity: SerializedActivity): Activity => {
 export const serializeActivityProgress = (
   progress: ActivityProgress
 ): SerializedActivityProgress => {
+  const convertedDates: any = {};
+  if (progress.date) convertedDates.date = progress.date.getTime();
+  if (progress.tookAt) convertedDates.tookAt = progress.tookAt.getTime();
+  if (progress.completedAt)
+    convertedDates.completedAt = progress.completedAt.getTime();
   const serialized: SerializedActivityProgress = {
     ...progress,
-    date: progress.date && progress.date.getTime(),
-    tookAt: progress.tookAt && progress.tookAt.getTime(),
-    completedAt: progress.completedAt && progress.completedAt.getTime(),
+    ...convertedDates,
   };
   return serialized;
 };
 
 export const deserializeActivityProgress = (
-  progress: SerializedActivityProgress
+  progress: Partial<SerializedActivityProgress>
 ): ActivityProgress => {
-  const deserialized: ActivityProgress = {
+  const convertedDates: any = {};
+  if (progress.date) convertedDates.date = new Date(progress.date);
+  if (progress.tookAt) convertedDates.tookAt = new Date(progress.tookAt);
+  if (progress.completedAt)
+    convertedDates.completedAt = new Date(progress.completedAt);
+  const deserialized: Partial<ActivityProgress> = {
     ...progress,
-    date: progress.date && new Date(progress.date),
-    tookAt: progress.tookAt && new Date(progress.tookAt),
-    completedAt: progress.completedAt && new Date(progress.completedAt),
+    ...convertedDates,
   };
   return deserialized;
 };

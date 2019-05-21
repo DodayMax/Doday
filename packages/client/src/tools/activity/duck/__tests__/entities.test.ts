@@ -4,6 +4,8 @@ import {
   serializeActivityProgress,
   deserializeActivityProgress,
   isActivity,
+  SerializedActivityProgress,
+  ActivityProgress,
 } from '../../entities/activity';
 import {
   deserializedActivity,
@@ -30,10 +32,32 @@ describe('Test activities serialize helper functions', () => {
     );
   });
 
+  it('serialize partial activity progress', () => {
+    const partialProgress: Partial<ActivityProgress> = {
+      completed: true,
+      completedAt: new Date(),
+    };
+    const serialized = serializeActivityProgress(partialProgress);
+    expect(serialized.hasOwnProperty('completed')).toBe(true);
+    expect(serialized.hasOwnProperty('completedAt')).toBe(true);
+    expect(serialized.hasOwnProperty('date')).toBe(false);
+    expect(serialized.hasOwnProperty('tookAt')).toBe(false);
+  });
+
   it('deserialize activity progress', () => {
     expect(deserializeActivityProgress(serializedActivityProgress)).toEqual(
       deserialzedActivityProgress
     );
+  });
+
+  it('deserialize activity partial progress', () => {
+    const partialProgress: Partial<SerializedActivityProgress> = {
+      date: Date.now(),
+    };
+    const deserialized = deserializeActivityProgress(partialProgress);
+    expect(deserialized.hasOwnProperty('date')).toBe(true);
+    expect(deserialized.hasOwnProperty('tookAt')).toBe(false);
+    expect(deserialized.hasOwnProperty('completedAt')).toBe(false);
   });
 
   it('isActivity returns correct value', () => {

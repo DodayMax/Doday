@@ -207,6 +207,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
+          onError={(ev) => {(ev.target as HTMLImageElement).src = ''}}
           key={cuid()}
           className={css.resourceStatusIcon}
           src={selectedDoday.resource.icon}
@@ -367,7 +368,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 }}
               />
             ) : null}
-            <Text>{resource && resource.description}</Text>
+            <Text spaceAbove={Space.Large}>{resource && resource.description}</Text>
             {!youtubeLink && (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}

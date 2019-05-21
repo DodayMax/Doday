@@ -51,6 +51,8 @@ export default (
         dirty: action.payload,
       };
     case actions.ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY:
+      console.log(state.updates);
+      console.log(action.payload);
       return {
         ...state,
         updates: {
