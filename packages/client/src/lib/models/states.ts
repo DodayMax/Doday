@@ -43,6 +43,7 @@ export interface AuthState {
 export interface HeroSettingsState {
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
+  theme: 'light' | 'dark';
 }
 
 export interface StoreState {

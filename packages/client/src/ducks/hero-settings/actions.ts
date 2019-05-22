@@ -3,6 +3,7 @@ import { AnyAction } from 'redux';
 export enum ActionConstants {
   TOGGLE_DRAWER = '[heroSettings] TOGGLE_DRAWER',
   TOGGLE_DODAY_APP = '[heroSettings] TOGGLE_DODAY_APP',
+  TOGGLE_THEME = '[heroSettings] TOGGLE_THEME',
 }
 
 /**
@@ -29,9 +30,25 @@ export function toggleDodayAppActionCreator(): ToggleDodayAppAction {
   };
 }
 
+/**
+ * Toggle dark/light theme
+ *
+ * @export
+ * @returns {ToggleThemeAction}
+ */
+export function toggleThemeActionCreator(
+  mode: 'dark' | 'light'
+): ToggleThemeAction {
+  return {
+    type: ActionConstants.TOGGLE_THEME,
+    payload: mode,
+  };
+}
+
 export const actionCreators = {
   toggleDrawerActionCreator,
   toggleDodayAppActionCreator,
+  toggleThemeActionCreator,
 };
 
 /**
@@ -46,8 +63,13 @@ export interface ToggleDodayAppAction extends AnyAction {
   type: ActionConstants.TOGGLE_DODAY_APP;
 }
 
+export interface ToggleThemeAction extends AnyAction {
+  type: ActionConstants.TOGGLE_THEME;
+  payload: string;
+}
+
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes = ToggleDrawerAction;
+export type ActionTypes = ToggleDrawerAction | ToggleThemeAction;

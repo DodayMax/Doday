@@ -19,3 +19,5 @@ export type DodayAppQueryParams = {
   completed?: boolean;
   published?: boolean;
 };
+
+export type ThemeType = 'dark' | 'light';

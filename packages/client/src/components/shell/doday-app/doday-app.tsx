@@ -10,9 +10,19 @@ import { RouteComponentProps } from 'react-router';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
+import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_doday-app.module.scss');
+
+const styles = createStyles({
+  container: {
+    minWidth: '28rem',
+    maxWidth: '3rem',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+});
 
 export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -30,7 +40,8 @@ export class DodayAppComponent extends React.Component<
   DodayAppProps &
     WithTools &
     Partial<PropsFromConnect> &
-    Partial<RouteComponentProps>
+    Partial<RouteComponentProps> &
+    WithStyles
 > {
   componentDidMount() {
     const { activeTools, location } = this.props;
@@ -64,13 +75,14 @@ export class DodayAppComponent extends React.Component<
   };
 
   private renderDodayApp = () => {
-    const { activeTools, history, location, match } = this.props;
+    const { activeTools, history, location, match, classes } = this.props;
     const tool = activeTools.find(
       tool => tool.config.route === this.props.route
     );
     if (tool)
       return (
         <tool.components.dodayApp
+          className={classes.container}
           history={history}
           location={location}
           match={match}
@@ -129,10 +141,9 @@ export class DodayAppComponent extends React.Component<
   // }
 
   render() {
+    const { classes } = this.props;
     return (
-      <section className={css.dodayappContainer}>
-        {this.renderDodayApp()}
-      </section>
+      <section className={classes.container}>{this.renderDodayApp()}</section>
     );
   }
 }
@@ -151,4 +162,4 @@ export default connect(
     ...dodayDetailsActions,
     ...api.dodays.actions,
   }
-)(DodayAppComponent);
+)(withStyles(styles)(DodayAppComponent));

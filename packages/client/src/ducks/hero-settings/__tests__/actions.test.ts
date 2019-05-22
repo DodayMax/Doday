@@ -18,4 +18,15 @@ describe('hero settings action creators', () => {
       expectedActionObject
     );
   });
+
+  it('toggle theme action creator', () => {
+    const mode = 'light';
+    const expectedActionObject = {
+      type: ActionConstants.TOGGLE_THEME,
+      payload: mode,
+    };
+    expect(actionCreators.toggleThemeActionCreator(mode)).toEqual(
+      expectedActionObject
+    );
+  });
 });

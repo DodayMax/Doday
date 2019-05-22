@@ -11,81 +11,22 @@ import { ProgressDetails } from '../progress-details';
 import { DodayApp } from '@root/components/shell/doday-app';
 import { ToolBeacon } from '@root/tools/types';
 import { Store } from '../store';
+import { LayoutBlock } from '@root/components/shared';
 
 const css = require('./_dashboard.module.scss');
 
 interface DashboardProps {
   activeTools: ToolBeacon[];
-  toggleDrawerActionCreator: () => ToggleDrawerAction;
   toggleDodayAppActionCreator: () => ToggleDodayAppAction;
-  isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
 }
 
-interface DashboardState {
-  resizeTaskId?: NodeJS.Timeout;
-  isDrawerCollapsed: boolean;
-}
-
-export class Dashboard extends React.Component<DashboardProps, DashboardState> {
-  constructor(props: DashboardProps) {
-    super(props);
-
-    // Keep in state for forceCollapsing
-    this.state = {
-      isDrawerCollapsed: props.isDrawerCollapsed,
-    };
-  }
-  toggleMenu() {
-    this.setState({
-      isDrawerCollapsed: !this.state.isDrawerCollapsed,
-    });
-  }
-
-  componentDidMount() {
-    const taskID = this.state.resizeTaskId;
-    const documentWidth = document.documentElement.scrollWidth;
-    this.setState({
-      isDrawerCollapsed: documentWidth <= 1100,
-    });
-
-    window.addEventListener('resize', evt => {
-      if (taskID != null) {
-        clearTimeout(taskID);
-      }
-
-      this.setState({
-        resizeTaskId: setTimeout(() => {
-          const documentWidth = document.documentElement.scrollWidth;
-          if (!this.state.isDrawerCollapsed) {
-            this.setState({
-              resizeTaskId: undefined,
-              isDrawerCollapsed: documentWidth <= 1100,
-            });
-          }
-        }, 100),
-      });
-    });
-  }
-
+export class Dashboard extends React.Component<DashboardProps> {
   render() {
     const { isDodayAppCollapsed, activeTools } = this.props;
 
     return (
-      <>
-        <nav>
-          <Drawer
-            collapsed={this.state.isDrawerCollapsed}
-            toggle={() => this.toggleMenu()}
-            toolBeacons={activeTools}
-          />
-        </nav>
-        {!isDodayAppCollapsed && (
-          <Route
-            path="/"
-            render={props => <DodayApp {...props} activeTools={activeTools} />}
-          />
-        )}
+      <LayoutBlock>
         {activeTools.map((tool, index) => (
           <Route
             key={index}
@@ -111,7 +52,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         />
         <Route path="/profile" component={Profile} />
         <Route path="/store" component={Store} />
-      </>
+      </LayoutBlock>
     );
   }
 }

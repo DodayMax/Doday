@@ -36,6 +36,7 @@ import { Activity } from '../../entities/activity';
 import { DodayType, ProgressLike } from '@root/tools/types';
 import { activityIconByType } from '../builders/activity-builder';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
 const vars = require('@styles/_config.scss');
 const css = require('./activity-details.module.scss');
@@ -157,7 +158,7 @@ export class ActivityDetailsComponentClass extends React.Component<
           <CustomDatePicker
             borderless
             minDate={new Date()}
-            icon={<Icons.Clock />}
+            icon={<ScheduleIcon />}
             selected={new Date(this.state.date)}
             onChange={date => {
               this.setState({

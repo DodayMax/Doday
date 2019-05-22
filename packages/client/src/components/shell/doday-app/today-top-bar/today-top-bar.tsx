@@ -40,7 +40,7 @@ export class TodayTopBar extends React.Component<TodayTopBarProps> {
           background={vars.gray1}
           onClick={this.previousDate}
         >
-          <Icons.Chevron />
+          <Icons.ChevronLeft />
         </ClickableIcon>
         <div className={styles.dateContainer}>
           <span className={styles.date}>{date}</span>
@@ -55,7 +55,7 @@ export class TodayTopBar extends React.Component<TodayTopBarProps> {
           )}
         </div>
         <ClickableIcon border background={vars.gray1} onClick={this.nextDate}>
-          <Icons.Chevron right />
+          <Icons.ChevronLeft />
         </ClickableIcon>
       </>
     );

@@ -33,7 +33,9 @@ export type APIResponseProgressLike = APIresponseActivityProgress;
 export interface ToolBeacon {
   config: ToolConfig;
   components: {
-    dodayApp: React.ComponentType<RouteComponentProps>;
+    dodayApp: React.ComponentType<
+      React.HTMLAttributes<HTMLElement> & RouteComponentProps
+    >;
     cells: {
       [K in DodayType]?: {
         public: React.ComponentType<CellProps>;

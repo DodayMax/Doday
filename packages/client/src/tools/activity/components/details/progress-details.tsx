@@ -49,6 +49,7 @@ import {
   SerializedResource,
   Resource,
 } from '@root/lib/models/entities/resource';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
 const vars = require('@styles/_config.scss');
 const css = require('./progress-details.module.scss');
@@ -207,7 +208,9 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
-          onError={(ev) => {(ev.target as HTMLImageElement).src = ''}}
+          onError={ev => {
+            (ev.target as HTMLImageElement).src = '';
+          }}
           key={cuid()}
           className={css.resourceStatusIcon}
           src={selectedDoday.resource.icon}
@@ -254,7 +257,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                   <CustomDatePicker
                     borderless
                     minDate={new Date()}
-                    icon={<Icons.Clock />}
+                    icon={<ScheduleIcon />}
                     selected={
                       (updates && updates.date && new Date(updates.date)) ||
                       (selectedDoday &&
@@ -368,7 +371,9 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 }}
               />
             ) : null}
-            <Text spaceAbove={Space.Large}>{resource && resource.description}</Text>
+            <Text spaceAbove={Space.Large}>
+              {resource && resource.description}
+            </Text>
             {!youtubeLink && (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}

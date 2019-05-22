@@ -6,8 +6,7 @@ import { Icons } from '@shared';
 storiesOf('Icons', module)
   .add('ArrowIcon', () => (
     <>
-      <Icons.Arrow />
-      <Icons.Arrow right />
+      <Icons.ArrowLeft />
     </>
   ))
   .add('DoubleChevronIcon', () => (
@@ -18,5 +17,4 @@ storiesOf('Icons', module)
   ))
   .add('InlineLoader', () => <Icons.InlineLoader />)
   .add('TodayCalendar', () => <Icons.TodayCalendar />)
-  .add('Clock', () => <Icons.Clock />)
   .add('Silver', () => <Icons.Silver />);

@@ -4,6 +4,7 @@ import { HeroSettingsState } from '@lib/models';
 export const initialHeroSettingsState: HeroSettingsState = {
   isDrawerCollapsed: false,
   isDodayAppCollapsed: false,
+  theme: 'dark',
 };
 
 export default (
@@ -15,6 +16,11 @@ export default (
       return {
         ...state,
         isDrawerCollapsed: !state.isDrawerCollapsed,
+      };
+    case actions.ActionConstants.TOGGLE_THEME:
+      return {
+        ...state,
+        theme: action.payload,
       };
     default:
       return state;

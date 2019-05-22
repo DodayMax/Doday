@@ -5,6 +5,7 @@ import { LayoutBlock, ClickableIcon, Icons } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { PageWrapperChildContext } from '../../_support/pageflow';
+import CloseIcon from '@material-ui/icons/Close';
 
 const vars = require('@styles/_config.scss');
 const css = require('./_page-header.module.scss');
@@ -61,7 +62,7 @@ class PageHeaderComponentClass extends React.Component<
                 }, 200);
               }}
             >
-              <Icons.Close color={vars.gray6} width={30} height={30} />
+              <CloseIcon />
             </ClickableIcon>
           )}
         </LayoutBlock>

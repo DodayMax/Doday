@@ -50,6 +50,9 @@ import {
   SerializedActivityProgress,
 } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import DoneIcon from '@material-ui/icons/Done';
+import { createStyles } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
 const css = require('./activity-builder.module.scss');
@@ -288,7 +291,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             lightBorder
             withLocker
             isLocked={this.state.dateIsLocked}
-            icon={<Icons.Clock />}
+            icon={<ScheduleIcon />}
             minDate={new Date()}
             selected={this.state.date}
             onChange={this.handleChangeDate}
@@ -376,32 +379,11 @@ export const activityIconByType = (
 ) => {
   switch (type) {
     case 'do':
-      return (
-        <Icons.ActivityDoType
-          key={cuid()}
-          width={size}
-          height={size}
-          color={color}
-        />
-      );
+      return <DoneIcon key={cuid()} />;
     case 'read':
-      return (
-        <Icons.ActivityReadType
-          key={cuid()}
-          width={size}
-          height={size}
-          color={color}
-        />
-      );
+      return <Icons.ActivityReadType key={cuid()} />;
     case 'watch':
-      return (
-        <Icons.ActivityWatchType
-          key={cuid()}
-          width={size}
-          height={size}
-          color={color}
-        />
-      );
+      return <Icons.ActivityWatchType key={cuid()} />;
   }
 };
 

@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { ClickableIcon } from '../../_atoms/clickable-icon/clickable-icon';
 import { Marker } from '../../_atoms/marker';
-import { Icons } from '../..';
 import { LayoutBlock } from '../../_atoms/layout-block';
+import ArrowLeft from '@material-ui/icons/ArrowLeft';
+import ArrowRight from '@material-ui/icons/ArrowRight';
 
 const vars = require('@styles/_config.scss');
 
@@ -50,7 +51,7 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
             }
           }}
         >
-          <Icons.Arrow left hover />
+          <ArrowLeft />
         </ClickableIcon>
         {render ? (
           render(items[currentIndex])
@@ -69,7 +70,7 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
             }
           }}
         >
-          <Icons.Arrow right hover />
+          <ArrowRight />
         </ClickableIcon>
       </LayoutBlock>
     );
