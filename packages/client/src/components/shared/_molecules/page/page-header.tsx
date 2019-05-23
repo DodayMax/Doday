@@ -1,13 +1,13 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { LayoutBlock, ClickableIcon, Icons } from '@shared';
+import { LayoutBlock } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { PageWrapperChildContext } from '../../_support/pageflow';
 import CloseIcon from '@material-ui/icons/Close';
+import { IconButton } from '@material-ui/core';
 
-const vars = require('@styles/_config.scss');
 const css = require('./_page-header.module.scss');
 
 interface PageHeaderProps extends Partial<RouteComponentProps> {
@@ -50,8 +50,7 @@ class PageHeaderComponentClass extends React.Component<
         >
           {actions || children}
           {withClose && (
-            <ClickableIcon
-              hover
+            <IconButton
               onClick={() => {
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
@@ -61,9 +60,10 @@ class PageHeaderComponentClass extends React.Component<
                   }
                 }, 200);
               }}
+              aria-label="Close"
             >
               <CloseIcon />
-            </ClickableIcon>
+            </IconButton>
           )}
         </LayoutBlock>
       </LayoutBlock>

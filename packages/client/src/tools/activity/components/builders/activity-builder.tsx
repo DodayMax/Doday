@@ -1,30 +1,20 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
 import { connect } from 'react-redux';
-import Tooltip from 'rc-tooltip';
 import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import {
   LayoutBlock,
-  Input,
-  Text,
-  Button,
-  ButtonSize,
-  ButtonGroup,
   Icons,
   Switcher,
   SwitcherItem,
 } from '@shared';
 import {
-  TypographySize,
-  TypographyColor,
-  Size,
   Space,
   ActivityType,
 } from '@root/lib/common-interfaces';
-import { detectURL } from '@root/lib/utils';
+import { detectURL, durationToLabel } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
-import { CustomDatePicker } from '@root/components/shared/_atoms/custom-datepicker';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { SerializedResource } from '@root/lib/models/entities/resource';
 import * as activitiesBuilderActions from '../../duck';
@@ -50,12 +40,41 @@ import {
   SerializedActivityProgress,
 } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import DoneIcon from '@material-ui/icons/Done';
-import { createStyles } from '@material-ui/core';
+import {
+  createStyles,
+  Typography,
+  Theme,
+  withStyles,
+  WithStyles,
+  Tooltip,
+  TextField,
+  Chip,
+  FormControlLabel,
+  Switch,
+  Button,
+} from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
-const css = require('./activity-builder.module.scss');
+
+const css = (theme: Theme) =>
+  createStyles({
+    margin: {
+      margin: `0 ${theme.spacing.unit}px`,
+    },
+    dodayname: {
+      fontSize: '2.6rem',
+    },
+    label: {
+      fontSize: '2.2rem',
+    },
+    input: {
+      fontSize: '1.4rem',
+    },
+    inputLabel: {
+      fontSize: '1.6rem',
+    },
+  });
 
 interface ActivityBuilderProps extends BuilderProps {}
 
@@ -83,7 +102,7 @@ interface ActivityBuilderState {
   dodayName: string;
   selectedTags?: Tag[];
   parsingFinished?: string;
-  date: Date;
+  date: string;
   dateIsLocked: boolean;
   isPublic: boolean;
   estimateTime: string;
@@ -92,7 +111,8 @@ interface ActivityBuilderState {
 type Props = ActivityBuilderProps &
   WithTools &
   Partial<PropsFromConnect> &
-  WithTranslation;
+  WithTranslation &
+  WithStyles;
 
 export class ActivityBuilderComponentClass extends React.Component<
   Props,
@@ -103,7 +123,7 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     this.state = {
       dodayName: '',
-      date: new Date(),
+      date: '2019-02-12',
       isPublic: false,
       dateIsLocked: false,
       estimateTime: 'PT60M',
@@ -153,9 +173,9 @@ export class ActivityBuilderComponentClass extends React.Component<
     });
   };
 
-  handleChangeDate = date => {
+  handleChangeDate = e => {
     this.setState({
-      date,
+      date: e.target.value,
     });
   };
 
@@ -181,7 +201,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     };
 
     const progress: SerializedActivityProgress = {
-      date: this.state.date.getTime(),
+      date: new Date(this.state.date).getTime(),
       dateIsLocked: this.state.dateIsLocked,
       completed: false,
       ownerDID,
@@ -200,30 +220,23 @@ export class ActivityBuilderComponentClass extends React.Component<
     }
   };
 
-  handleGoalSelect = selected => {
-    // const goal =
-    //   this.props.goals &&
-    //   this.props.goals.find(goal => goal.did === selected.value);
-    // this.props.selectGoalActionCreator(goal);
-  };
-
   handleEstimateTimeChange = props => {
     const { value, dragging, index, ...restProps } = props;
     const hours = Math.floor(value / 60);
     const minutes = value % 60;
     const time = hours ? `${hours}h ${minutes}m` : `${minutes}m`;
     return (
-      <Tooltip
-        prefixCls="rc-slider-tooltip"
-        overlay={time}
-        visible={dragging}
-        placement="top"
-        key={index}
-        overlayClassName={css.timeTooltip}
-      >
+      <Tooltip open={dragging} title={time} placement="top">
         <Handle value={time} {...restProps} />
       </Tooltip>
     );
+  };
+
+  onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      // enter
+      this.handleCreateDoday();
+    }
   };
 
   private get activitTypesSwitcherItems(): SwitcherItem[] {
@@ -237,22 +250,16 @@ export class ActivityBuilderComponentClass extends React.Component<
       setActivityTypeActionCreator,
       isUrlParsing,
       parsedMetadata,
+      classes,
       t,
     } = this.props;
 
     const { isPublic } = this.state;
 
-    // const goalsForSelect = goals.map(goal => ({
-    //   label: goal.name,
-    //   value: goal.did,
-    // }));
-
     return (
       <>
         <LayoutBlock insideElementsMargin valign="vflex-center">
-          <Text size={TypographySize.s} color={TypographyColor.Disabled}>
-            {t('builder.activityType')}:
-          </Text>
+          <Typography variant='h6'>{t('builder.activityType')}:</Typography>
           {loading || isUrlParsing ? (
             <Icons.InlineLoader />
           ) : (
@@ -263,12 +270,23 @@ export class ActivityBuilderComponentClass extends React.Component<
             />
           )}
         </LayoutBlock>
-        <Input
-          size={Size.Large}
+        <TextField
+          id="dodayname-input"
+          label={t('builder.namePlaceholder')}
           value={this.state.dodayName}
           onChange={this.onChangeInput}
-          onPressEnter={this.handleCreateDoday}
-          placeholder={t('builder.namePlaceholder')}
+          margin="normal"
+          onKeyDown={this.onKeyDown}
+          InputProps={{
+            classes: {
+              input: classes.dodayname,
+            },
+          }}
+          InputLabelProps={{
+            FormLabelClasses: {
+              root: classes.label,
+            },
+          }}
         />
         <ParsedUrlView
           onClose={() => {
@@ -286,27 +304,33 @@ export class ActivityBuilderComponentClass extends React.Component<
           paddingAbove={Space.Small}
           paddingBelow={Space.Small}
         >
-          <CustomDatePicker
+          <TextField
+            id="date"
             disabled={this.state.isPublic}
-            lightBorder
-            withLocker
-            isLocked={this.state.dateIsLocked}
-            icon={<ScheduleIcon />}
-            minDate={new Date()}
-            selected={this.state.date}
+            label={t('activities:builder.date')}
+            type="date"
+            value={this.state.date}
             onChange={this.handleChangeDate}
-            onLocked={() =>
-              this.setState({
-                dateIsLocked: !this.state.dateIsLocked,
-              })
-            }
-            className={css.datePickerInput}
+            InputProps={{
+            classes: {
+              input: classes.input,
+            },
+            }}
+            InputLabelProps={{
+              FormLabelClasses: {
+                root: classes.inputLabel,
+              },
+            }}
           />
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
-          <Text color={TypographyColor.Disabled}>
-            {t('builder.estimateTime')}:
-          </Text>
+          <LayoutBlock insideElementsMargin valign='vflex-center' spaceBelow={Space.XSmall}>
+            <Typography variant="h6">{t('builder.estimateTime')}:</Typography>
+            <Chip
+                label={durationToLabel(this.state.estimateTime, { hour: t('shell:time.h'), minute: t('shell:time.m') })}
+                color='default'
+              />
+          </LayoutBlock>
           <Slider
             min={0}
             max={8 * 60}
@@ -316,7 +340,6 @@ export class ActivityBuilderComponentClass extends React.Component<
                 estimateTime: `PT${value}M`,
               })
             }
-            handle={this.handleEstimateTimeChange}
             step={5}
           />
         </LayoutBlock>
@@ -340,32 +363,25 @@ export class ActivityBuilderComponentClass extends React.Component<
           align="flex-end"
           valign="vflex-center"
         >
-          <ButtonGroup>
-            <Button
-              active={!isPublic}
-              size={ButtonSize.small}
-              onClick={() => this.setState({ isPublic: false })}
-            >
-              {t('builder.private')}
-            </Button>
-            <Button
-              active={isPublic}
-              size={ButtonSize.small}
-              onClick={() => {
-                this.setState({ isPublic: true });
-              }}
-            >
-              {t('builder.public')}
-            </Button>
-          </ButtonGroup>
-          <Button
-            primary
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isPublic}
+                onChange={() => this.setState({ isPublic: !this.state.isPublic })}
+                color="primary"
+              />
+            }
+            label={t('builder.public')}
+          />
+          {!loading ?
+          (<Button
+            color="primary"
+            variant="contained"
             disabled={!this.state.dodayName && !parsedMetadata}
-            isLoading={loading}
             onClick={this.handleCreateDoday}
           >
             {t('builder.create')}
-          </Button>
+          </Button>) : (<Icons.InlineLoader />)}
         </LayoutBlock>
       </>
     );
@@ -401,4 +417,6 @@ export const ActivityBuilder = connect(
     ...dodaysApiActions.actions.actionCreators,
     ...activitiesBuilderActions.actions.actionCreators,
   }
-)(withTranslation('activities')(ActivityBuilderComponentClass));
+)(
+  withTranslation('activities')(withStyles(css)(ActivityBuilderComponentClass))
+);

@@ -52,6 +52,7 @@ export const Pageflow = (options: PageflowOptions): any => {
       public render() {
         return (
           <ReactCSSTransitionGroup
+            component={React.Fragment}
             transitionAppear={true}
             transitionAppearTimeout={600}
             transitionEnterTimeout={600}

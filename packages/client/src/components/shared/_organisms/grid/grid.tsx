@@ -6,10 +6,15 @@ import { Loader, LayoutBlock } from '@shared';
 import { Space } from '@root/lib/common-interfaces';
 import { FilterItem } from './filter/filter-item';
 import { Filter } from './filter/filter';
-import { Input } from '../../_atoms/input';
 import { WithTranslation } from 'react-i18next';
-
-const css = require('./_grid.module.scss');
+import Input from '@material-ui/core/Input';
+import {
+  List,
+  createStyles,
+  Theme,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 
 interface GridProps {
   items: any[];
@@ -24,9 +29,25 @@ interface GridState {
   activeIndex: number;
 }
 
+const css = (theme: Theme) =>
+  createStyles({
+    search: {
+      height: `${theme.spacing.unit * 5}px`,
+      fontSize: 16,
+      padding: `0 ${theme.spacing.unit * 2}px`,
+    },
+    listConainer: {
+      overflowY: 'scroll',
+      padding: '0 17px 0 0',
+    },
+  });
+
 @(withRouter as any)
 export class GridComponentClass extends React.Component<
-  GridProps & Partial<RouteComponentProps> & Partial<WithTranslation>,
+  GridProps &
+    Partial<RouteComponentProps> &
+    Partial<WithTranslation> &
+    WithStyles,
   GridState
 > {
   constructor(props) {
@@ -50,20 +71,33 @@ export class GridComponentClass extends React.Component<
   };
 
   render() {
-    const { items, loading, renderCell, filters, search, t } = this.props;
+    const {
+      items,
+      loading,
+      renderCell,
+      filters,
+      search,
+      classes,
+      t,
+    } = this.props;
+
     return (
       <>
         {search && (
           <Input
+            id="dodayapp-search"
             placeholder={t('dodayapp.search.placeholder')}
-            className={css.search}
+            className={classes.search}
+            inputProps={{
+              'aria-label': 'Search',
+            }}
           />
         )}
         {filters &&
           filters.map((filter, index) => (
             <Filter key={index} items={filter} t={t} />
           ))}
-        <ul id="grid" className={css.gridContainer}>
+        <List className={classes.listConainer}>
           {loading && (
             <LayoutBlock
               align="flex-center"
@@ -77,7 +111,7 @@ export class GridComponentClass extends React.Component<
             items.map((item: any, index) => {
               return renderCell && renderCell(item, index);
             })}
-        </ul>
+        </List>
       </>
     );
   }
@@ -86,4 +120,4 @@ export class GridComponentClass extends React.Component<
 export const Grid = connect(
   undefined,
   { ...actions }
-)(GridComponentClass);
+)(withStyles(css)(GridComponentClass));

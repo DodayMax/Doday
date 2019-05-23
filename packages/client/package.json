@@ -64,7 +64,6 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.4.2",
     "rc-slider": "^8.6.9",
-    "rc-tooltip": "^3.7.3",
     "react": "^16.8.6",
     "react-addons-css-transition-group": "^15.6.2",
     "react-apollo": "^2.5.3",

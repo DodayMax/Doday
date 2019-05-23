@@ -14,6 +14,7 @@ import { Landing } from '../landing';
 import MenuIcon from '@material-ui/icons/Menu';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
@@ -38,6 +39,8 @@ import {
   withStyles,
   Button,
   Switch,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '../shared';
 import { DrawerMenuItem, ThemeType } from '@root/lib/common-interfaces';
@@ -48,6 +51,7 @@ import { ClearSelectedDodayAction } from '@root/ducks/doday-details/actions';
 
 import { css } from './desktop-shell.styles';
 import { DodayApp } from './doday-app';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 interface DesktopShellProps extends RouteComponentProps {}
 
@@ -67,10 +71,15 @@ interface PropsFromConnect {
 interface DesktopShellState {
   resizeTaskId?: NodeJS.Timeout;
   isDrawerCollapsed: boolean;
+  accountMenuAnchor?: any;
 }
 
 class DesktopShell extends React.Component<
-  DesktopShellProps & PropsFromConnect & WithStyles & WithTheme,
+  DesktopShellProps &
+    PropsFromConnect &
+    WithStyles &
+    WithTheme &
+    WithTranslation,
   DesktopShellState
 > {
   constructor(props) {
@@ -115,6 +124,14 @@ class DesktopShell extends React.Component<
     });
   }
 
+  handleAccountMenuOpen = event => {
+    this.setState({ accountMenuAnchor: event.currentTarget });
+  };
+
+  handleAccountMenuClose = () => {
+    this.setState({ accountMenuAnchor: null });
+  };
+
   toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
     return tools.map((tool: ToolBeacon) => {
       return {
@@ -136,7 +153,10 @@ class DesktopShell extends React.Component<
       isDrawerCollapsed,
       isDodayAppCollapsed,
       history,
+      t,
     } = this.props;
+
+    const { accountMenuAnchor } = this.state;
 
     return (
       <div className={classes.root}>
@@ -163,20 +183,56 @@ class DesktopShell extends React.Component<
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" color="inherit" noWrap>
-              Mini variant drawer
+              Welcome to the Doday app!
             </Typography>
-            <LayoutBlock>
-              <Switch
-                onChange={e => {
-                  const theme = e.target.checked ? 'dark' : 'light';
-                  this.props.toggleThemeActionCreator(theme);
-                }}
-                defaultChecked
-                value="checkedF"
-                color="default"
-              />
-              <Button href="/auth/google">Login</Button>
-            </LayoutBlock>
+            {hero ? (
+              <LayoutBlock>
+                <Switch
+                  onChange={e => {
+                    const theme = e.target.checked ? 'dark' : 'light';
+                    this.props.toggleThemeActionCreator(theme);
+                  }}
+                  defaultChecked
+                  value="checkedF"
+                  color="default"
+                />
+                <div>
+                  <IconButton
+                    aria-owns={open ? 'menu-appbar' : undefined}
+                    aria-haspopup="true"
+                    onClick={this.handleAccountMenuOpen}
+                    color="inherit"
+                  >
+                    <SentimentSatisfiedIcon />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={accountMenuAnchor}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={!!accountMenuAnchor}
+                    onClose={this.handleAccountMenuClose}
+                  >
+                    <MenuItem onClick={this.handleAccountMenuClose}>
+                      {t('shell:topbar.profile')}
+                    </MenuItem>
+                    <MenuItem onClick={this.handleAccountMenuClose}>
+                      {t('shell:topbar.logout')}
+                    </MenuItem>
+                  </Menu>
+                </div>
+              </LayoutBlock>
+            ) : (
+              <LayoutBlock>
+                <Button href="/auth/google">Login</Button>
+              </LayoutBlock>
+            )}
           </Toolbar>
         </AppBar>
         <Drawer
@@ -278,4 +334,4 @@ export default connect(
     fetchHeroActionCreator: authActions.actionCreators.fetchHeroActionCreator,
     toggleThemeActionCreator: settingsActions.toggleThemeActionCreator,
   }
-)(withStyles(css, { withTheme: true })(DesktopShell));
+)(withStyles(css, { withTheme: true })(withTranslation('shell')(DesktopShell)));

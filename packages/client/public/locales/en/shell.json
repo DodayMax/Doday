@@ -1,5 +1,11 @@
 {
   "topbar": {
-    "store": "Store"
+    "store": "Store",
+    "profile": "Profile",
+    "logout": "Logout"
+  },
+  "time": {
+    "h": "h",
+    "m": "m"
   }
 }

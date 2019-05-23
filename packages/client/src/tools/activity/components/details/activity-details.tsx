@@ -118,7 +118,7 @@ export class ActivityDetailsComponentClass extends React.Component<
             });
           }}
         >
-          {t('details.actions.untake')}
+          {t('activities:details.actions.untake')}
         </Button>
       );
     }
@@ -149,7 +149,7 @@ export class ActivityDetailsComponentClass extends React.Component<
   renderTakeDodayBlock = () => {
     const { selectedDoday, loading, t } = this.props;
     if (selectedDoday.progress) {
-      return <>{t('details.status.alreadyTaken')}</>;
+      return <>{t('activities:details.status.alreadyTaken')}</>;
     }
 
     return (
@@ -194,7 +194,7 @@ export class ActivityDetailsComponentClass extends React.Component<
             });
           }}
         >
-          {t('details.actions.take')}
+          {t('activities:details.actions.take')}
         </Button>
       </>
     );
@@ -236,8 +236,8 @@ export class ActivityDetailsComponentClass extends React.Component<
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
                     {durationToLabel(selectedDoday.duration, {
-                      hour: t('time.h'),
-                      minute: t('time.m'),
+                      hour: t('shell:time.h'),
+                      minute: t('shell:time.m'),
                     })}
                   </Text>
                   <Text
@@ -245,7 +245,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                     color={TypographyColor.Disabled}
                   >
                     (
-                    {t('details.status.percentOfTheDay', {
+                    {t('activities:details.status.percentOfTheDay', {
                       percent: Math.round(
                         (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
                           100
@@ -324,4 +324,4 @@ export const ActivityDetails = connect(
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(withTranslation('activities')(ActivityDetailsComponentClass));
+)(withTranslation(['shell', 'activities'])(ActivityDetailsComponentClass));

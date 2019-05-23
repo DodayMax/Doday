@@ -12,15 +12,13 @@ import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
 import { createStyles, withStyles, WithStyles } from '@material-ui/core';
 
-const vars = require('@styles/_config.scss');
-const css = require('./_doday-app.module.scss');
-
 const styles = createStyles({
   container: {
     minWidth: '28rem',
     maxWidth: '3rem',
     display: 'flex',
     flexDirection: 'column',
+    height: `calc(100vh - 64px)`,
   },
 });
 

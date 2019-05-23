@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { amber } from '@material-ui/core/colors';
 import i18next from 'i18next';
 import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
@@ -26,6 +27,7 @@ export class AppComponent extends React.Component<
     const theme = createMuiTheme({
       palette: {
         type: this.props.theme,
+        primary: amber,
       },
       typography: {
         useNextVariants: true,
@@ -38,15 +40,17 @@ export class AppComponent extends React.Component<
     return (
       <MuiThemeProvider theme={this.theme}>
         <div className="app-container">
-          <Media query="(max-width: 767px)">
-            {matches =>
-              matches ? (
-                <Route path="/" component={Shell} />
-              ) : (
-                <Route path="/" component={DesktopShell} />
-              )
-            }
-          </Media>
+          <React.Suspense fallback={null}>
+            <Media query="(max-width: 767px)">
+              {matches =>
+                matches ? (
+                  <Route path="/" component={Shell} />
+                ) : (
+                  <Route path="/" component={DesktopShell} />
+                )
+              }
+            </Media>
+          </React.Suspense>
         </div>
       </MuiThemeProvider>
     );

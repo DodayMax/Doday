@@ -26,7 +26,7 @@ export class Dashboard extends React.Component<DashboardProps> {
     const { isDodayAppCollapsed, activeTools } = this.props;
 
     return (
-      <LayoutBlock>
+      <LayoutBlock flex={'1'}>
         {activeTools.map((tool, index) => (
           <Route
             key={index}

@@ -1,16 +1,26 @@
 import * as React from 'react';
-import * as classnames from 'classnames';
-import { AnyAction } from 'redux';
-import { Text } from '@root/components/shared/_atoms/typography';
-import {
-  TypographySize,
-  TypographyAlignment,
-} from '@root/lib/common-interfaces';
 import { Location } from 'history';
 import { withRouter, RouteComponentProps, match } from 'react-router';
 import { WithTranslation } from 'react-i18next';
+import {
+  Button,
+  createStyles,
+  Theme,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core';
 
-const css = require('./filter-item.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    label: {
+      fontSize: '8px',
+    },
+    margin: {
+      '&:not(first-item):not(last-item)': {
+        margin: `0 ${theme.spacing.unit}px`,
+      },
+    },
+  });
 
 interface FilterItemProps {
   item: FilterItem;
@@ -18,24 +28,30 @@ interface FilterItemProps {
 
 @(withRouter as any)
 export class FilterItemComponentClass extends React.Component<
-  FilterItemProps & Partial<RouteComponentProps> & Partial<WithTranslation>
+  FilterItemProps &
+    Partial<RouteComponentProps> &
+    Partial<WithTranslation> &
+    WithStyles
 > {
   render() {
-    const { item, location, match, t } = this.props;
+    const { item, location, match, classes, t } = this.props;
     const active = item.active(location, match);
-    const cx = classnames({
-      [css.filterItem]: true,
-      [css.active]: active,
-    });
     return (
-      <span className={cx} onClick={() => !active && item.action(item.payload)}>
-        <Text size={TypographySize.s} align={TypographyAlignment.Center}>
-          {(t && t(`dodayapp.filter.${item.name}`)) || item.name}
-        </Text>
-      </span>
+      <Button
+        variant="outlined"
+        size="small"
+        color={active ? 'primary' : undefined}
+        onClick={() => !active && item.action(item.payload)}
+        className={classes.margin}
+        classes={{ label: classes.label }}
+      >
+        {(t && t(`dodayapp.filter.${item.name}`)) || item.name}
+      </Button>
     );
   }
 }
+
+export const FilterItemComponent = withStyles(css)(FilterItemComponentClass);
 
 export interface FilterItem {
   name: string;

@@ -142,7 +142,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             history.push('/');
           }}
         >
-          {t('details.actions.untake')}
+          {t('activities:details.actions.untake')}
         </Button>
       );
     }
@@ -161,7 +161,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             history.push('/');
           }}
         >
-          {t('details.actions.delete')}
+          {t('activities:details.actions.delete')}
         </Button>
       );
     }
@@ -180,7 +180,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             });
           }}
         >
-          {loading ? t('details.actions.saving') : t('details.actions.save')}
+          {loading ? t('activities:details.actions.saving') : t('activities:details.actions.save')}
         </Button>
       );
     }
@@ -199,7 +199,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
           key={cuid()}
           rounded
           color={DodayColor.gray3}
-          text={`${t('details.status.completed')}: ${moment(
+          text={`${t('activities:details.status.completed')}: ${moment(
             selectedDoday.progress.completedAt
           ).format('ll')}`}
         />
@@ -297,8 +297,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
                     {durationToLabel(selectedDoday.duration, {
-                      hour: t('time.h'),
-                      minute: t('time.m'),
+                      hour: t('shell:time.h'),
+                      minute: t('shell:time.m'),
                     })}
                   </Text>
                   <Text
@@ -306,7 +306,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     color={TypographyColor.Disabled}
                   >
                     (
-                    {t('details.status.percentOfTheDay', {
+                    {t('activities:details.status.percentOfTheDay', {
                       percent: Math.round(
                         (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
                           100
@@ -381,7 +381,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 align="flex-center"
               >
                 <Button primary href={resource.url} target="_blank">
-                  {t('details.actions.goToResource')}
+                  {t('activities:details.actions.goToResource')}
                 </Button>
               </LayoutBlock>
             ) : null}
@@ -407,4 +407,4 @@ export const ActivityProgressDetails = connect(
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(withTranslation('activities')(ActivityProgressDetailsComponentClass));
+)(withTranslation(['shell', 'activities'])(ActivityProgressDetailsComponentClass));

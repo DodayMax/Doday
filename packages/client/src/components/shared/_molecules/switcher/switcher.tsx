@@ -4,6 +4,7 @@ import { Marker } from '../../_atoms/marker';
 import { LayoutBlock } from '../../_atoms/layout-block';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
+import { IconButton } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
 
@@ -39,8 +40,8 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
 
     return (
       <LayoutBlock valign="vflex-center">
-        <ClickableIcon
-          onClick={() => {
+        <IconButton
+            onClick={() => {
             let newIndex = currentIndex - 1;
             if (newIndex < 0) {
               newIndex = items.length - 1;
@@ -50,16 +51,17 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
               onChange(items[newIndex]);
             }
           }}
-        >
-          <ArrowLeft />
-        </ClickableIcon>
+            aria-label="Left"
+          >
+            <ArrowLeft />
+        </IconButton>
         {render ? (
           render(items[currentIndex])
         ) : (
           <Marker rounded text={items[currentIndex].sysname} />
         )}
-        <ClickableIcon
-          onClick={() => {
+        <IconButton
+            onClick={() => {
             let newIndex = currentIndex + 1;
             if (newIndex > items.length - 1) {
               newIndex = 0;
@@ -69,9 +71,10 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
               onChange(items[newIndex]);
             }
           }}
-        >
-          <ArrowRight />
-        </ClickableIcon>
+            aria-label="Left"
+          >
+            <ArrowRight />
+        </IconButton>
       </LayoutBlock>
     );
   }

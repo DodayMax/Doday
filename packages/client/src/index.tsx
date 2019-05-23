@@ -8,6 +8,7 @@ import * as serviceWorker from './serviceWorker';
 import { api, i18n, history } from '@services';
 import { I18nextProvider } from 'react-i18next';
 import store from '@root/store';
+import 'rc-slider/assets/index.css';
 import '@root/services/i18n';
 import '@styles/_fonts.scss';
 
