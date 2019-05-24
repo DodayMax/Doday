@@ -1,10 +1,23 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import { LayoutBlock } from '../layout-block';
-import { Space } from '@root/lib/common-interfaces';
+import { withStyles, createStyles, WithStyles, Theme } from '@material-ui/core';
+import { blue } from '@material-ui/core/colors';
 
-const vars = require('@styles/_config.scss');
-const css = require('./progress.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    progress: {
+      backgroundColor: blue[500],
+    },
+    vertical: {
+      width: '0.4rem',
+      height: 'auto',
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.grey[900]
+          : theme.palette.grey[200],
+    },
+  });
 
 interface ProgressProps {
   vertical?: boolean;
@@ -14,29 +27,26 @@ interface ProgressProps {
   total: number;
 }
 
-export const Progress: React.FC<ProgressProps> = ({
-  vertical = false,
-  color = vars.blueLight,
-  start = 0,
-  progress,
-  total,
-}) => {
-  const currentProgress = (progress / (total - start)) * 100;
-  const cx = classnames({
-    [css['vertical']]: vertical,
-  });
-  const progressStyles = {
-    width: vertical ? '.4rem' : `${currentProgress}%`,
-    height: vertical ? `${currentProgress}%` : '.4rem',
-    backgroundColor: color,
-  };
-  return (
-    <LayoutBlock
-      align={vertical ? 'flex-center' : 'flex-start'}
-      valign={vertical ? 'vflex-end' : 'vflex-center'}
-      className={cx}
-    >
-      <div style={progressStyles} />
-    </LayoutBlock>
-  );
-};
+export const Progress: React.ComponentType<
+  ProgressProps & Partial<WithStyles>
+> = withStyles(css)(
+  ({ vertical = false, start = 0, progress, total, classes }) => {
+    const currentProgress = (progress / (total - start)) * 100;
+    const cx = classnames({
+      [classes['vertical']]: vertical,
+    });
+    const progressStyles = {
+      width: vertical ? '.4rem' : `${currentProgress}%`,
+      height: vertical ? `${currentProgress}%` : '.4rem',
+    };
+    return (
+      <LayoutBlock
+        align={vertical ? 'flex-center' : 'flex-start'}
+        valign={vertical ? 'vflex-end' : 'vflex-center'}
+        className={cx}
+      >
+        <div className={classes['progress']} style={progressStyles} />
+      </LayoutBlock>
+    );
+  }
+);

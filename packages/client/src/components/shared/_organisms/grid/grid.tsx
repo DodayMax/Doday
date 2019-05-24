@@ -37,8 +37,9 @@ const css = (theme: Theme) =>
       padding: `0 ${theme.spacing.unit * 2}px`,
     },
     listConainer: {
+      padding: '0',
       overflowY: 'scroll',
-      padding: '0 17px 0 0',
+      boxSizing: 'border-box',
     },
   });
 

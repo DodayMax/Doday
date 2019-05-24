@@ -14,7 +14,7 @@ import { Landing } from '../landing';
 import MenuIcon from '@material-ui/icons/Menu';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
+import FaceIcon from '@material-ui/icons/Face';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
@@ -166,7 +166,6 @@ class DesktopShell extends React.Component<
           className={classnames(classes.appBar, {
             [classes.appBarShift]: !this.state.isDrawerCollapsed,
           })}
-          color="default"
         >
           <Toolbar
             className={classes.topBar}
@@ -174,15 +173,14 @@ class DesktopShell extends React.Component<
           >
             <IconButton
               onClick={this.toggleMenu.bind(this)}
-              color="inherit"
               aria-label="Open drawer"
-              className={classnames(classes.menuButton, {
+              className={classnames(classes.menuButton, classes.white, {
                 [classes.hide]: !this.state.isDrawerCollapsed,
               })}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
+            <Typography variant="h6" noWrap className={classes.white}>
               Welcome to the Doday app!
             </Typography>
             {hero ? (
@@ -201,9 +199,9 @@ class DesktopShell extends React.Component<
                     aria-owns={open ? 'menu-appbar' : undefined}
                     aria-haspopup="true"
                     onClick={this.handleAccountMenuOpen}
-                    color="inherit"
+                    className={classes.white}
                   >
-                    <SentimentSatisfiedIcon />
+                    <FaceIcon />
                   </IconButton>
                   <Menu
                     id="menu-appbar"

@@ -4,9 +4,19 @@ import { Marker } from '../../_atoms/marker';
 import { LayoutBlock } from '../../_atoms/layout-block';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
-import { IconButton } from '@material-ui/core';
+import {
+  IconButton,
+  withStyles,
+  createStyles,
+  WithStyles,
+} from '@material-ui/core';
 
-const vars = require('@styles/_config.scss');
+const css = theme =>
+  createStyles({
+    iconButton: {
+      padding: 0,
+    },
+  });
 
 interface SwitcherProps {
   /** Items to switch between */
@@ -23,7 +33,10 @@ interface SwitcherState {
 
 export type SwitcherItem = any;
 
-export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
+export class SwitcherComponent extends React.Component<
+  SwitcherProps & WithStyles,
+  SwitcherState
+> {
   constructor(props) {
     super(props);
 
@@ -35,13 +48,14 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
   static defaultProps = { items: [] };
 
   render() {
-    const { items, onChange, render } = this.props;
+    const { items, onChange, render, classes } = this.props;
     const { currentIndex } = this.state;
 
     return (
       <LayoutBlock valign="vflex-center">
         <IconButton
-            onClick={() => {
+          className={classes.iconButton}
+          onClick={() => {
             let newIndex = currentIndex - 1;
             if (newIndex < 0) {
               newIndex = items.length - 1;
@@ -51,9 +65,9 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
               onChange(items[newIndex]);
             }
           }}
-            aria-label="Left"
-          >
-            <ArrowLeft />
+          aria-label="Left"
+        >
+          <ArrowLeft />
         </IconButton>
         {render ? (
           render(items[currentIndex])
@@ -61,7 +75,8 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
           <Marker rounded text={items[currentIndex].sysname} />
         )}
         <IconButton
-            onClick={() => {
+          className={classes.iconButton}
+          onClick={() => {
             let newIndex = currentIndex + 1;
             if (newIndex > items.length - 1) {
               newIndex = 0;
@@ -71,11 +86,13 @@ export class Switcher extends React.Component<SwitcherProps, SwitcherState> {
               onChange(items[newIndex]);
             }
           }}
-            aria-label="Left"
-          >
-            <ArrowRight />
+          aria-label="Left"
+        >
+          <ArrowRight />
         </IconButton>
       </LayoutBlock>
     );
   }
 }
+
+export const Switcher = withStyles(css)(SwitcherComponent);

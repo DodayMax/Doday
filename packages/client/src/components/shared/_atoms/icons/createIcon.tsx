@@ -8,7 +8,6 @@ export const createSvgIcon = (
 ): React.ComponentType<SvgIconProps> => {
   const Component = React.memo(
     React.forwardRef((props: SvgIconProps, ref: React.RefObject<any>) => {
-      console.log(props, ref);
       return (
         <SvgIcon {...props} ref={ref} data-mui-test={`${displayName}Icon`}>
           {path}

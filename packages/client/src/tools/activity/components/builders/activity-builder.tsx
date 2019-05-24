@@ -3,16 +3,8 @@ import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
-import {
-  LayoutBlock,
-  Icons,
-  Switcher,
-  SwitcherItem,
-} from '@shared';
-import {
-  Space,
-  ActivityType,
-} from '@root/lib/common-interfaces';
+import { LayoutBlock, Icons, Switcher, SwitcherItem } from '@shared';
+import { Space, ActivityType } from '@root/lib/common-interfaces';
 import { detectURL, durationToLabel } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
@@ -41,6 +33,8 @@ import {
 } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import DoneIcon from '@material-ui/icons/Done';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
 import {
   createStyles,
   Typography,
@@ -53,6 +47,7 @@ import {
   FormControlLabel,
   Switch,
   Button,
+  IconButton,
 } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
@@ -73,6 +68,9 @@ const css = (theme: Theme) =>
     },
     inputLabel: {
       fontSize: '1.6rem',
+    },
+    dateContainer: {
+      width: '40%',
     },
   });
 
@@ -259,7 +257,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     return (
       <>
         <LayoutBlock insideElementsMargin valign="vflex-center">
-          <Typography variant='h6'>{t('builder.activityType')}:</Typography>
+          <Typography variant="h6">{t('builder.activityType')}:</Typography>
           {loading || isUrlParsing ? (
             <Icons.InlineLoader />
           ) : (
@@ -300,9 +298,9 @@ export class ActivityBuilderComponentClass extends React.Component<
           parsedMetadata={parsedMetadata}
         />
         <LayoutBlock
-          childFlex
           paddingAbove={Space.Small}
           paddingBelow={Space.Small}
+          className={classes.dateContainer}
         >
           <TextField
             id="date"
@@ -312,9 +310,9 @@ export class ActivityBuilderComponentClass extends React.Component<
             value={this.state.date}
             onChange={this.handleChangeDate}
             InputProps={{
-            classes: {
-              input: classes.input,
-            },
+              classes: {
+                input: classes.input,
+              },
             }}
             InputLabelProps={{
               FormLabelClasses: {
@@ -322,14 +320,43 @@ export class ActivityBuilderComponentClass extends React.Component<
               },
             }}
           />
+          <Tooltip
+            title={
+              <Typography variant="body1">
+                Lock the date, so that Doday app can't change it using automatic
+                algorithms for planning
+              </Typography>
+            }
+            placement="top"
+            className={classes.tooltip}
+          >
+            <IconButton
+              onClick={() =>
+                this.setState({ dateIsLocked: !this.state.dateIsLocked })
+              }
+            >
+              {this.state.dateIsLocked ? (
+                <LockIcon color="primary" />
+              ) : (
+                <LockOpenIcon />
+              )}
+            </IconButton>
+          </Tooltip>
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
-          <LayoutBlock insideElementsMargin valign='vflex-center' spaceBelow={Space.XSmall}>
+          <LayoutBlock
+            insideElementsMargin
+            valign="vflex-center"
+            spaceBelow={Space.XSmall}
+          >
             <Typography variant="h6">{t('builder.estimateTime')}:</Typography>
             <Chip
-                label={durationToLabel(this.state.estimateTime, { hour: t('shell:time.h'), minute: t('shell:time.m') })}
-                color='default'
-              />
+              label={durationToLabel(this.state.estimateTime, {
+                hour: t('shell:time.h'),
+                minute: t('shell:time.m'),
+              })}
+              color="default"
+            />
           </LayoutBlock>
           <Slider
             min={0}
@@ -367,21 +394,26 @@ export class ActivityBuilderComponentClass extends React.Component<
             control={
               <Switch
                 checked={isPublic}
-                onChange={() => this.setState({ isPublic: !this.state.isPublic })}
+                onChange={() =>
+                  this.setState({ isPublic: !this.state.isPublic })
+                }
                 color="primary"
               />
             }
             label={t('builder.public')}
           />
-          {!loading ?
-          (<Button
-            color="primary"
-            variant="contained"
-            disabled={!this.state.dodayName && !parsedMetadata}
-            onClick={this.handleCreateDoday}
-          >
-            {t('builder.create')}
-          </Button>) : (<Icons.InlineLoader />)}
+          {!loading ? (
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={!this.state.dodayName && !parsedMetadata}
+              onClick={this.handleCreateDoday}
+            >
+              {t('builder.create')}
+            </Button>
+          ) : (
+            <Icons.InlineLoader />
+          )}
         </LayoutBlock>
       </>
     );

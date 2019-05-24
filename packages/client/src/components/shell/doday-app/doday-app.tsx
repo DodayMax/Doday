@@ -10,17 +10,19 @@ import { RouteComponentProps } from 'react-router';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
-import { createStyles, withStyles, WithStyles } from '@material-ui/core';
+import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
 
-const styles = createStyles({
-  container: {
-    minWidth: '28rem',
-    maxWidth: '3rem',
-    display: 'flex',
-    flexDirection: 'column',
-    height: `calc(100vh - 64px)`,
-  },
-});
+const styles = (theme: Theme) =>
+  createStyles({
+    container: {
+      minWidth: '28rem',
+      maxWidth: '3rem',
+      display: 'flex',
+      flexDirection: 'column',
+      height: `calc(100vh - 64px)`,
+      borderRight: `1px solid ${theme.palette.divider}`,
+    },
+  });
 
 export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 

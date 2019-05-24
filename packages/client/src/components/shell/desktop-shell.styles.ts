@@ -13,6 +13,7 @@ export const css = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen,
       }),
+      backgroundColor: theme.palette.grey[900],
     },
     topBar: {
       justifyContent: 'space-between',
@@ -29,6 +30,9 @@ export const css = (theme: Theme) =>
     menuButton: {
       marginLeft: 12,
       marginRight: 36,
+    },
+    white: {
+      color: theme.palette.common.white,
     },
     hide: {
       display: 'none',

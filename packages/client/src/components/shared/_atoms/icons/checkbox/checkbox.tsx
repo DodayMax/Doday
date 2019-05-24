@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { IconProps } from '../names';
+import { ActivityType } from '@root/lib/common-interfaces';
 
 const vars = require('@styles/_config.scss');
 
 interface CheckboxProps extends IconProps {
   checked?: boolean;
+  activityType?: ActivityType;
 }
 
 export const Checkbox = ({
@@ -12,6 +14,7 @@ export const Checkbox = ({
   height = 20,
   color = vars.black,
   checked = false,
+  activityType = 'do',
 }: CheckboxProps) => {
   if (!checked) {
     return (
@@ -28,6 +31,34 @@ export const Checkbox = ({
           fill="none"
           fillRule="evenodd"
         >
+          {activityType === 'do' && (
+            <polygon
+              id="do"
+              fill="#1D1D1D"
+              fillRule="nonzero"
+              points="10.3074794 11.3400353 14.2039485 7.47675676 15.4875676 8.74944179 10.3074794 13.8854054 6.9427027 10.5492902 8.22632174 9.27660519"
+            />
+          )}
+          {activityType === 'read' && (
+            <>
+              <mask id="mask-2" fill="white">
+                <use xlinkHref="#path-1" />
+              </mask>
+              <use
+                id="read"
+                fill="#1D1D1D"
+                fillRule="nonzero"
+                xlinkHref="#path-1"
+              />
+            </>
+          )}
+          {activityType === 'watch' && (
+            <path
+              d="M9.80356159,8.68193108 L13.1600862,10.6838818 L9.80356159,12.6858325 L9.80356159,8.68193108 L9.80356159,8.68193108 Z M9.80356159,7.48076066 C9.10840259,7.48076066 8.54486486,8.01854298 8.54486486,8.68193108 L8.54486486,12.6858325 C8.54547323,13.1222022 8.79402341,13.5239328 9.19411765,13.7352169 C9.59421188,13.946501 10.0829084,13.9341 10.4706709,13.7028235 L13.8271955,11.7008728 C14.1956005,11.481452 14.4194595,11.0963016 14.4194595,10.6818798 C14.4194595,10.2674581 14.1956005,9.88230772 13.8271955,9.66288693 L10.4706709,7.66093622 C10.2707995,7.54105859 10.0396302,7.47723598 9.80356159,7.47675676 L9.80356159,7.48076066 Z"
+              id="watch"
+              fill="#1D1D1D"
+            />
+          )}
           <rect
             fill="#FFF"
             x=".267"
@@ -70,7 +101,7 @@ export const Checkbox = ({
               rx="3.204"
             />
             <rect
-              fill="#494949"
+              fill={color}
               x="2.136"
               y="2.136"
               width="17.09"

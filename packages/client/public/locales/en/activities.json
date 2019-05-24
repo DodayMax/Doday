@@ -22,10 +22,10 @@
     }
   },
   "builder": {
-    "activityType": "activity type",
+    "activityType": "Activity type",
     "namePlaceholder": "Enter name or paste link",
     "date": "Planned date",
-    "estimateTime": "estimate time",
+    "estimateTime": "Estimate time",
     "tagsPlaceholder": "Add tags that other people can easily find your doday",
     "public": "Publish to Store",
     "create": "Create"
