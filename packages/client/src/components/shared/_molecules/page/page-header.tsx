@@ -81,7 +81,11 @@ class PageHeaderComponentClass extends React.Component<
 
     return (
       <LayoutBlock className={classes.headerContainer}>
-        <LayoutBlock align="flexStart" valign="vflexCenter">
+        <LayoutBlock
+          align="flexStart"
+          valign="vflexCenter"
+          insideElementsMargin
+        >
           {status}
         </LayoutBlock>
         <LayoutBlock flex="1" align="flexEnd" valign="vflexCenter">

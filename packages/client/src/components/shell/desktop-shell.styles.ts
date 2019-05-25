@@ -16,7 +16,7 @@ export const css = (theme: Theme) =>
       backgroundColor: theme.palette.grey[900],
     },
     topBar: {
-      justifyContent: 'spaceBetween',
+      justifyContent: 'space-between',
       padding: `0 ${theme.spacing.unit * 2}px`,
     },
     appBarShift: {

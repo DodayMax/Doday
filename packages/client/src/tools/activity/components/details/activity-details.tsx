@@ -203,19 +203,9 @@ export class ActivityDetailsComponentClass extends React.Component<
   render() {
     const { selectedDoday, t } = this.props;
 
-    // const goal =
-    //   updates && updates.relatedGoal
-    //     ? goals && goals.find(goal => goal.did === updates.relatedGoal)
-    //     : undefined;
-
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
     const youtubeLink = this.getYouTubeLink(resource);
-
-    // const goalsForSelect = goals.map(goal => ({
-    //   label: goal.name,
-    //   value: goal.did,
-    // }));
 
     return (
       <Page

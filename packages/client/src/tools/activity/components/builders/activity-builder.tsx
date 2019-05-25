@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
+import * as moment from 'moment';
 import { connect } from 'react-redux';
 import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
@@ -49,6 +50,7 @@ import {
   Button,
   IconButton,
 } from '@material-ui/core';
+import { TooltipProps } from '@material-ui/core/Tooltip';
 
 const vars = require('@styles/_config.scss');
 
@@ -121,7 +123,7 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     this.state = {
       dodayName: '',
-      date: '2019-02-12',
+      date: moment().format('YYYY-MM-DD'),
       isPublic: false,
       dateIsLocked: false,
       estimateTime: 'PT60M',
@@ -323,8 +325,7 @@ export class ActivityBuilderComponentClass extends React.Component<
           <Tooltip
             title={
               <Typography variant="body1">
-                Lock the date, so that Doday app can't change it using automatic
-                algorithms for planning
+                {t('activities:builder.lockDateTooltip')}
               </Typography>
             }
             placement="top"
@@ -419,18 +420,20 @@ export class ActivityBuilderComponentClass extends React.Component<
 export const activityIconByType = (
   type: ActivityType,
   size = 20,
-  color = vars.black
+  color = vars.black,
+  tooltipPlacement: TooltipProps['placement'] = 'top'
 ) => {
   switch (type) {
     case 'do':
       return (
         <Tooltip
+          key={cuid()}
           title={
             <Typography variant="body1">{`Activity type: ${type}`}</Typography>
           }
-          placement="right"
+          placement={tooltipPlacement}
         >
-          <DoneIcon key={cuid()} />
+          <DoneIcon />
         </Tooltip>
       );
     case 'read':

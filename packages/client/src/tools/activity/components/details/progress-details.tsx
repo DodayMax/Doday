@@ -3,16 +3,11 @@ import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import {
-  TypographySize,
-  TypographyColor,
-  Space,
-  DodayColor,
-} from '@root/lib/common-interfaces';
+import { Space, DodayColor } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Text, Icons, ClickableIcon } from '@shared';
+import { Icons } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
@@ -64,13 +59,25 @@ import {
   Typography,
   Button,
 } from '@material-ui/core';
+import { config } from '@root/styles/config';
+import { utils } from '@root/styles/utils';
 
-const vars = require('@styles/_config.scss');
 const css = (theme: Theme) =>
   createStyles({
+    input: {
+      fontSize: `${config.typographySizes.bodyM}rem`,
+      paddingLeft: `${config.spacing.spaceS}px`,
+    },
+    dodayName: {
+      paddingLeft: `${config.spacing.spaceM}px`,
+    },
+    resourceDescription: utils.paddingTop(config.spacing.spaceL),
     resourceStatusIcon: {
       height: '1.6rem',
       paddingLeft: '0.4rem',
+    },
+    completed: {
+      color: theme.palette.text.secondary,
     },
     videoWrapper: {
       position: 'relative',
@@ -206,17 +213,16 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
 
   status = () => {
     const { selectedDoday, classes, t } = this.props;
-    const markers = [activityIconByType(selectedDoday.activityType, 30)];
+    const markers = [
+      activityIconByType(selectedDoday.activityType, 30, undefined, 'right'),
+    ];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
-        <Marker
-          key={cuid()}
-          rounded
-          color={DodayColor.gray3}
-          text={`${t('activities:details.status.completed')}: ${moment(
-            selectedDoday.progress.completedAt
-          ).format('ll')}`}
-        />
+        <Typography variant="body1" className={classes.completed}>{`${t(
+          'activities:details.status.completed'
+        )}: ${moment(selectedDoday.progress.completedAt).format(
+          'll'
+        )}`}</Typography>
       );
     }
     if (selectedDoday.resource && selectedDoday.resource.icon) {
@@ -299,12 +305,14 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
       >
         {selectedDoday && selectedDoday.progress ? (
           <>
-            <LayoutBlock insideElementsMargin>
+            <LayoutBlock
+              paddingAbove={Space.Small}
+              paddingBelow={Space.Small}
+              insideElementsMargin
+            >
               {!selectedDoday.progress.completed && (
                 <>
                   <LayoutBlock
-                    paddingAbove={Space.Small}
-                    paddingBelow={Space.Small}
                     valign="vflexCenter"
                     className={classes.dateContainer}
                   >
@@ -337,8 +345,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     <Tooltip
                       title={
                         <Typography variant="body1">
-                          Lock the date, so that Doday app can't change it using
-                          automatic algorithms for planning
+                          {t('activities:builder.lockDateTooltip')}
                         </Typography>
                       }
                       placement="top"
@@ -387,8 +394,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               )}
             </LayoutBlock>
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflexCenter">
-              <ClickableIcon
-                loading={loading}
+              <IconButton
                 onClick={() => {
                   this.props.updateDodayActionCreator(
                     selectedDoday.did,
@@ -410,10 +416,10 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     selectedDoday.progress.completed
                   }
                 />
-              </ClickableIcon>
-              <Text size={TypographySize.h1} spaceLeft={Space.Small}>
+              </IconButton>
+              <Typography variant="h3" className={classes.dodayName}>
                 {selectedDoday.name}
-              </Text>
+              </Typography>
             </LayoutBlock>
             {youtubeLink ? (
               <div
@@ -440,9 +446,9 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 }}
               />
             ) : null}
-            <Text spaceAbove={Space.Large}>
+            <Typography variant="body1" className={classes.resourceDescription}>
               {resource && resource.description}
-            </Text>
+            </Typography>
             {!youtubeLink && (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}

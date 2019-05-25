@@ -13,7 +13,6 @@ import {
 } from '@ducks/doday-details/actions';
 import { DrawerMenuItem } from '@lib/common-interfaces';
 import { RootState } from '@root/lib/models';
-import { DodayAppMenuCell } from '../../shared/_organisms/grid/doday-app-menu-cell/doday-app-menu-cell';
 import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
 import Media from 'react-media';
 import { LayoutBlock } from '../../shared/_atoms/layout-block';
@@ -68,7 +67,6 @@ export class DrawerComponent extends React.Component<
         <div className={css.drawerProfileContainerCollapsed}>
           <LayoutBlock
             align="flexCenter"
-            valign="vflexCenter"
             childFlex={false}
             className={css.drawerProfileAvatarCollapsed}
           >
@@ -79,11 +77,7 @@ export class DrawerComponent extends React.Component<
     } else {
       return (
         <div className={css.drawerProfileContainer}>
-          <LayoutBlock
-            align="flexCenter"
-            valign="vflexCenter"
-            className={css.drawerProfileAvatar}
-          >
+          <LayoutBlock align="flexCenter" className={css.drawerProfileAvatar}>
             <Icons.Dodayman width={60} height={60} />
           </LayoutBlock>
           {this.pieGoalsData && (
@@ -185,26 +179,7 @@ export class DrawerComponent extends React.Component<
       <div className={classNames}>
         {this.renderDrawerProfileSection()}
         {this.renderDrawerLevel()}
-        <ul role="navigation" className={css.drawerMenu}>
-          <Grid
-            t={t}
-            items={items.concat(this.toolsToDrawerMenuItems(toolBeacons))}
-            renderCell={(item: DrawerMenuItem) => (
-              <DodayAppMenuCell
-                key={cuid()}
-                collapsed={this.props.collapsed}
-                item={item}
-                active={item.route === dodayAppRoute}
-                onClick={() => {
-                  this.props.changeDodayAppRouteActionCreator(item.route);
-                  history.push(item.route);
-                  this.props.clearSelectedDodayActionCreator();
-                }}
-              />
-            )}
-            collapsed={collapsed}
-          />
-        </ul>
+        <ul role="navigation" className={css.drawerMenu} />
         <Media query="(min-width: 1100px)">
           {this.renderDrawerFooterIcon()}
         </Media>

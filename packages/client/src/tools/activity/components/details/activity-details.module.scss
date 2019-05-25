@@ -25,7 +25,3 @@
 .well {
   composes: well from '@styles/_common.scss';
 }
-
-.resource-status-icon {
-  composes: resource-status-icon from './progress-details.module.scss';
-}

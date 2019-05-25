@@ -25,7 +25,6 @@ import {
 } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
-const css = require('./activity-progress-cell.module.scss');
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,13 +65,6 @@ type Props = ActivityProgressCellProps &
 export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
   withStyles(styles)(
     ({ doday, active = false, onClick, onComplete, classes, t }: Props) => {
-      const classNames = classnames({
-        [css.cell]: true,
-        [css.completed]: doday.progress && doday.progress.completed,
-        [css.padded]: true,
-        [css.active]: active,
-      });
-
       const activity = doday as Activity;
 
       return (

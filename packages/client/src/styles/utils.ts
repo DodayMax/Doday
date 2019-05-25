@@ -1,6 +1,89 @@
 import { config } from './config';
 import { createStyles } from '@material-ui/core';
 
+// -------------------- Utils -------------------- //
+
+export const utils = {
+  layoutUtils: createStyles({
+    childFlex: {
+      '& > *': {
+        flex: 1,
+      },
+    },
+    absolute: {
+      position: 'absolute',
+    },
+    relative: {
+      position: 'relative',
+    },
+    flexCenter: {
+      justifyContent: 'center',
+    },
+    vflexCenter: {
+      alignItems: 'center',
+    },
+    flexStart: {
+      justifyContent: 'flex-start',
+    },
+    vflexStart: {
+      alignItems: 'flex-start',
+    },
+    flexEnd: {
+      justifyContent: 'flex-end',
+    },
+    vflexEnd: {
+      alignItems: 'flex-end',
+    },
+    alignSelfCenter: {
+      alignSelf: 'center',
+      justifySelf: 'center',
+    },
+    alignSelfStart: {
+      alignSelf: 'flex-start',
+      justifySelf: 'flex-start',
+    },
+    alignSelfEnd: {
+      alignSelf: 'flex-end',
+      justifySelf: 'flex-end',
+    },
+    spaceBetween: {
+      justifyContent: 'space-between',
+    },
+    spaceAround: {
+      justifyContent: 'space-around',
+    },
+    fullHeight: {
+      height: '100%',
+    },
+    row: {
+      flexDirection: 'row',
+    },
+    column: {
+      flexDirection: 'column',
+    },
+    insideElementsMargin: {
+      '& > *': {
+        marginRight: '1rem',
+      },
+      '& > *:last-child': {
+        marginRight: 0,
+      },
+    },
+  }),
+  paddingTop: value => ({
+    paddingTop: `${value}px`,
+  }),
+  paddingBottom: value => ({
+    paddingBottom: `${value}px`,
+  }),
+  paddingLeft: value => ({
+    paddingLeft: `${value}px`,
+  }),
+  paddingRight: value => ({
+    paddingRight: `${value}px`,
+  }),
+};
+
 // -------------------- Paddings -------------------- //
 
 export const paddings = createStyles({
@@ -206,72 +289,5 @@ export const margins = createStyles({
   },
   marginXXLRight: {
     marginRight: `${config.spacing.spaceXXL}px`,
-  },
-});
-
-export const utils = createStyles({
-  childFlex: {
-    '> *': {
-      flex: 1,
-    },
-  },
-  absolute: {
-    position: 'absolute',
-  },
-  relative: {
-    position: 'relative',
-  },
-  flexCenter: {
-    justifyContent: 'center',
-  },
-  vflexCenter: {
-    alignItems: 'center',
-  },
-  flexStart: {
-    justifyContent: 'flexStart',
-  },
-  vflexStart: {
-    alignItems: 'flexStart',
-  },
-  flexEnd: {
-    justifyContent: 'flexEnd',
-  },
-  vflexEnd: {
-    alignItems: 'flexEnd',
-  },
-  alignSelfCenter: {
-    alignSelf: 'center',
-    justifySelf: 'center',
-  },
-  alignSelfStart: {
-    alignSelf: 'flexStart',
-    justifySelf: 'flexStart',
-  },
-  alignSelfEnd: {
-    alignSelf: 'flexEnd',
-    justifySelf: 'flexEnd',
-  },
-  spaceBetween: {
-    justifyContent: 'spaceBetween',
-  },
-  spaceAround: {
-    justifyContent: 'space-around',
-  },
-  fullHeight: {
-    height: '100%',
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  column: {
-    flexDirection: 'column',
-  },
-  insideElementsMargin: {
-    '> *': {
-      marginRight: '1rem',
-    },
-    '> :last-child': {
-      marginRight: 0,
-    },
   },
 });

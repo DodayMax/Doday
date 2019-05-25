@@ -4,7 +4,6 @@ import {
   AlignTypes,
   vAlignTypes,
   AlignSelf,
-  Space,
   spaceAboveClassNames,
   spaceBelowClassNames,
   spaceLeftClassNames,
@@ -15,7 +14,7 @@ import {
   paddingRightClassNames,
   SpacingProps,
 } from '@lib/common-interfaces';
-import { utils } from '@styles/utils';
+import { utils, paddings, margins } from '@styles/utils';
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
 
 const css = (theme: Theme) =>
@@ -23,7 +22,9 @@ const css = (theme: Theme) =>
     layoutBlock: {
       display: 'flex',
     },
-    ...utils,
+    ...utils.layoutUtils,
+    ...paddings,
+    ...margins,
   });
 
 interface LayoutBlockProps {
