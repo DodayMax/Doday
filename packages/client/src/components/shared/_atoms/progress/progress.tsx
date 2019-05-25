@@ -41,8 +41,8 @@ export const Progress: React.ComponentType<
     };
     return (
       <LayoutBlock
-        align={vertical ? 'flex-center' : 'flex-start'}
-        valign={vertical ? 'vflex-end' : 'vflex-center'}
+        align={vertical ? 'flexCenter' : 'flexStart'}
+        valign={vertical ? 'vflexEnd' : 'vflexCenter'}
         className={cx}
       >
         <div className={classes['progress']} style={progressStyles} />

@@ -232,7 +232,7 @@ export class ActivityDetailsComponentClass extends React.Component<
           <>
             <LayoutBlock insideElementsMargin>
               {selectedDoday.duration && (
-                <LayoutBlock insideElementsMargin valign="vflex-center">
+                <LayoutBlock insideElementsMargin valign="vflexCenter">
                   <Icons.Duration width={16} height={16} />
                   <Text size={TypographySize.s}>
                     {durationToLabel(selectedDoday.duration, {
@@ -298,7 +298,7 @@ export class ActivityDetailsComponentClass extends React.Component<
               direction="column"
               className={css.well}
             >
-              <LayoutBlock align="space-between" valign="vflex-center">
+              <LayoutBlock align="spaceBetween" valign="vflexCenter">
                 {this.renderTakeDodayBlock()}
               </LayoutBlock>
             </LayoutBlock>

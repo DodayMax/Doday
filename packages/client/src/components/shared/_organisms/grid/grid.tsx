@@ -35,6 +35,7 @@ const css = (theme: Theme) =>
       height: `${theme.spacing.unit * 5}px`,
       fontSize: 16,
       padding: `0 ${theme.spacing.unit * 2}px`,
+      flex: '0 0 auto',
     },
     listConainer: {
       padding: '0',
@@ -101,7 +102,7 @@ export class GridComponentClass extends React.Component<
         <List className={classes.listConainer}>
           {loading && (
             <LayoutBlock
-              align="flex-center"
+              align="flexCenter"
               paddingAbove={Space.XSmall}
               paddingBelow={Space.XSmall}
             >

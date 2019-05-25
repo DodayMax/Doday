@@ -10,7 +10,7 @@ const css = (theme: Theme) =>
       color: theme.palette.text.primary,
       background: theme.palette.background.paper,
       display: 'flex',
-      justifyContent: 'space-between',
+      justifyContent: 'spaceBetween',
       alignItems: 'center',
       padding: `0 ${theme.spacing.unit}px`,
       flexShrink: 0,
@@ -32,11 +32,11 @@ export class DefaultTopBarComponent extends React.Component<
         {this.props.leftAction && (
           <LayoutBlock flex={'1'}>{this.props.leftAction}</LayoutBlock>
         )}
-        <LayoutBlock flex={'2'} align="flex-center">
+        <LayoutBlock flex={'2'} align="flexCenter">
           <Text size={TypographySize.s}>{this.props.title}</Text>
         </LayoutBlock>
         {this.props.rightAction && (
-          <LayoutBlock align="flex-end" flex={'1'}>
+          <LayoutBlock align="flexEnd" flex={'1'}>
             {this.props.rightAction}
           </LayoutBlock>
         )}

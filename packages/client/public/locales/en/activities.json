@@ -7,7 +7,7 @@
   },
   "dodayapp": {
     "search": {
-      "placeholder": "type for search activity..."
+      "placeholder": "Type for search activity..."
     },
     "filter": {
       "inprogress": "in progress",

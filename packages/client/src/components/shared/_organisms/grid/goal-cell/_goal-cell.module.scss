@@ -24,7 +24,7 @@
 }
 
 .center {
-  composes: flex-center from '@styles/_common.scss';
+  composes: flexCenter from '@styles/_common.scss';
 }
 
 .goal-stats-container {

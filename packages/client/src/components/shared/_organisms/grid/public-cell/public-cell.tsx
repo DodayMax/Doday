@@ -44,9 +44,9 @@
 //           {doday.name}
 //         </Text>
 //         <LayoutBlock
-//           align="flex-end"
+//           align="flexEnd"
 //           spaceRight={Space.XSmall}
-//           valign="vflex-center"
+//           valign="vflexCenter"
 //         >
 //           <Text spaceRight={Space.XXSmall} size={TypographySize.s}>
 //             {24}
@@ -60,7 +60,7 @@
 //           paddingRight={Space.XSmall}
 //           paddingAbove={Space.XXSmall}
 //           paddingBelow={Space.XXSmall}
-//           align="space-between"
+//           align="spaceBetween"
 //         >
 //           <Marker
 //             bordered

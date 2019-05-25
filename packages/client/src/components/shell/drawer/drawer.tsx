@@ -67,8 +67,8 @@ export class DrawerComponent extends React.Component<
       return (
         <div className={css.drawerProfileContainerCollapsed}>
           <LayoutBlock
-            align="flex-center"
-            valign="vflex-center"
+            align="flexCenter"
+            valign="vflexCenter"
             childFlex={false}
             className={css.drawerProfileAvatarCollapsed}
           >
@@ -80,8 +80,8 @@ export class DrawerComponent extends React.Component<
       return (
         <div className={css.drawerProfileContainer}>
           <LayoutBlock
-            align="flex-center"
-            valign="vflex-center"
+            align="flexCenter"
+            valign="vflexCenter"
             className={css.drawerProfileAvatar}
           >
             <Icons.Dodayman width={60} height={60} />

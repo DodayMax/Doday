@@ -64,7 +64,7 @@
 
 //     return (
 //       <>
-//         <LayoutBlock insideElementsMargin valign="vflex-end">
+//         <LayoutBlock insideElementsMargin valign="vflexEnd">
 //           <Text size={TypographySize.s} color={TypographyColor.Disabled}>
 //             create new goal:
 //           </Text>
@@ -82,8 +82,8 @@
 //           placeholder="Enter name or paste link..."
 //         />
 //         <LayoutBlock
-//           align="space-between"
-//           valign="vflex-center"
+//           align="spaceBetween"
+//           valign="vflexCenter"
 //           paddingAbove={Space.Small}
 //           paddingBelow={Space.Small}
 //         >
@@ -101,8 +101,8 @@
 //           <LayoutBlock
 //             relative
 //             flex="1"
-//             valign="vflex-center"
-//             align="flex-center"
+//             valign="vflexCenter"
+//             align="flexCenter"
 //             direction="column"
 //           >
 //             <Text
@@ -130,8 +130,8 @@
 //         </LayoutBlock>
 //         <LayoutBlock
 //           insideElementsMargin
-//           align="flex-end"
-//           valign="vflex-center"
+//           align="flexEnd"
+//           valign="vflexCenter"
 //         >
 //           <Button
 //             primary

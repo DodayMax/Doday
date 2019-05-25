@@ -23,8 +23,8 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
       <>
         {loading && (
           <LayoutBlock
-            align="flex-center"
-            valign="vflex-center"
+            align="flexCenter"
+            valign="vflexCenter"
             paddingBelow={Space.Small}
             paddingLeft={Space.Small}
             paddingRight={Space.Small}

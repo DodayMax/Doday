@@ -6,7 +6,7 @@ import { Icons } from '@shared';
 const css = require('./coins.module.scss');
 
 export const Coins = ({ coins }) => (
-  <LayoutBlock valign="vflex-center">
+  <LayoutBlock valign="vflexCenter">
     <Text className={css.padded} heavy>
       {coins}
     </Text>

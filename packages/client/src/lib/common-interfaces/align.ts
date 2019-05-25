@@ -1,18 +1,15 @@
 export enum TypographyAlignment {
-  Center = 'align-center',
-  Left = 'align-left',
-  Right = 'align-right',
+  Center = 'alignCenter',
+  Left = 'alignLeft',
+  Right = 'alignRight',
 }
 
 export type AlignTypes =
-  | 'flex-center'
-  | 'flex-start'
-  | 'flex-end'
-  | 'space-between'
-  | 'space-around';
-export type vAlignTypes = 'vflex-center' | 'vflex-start' | 'vflex-end';
+  | 'flexCenter'
+  | 'flexStart'
+  | 'flexEnd'
+  | 'spaceBetween'
+  | 'spaceAround';
+export type vAlignTypes = 'vflexCenter' | 'vflexStart' | 'vflexEnd';
 
-export type AlignSelf =
-  | 'align-self-center'
-  | 'align-self-start'
-  | 'align-self-end';
+export type AlignSelf = 'alignSelfCenter' | 'alignSelfStart' | 'alignSelfEnd';

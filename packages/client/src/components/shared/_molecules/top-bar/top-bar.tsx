@@ -46,7 +46,7 @@ class TopBar extends React.Component<
 
     return (
       <nav className={css.navBar}>
-        <LayoutBlock valign="vflex-center">
+        <LayoutBlock valign="vflexCenter">
           <Link to="/" />
           <LayoutBlock insideElementsMargin paddingLeft={Space.Medium}>
             <Button
@@ -64,8 +64,8 @@ class TopBar extends React.Component<
           allowed={
             <LayoutBlock
               insideElementsMargin
-              align="flex-end"
-              valign="vflex-center"
+              align="flexEnd"
+              valign="vflexCenter"
             >
               <StripeButton
                 handleTokenActionCreator={this.props.handleStripeToken}

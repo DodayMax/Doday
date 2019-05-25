@@ -19,7 +19,7 @@ export const Filter: React.FunctionComponent<
   return (
     <>
       <LayoutBlock
-        align="flex-center"
+        align="flexCenter"
         insideElementsMargin
         childFlex
         paddingAbove={Space.XSmall}

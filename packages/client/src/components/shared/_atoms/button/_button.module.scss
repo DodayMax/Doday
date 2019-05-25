@@ -1,7 +1,7 @@
 @import '@styles/_config.scss';
 
 .default {
-  composes: button flex-center from '@styles/_common.scss';
+  composes: button flexCenter from '@styles/_common.scss';
   background-color: $gray-1;
 
   &:hover {
@@ -10,7 +10,7 @@
 }
 
 .primary {
-  composes: button flex-center from '@styles/_common.scss';
+  composes: button flexCenter from '@styles/_common.scss';
   background-color: $yellow;
 
   &:hover {

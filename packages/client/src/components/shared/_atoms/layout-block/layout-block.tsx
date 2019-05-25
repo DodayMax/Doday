@@ -15,8 +15,16 @@ import {
   paddingRightClassNames,
   SpacingProps,
 } from '@lib/common-interfaces';
+import { utils } from '@styles/utils';
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
 
-const css = require('./_layout-block.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    layoutBlock: {
+      display: 'flex',
+    },
+    ...utils,
+  });
 
 interface LayoutBlockProps {
   align?: AlignTypes;
@@ -38,43 +46,45 @@ interface LayoutBlockProps {
   children?: React.ReactNode;
 }
 
-export const LayoutBlock = (props: LayoutBlockProps & SpacingProps) => {
-  const classNames = classnames(
-    spaceAboveClassNames[props.spaceAbove!],
-    spaceBelowClassNames[props.spaceBelow!],
-    spaceLeftClassNames[props.spaceLeft!],
-    spaceRightClassNames[props.spaceRight!],
-    paddingAboveClassNames[props.paddingAbove!],
-    paddingBelowClassNames[props.paddingBelow!],
-    paddingLeftClassNames[props.paddingLeft!],
-    paddingRightClassNames[props.paddingRight!],
-    {
-      [css.layoutBlock]: true,
-      [css.childFlex]: !!props.childFlex,
-      [css[props.align || '']]: !!props.align,
-      [css[props.valign || '']]: !!props.valign,
-      [css[props.alignSelf || '']]: !!props.alignSelf,
-      [css[props.direction || '']]: !!props.direction,
-      [css.absolute]: !!props.absolute,
-      [css.relative]: !!props.relative,
-      [css.insideElementsMargin]: !!props.insideElementsMargin,
-      [css.fullHeight]: !!props.fullHeight,
-      [props.className]: !!props.className,
-    }
-  );
-  return (
-    <div
-      className={classNames}
-      style={{
-        flex: props.flex || 'none',
-        top: props.top,
-        left: props.left,
-        right: props.right,
-        bottom: props.bottom,
-        ...props.styles,
-      }}
-    >
-      {props.children}
-    </div>
-  );
-};
+export const LayoutBlock = withStyles(css)(
+  (props: LayoutBlockProps & SpacingProps & WithStyles) => {
+    const classNames = classnames(
+      props.classes[spaceAboveClassNames[props.spaceAbove!]],
+      props.classes[spaceBelowClassNames[props.spaceBelow!]],
+      props.classes[spaceLeftClassNames[props.spaceLeft!]],
+      props.classes[spaceRightClassNames[props.spaceRight!]],
+      props.classes[paddingAboveClassNames[props.paddingAbove!]],
+      props.classes[paddingBelowClassNames[props.paddingBelow!]],
+      props.classes[paddingLeftClassNames[props.paddingLeft!]],
+      props.classes[paddingRightClassNames[props.paddingRight!]],
+      {
+        [props.classes.layoutBlock]: true,
+        [props.classes.childFlex]: !!props.childFlex,
+        [props.classes[props.align || '']]: !!props.align,
+        [props.classes[props.valign || '']]: !!props.valign,
+        [props.classes[props.alignSelf || '']]: !!props.alignSelf,
+        [props.classes[props.direction || '']]: !!props.direction,
+        [props.classes.absolute]: !!props.absolute,
+        [props.classes.relative]: !!props.relative,
+        [props.classes.insideElementsMargin]: !!props.insideElementsMargin,
+        [props.classes.fullHeight]: !!props.fullHeight,
+        [props.className]: !!props.className,
+      }
+    );
+    return (
+      <div
+        className={classNames}
+        style={{
+          flex: props.flex || 'none',
+          top: props.top,
+          left: props.left,
+          right: props.right,
+          bottom: props.bottom,
+          ...props.styles,
+        }}
+      >
+        {props.children}
+      </div>
+    );
+  }
+);

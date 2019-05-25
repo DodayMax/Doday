@@ -256,7 +256,7 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     return (
       <>
-        <LayoutBlock insideElementsMargin valign="vflex-center">
+        <LayoutBlock insideElementsMargin valign="vflexCenter">
           <Typography variant="h6">{t('builder.activityType')}:</Typography>
           {loading || isUrlParsing ? (
             <Icons.InlineLoader />
@@ -346,7 +346,7 @@ export class ActivityBuilderComponentClass extends React.Component<
         <LayoutBlock spaceBelow={Space.Small} direction="column">
           <LayoutBlock
             insideElementsMargin
-            valign="vflex-center"
+            valign="vflexCenter"
             spaceBelow={Space.XSmall}
           >
             <Typography variant="h6">{t('builder.estimateTime')}:</Typography>
@@ -385,11 +385,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             />
           </div>
         </LayoutBlock>
-        <LayoutBlock
-          insideElementsMargin
-          align="flex-end"
-          valign="vflex-center"
-        >
+        <LayoutBlock insideElementsMargin align="flexEnd" valign="vflexCenter">
           <FormControlLabel
             control={
               <Switch
@@ -427,7 +423,16 @@ export const activityIconByType = (
 ) => {
   switch (type) {
     case 'do':
-      return <DoneIcon key={cuid()} />;
+      return (
+        <Tooltip
+          title={
+            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+          }
+          placement="right"
+        >
+          <DoneIcon key={cuid()} />
+        </Tooltip>
+      );
     case 'read':
       return <Icons.ActivityReadType key={cuid()} />;
     case 'watch':

@@ -16,7 +16,7 @@ export const css = (theme: Theme) =>
       backgroundColor: theme.palette.grey[900],
     },
     topBar: {
-      justifyContent: 'space-between',
+      justifyContent: 'spaceBetween',
       padding: `0 ${theme.spacing.unit * 2}px`,
     },
     appBarShift: {
@@ -63,7 +63,7 @@ export const css = (theme: Theme) =>
     toolbar: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      justifyContent: 'flexEnd',
       padding: '0 8px',
       ...theme.mixins.toolbar,
     },

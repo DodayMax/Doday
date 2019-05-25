@@ -12,11 +12,10 @@ import {
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Text, Icons, CustomDatePicker, ClickableIcon } from '@shared';
+import { Text, Icons, ClickableIcon } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
-import { Button, ButtonSize } from '@shared/_atoms/button';
 import { Marker } from '@shared/_atoms/marker';
 import {
   youtubeIDFromURL,
@@ -50,9 +49,53 @@ import {
   Resource,
 } from '@root/lib/models/entities/resource';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import {
+  Theme,
+  createStyles,
+  WithStyles,
+  withStyles,
+  MenuItem,
+  TextField,
+  Tooltip,
+  IconButton,
+  Typography,
+  Button,
+} from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
-const css = require('./progress-details.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    resourceStatusIcon: {
+      height: '1.6rem',
+      paddingLeft: '0.4rem',
+    },
+    videoWrapper: {
+      position: 'relative',
+      paddingBottom: '56.25%' /* 16:9 */,
+      margin: '3rem 0 0 0',
+      height: 0,
+      '& iframe': {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100%',
+      },
+    },
+    delete: {
+      color: theme.palette.common.white,
+      backgroundColor: theme.palette.error.dark,
+      '&:focus': {
+        backgroundColor: theme.palette.error.dark,
+      },
+      '&:hover': {
+        backgroundColor: theme.palette.error.main,
+      },
+    },
+  });
 
 interface ActivityProgressDetailsProps {}
 
@@ -96,7 +139,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps<any>> &
-    WithTranslation,
+    WithTranslation &
+    WithStyles,
   ActivityProgressDetailsState
 > {
   getYouTubeLink = (resource: Resource) => {
@@ -116,24 +160,15 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   };
 
   actions = () => {
-    const {
-      history,
-      selectedDoday,
-      dirty,
-      updateDodayActionCreator,
-      updates,
-      loading,
-      t,
-    } = this.props;
+    const { history, selectedDoday, classes, t } = this.props;
 
     const actions = [];
 
     // Add untake action for public dodays
     if (selectedDoday.public) {
       actions.push(
-        <Button
-          key={1}
-          size={ButtonSize.small}
+        <MenuItem
+          key={cuid()}
           onClick={() => {
             this.props.untakeDodayActionCreator({
               did: selectedDoday.did,
@@ -143,16 +178,15 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
           }}
         >
           {t('activities:details.actions.untake')}
-        </Button>
+        </MenuItem>
       );
     }
 
     // Add owner actions
     if (this.isOwner) {
       actions.push(
-        <Button
+        <MenuItem
           key={cuid()}
-          size={ButtonSize.small}
           onClick={() => {
             this.props.deleteDodayActionCreator({
               did: selectedDoday.did,
@@ -160,28 +194,10 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             });
             history.push('/');
           }}
+          className={classes.delete}
         >
           {t('activities:details.actions.delete')}
-        </Button>
-      );
-    }
-
-    // Add save action
-    if (dirty) {
-      actions.unshift(
-        <Button
-          primary
-          key={cuid()}
-          disabled={!dirty}
-          size={ButtonSize.small}
-          onClick={() => {
-            updateDodayActionCreator(selectedDoday.did, selectedDoday.type, {
-              progress: updates,
-            });
-          }}
-        >
-          {loading ? t('activities:details.actions.saving') : t('activities:details.actions.save')}
-        </Button>
+        </MenuItem>
       );
     }
 
@@ -189,10 +205,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   };
 
   status = () => {
-    const { selectedDoday, t } = this.props;
-    const markers = [
-      activityIconByType(selectedDoday.activityType, 30, vars.gray8),
-    ];
+    const { selectedDoday, classes, t } = this.props;
+    const markers = [activityIconByType(selectedDoday.activityType, 30)];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
         <Marker
@@ -212,7 +226,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             (ev.target as HTMLImageElement).src = '';
           }}
           key={cuid()}
-          className={css.resourceStatusIcon}
+          className={classes.resourceStatusIcon}
           src={selectedDoday.resource.icon}
         />
       );
@@ -224,8 +238,20 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     this.props.clearSelectedDodayActionCreator();
   };
 
+  private handleChangeDate = e => {
+    const dateDirty =
+      moment(e.target.value).format('YYYY-MM-DD') !==
+      moment(this.props.selectedDoday.progress.date).format('YYYY-MM-DD');
+    this.props.requestForSetUpdatesActionCreator(
+      {
+        date: dateDirty ? new Date(e.target.value).getTime() : undefined,
+      },
+      deserializeActivityProgress
+    );
+  };
+
   render() {
-    const { updates, selectedDoday, loading, t } = this.props;
+    const { updates, selectedDoday, loading, dirty, classes, t } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -246,7 +272,29 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             status={selectedDoday && this.status()}
             actions={selectedDoday && this.actions()}
             onClose={this.onRequestClose}
-          />
+          >
+            {dirty && (
+              <Button
+                key={cuid()}
+                color="primary"
+                variant="contained"
+                disabled={!dirty}
+                onClick={() => {
+                  this.props.updateDodayActionCreator(
+                    selectedDoday.did,
+                    selectedDoday.type,
+                    {
+                      progress: updates,
+                    }
+                  );
+                }}
+              >
+                {loading
+                  ? t('activities:details.actions.saving')
+                  : t('activities:details.actions.save')}
+              </Button>
+            )}
+          </PageHeader>
         }
       >
         {selectedDoday && selectedDoday.progress ? (
@@ -254,70 +302,91 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             <LayoutBlock insideElementsMargin>
               {!selectedDoday.progress.completed && (
                 <>
-                  <CustomDatePicker
-                    borderless
-                    minDate={new Date()}
-                    icon={<ScheduleIcon />}
-                    selected={
-                      (updates && updates.date && new Date(updates.date)) ||
-                      (selectedDoday &&
-                        selectedDoday.progress &&
-                        selectedDoday.progress.date)
-                    }
-                    onChange={date => {
-                      const dateDirty =
-                        moment(date).format('ll') !==
-                        moment(selectedDoday.progress.date).format('ll');
-                      this.props.requestForSetUpdatesActionCreator(
-                        {
-                          date: dateDirty ? date.getTime() : undefined,
-                        },
-                        deserializeActivityProgress
-                      );
-                    }}
-                  />
-                  <Button
-                    borderless
-                    active={updates && updates.dateIsLocked}
-                    onClick={() => {
-                      this.props.requestForSetUpdatesActionCreator(
-                        {
-                          dateIsLocked: !dateIsLocked,
-                        },
-                        deserializeActivityProgress
-                      );
-                    }}
+                  <LayoutBlock
+                    paddingAbove={Space.Small}
+                    paddingBelow={Space.Small}
+                    valign="vflexCenter"
+                    className={classes.dateContainer}
                   >
-                    {dateIsLocked ? <Icons.Locked /> : <Icons.Unlocked />}
-                  </Button>
+                    <ScheduleIcon />
+                    <TextField
+                      id="date"
+                      type="date"
+                      value={
+                        (updates &&
+                          updates.date &&
+                          moment(updates.date).format('YYYY-MM-DD')) ||
+                        (selectedDoday &&
+                          selectedDoday.progress &&
+                          moment(selectedDoday.progress.date).format(
+                            'YYYY-MM-DD'
+                          ))
+                      }
+                      onChange={this.handleChangeDate}
+                      InputProps={{
+                        classes: {
+                          input: classes.input,
+                        },
+                      }}
+                      InputLabelProps={{
+                        FormLabelClasses: {
+                          root: classes.inputLabel,
+                        },
+                      }}
+                    />
+                    <Tooltip
+                      title={
+                        <Typography variant="body1">
+                          Lock the date, so that Doday app can't change it using
+                          automatic algorithms for planning
+                        </Typography>
+                      }
+                      placement="top"
+                      className={classes.tooltip}
+                    >
+                      <IconButton
+                        onClick={() =>
+                          this.props.requestForSetUpdatesActionCreator(
+                            {
+                              dateIsLocked: !dateIsLocked,
+                            },
+                            deserializeActivityProgress
+                          )
+                        }
+                      >
+                        {dateIsLocked ? (
+                          <LockIcon color="primary" />
+                        ) : (
+                          <LockOpenIcon />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </LayoutBlock>
                 </>
               )}
               {selectedDoday.duration && (
-                <LayoutBlock insideElementsMargin valign="vflex-center">
-                  <Icons.Duration width={16} height={16} />
-                  <Text size={TypographySize.s}>
+                <LayoutBlock insideElementsMargin valign="vflexCenter">
+                  <HourGlassEmptyIcon />
+                  <Typography variant="h6">
                     {durationToLabel(selectedDoday.duration, {
                       hour: t('shell:time.h'),
                       minute: t('shell:time.m'),
                     })}
-                  </Text>
-                  <Text
-                    size={TypographySize.s}
-                    color={TypographyColor.Disabled}
-                  >
-                    (
-                    {t('activities:details.status.percentOfTheDay', {
+                  </Typography>
+                  <Typography variant="body1" color="textSecondary">
+                    {`(
+                    ${t('activities:details.status.percentOfTheDay', {
                       percent: Math.round(
                         (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
                           100
                       ),
                     })}
-                    )
-                  </Text>
+                    )`}
+                  </Typography>
                 </LayoutBlock>
               )}
             </LayoutBlock>
-            <LayoutBlock spaceAbove={Space.XSmall} valign="vflex-center">
+            <LayoutBlock spaceAbove={Space.XSmall} valign="vflexCenter">
               <ClickableIcon
                 loading={loading}
                 onClick={() => {
@@ -348,7 +417,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             </LayoutBlock>
             {youtubeLink ? (
               <div
-                className={css.videoWrapper}
+                className={classes.videoWrapper}
                 style={{
                   background: `url(${preview})`,
                   backgroundSize: 'contain',
@@ -363,7 +432,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               </div>
             ) : preview ? (
               <div
-                className={css.videoWrapper}
+                className={classes.videoWrapper}
                 style={{
                   background: `url(${preview})`,
                   backgroundSize: 'cover',
@@ -378,9 +447,14 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               <LayoutBlock
                 spaceAbove={Space.Large}
                 spaceBelow={Space.Small}
-                align="flex-center"
+                align="flexCenter"
               >
-                <Button primary href={resource.url} target="_blank">
+                <Button
+                  color="primary"
+                  variant="contained"
+                  href={resource.url}
+                  target="_blank"
+                >
                   {t('activities:details.actions.goToResource')}
                 </Button>
               </LayoutBlock>
@@ -407,4 +481,8 @@ export const ActivityProgressDetails = connect(
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(withTranslation(['shell', 'activities'])(ActivityProgressDetailsComponentClass));
+)(
+  withTranslation(['shell', 'activities'])(
+    withStyles(css)(ActivityProgressDetailsComponentClass)
+  )
+);

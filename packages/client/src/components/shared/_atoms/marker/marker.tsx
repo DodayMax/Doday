@@ -31,11 +31,7 @@ export const Marker: React.FC<MarkerProps> = ({
     [css['bordered']]: bordered,
   });
   return (
-    <LayoutBlock
-      align="flex-center"
-      valign="vflex-center"
-      className={wrappercx}
-    >
+    <LayoutBlock align="flexCenter" valign="vflexCenter" className={wrappercx}>
       <Text
         wordwrap={false}
         className={cx}

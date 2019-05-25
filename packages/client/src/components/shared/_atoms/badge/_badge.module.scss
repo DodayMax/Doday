@@ -1,7 +1,7 @@
 @import '@styles/_config.scss';
 
 .badge-container {
-  composes: flex-center from '@styles/_common.scss';
+  composes: flexCenter from '@styles/_common.scss';
 
   width: 2rem;
   height: 2rem;

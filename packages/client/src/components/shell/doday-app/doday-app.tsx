@@ -117,7 +117,7 @@ export class DodayAppComponent extends React.Component<
   //           className={css.bannerContainer}
   //           spaceAbove={Space.Small}
   //           direction="column"
-  //           valign="vflex-center"
+  //           valign="vflexCenter"
   //         >
   //           <Text>Your day is overloading!</Text>
   //           <Button

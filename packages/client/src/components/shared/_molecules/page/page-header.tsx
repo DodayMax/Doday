@@ -1,17 +1,36 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { config } from '@styles/config';
 import { LayoutBlock } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
 import { PageWrapperChildContext } from '../../_support/pageflow';
 import CloseIcon from '@material-ui/icons/Close';
-import { IconButton } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import {
+  IconButton,
+  createStyles,
+  Theme,
+  WithStyles,
+  withStyles,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
 
-const css = require('./_page-header.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    headerContainer: {
+      color: theme.palette.action.active,
+      height: `${64}px`,
+      boxSizing: 'border-box',
+      padding: `0 ${config.paddings.paddingL}rem`,
+    },
+  });
 
 interface PageHeaderProps extends Partial<RouteComponentProps> {
   status?: React.ReactElement<any>[];
+  /** Use actions to add items to collapsed action menu */
   actions?: React.ReactElement<any>[];
   withClose?: boolean;
   onClose?: () => void;
@@ -21,34 +40,78 @@ interface PropsFromConnect {
   route: string;
 }
 
+interface PageHeaderState {
+  anchor?: HTMLElement;
+}
+
+const ITEM_HEIGHT = 48;
+
 @(withRouter as any)
 class PageHeaderComponentClass extends React.Component<
-  PageHeaderProps & Partial<PropsFromConnect>
+  PageHeaderProps & Partial<PropsFromConnect> & WithStyles,
+  PageHeaderState
 > {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
   public static contextTypes = {
     requestClose: PropTypes.func,
   };
 
   public context!: PageWrapperChildContext;
 
+  private handleOpen = (event: React.MouseEvent<any>) =>
+    this.setState({ anchor: event.currentTarget });
+
+  private handleClose = () => this.setState({ anchor: undefined });
+
   render() {
-    const { status, actions, onClose, children, withClose, route } = this.props;
+    const {
+      status,
+      actions,
+      onClose,
+      children,
+      withClose,
+      classes,
+      route,
+    } = this.props;
+
     return (
-      <LayoutBlock className={css.headerContainer}>
-        <LayoutBlock
-          align="flex-start"
-          valign="vflex-center"
-          className={css.headerStatus}
-        >
+      <LayoutBlock className={classes.headerContainer}>
+        <LayoutBlock align="flexStart" valign="vflexCenter">
           {status}
         </LayoutBlock>
-        <LayoutBlock
-          flex="1"
-          align="flex-end"
-          valign="vflex-center"
-          className={css.headerActions}
-        >
-          {actions || children}
+        <LayoutBlock flex="1" align="flexEnd" valign="vflexCenter">
+          {children}
+          {actions && !!actions.length && (
+            <>
+              <IconButton
+                aria-label="More"
+                aria-owns={open ? 'long-menu' : undefined}
+                aria-haspopup="true"
+                onClick={this.handleOpen}
+              >
+                <MoreVertIcon />
+              </IconButton>
+              <Menu
+                id="long-menu"
+                anchorEl={this.state.anchor}
+                open={!!this.state.anchor}
+                onClose={this.handleClose}
+                PaperProps={{
+                  style: {
+                    maxHeight: ITEM_HEIGHT * 4.5,
+                    width: 200,
+                  },
+                }}
+              >
+                {actions}
+              </Menu>
+            </>
+          )}
           {withClose && (
             <IconButton
               onClick={() => {
@@ -75,4 +138,6 @@ const mapState = (state: RootState) => ({
   route: state.dodayApp.status.route,
 });
 
-export const PageHeader = connect(mapState)(PageHeaderComponentClass);
+export const PageHeader = connect(mapState)(
+  withStyles(css)(PageHeaderComponentClass)
+);

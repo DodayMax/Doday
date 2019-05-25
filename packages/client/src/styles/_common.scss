@@ -44,7 +44,7 @@
   border-top: 0;
 }
 
-.flex-center {
+.flexCenter {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -85,7 +85,7 @@
   display: flex;
   color: $primary-text;
   border-bottom: 1px solid $gray-4;
-  justify-content: space-between;
+  justify-content: spaceBetween;
   align-items: center;
   padding: 0 $space-xs;
 }
