@@ -4,7 +4,5 @@ import { storiesOf } from '@storybook/react';
 import { Checkbox } from './checkbox';
 
 storiesOf('Checkbox', module)
-  .add('default', () => <Checkbox activityType="do" onClick={() => {}} />)
-  .add('checked', () => (
-    <Checkbox activityType="watch" checked onClick={() => {}} />
-  ));
+  .add('default', () => <Checkbox onClick={() => {}} />)
+  .add('checked', () => <Checkbox checked onClick={() => {}} />);

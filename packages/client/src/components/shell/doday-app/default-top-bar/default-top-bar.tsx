@@ -8,12 +8,12 @@ const css = (theme: Theme) =>
     container: {
       height: `${theme.spacing.unit * 8}px`,
       color: theme.palette.text.primary,
-      background: theme.palette.background.paper,
       display: 'flex',
       justifyContent: 'spaceBetween',
       alignItems: 'center',
       padding: `0 ${theme.spacing.unit}px`,
       flexShrink: 0,
+      borderBottom: `1px solid ${theme.palette.divider}`,
     },
   });
 

@@ -130,6 +130,25 @@ export class ActivityBuilderComponentClass extends React.Component<
     };
   }
 
+  private dateRef: React.RefObject<HTMLInputElement> = React.createRef();
+
+  componentDidMount() {
+    this.dateRef.current.addEventListener('focus', this.handleDatePickerFocus);
+  }
+
+  componentWillUnmount() {
+    this.dateRef.current.removeEventListener(
+      'focus',
+      this.handleDatePickerFocus
+    );
+  }
+
+  componentWillMount() {}
+
+  private handleDatePickerFocus = e => {
+    console.log(e);
+  };
+
   shouldComponentUpdate(nextProps): boolean {
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
       const parsedTags =
@@ -311,6 +330,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             type="date"
             value={this.state.date}
             onChange={this.handleChangeDate}
+            inputRef={this.dateRef}
             InputProps={{
               classes: {
                 input: classes.input,
@@ -332,6 +352,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             className={classes.tooltip}
           >
             <IconButton
+              disabled={this.state.isPublic}
               onClick={() =>
                 this.setState({ dateIsLocked: !this.state.dateIsLocked })
               }

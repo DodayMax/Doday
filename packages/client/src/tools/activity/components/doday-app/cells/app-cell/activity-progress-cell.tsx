@@ -22,6 +22,7 @@ import {
   Theme,
   withStyles,
   WithStyles,
+  IconButton,
 } from '@material-ui/core';
 
 const vars = require('@styles/_config.scss');
@@ -30,12 +31,16 @@ const styles = (theme: Theme) =>
   createStyles({
     listItemContainer: {
       cursor: 'pointer',
+      padding: '6px',
       '&:hover': {
         background:
           theme.palette.type === 'dark'
             ? theme.palette.grey[800]
             : theme.palette.grey[200],
       },
+    },
+    name: {
+      paddingLeft: '6px',
     },
     timeLabel: {
       color:
@@ -50,6 +55,9 @@ const styles = (theme: Theme) =>
         theme.palette.type === 'dark'
           ? theme.palette.grey[800]
           : theme.palette.grey[100],
+    },
+    checkboxIconButton: {
+      padding: '6px',
     },
   });
 
@@ -74,18 +82,24 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
             onClick && onClick(`/progress/${activity.did}`, activity)
           }
         >
-          <Checkbox
-            // colorMarker={doday.relatedGoal && doday.relatedGoal.color}
+          <IconButton
             onClick={e => {
               e.stopPropagation();
               if (onComplete) {
                 onComplete();
               }
             }}
-            checked={activity.progress && activity.progress.completed}
-            activityType={activity.activityType}
+            className={classes.checkboxIconButton}
+          >
+            <Checkbox
+              checked={activity.progress && activity.progress.completed}
+            />
+          </IconButton>
+          <ListItemText
+            primary={activity.name}
+            secondary="July 20, 2014"
+            className={classes.name}
           />
-          <ListItemText primary={activity.name} secondary="July 20, 2014" />
           <LayoutBlock absolute bottom="0" right="2.6rem">
             <Typography className={classes.timeLabel} variant="body2">
               {durationToLabel(activity.duration, {

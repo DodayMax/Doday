@@ -8,14 +8,13 @@ interface CheckboxProps {
   checked?: boolean;
   colorMarker?: string;
   onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
-  activityType: ActivityType;
 }
 
 const css = (theme: Theme) =>
   createStyles({
     checkboxContainer: {
       position: 'relative',
-      height: '3.6rem',
+      height: '3rem',
     },
     colorMarker: {
       position: 'absolute',
