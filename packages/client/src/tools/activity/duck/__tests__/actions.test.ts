@@ -17,7 +17,7 @@ import {
 import { Activity } from '../../entities/activity';
 import {
   activity,
-  parsedResource,
+  deserializedResource,
 } from '@root/lib/common-interfaces/fake-data';
 import { ActivityType } from '@root/lib/common-interfaces';
 import { Resource } from '@root/lib/models/entities/resource';
@@ -70,7 +70,7 @@ describe('Activity tool action creators tests', () => {
   });
 
   it('set parsed object from url', () => {
-    const resource: Resource = parsedResource;
+    const resource: Resource = deserializedResource;
     const expectedActionObject: SetParsedUrlMetadataObjectAction = {
       type: ActionConstants.SET_PARSED_URL_METADATA_OBJECT,
       payload: resource,

@@ -3,25 +3,24 @@ import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Space, DodayColor } from '@root/lib/common-interfaces';
+import { Space } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Icons } from '@shared';
+import { Icons, CustomDatePicker } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
-import { Marker } from '@shared/_atoms/marker';
 import {
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
+  isDirty,
 } from '@root/lib/utils';
 import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
-  SetDirtyStatusAction,
   RequestForSetUpdatesAction,
 } from '@root/ducks/doday-details/actions';
 import { Pageflow } from '@root/components/shared/_support/pageflow';
@@ -30,22 +29,12 @@ import {
   DeleteDodayAction,
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
-import {
-  DodayType,
-  SerializedProgressLike,
-  SerializedDodayLike,
-  ProgressLike,
-} from '@root/tools/types';
+import { DodayType, ProgressLike, DodayLike } from '@root/tools/types';
 import { Activity, deserializeActivityProgress } from '../../entities/activity';
 import { activityIconByType } from '../builders/activity-builder';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import {
-  SerializedResource,
-  Resource,
-} from '@root/lib/models/entities/resource';
+import { Resource } from '@root/lib/models/entities/resource';
 import ScheduleIcon from '@material-ui/icons/Schedule';
-import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
   Theme,
@@ -53,8 +42,6 @@ import {
   WithStyles,
   withStyles,
   MenuItem,
-  TextField,
-  Tooltip,
   IconButton,
   Typography,
   Button,
@@ -109,34 +96,32 @@ interface ActivityProgressDetailsProps {}
 interface ActivityProgressDetailsState {}
 
 interface PropsFromConnect {
+  dirty: boolean;
+  updates: Partial<ProgressLike>;
   loading: boolean;
-  dirty?: boolean;
-  updates: Partial<SerializedProgressLike>;
   myDID?: string;
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-  updateDodayActionCreator(
-    did: string,
-    type: DodayType,
-    updates: {
-      doday?: Partial<SerializedDodayLike>;
-      progress?: Partial<SerializedProgressLike>;
-      resource?: Partial<SerializedResource>;
-    }
-  ): UpdateDodayAction;
-  deleteDodayActionCreator: ({
-    did: string,
-    type: DodayType,
-  }) => DeleteDodayAction;
-  untakeDodayActionCreator: ({
-    did: string,
-    type: DodayType,
-  }) => UntakeDodayAction;
-  setDirtyStatusActionCreator: (status: boolean) => SetDirtyStatusAction;
   requestForSetUpdatesActionCreator(
-    progress: Partial<SerializedProgressLike>,
-    deserialize: (progress: SerializedProgressLike) => ProgressLike
+    progress?: Partial<ProgressLike>
   ): RequestForSetUpdatesAction;
+  updateDodayActionCreator(payload: {
+    did: string;
+    type: DodayType;
+    updates: {
+      doday?: Partial<DodayLike>;
+      progress?: Partial<ProgressLike>;
+      resource?: Partial<Resource>;
+    };
+  }): UpdateDodayAction;
+  deleteDodayActionCreator(payload: {
+    did: string;
+    type: DodayType;
+  }): DeleteDodayAction;
+  untakeDodayActionCreator(payload: {
+    did: string;
+    type: DodayType;
+  }): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
 }
 
@@ -244,20 +229,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     this.props.clearSelectedDodayActionCreator();
   };
 
-  private handleChangeDate = e => {
-    const dateDirty =
-      moment(e.target.value).format('YYYY-MM-DD') !==
-      moment(this.props.selectedDoday.progress.date).format('YYYY-MM-DD');
-    this.props.requestForSetUpdatesActionCreator(
-      {
-        date: dateDirty ? new Date(e.target.value).getTime() : undefined,
-      },
-      deserializeActivityProgress
-    );
-  };
-
   render() {
-    const { updates, selectedDoday, loading, dirty, classes, t } = this.props;
+    const { dirty, updates, selectedDoday, loading, classes, t } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -286,13 +259,13 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 variant="contained"
                 disabled={!dirty}
                 onClick={() => {
-                  this.props.updateDodayActionCreator(
-                    selectedDoday.did,
-                    selectedDoday.type,
-                    {
+                  this.props.updateDodayActionCreator({
+                    did: selectedDoday.did,
+                    type: selectedDoday.type,
+                    updates: {
                       progress: updates,
-                    }
-                  );
+                    },
+                  });
                 }}
               >
                 {loading
@@ -316,58 +289,33 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     valign="vflexCenter"
                     className={classes.dateContainer}
                   >
-                    <ScheduleIcon />
-                    <TextField
-                      id="date"
-                      type="date"
-                      value={
-                        (updates &&
-                          updates.date &&
-                          moment(updates.date).format('YYYY-MM-DD')) ||
+                    <CustomDatePicker
+                      withLocker
+                      isLocked={dateIsLocked}
+                      onLocked={() => {
+                        this.props.requestForSetUpdatesActionCreator({
+                          dateIsLocked: !dateIsLocked,
+                        });
+                      }}
+                      borderless
+                      minDate={new Date()}
+                      icon={<ScheduleIcon />}
+                      selected={
+                        (updates && updates.date && new Date(updates.date)) ||
                         (selectedDoday &&
                           selectedDoday.progress &&
-                          moment(selectedDoday.progress.date).format(
-                            'YYYY-MM-DD'
-                          ))
+                          selectedDoday.progress.date)
                       }
-                      onChange={this.handleChangeDate}
-                      InputProps={{
-                        classes: {
-                          input: classes.input,
-                        },
-                      }}
-                      InputLabelProps={{
-                        FormLabelClasses: {
-                          root: classes.inputLabel,
-                        },
+                      tooltip={t('activities:builder.lockDateTooltip')}
+                      onChange={date => {
+                        const dateDirty =
+                          moment(date).format('ll') !==
+                          moment(selectedDoday.progress.date).format('ll');
+                        this.props.requestForSetUpdatesActionCreator({
+                          date: dateDirty ? date : undefined,
+                        });
                       }}
                     />
-                    <Tooltip
-                      title={
-                        <Typography variant="body1">
-                          {t('activities:builder.lockDateTooltip')}
-                        </Typography>
-                      }
-                      placement="top"
-                      className={classes.tooltip}
-                    >
-                      <IconButton
-                        onClick={() =>
-                          this.props.requestForSetUpdatesActionCreator(
-                            {
-                              dateIsLocked: !dateIsLocked,
-                            },
-                            deserializeActivityProgress
-                          )
-                        }
-                      >
-                        {dateIsLocked ? (
-                          <LockIcon color="primary" />
-                        ) : (
-                          <LockOpenIcon />
-                        )}
-                      </IconButton>
-                    </Tooltip>
                   </LayoutBlock>
                 </>
               )}
@@ -396,15 +344,15 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflexCenter">
               <IconButton
                 onClick={() => {
-                  this.props.updateDodayActionCreator(
-                    selectedDoday.did,
-                    selectedDoday.type,
-                    {
+                  this.props.updateDodayActionCreator({
+                    did: selectedDoday.did,
+                    type: selectedDoday.type,
+                    updates: {
                       progress: {
                         completed: !selectedDoday.progress.completed,
                       },
-                    }
-                  );
+                    },
+                  });
                 }}
               >
                 <Icons.Checkbox
@@ -473,9 +421,9 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  loading: state.dodayDetails.loading,
   dirty: state.dodayDetails.dirty,
   updates: state.dodayDetails.updates,
+  loading: state.dodayDetails.loading,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
 });
@@ -488,7 +436,9 @@ export const ActivityProgressDetails = connect(
     ...dodaysApiActions,
   }
 )(
-  withTranslation(['shell', 'activities'])(
-    withStyles(css)(ActivityProgressDetailsComponentClass)
+  withStyles(css)(
+    withTranslation(['shell', 'activities'])(
+      ActivityProgressDetailsComponentClass
+    )
   )
 );

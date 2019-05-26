@@ -4,13 +4,14 @@ import {
   ProgressLike,
   SerializedProgressLike,
 } from '@root/tools/types';
+import { Resource } from '@root/lib/models/entities/resource';
 
 export enum ActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
   FETCH_SELECTED_DODAY = '[doday-details] FETCH_SELECTED_DODAY',
   FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
   SET_SELECTED_DODAY = '[doday-details] SET_SELECTED_DODAY',
-  UPDATE_SELECTED_DODAY_PROGRESS = '[doday-details] UPDATE_SELECTED_DODAY_PROGRESS',
+  UPDATE_SELECTED_DODAY = '[doday-details] UPDATE_SELECTED_DODAY',
   CLEAR_SELECTED_DODAY = '[doday-details] CLEAR_SELECTED_DODAY',
   SET_DIRTY_STATUS = '[doday-details] SET_DIRTY_STATUS',
   REQUEST_FOR_SET_UPDATES = '[doday-details] REQUEST_FOR_SET_UPDATES',
@@ -83,14 +84,16 @@ export function setSelectedDodayActionCreator(
  * selected doday when undefined is passed
  *
  * @export
- * @returns {UpdateSelectedDodayProgressAction}
+ * @returns {UpdateSelectedDodayAction}
  */
-export function updateSelectedDodayProgressActionCreator(
-  progress?: Partial<ProgressLike>
-): UpdateSelectedDodayProgressAction {
+export function updateSelectedDodayActionCreator(payload?: {
+  doday?: Partial<DodayLike>;
+  progress?: Partial<ProgressLike>;
+  resource?: Resource;
+}): UpdateSelectedDodayAction {
   return {
-    type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS,
-    payload: progress,
+    type: ActionConstants.UPDATE_SELECTED_DODAY,
+    payload,
   };
 }
 
@@ -131,14 +134,12 @@ export function setDirtyStatusActionCreator(
  * @returns {RequestForSetUpdatesAction}
  */
 export function requestForSetUpdatesActionCreator(
-  progress: Partial<SerializedProgressLike>,
-  deserialize: (progress: SerializedProgressLike) => ProgressLike
+  progress?: Partial<ProgressLike>
 ): RequestForSetUpdatesAction {
   return {
     type: ActionConstants.REQUEST_FOR_SET_UPDATES,
     payload: {
       progress,
-      deserialize,
     },
   };
 }
@@ -174,13 +175,13 @@ export const actionCreators = {
   setDodayDetailsLoadingStateActionCreator,
   fetchSelectedDodayActionCreator,
   setSelectedDodayActionCreator,
+  updateSelectedDodayActionCreator,
   fetchSelectedProgressActionCreator,
-  updateSelectedDodayProgressActionCreator,
-  clearSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
-  requestForSetUpdatesActionCreator,
   setUpdatesForSelectedDodayActionCreator,
+  requestForSetUpdatesActionCreator,
   clearDodayDetailsDirtyStuffActionCreator,
+  clearSelectedDodayActionCreator,
 };
 
 /**
@@ -207,9 +208,13 @@ export interface SetSelectedDodayAction extends AnyAction {
   payload: DodayLike;
 }
 
-export interface UpdateSelectedDodayProgressAction extends AnyAction {
-  type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS;
-  payload: Partial<ProgressLike>;
+export interface UpdateSelectedDodayAction extends AnyAction {
+  type: ActionConstants.UPDATE_SELECTED_DODAY;
+  payload: {
+    doday?: Partial<DodayLike>;
+    progress?: Partial<ProgressLike>;
+    resource?: Resource;
+  };
 }
 
 export interface ClearSelectedDodayAction extends AnyAction {
@@ -229,8 +234,7 @@ export interface SetUpdatesForSelectedDodayAction extends AnyAction {
 export interface RequestForSetUpdatesAction extends AnyAction {
   type: ActionConstants.REQUEST_FOR_SET_UPDATES;
   payload: {
-    progress: Partial<SerializedProgressLike>;
-    deserialize: (progress: SerializedProgressLike) => ProgressLike;
+    progress: Partial<ProgressLike>;
   };
 }
 
@@ -246,10 +250,10 @@ export type ActionTypes =
   | SetDodayDetailsLoadingStateAction
   | FetchSelectedDodayAction
   | FetchSelectedProgressAction
+  | UpdateSelectedDodayAction
   | SetSelectedDodayAction
-  | UpdateSelectedDodayProgressAction
-  | ClearSelectedDodayAction
   | SetDirtyStatusAction
-  | RequestForSetUpdatesAction
   | SetUpdatesForSelectedDodayAction
-  | ClearDodayDetailsDirtyStuffAction;
+  | RequestForSetUpdatesAction
+  | ClearDodayDetailsDirtyStuffAction
+  | ClearSelectedDodayAction;

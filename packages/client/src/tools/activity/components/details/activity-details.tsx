@@ -301,8 +301,6 @@ export class ActivityDetailsComponentClass extends React.Component<
 
 const mapState = (state: RootState) => ({
   loading: state.dodayDetails.loading,
-  dirty: state.dodayDetails.dirty,
-  updates: state.dodayDetails.updates,
   myDID: state.auth.hero && state.auth.hero.did,
   selectedDoday: state.dodayDetails.selectedDoday,
 });

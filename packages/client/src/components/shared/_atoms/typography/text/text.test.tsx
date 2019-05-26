@@ -14,7 +14,6 @@ describe('Text', () => {
 
     expect(text).toMatchSnapshot();
     expect(text.find('span').contains('test')).toBe(true);
-    expect(text.find('span').hasClass('text-l')).toBe(true);
   });
 
   it('renders correctly with props', () => {
@@ -29,8 +28,5 @@ describe('Text', () => {
     );
 
     expect(text.find('span').contains('test')).toBe(true);
-    expect(text.find('span').hasClass('text-s')).toBe(true);
-    expect(text.find('span').hasClass('primary-text')).toBe(true);
-    expect(text.find('span').hasClass('align-center')).toBe(true);
   });
 });

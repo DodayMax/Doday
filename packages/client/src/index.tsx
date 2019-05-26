@@ -9,6 +9,7 @@ import { api, i18n, history } from '@services';
 import { I18nextProvider } from 'react-i18next';
 import store from '@root/store';
 import 'rc-slider/assets/index.css';
+import 'react-datepicker/dist/react-datepicker.css';
 import '@root/services/i18n';
 import '@styles/_fonts.scss';
 

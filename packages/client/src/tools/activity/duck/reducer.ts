@@ -37,6 +37,7 @@ export const mainReducer = (
       }
       return state;
     case actions.ActionConstants.UPDATE_DODAY_OPTIMISTIC_UPDATE:
+      if (!state.dodays.length) return state;
       let updatedindex = 0;
       const updated = state.dodays.find((doday, index) => {
         if (doday.did === action.payload.did) {
@@ -52,7 +53,7 @@ export const mainReducer = (
         progress:
           action.payload.updates && action.payload.updates.progress
             ? {
-                ...updated.progress,
+                ...(updated && updated.progress),
                 ...action.payload.updates.progress,
               }
             : undefined,
@@ -68,6 +69,7 @@ export const mainReducer = (
         dodays: withoutUpdated,
       };
     case actions.ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE:
+      if (!state.dodays.length) return state;
       const taken = state.dodays.find(
         doday => doday.did === action.payload.did
       );
@@ -85,6 +87,7 @@ export const mainReducer = (
         ],
       };
     case actions.ActionConstants.UNTAKE_DODAY_OPTIMISTIC_UPDATE:
+      if (!state.dodays.length) return state;
       // remove progress
       let untakenindex = 0;
       const untakenDoday = state.dodays.find((doday, index) => {
@@ -102,6 +105,7 @@ export const mainReducer = (
         dodays: withoutUntaken,
       };
     case actions.ActionConstants.DELETE_DODAY_OPTIMISTIC_UPDATE:
+      if (!state.dodays.length) return state;
       // remove doday with action.payload.did
       const deleted = state.dodays.filter(
         doday => doday.did !== action.payload

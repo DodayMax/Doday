@@ -4,12 +4,21 @@ import * as moment from 'moment';
 import { connect } from 'react-redux';
 import Slider, { Handle } from 'rc-slider';
 import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
-import { LayoutBlock, Icons, Switcher, SwitcherItem } from '@shared';
+import {
+  LayoutBlock,
+  Icons,
+  Switcher,
+  SwitcherItem,
+  CustomDatePicker,
+} from '@shared';
 import { Space, ActivityType } from '@root/lib/common-interfaces';
 import { detectURL, durationToLabel } from '@root/lib/utils';
 import { Tag } from '@root/lib/models/entities/tag';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
-import { SerializedResource } from '@root/lib/models/entities/resource';
+import {
+  SerializedResource,
+  Resource,
+} from '@root/lib/models/entities/resource';
 import * as activitiesBuilderActions from '../../duck';
 import * as dodaysApiActions from '@ducks/api/dodays-api-actions';
 import { RootState } from '@root/lib/models';
@@ -22,6 +31,8 @@ import {
   SerializedProgressLike,
   WithTools,
   DodayType,
+  DodayLike,
+  ProgressLike,
 } from '@root/tools/types';
 import {
   ParseUrlMetadataAction,
@@ -31,11 +42,12 @@ import {
 import {
   SerializedActivity,
   SerializedActivityProgress,
+  ActivityProgress,
+  Activity,
 } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import DoneIcon from '@material-ui/icons/Done';
-import LockIcon from '@material-ui/icons/Lock';
-import LockOpenIcon from '@material-ui/icons/LockOpen';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   createStyles,
   Typography,
@@ -48,7 +60,6 @@ import {
   FormControlLabel,
   Switch,
   Button,
-  IconButton,
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
 
@@ -84,14 +95,14 @@ interface PropsFromConnect {
   parsedMetadata?: any;
   activityType: ActivityType;
   ownerDID: string;
-  createDodayActionCreator(
-    doday: SerializedDodayLike,
-    resource: SerializedResource
-  ): CreateDodayAction;
+  createDodayActionCreator(payload: {
+    doday: DodayLike;
+    resource: Resource;
+  }): CreateDodayAction;
   createAndTakeDodayActionCreator(payload: {
-    doday: SerializedDodayLike;
-    progress: SerializedProgressLike;
-    resource?: SerializedResource;
+    doday: DodayLike;
+    progress: ProgressLike;
+    resource?: Resource;
   }): CreateAndTakeDodayAction;
   setActivityTypeActionCreator(type: ActivityType): SetActivityTypeAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
@@ -102,7 +113,7 @@ interface ActivityBuilderState {
   dodayName: string;
   selectedTags?: Tag[];
   parsingFinished?: string;
-  date: string;
+  date: Date;
   dateIsLocked: boolean;
   isPublic: boolean;
   estimateTime: string;
@@ -123,31 +134,12 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     this.state = {
       dodayName: '',
-      date: moment().format('YYYY-MM-DD'),
+      date: new Date(),
       isPublic: false,
       dateIsLocked: false,
       estimateTime: 'PT60M',
     };
   }
-
-  private dateRef: React.RefObject<HTMLInputElement> = React.createRef();
-
-  componentDidMount() {
-    this.dateRef.current.addEventListener('focus', this.handleDatePickerFocus);
-  }
-
-  componentWillUnmount() {
-    this.dateRef.current.removeEventListener(
-      'focus',
-      this.handleDatePickerFocus
-    );
-  }
-
-  componentWillMount() {}
-
-  private handleDatePickerFocus = e => {
-    console.log(e);
-  };
 
   shouldComponentUpdate(nextProps): boolean {
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
@@ -192,9 +184,9 @@ export class ActivityBuilderComponentClass extends React.Component<
     });
   };
 
-  handleChangeDate = e => {
+  handleChangeDate = date => {
     this.setState({
-      date: e.target.value,
+      date,
     });
   };
 
@@ -206,7 +198,7 @@ export class ActivityBuilderComponentClass extends React.Component<
       did: cuid(),
     };
 
-    const activity: SerializedActivity = {
+    const activity: Activity = {
       did: cuid(),
       activityType,
       type: DodayType.Activity,
@@ -217,10 +209,11 @@ export class ActivityBuilderComponentClass extends React.Component<
         this.state.selectedTags.map(tag => tag.value),
       public: this.state.isPublic,
       ownerDID,
+      created: new Date(),
     };
 
-    const progress: SerializedActivityProgress = {
-      date: new Date(this.state.date).getTime(),
+    const progress: ActivityProgress = {
+      date: this.state.date,
       dateIsLocked: this.state.dateIsLocked,
       completed: false,
       ownerDID,
@@ -228,7 +221,7 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     if (this.state.isPublic) {
       /** Just create Activity(Doday) node */
-      this.props.createDodayActionCreator(activity, resource);
+      this.props.createDodayActionCreator({ doday: activity, resource });
     } else {
       /** Create Activity(Doday) node and Progress node */
       this.props.createAndTakeDodayActionCreator({
@@ -323,47 +316,22 @@ export class ActivityBuilderComponentClass extends React.Component<
           paddingBelow={Space.Small}
           className={classes.dateContainer}
         >
-          <TextField
-            id="date"
+          <CustomDatePicker
             disabled={this.state.isPublic}
-            label={t('activities:builder.date')}
-            type="date"
-            value={this.state.date}
+            lightBorder
+            withLocker
+            isLocked={this.state.dateIsLocked}
+            icon={<ScheduleIcon />}
+            minDate={new Date()}
+            selected={this.state.date}
             onChange={this.handleChangeDate}
-            inputRef={this.dateRef}
-            InputProps={{
-              classes: {
-                input: classes.input,
-              },
-            }}
-            InputLabelProps={{
-              FormLabelClasses: {
-                root: classes.inputLabel,
-              },
-            }}
-          />
-          <Tooltip
-            title={
-              <Typography variant="body1">
-                {t('activities:builder.lockDateTooltip')}
-              </Typography>
+            tooltip={t('activities:builder.lockDateTooltip')}
+            onLocked={() =>
+              this.setState({
+                dateIsLocked: !this.state.dateIsLocked,
+              })
             }
-            placement="top"
-            className={classes.tooltip}
-          >
-            <IconButton
-              disabled={this.state.isPublic}
-              onClick={() =>
-                this.setState({ dateIsLocked: !this.state.dateIsLocked })
-              }
-            >
-              {this.state.dateIsLocked ? (
-                <LockIcon color="primary" />
-              ) : (
-                <LockOpenIcon />
-              )}
-            </IconButton>
-          </Tooltip>
+          />
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
           <LayoutBlock
@@ -454,7 +422,7 @@ export const activityIconByType = (
           }
           placement={tooltipPlacement}
         >
-          <DoneIcon />
+          <Icons.ActivityDoType key={cuid()} />
         </Tooltip>
       );
     case 'read':

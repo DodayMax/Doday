@@ -20,16 +20,21 @@ export default (
         ...state,
         selectedDoday: action.payload,
       };
-    case actions.ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS:
+    case actions.ActionConstants.UPDATE_SELECTED_DODAY:
       /** if there is updates in action = update selected doday progress */
       if (action.payload) {
         return {
           ...state,
           selectedDoday: {
             ...state.selectedDoday,
+            ...action.payload.doday,
             progress: {
               ...state.selectedDoday.progress,
-              ...action.payload,
+              ...action.payload.progress,
+            },
+            resource: {
+              ...state.selectedDoday.resource,
+              ...action.payload.resource,
             },
           },
         };
@@ -40,19 +45,12 @@ export default (
         ...state,
         selectedDoday: omitted,
       };
-    case actions.ActionConstants.CLEAR_SELECTED_DODAY:
-      return {
-        ...state,
-        selectedDoday: undefined,
-      };
     case actions.ActionConstants.SET_DIRTY_STATUS:
       return {
         ...state,
         dirty: action.payload,
       };
     case actions.ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY:
-      console.log(state.updates);
-      console.log(action.payload);
       return {
         ...state,
         updates: {
@@ -65,6 +63,11 @@ export default (
         ...state,
         dirty: undefined,
         updates: undefined,
+      };
+    case actions.ActionConstants.CLEAR_SELECTED_DODAY:
+      return {
+        ...state,
+        selectedDoday: undefined,
       };
     default:
       return state;

@@ -5,16 +5,15 @@ import {
   FetchSelectedDodayAction,
   FetchSelectedProgressAction,
   SetSelectedDodayAction,
-  UpdateSelectedDodayProgressAction,
   ClearSelectedDodayAction,
+  UpdateSelectedDodayAction,
   SetDirtyStatusAction,
   RequestForSetUpdatesAction,
   SetUpdatesForSelectedDodayAction,
   ClearDodayDetailsDirtyStuffAction,
 } from '../actions';
 import { activity } from '@root/lib/common-interfaces/fake-data';
-import { ProgressLike, SerializedProgressLike } from '@root/tools/types';
-import { deserializeActivityProgress } from '@root/tools/activity/entities/activity';
+import { ProgressLike } from '@root/tools/types';
 
 describe('Doday details action creators', () => {
   it('Set loading state for doday details peace of state', () => {
@@ -60,17 +59,19 @@ describe('Doday details action creators', () => {
     );
   });
 
-  it('Update selected doday progress in store', () => {
-    const updates: Partial<ProgressLike> = {
-      completed: true,
+  it('Update selected doday in store', () => {
+    const updates = {
+      progress: {
+        completed: true,
+      },
     };
-    const expectedActionObject: UpdateSelectedDodayProgressAction = {
-      type: ActionConstants.UPDATE_SELECTED_DODAY_PROGRESS,
+    const expectedActionObject: UpdateSelectedDodayAction = {
+      type: ActionConstants.UPDATE_SELECTED_DODAY,
       payload: updates,
     };
-    expect(
-      actionCreators.updateSelectedDodayProgressActionCreator(updates)
-    ).toEqual(expectedActionObject);
+    expect(actionCreators.updateSelectedDodayActionCreator(updates)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('Clear selected doday from store', () => {
@@ -105,22 +106,18 @@ describe('Doday details action creators', () => {
   });
 
   it('Request updates for selected doday', () => {
-    const updates: Partial<SerializedProgressLike> = {
+    const updates: Partial<ProgressLike> = {
       completed: false,
     };
     const payload = {
       progress: updates,
-      deserialize: deserializeActivityProgress,
     };
     const expectedActionObject: RequestForSetUpdatesAction = {
       type: ActionConstants.REQUEST_FOR_SET_UPDATES,
       payload,
     };
     expect(
-      actionCreators.requestForSetUpdatesActionCreator(
-        payload.progress,
-        payload.deserialize
-      )
+      actionCreators.requestForSetUpdatesActionCreator(payload.progress)
     ).toEqual(expectedActionObject);
   });
 

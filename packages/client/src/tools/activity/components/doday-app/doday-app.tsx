@@ -17,17 +17,12 @@ import {
 } from '@root/ducks/doday-app/actions';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { config } from '../../config';
-import { capitalize, filterObject } from '@root/lib/utils';
-import { SerializedResource } from '@root/lib/models/entities/resource';
+import { filterObject } from '@root/lib/utils';
+import { Resource } from '@root/lib/models/entities/resource';
 import { UpdateDodayAction } from '@root/ducks/api/dodays-api-actions/actions';
 import { FetchActivitiesAction } from '../../duck/actions';
 import { Activity } from '../../entities/activity';
-import {
-  DodayType,
-  SerializedDodayLike,
-  SerializedProgressLike,
-  DodayLike,
-} from '@root/tools/types';
+import { DodayType, DodayLike, ProgressLike } from '@root/tools/types';
 import { WithTranslation, withTranslation } from 'react-i18next';
 
 interface ActivityDodayAppProps {
@@ -42,15 +37,15 @@ interface PropsFromConnect {
   fetchActivitiesActionCreator: (
     params: DodaysQueryParams
   ) => FetchActivitiesAction;
-  updateDodayActionCreator(
-    did: string,
-    type: DodayType,
+  updateDodayActionCreator(payload: {
+    did: string;
+    type: DodayType;
     updates: {
-      doday?: Partial<SerializedDodayLike>;
-      progress?: Partial<SerializedProgressLike>;
-      resource?: Partial<SerializedResource>;
-    }
-  ): UpdateDodayAction;
+      doday?: Partial<DodayLike>;
+      progress?: Partial<ProgressLike>;
+      resource?: Partial<Resource>;
+    };
+  }): UpdateDodayAction;
   changeDodayAppRouteActionCreator: (
     route: string
   ) => ChangeDodayAppRouteAction;
@@ -156,8 +151,12 @@ export class ActivityDodayAppComponentClass extends React.Component<
         key={cuid()}
         onClick={this.handleDodayCellClick}
         onComplete={() => {
-          this.props.updateDodayActionCreator(item.did, item.type, {
-            progress: { completed: !item.progress.completed },
+          this.props.updateDodayActionCreator({
+            did: item.did,
+            type: item.type,
+            updates: {
+              progress: { completed: !item.progress.completed },
+            },
           });
         }}
       />

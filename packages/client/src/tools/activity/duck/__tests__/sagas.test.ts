@@ -16,7 +16,7 @@ import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/acti
 import {
   activity,
   doday,
-  parsedResource,
+  deserializedResource,
 } from '@root/lib/common-interfaces/fake-data';
 import { Activity } from '../../entities/activity';
 import { detectActivityType } from '@root/lib/utils';
@@ -58,7 +58,7 @@ describe('Test Activities sagas', () => {
 
   it('parseUrlMetadataActionSaga', () => {
     const url = 'https://...';
-    const metadata = parsedResource;
+    const metadata = deserializedResource;
     const activityType = detectActivityType(metadata);
     const action: ParseUrlMetadataAction = {
       type: ActionConstants.PARSE_URL,

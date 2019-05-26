@@ -1,10 +1,6 @@
 import { AnyAction } from 'redux';
 import { Resource } from '@root/lib/models/entities/resource';
-import {
-  SerializedDodayLike,
-  SerializedProgressLike,
-  DodayType,
-} from '@root/tools/types';
+import { DodayLike, ProgressLike, DodayType } from '@root/tools/types';
 
 export enum ActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
@@ -21,16 +17,13 @@ export enum ActionConstants {
  * @export
  * @returns {CreateDodayAction}
  */
-export function createDodayActionCreator(
-  doday: SerializedDodayLike,
-  resource: Resource
-): CreateDodayAction {
+export function createDodayActionCreator(payload: {
+  doday: DodayLike;
+  resource: Resource;
+}): CreateDodayAction {
   return {
     type: ActionConstants.CREATE_DODAY,
-    payload: {
-      doday,
-      resource,
-    },
+    payload,
   };
 }
 
@@ -42,8 +35,8 @@ export function createDodayActionCreator(
  * @returns {CreateAndTakeDodayAction}
  */
 export function createAndTakeDodayActionCreator(payload: {
-  doday: SerializedDodayLike;
-  progress: SerializedProgressLike;
+  doday: DodayLike;
+  progress: ProgressLike;
   resource?: Resource;
 }): CreateAndTakeDodayAction {
   return {
@@ -62,7 +55,7 @@ export function createAndTakeDodayActionCreator(payload: {
 export function takeDodayActionCreator(payload: {
   did: string;
   type: DodayType;
-  progress: Partial<SerializedProgressLike>;
+  progress: Partial<ProgressLike>;
 }): TakeDodayAction {
   return {
     type: ActionConstants.TAKE_DODAY,
@@ -76,22 +69,18 @@ export function takeDodayActionCreator(payload: {
  * @export
  * @returns {UpdateDodayAction}
  */
-export function updateDodayActionCreator(
-  did: string,
-  type: DodayType,
+export function updateDodayActionCreator(payload: {
+  did: string;
+  type: DodayType;
   updates: {
-    doday?: Partial<SerializedDodayLike>;
-    progress?: Partial<SerializedProgressLike>;
+    doday?: Partial<DodayLike>;
+    progress?: Partial<ProgressLike>;
     resource?: Partial<Resource>;
-  }
-): UpdateDodayAction {
+  };
+}): UpdateDodayAction {
   return {
     type: ActionConstants.UPDATE_DODAY,
-    payload: {
-      did,
-      type,
-      updates,
-    },
+    payload,
   };
 }
 
@@ -139,8 +128,8 @@ export const actionCreators = {
 export interface CreateDodayAction extends AnyAction {
   type: ActionConstants.CREATE_DODAY;
   payload: {
-    doday: SerializedDodayLike;
-    resource: Resource;
+    doday: DodayLike;
+    resource?: Resource;
   };
 }
 
@@ -149,15 +138,15 @@ export interface TakeDodayAction extends AnyAction {
   payload: {
     did: string;
     type: DodayType;
-    progress: Partial<SerializedProgressLike>;
+    progress: Partial<ProgressLike>;
   };
 }
 
 export interface CreateAndTakeDodayAction extends AnyAction {
   type: ActionConstants.CREATE_AND_TAKE_DODAY;
   payload: {
-    doday: SerializedDodayLike;
-    progress: SerializedProgressLike;
+    doday: DodayLike;
+    progress: ProgressLike;
     resource?: Resource;
   };
 }
@@ -168,8 +157,8 @@ export interface UpdateDodayAction extends AnyAction {
     did: string;
     type: DodayType;
     updates: {
-      doday?: Partial<SerializedDodayLike>;
-      progress?: Partial<SerializedProgressLike>;
+      doday?: Partial<DodayLike>;
+      progress?: Partial<ProgressLike>;
       resource?: Partial<Resource>;
     };
   };

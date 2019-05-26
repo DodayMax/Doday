@@ -23,21 +23,23 @@ describe('DodayDetails reducers', () => {
 
   it('update selected doday in store', () => {
     const date = new Date('2019-02-16');
-    const updates: Partial<ProgressLike> = {
-      completed: true,
-      date,
+    const updates = {
+      progress: {
+        completed: true,
+        date,
+      },
     };
     const newState = reducer(
       {
         loading: false,
         selectedDoday: activity,
       },
-      actionCreators.updateSelectedDodayProgressActionCreator(updates)
+      actionCreators.updateSelectedDodayActionCreator(updates)
     );
     expect(newState.selectedDoday.progress.completed).toEqual(
-      updates.completed
+      updates.progress.completed
     );
-    expect(newState.selectedDoday.progress.date).toEqual(updates.date);
+    expect(newState.selectedDoday.progress.date).toEqual(updates.progress.date);
   });
 
   it('clear progress when undefined is passed for updates in store', () => {
@@ -46,7 +48,7 @@ describe('DodayDetails reducers', () => {
         loading: false,
         selectedDoday: activity,
       },
-      actionCreators.updateSelectedDodayProgressActionCreator()
+      actionCreators.updateSelectedDodayActionCreator()
     );
     expect(newState.selectedDoday.progress).toEqual(undefined);
   });
@@ -60,41 +62,5 @@ describe('DodayDetails reducers', () => {
       actionCreators.clearSelectedDodayActionCreator()
     );
     expect(newState.selectedDoday).toEqual(undefined);
-  });
-
-  it('set dirty status when some there are some updates', () => {
-    const status = true;
-    const newState = reducer(
-      undefined,
-      actionCreators.setDirtyStatusActionCreator(status)
-    );
-    expect(newState.dirty).toEqual(true);
-  });
-
-  it('set updates to store after updates request', () => {
-    const updates: Partial<ProgressLike> = {
-      completed: true,
-    };
-    const newState = reducer(
-      undefined,
-      actionCreators.setUpdatesForSelectedDodayActionCreator(updates)
-    );
-    expect(newState.updates).toEqual(updates);
-  });
-
-  it('clear updates and dirty flag', () => {
-    const updates: Partial<ProgressLike> = {
-      completed: true,
-    };
-    const newState = reducer(
-      {
-        loading: false,
-        selectedDoday: activity,
-        updates,
-      },
-      actionCreators.clearDodayDetailsDirtyStuffActionCreator()
-    );
-    expect(newState.updates).toEqual(undefined);
-    expect(newState.dirty).toEqual(undefined);
   });
 });

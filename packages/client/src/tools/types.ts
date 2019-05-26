@@ -76,10 +76,16 @@ export type ToolConfig = {
   entities: {
     type: DodayType;
     name: string;
-    serialize: (doday: DodayLike) => SerializedDodayLike;
-    deserialize: (doday: SerializedDodayLike) => DodayLike;
-    serializeProgress: (progress: ProgressLike) => SerializedProgressLike;
-    deserializeProgress: (progress: SerializedProgressLike) => ProgressLike;
+    serialize: (doday?: Partial<DodayLike>) => Partial<SerializedDodayLike>;
+    deserialize: (
+      doday?: Partial<SerializedDodayLike>
+    ) => Partial<DodayLike> | undefined;
+    serializeProgress: (
+      progress?: Partial<ProgressLike>
+    ) => Partial<SerializedProgressLike>;
+    deserializeProgress: (
+      progress?: Partial<SerializedProgressLike>
+    ) => Partial<ProgressLike> | undefined;
     isActivity: (doday: DodayLike) => doday is DodayLike;
   }[];
   price: number;

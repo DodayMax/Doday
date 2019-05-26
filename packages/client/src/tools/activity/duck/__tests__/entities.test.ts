@@ -20,16 +20,28 @@ describe('Test activities serialize helper functions', () => {
     expect(serializeActivity(deserializedActivity)).toEqual(serializedActivity);
   });
 
+  it('serialize activity with undefined', () => {
+    expect(serializeActivity(undefined)).toEqual(undefined);
+  });
+
   it('deserialize activity', () => {
     expect(deserializeActivity(serializedActivity)).toEqual(
       deserializedActivity
     );
   });
 
+  it('deserialize activity with undefined', () => {
+    expect(deserializeActivity(undefined)).toEqual(undefined);
+  });
+
   it('serialize activity progress', () => {
     expect(serializeActivityProgress(deserialzedActivityProgress)).toEqual(
       serializedActivityProgress
     );
+  });
+
+  it('serialize activity progress with undefined', () => {
+    expect(serializeActivityProgress(undefined)).toEqual(undefined);
   });
 
   it('serialize partial activity progress', () => {
@@ -48,6 +60,10 @@ describe('Test activities serialize helper functions', () => {
     expect(deserializeActivityProgress(serializedActivityProgress)).toEqual(
       deserialzedActivityProgress
     );
+  });
+
+  it('deserialize activity progress with undefined', () => {
+    expect(deserializeActivityProgress(undefined)).toEqual(undefined);
   });
 
   it('deserialize activity partial progress', () => {

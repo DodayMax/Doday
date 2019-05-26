@@ -1,12 +1,27 @@
 import * as React from 'react';
 import DatePicker, { ReactDatePickerProps } from 'react-datepicker';
 import * as moment from 'moment';
-import { Button } from '../button';
-import { ButtonGroup } from '../../_molecules/button-group';
-import { Icons } from '@shared';
-import { DodayColor } from '@root/lib/common-interfaces';
+import {
+  Button,
+  Tooltip,
+  Typography,
+  IconButton,
+  Theme,
+  createStyles,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core';
+import LockIcon from '@material-ui/icons/Lock';
+import LockOpenIcon from '@material-ui/icons/LockOpen';
+import { LayoutBlock } from '../layout-block';
+import { Space } from '@root/lib/common-interfaces';
 
-const css = require('./custom-datepicker.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    dateButtonPadding: {
+      padding: '8px 16px',
+    },
+  });
 
 interface DatePickerProps {
   lightBorder?: boolean;
@@ -14,33 +29,43 @@ interface DatePickerProps {
   icon?: React.ReactElement<any>;
   onClick?: () => void;
   withLocker?: boolean;
+  tooltip?: string;
   isLocked?: boolean;
   onLocked?: () => void;
 }
 
-export const CustomDatePicker = ({
-  lightBorder,
-  icon,
-  onClick,
-  borderless,
-  withLocker,
-  isLocked,
-  onLocked,
-  disabled,
-  ...props
-}: DatePickerProps & ReactDatePickerProps) => {
-  return (
-    <div>
-      <ButtonGroup>
+export const CustomDatePicker = withStyles(css)(
+  ({
+    lightBorder,
+    icon,
+    onClick,
+    borderless,
+    withLocker,
+    tooltip,
+    isLocked,
+    onLocked,
+    disabled,
+    classes,
+    ...props
+  }: DatePickerProps & ReactDatePickerProps & WithStyles) => {
+    const renderLockIcon = () => (
+      <IconButton disabled={disabled} onClick={onLocked}>
+        {isLocked ? <LockIcon color="primary" /> : <LockOpenIcon />}
+      </IconButton>
+    );
+
+    return (
+      <LayoutBlock valign="vflexCenter" insideElementsMargin>
         <DatePicker
           customInput={
             <Button
-              icon={icon}
-              lightBorder={lightBorder}
-              borderless={borderless}
+              variant="outlined"
+              size="large"
               onClick={onClick}
-              disabled={isLocked}
+              disabled={disabled}
+              className={classes.dateButtonPadding}
             >
+              <LayoutBlock spaceRight={Space.Small}>{icon}</LayoutBlock>
               {moment(props.selected).format('ll')}
             </Button>
           }
@@ -50,21 +75,18 @@ export const CustomDatePicker = ({
           {...props}
         />
         {withLocker ? (
-          <Button
-            onClick={onLocked}
-            active={isLocked}
-            activeColor={DodayColor.gray4}
-            disabled={disabled}
-            lightBorder
-          >
-            {isLocked ? (
-              <Icons.Locked width={24} height={24} />
-            ) : (
-              <Icons.Unlocked width={24} height={24} />
-            )}
-          </Button>
+          tooltip ? (
+            <Tooltip
+              title={<Typography variant="body1">{tooltip}</Typography>}
+              placement="top"
+            >
+              {renderLockIcon()}
+            </Tooltip>
+          ) : (
+            renderLockIcon()
+          )
         ) : null}
-      </ButtonGroup>
-    </div>
-  );
-};
+      </LayoutBlock>
+    );
+  }
+);

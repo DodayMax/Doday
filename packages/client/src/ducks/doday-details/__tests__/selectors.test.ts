@@ -1,4 +1,4 @@
-import { updatesSelector, selectedDoday } from '../selectors';
+import { selectedDoday, updatesSelector } from '../selectors';
 import { rootState } from '@root/lib/common-interfaces/fake-data';
 
 describe('DodayDetails selectors', () => {

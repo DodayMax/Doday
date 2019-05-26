@@ -15,10 +15,9 @@ import {
   fetchSelectedProgressActionSaga,
   setUpdatesAndDirtyStatusSaga,
 } from '../sagas';
-import { SerializedProgressLike } from '@root/tools/types';
-import { updatesSelector, selectedDoday } from '../selectors';
+import { ProgressLike } from '@root/tools/types';
 import { isDirty } from '@root/lib/utils';
-import { deserializeActivityProgress } from '@root/tools/activity/entities/activity';
+import { updatesSelector, selectedDoday } from '../selectors';
 
 describe("Test DodayDetails's sagas", () => {
   it('fetchSelectedDodayActionSaga', () => {
@@ -52,30 +51,23 @@ describe("Test DodayDetails's sagas", () => {
   });
 
   it('setUpdatesAndDirtyStatusSaga', () => {
-    const updates: Partial<SerializedProgressLike> = {
+    const updates: Partial<ProgressLike> = {
       completed: false,
     };
     const action: RequestForSetUpdatesAction = {
       type: ActionConstants.REQUEST_FOR_SET_UPDATES,
       payload: {
         progress: updates,
-        deserialize: deserializeActivityProgress,
       },
     };
     const gen = setUpdatesAndDirtyStatusSaga(action);
-    const deserialized = action.payload.deserialize(action.payload.progress);
-    const dirty = isDirty(activity, deserialized);
+    const dirty = isDirty(activity, action.payload.progress);
     expect(gen.next().value).toEqual(
-      call(action.payload.deserialize, action.payload.progress)
-    );
-    expect(gen.next(deserialized).value).toEqual(
-      put(setUpdatesForSelectedDodayActionCreator(deserialized))
+      put(setUpdatesForSelectedDodayActionCreator(action.payload.progress))
     );
     expect(gen.next().value).toEqual(select(updatesSelector));
-    expect(gen.next(deserialized).value).toEqual(select(selectedDoday));
-    expect(gen.next(activity).value).toEqual(
-      call(isDirty, activity, deserialized)
-    );
+    expect(gen.next(updates).value).toEqual(select(selectedDoday));
+    expect(gen.next(activity).value).toEqual(call(isDirty, activity, updates));
     expect(gen.next(dirty).value).toEqual(
       put(setDirtyStatusActionCreator(dirty))
     );

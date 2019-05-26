@@ -11,25 +11,33 @@ import {
 import { api } from '@services';
 import {
   setDodayDetailsLoadingStateActionCreator,
-  updateSelectedDodayProgressActionCreator,
+  updateSelectedDodayActionCreator,
   clearDodayDetailsDirtyStuffActionCreator,
 } from '@root/ducks/doday-details/actions';
 import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { setBuilderSuccessFlagActionCreator } from '@root/ducks/builder/actions';
 import { activeTools } from '@root/ducks/auth/selectors';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
-import { ToolBeacon } from '@root/tools/types';
+import {
+  ToolBeacon,
+  SerializedDodayLike,
+  SerializedProgressLike,
+} from '@root/tools/types';
+import { Resource } from '@root/lib/models/entities/resource';
 
 /**
  * Create Doday node and relations to Hero
  *
  * @param {CreateDodayAction} action
  */
-function* createDodayActionSaga(action: CreateDodayAction) {
+export function* createDodayActionSaga(action: CreateDodayAction) {
   yield put(setDodayAppLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.createDodayMutation, action.payload);
   const tools = yield select(activeTools);
   const sideEffects = [];
+  let serialized: {
+    doday: SerializedDodayLike;
+    resource: Resource;
+  };
   /**
    * Collect all sideeffects from active tools
    * related to this action
@@ -39,16 +47,25 @@ function* createDodayActionSaga(action: CreateDodayAction) {
       entity => entity.type === action.payload.doday.type
     );
     if (entity) {
+      /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
       sideEffects.push(
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-            action.payload
+            {
+              doday: action.payload.doday,
+              resource: action.payload.resource,
+            }
           )
         )
       );
+      serialized = {
+        doday: entity.serialize(action.payload.doday) as SerializedDodayLike,
+        resource: action.payload.resource,
+      };
     }
   });
   yield all(sideEffects);
+  yield call(api.dodays.mutations.createDodayMutation, serialized);
   yield put(setBuilderSuccessFlagActionCreator(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
@@ -58,11 +75,17 @@ function* createDodayActionSaga(action: CreateDodayAction) {
  *
  * @param {CreateAndTakeDodayAction} action
  */
-function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
+export function* createAndTakeDodayActionSaga(
+  action: CreateAndTakeDodayAction
+) {
   yield put(setDodayAppLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.createAndTakeDodayMutation, action.payload);
   const tools = yield select(activeTools);
   const sideEffects = [];
+  let serialized: {
+    doday: SerializedDodayLike;
+    progress: SerializedProgressLike;
+    resource: Resource;
+  };
   /**
    * Collect all sideeffects from active tools
    * related to this action
@@ -73,15 +96,28 @@ function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
     );
     if (entity) {
       sideEffects.push(
+        /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-            action.payload
+            {
+              doday: action.payload.doday,
+              progress: action.payload.progress,
+              resource: action.payload.resource,
+            }
           )
         )
       );
+      serialized = {
+        doday: entity.serialize(action.payload.doday) as SerializedDodayLike,
+        progress: entity.serializeProgress(
+          action.payload.progress
+        ) as SerializedProgressLike,
+        resource: action.payload.resource,
+      };
     }
   });
   yield all(sideEffects);
+  yield call(api.dodays.mutations.createAndTakeDodayMutation, serialized);
   yield put(setBuilderSuccessFlagActionCreator(true));
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
@@ -91,15 +127,12 @@ function* createAndTakeDodayActionSaga(action: CreateAndTakeDodayAction) {
  *
  * @param {TakeDodayAction} action
  */
-function* takeDodayActionSaga(action: TakeDodayAction) {
+export function* takeDodayActionSaga(action: TakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.takeDodayMutation, {
-    did: action.payload.did,
-    progress: action.payload.progress,
-  });
   const tools = yield select(activeTools);
   const selected = yield select(selectedDoday);
   const sideEffects = [];
+  let serialized: SerializedProgressLike;
   /**
    * Collect all sideeffects from active tools
    * related to this action
@@ -110,6 +143,7 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
     );
     if (entity) {
       sideEffects.push(
+        /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
             {
@@ -122,15 +156,20 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
       if (selected && selected.did === action.payload.did) {
         sideEffects.push(
           put(
-            updateSelectedDodayProgressActionCreator(
-              entity.deserializeProgress(action.payload.progress)
-            )
+            updateSelectedDodayActionCreator({
+              progress: action.payload.progress,
+            })
           )
         );
       }
+      serialized = entity.serializeProgress(action.payload.progress);
     }
   });
   yield all(sideEffects);
+  yield call(api.dodays.mutations.takeDodayMutation, {
+    did: action.payload.did,
+    progress: serialized,
+  });
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -139,9 +178,8 @@ function* takeDodayActionSaga(action: TakeDodayAction) {
  *
  * @param {DeleteDodayAction} action
  */
-function* deleteDodayActionSaga(action: DeleteDodayAction) {
+export function* deleteDodayActionSaga(action: DeleteDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.deleteDodayMutation, action.payload.did);
   const tools = yield select(activeTools);
   const sideEffects = [];
   /**
@@ -163,6 +201,7 @@ function* deleteDodayActionSaga(action: DeleteDodayAction) {
     }
   });
   yield all(sideEffects);
+  yield call(api.dodays.mutations.deleteDodayMutation, action.payload.did);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -171,9 +210,8 @@ function* deleteDodayActionSaga(action: DeleteDodayAction) {
  *
  * @param {UnTakeDodayAction} action
  */
-function* unTakeDodayActionSaga(action: UntakeDodayAction) {
+export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
   const tools = yield select(activeTools);
   const selected = yield select(selectedDoday);
   const sideEffects = [];
@@ -196,9 +234,10 @@ function* unTakeDodayActionSaga(action: UntakeDodayAction) {
     }
   });
   if (selected && selected.did === action.payload.did) {
-    yield put(updateSelectedDodayProgressActionCreator(undefined));
+    yield put(updateSelectedDodayActionCreator(undefined));
   }
   yield all(sideEffects);
+  yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -207,15 +246,16 @@ function* unTakeDodayActionSaga(action: UntakeDodayAction) {
  *
  * @param {UpdateDodayAction} action
  */
-function* updateDodayActionSaga(action: UpdateDodayAction) {
+export function* updateDodayActionSaga(action: UpdateDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
-  yield call(api.dodays.mutations.updateDodayMutation, {
-    did: action.payload.did,
-    updates: action.payload.updates,
-  });
   const tools = yield select(activeTools);
   const selected = yield select(selectedDoday);
   const sideEffects = [];
+  let serialized: {
+    doday: Partial<SerializedDodayLike>;
+    progress: Partial<SerializedProgressLike>;
+    resource: Partial<Resource>;
+  };
   /**
    * Collect all sideeffects from active tools
    * related to this action
@@ -226,26 +266,40 @@ function* updateDodayActionSaga(action: UpdateDodayAction) {
     );
     if (entity) {
       sideEffects.push(
+        /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
             {
               did: action.payload.did,
-              updates: action.payload.updates,
+              updates: {
+                doday: action.payload.updates.doday,
+                progress: action.payload.updates.progress,
+              },
             }
           )
         )
       );
       if (selected && selected.did === action.payload.did) {
-        const deserializedProgress = entity.deserializeProgress(
-          action.payload.updates.progress
-        );
         sideEffects.push(
-          put(updateSelectedDodayProgressActionCreator(deserializedProgress))
+          put(
+            updateSelectedDodayActionCreator({
+              progress: action.payload.updates.progress,
+            })
+          )
         );
       }
+      serialized = {
+        doday: entity.serialize(action.payload.updates.doday),
+        progress: entity.serializeProgress(action.payload.updates.progress),
+        resource: action.payload.updates.resource,
+      };
     }
   });
   yield all(sideEffects);
+  yield call(api.dodays.mutations.updateDodayMutation, {
+    did: action.payload.did,
+    updates: serialized,
+  });
   yield put(clearDodayDetailsDirtyStuffActionCreator());
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }

@@ -51,7 +51,8 @@ export interface SerializedActivityProgress extends SerializedProgressBase {}
 
 export interface APIresponseActivityProgress extends APIResponseProgressBase {}
 
-export const serializeActivity = (activity: Activity): SerializedActivity => {
+export const serializeActivity = (activity?: Activity): SerializedActivity => {
+  if (!activity) return undefined;
   const { owner, progress, ...omitted } = activity;
   const serialized: SerializedActivity = {
     ...omitted,
@@ -61,8 +62,11 @@ export const serializeActivity = (activity: Activity): SerializedActivity => {
   return serialized;
 };
 
-export const deserializeActivity = (activity: SerializedActivity): Activity => {
-  const deserialized: Activity = {
+export const deserializeActivity = (
+  activity?: Partial<SerializedActivity>
+): Partial<Activity> => {
+  if (!activity) return undefined;
+  const deserialized: Partial<Activity> = {
     ...activity,
     created: new Date(activity.created),
   };
@@ -71,8 +75,9 @@ export const deserializeActivity = (activity: SerializedActivity): Activity => {
 };
 
 export const serializeActivityProgress = (
-  progress: ActivityProgress
+  progress?: ActivityProgress
 ): SerializedActivityProgress => {
+  if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = progress.date.getTime();
   if (progress.tookAt) convertedDates.tookAt = progress.tookAt.getTime();
@@ -86,8 +91,9 @@ export const serializeActivityProgress = (
 };
 
 export const deserializeActivityProgress = (
-  progress: Partial<SerializedActivityProgress>
+  progress?: Partial<SerializedActivityProgress>
 ): ActivityProgress => {
+  if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = new Date(progress.date);
   if (progress.tookAt) convertedDates.tookAt = new Date(progress.tookAt);

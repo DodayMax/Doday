@@ -57,8 +57,8 @@ export const deserialzedActivityProgress: ActivityProgress = {
   completedAt: new Date('2019-02-15'),
 };
 
-export const partialProgress: Partial<SerializedActivityProgress> = {
-  date: new Date('2019-02-15').getTime(),
+export const partialProgress: Partial<ActivityProgress> = {
+  date: new Date('2019-02-15'),
   dateIsLocked: true,
 };
 
@@ -101,7 +101,7 @@ export const progress: ProgressLike = {
   ownerDID: 'test hero did',
 };
 
-export const parsedResource: Resource = {
+export const deserializedResource: Resource = {
   did: 'did',
   description: 'string',
   icon: 'string',
@@ -113,7 +113,7 @@ export const parsedResource: Resource = {
   url: 'string',
 };
 
-export const serializedResource: SerializedResource = parsedResource;
+export const serializedResource: SerializedResource = deserializedResource;
 
 export const rootState: RootState = {
   auth: {

@@ -3,16 +3,16 @@ import * as _ from 'lodash';
 import {
   ActionConstants,
   FetchSelectedDodayAction,
-  RequestForSetUpdatesAction,
   setSelectedDodayActionCreator,
   FetchSelectedProgressAction,
+  RequestForSetUpdatesAction,
   setUpdatesForSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
 } from './actions';
 import { api } from '@root/services';
-import { updatesSelector, selectedDoday } from './selectors';
+import { ProgressLike, DodayLike } from '@root/tools/types';
 import { isDirty } from '@root/lib/utils';
-import { DodayLike, ProgressLike } from '@root/tools/types';
+import { selectedDoday, updatesSelector } from './selectors';
 
 /**
  * Fetch selected published Doday node saga
@@ -50,11 +50,7 @@ export function* fetchSelectedProgressActionSaga(
 export function* setUpdatesAndDirtyStatusSaga(
   action: RequestForSetUpdatesAction
 ) {
-  const deserialized = yield call(
-    action.payload.deserialize,
-    action.payload.progress
-  );
-  yield put(setUpdatesForSelectedDodayActionCreator(deserialized));
+  yield put(setUpdatesForSelectedDodayActionCreator(action.payload.progress));
   const updates: Partial<ProgressLike> = yield select(updatesSelector);
   const selected: DodayLike = yield select(selectedDoday);
   const dirty = yield call(isDirty, selected, updates);
