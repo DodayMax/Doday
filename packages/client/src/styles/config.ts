@@ -52,12 +52,19 @@ export const config = {
     titleL: 2.8,
   },
   spacing: {
+    /** 4 */
     spaceXXS: 4,
+    /** 8 */
     spaceXS: 8,
+    /** 16 */
     spaceS: 16,
+    /** 20 */
     spaceM: 20,
+    /** 32 */
     spaceL: 32,
+    /** 40 */
     spaceXL: 40,
+    /** 60 */
     spaceXXL: 60,
   },
   paddings: {

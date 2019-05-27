@@ -52,7 +52,7 @@ export class SwitcherComponent extends React.Component<
     const { currentIndex } = this.state;
 
     return (
-      <LayoutBlock valign="vflexCenter" insideElementsMargin>
+      <LayoutBlock valign="vflexCenter">
         <IconButton
           className={classes.iconButton}
           onClick={() => {

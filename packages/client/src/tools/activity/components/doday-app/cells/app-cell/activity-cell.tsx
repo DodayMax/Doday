@@ -1,87 +1,79 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import {
-  TypographySize,
-  DodayColor,
-  Space,
-  CellProps,
-} from '@lib/common-interfaces';
-import { Text, Icons } from '@shared';
-import { Marker } from '@root/components/shared/_atoms/marker';
+import { Space, CellProps } from '@lib/common-interfaces';
+import { Icons } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { durationToMinutes } from '@root/lib/utils';
+import { durationToMinutes, durationToLabel } from '@root/lib/utils';
 import { Activity } from '@root/tools/activity/entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import {
+  ListItem,
+  ListItemText,
+  Typography,
+  Theme,
+  createStyles,
+  withStyles,
+  WithStyles,
+} from '@material-ui/core';
+import { Progress } from '@root/components/shared/_atoms/progress/progress';
 
-const css = require('./activity-cell.module.scss');
+import { css } from './cell.styles';
 
 interface ActivityCellProps {}
 
-type Props = ActivityCellProps & CellProps & WithTranslation;
+type Props = ActivityCellProps & CellProps & WithTranslation & WithStyles;
 
-export const ActivityCell = withTranslation('activities')(
-  ({ doday, active = false, onClick, t }: Props) => {
-    const classNames = classnames({
-      [css.cell]: true,
-      [css.padded]: true,
-      [css.active]: active,
-    });
+export const ActivityCell = withStyles(css)(
+  withTranslation('activities')(
+    ({ doday, active = false, onClick, classes, t }: Props) => {
+      const activity = doday as Activity;
 
-    const activity = doday as Activity;
+      const cx = classnames(classes.listItemContainer, classes.padded);
 
-    return (
-      <li
-        className={classNames}
-        key={activity.did}
-        onClick={() => onClick && onClick(`/dodays/${activity.did}`, activity)}
-      >
-        <LayoutBlock spaceAbove={Space.XSmall} flex="1" direction="column">
-          <Text
-            spaceLeft={Space.Small}
-            wordwrap
-            size={TypographySize.m}
-            className={css.cellTitle}
-          >
-            {activity.name}
-          </Text>
+      return (
+        <ListItem
+          className={cx}
+          onClick={() =>
+            onClick && onClick(`/dodays/${activity.did}`, activity)
+          }
+        >
+          <ListItemText
+            primary={activity.name}
+            secondary="July 20, 2014"
+            className={classes.name}
+          />
+          <LayoutBlock absolute bottom="0" right="2.6rem">
+            <Typography className={classes.timeLabel} variant="body2">
+              {durationToLabel(activity.duration, {
+                hour: t('shell:time.h'),
+                minute: t('shell:time.m'),
+              })}
+            </Typography>
+          </LayoutBlock>
           <LayoutBlock
             align="flexEnd"
             spaceRight={Space.XSmall}
             valign="vflexCenter"
           >
-            <Text spaceRight={Space.XXSmall} size={TypographySize.s}>
-              {24}
-            </Text>
-            <Icons.Score width={16} height={16} />
+            <Typography variant="body1">{24}</Typography>
+            <Icons.Score width={16} height={16} color={'white'} />
+          </LayoutBlock>
+          <LayoutBlock absolute top="0" bottom="0" right="17px">
+            <Progress
+              vertical
+              progress={durationToMinutes(activity.duration)}
+              total={8 * 60}
+            />
           </LayoutBlock>
           <LayoutBlock
-            className={css.markersContainer}
-            spaceAbove={Space.XSmall}
-            paddingLeft={Space.XSmall}
-            paddingRight={Space.XSmall}
-            paddingAbove={Space.XXSmall}
-            paddingBelow={Space.XXSmall}
-            align="spaceBetween"
-          >
-            <Marker
-              bordered
-              rounded
-              color={DodayColor.gray4}
-              text={t(`activityType.${activity.activityType}`)}
-              size={TypographySize.s}
-            />
-            <Marker
-              bordered
-              rounded
-              color={DodayColor.blueLight}
-              text={String(
-                Math.floor(durationToMinutes(activity.duration) / 60)
-              )}
-              size={TypographySize.s}
-            />
-          </LayoutBlock>
-        </LayoutBlock>
-      </li>
-    );
-  }
+            absolute
+            top="0"
+            right="0"
+            bottom="0"
+            className={classes.scrollContainer}
+          />
+        </ListItem>
+      );
+    }
+  )
 );

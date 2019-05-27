@@ -1,65 +1,21 @@
 import * as React from 'react';
-import classnames from 'classnames';
-import {
-  TypographySize,
-  CellProps,
-  TypographyColor,
-} from '@lib/common-interfaces';
-import { Checkbox, Text } from '@shared';
-import { Marker } from '@root/components/shared/_atoms/marker';
+import { CellProps } from '@lib/common-interfaces';
+import { Checkbox } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { Activity } from '@root/tools/activity/entities/activity';
-import { activityIconByType } from '../../../builders/activity-builder';
 import { durationToLabel, durationToMinutes } from '@root/lib/utils';
 import { Progress } from '@root/components/shared/_atoms/progress/progress';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import {
   ListItem,
   ListItemText,
-  Divider,
   Typography,
-  createStyles,
-  Theme,
   withStyles,
   WithStyles,
   IconButton,
 } from '@material-ui/core';
 
-const vars = require('@styles/_config.scss');
-
-const styles = (theme: Theme) =>
-  createStyles({
-    listItemContainer: {
-      cursor: 'pointer',
-      padding: '6px',
-      '&:hover': {
-        background:
-          theme.palette.type === 'dark'
-            ? theme.palette.grey[800]
-            : theme.palette.grey[200],
-      },
-    },
-    name: {
-      paddingLeft: '6px',
-    },
-    timeLabel: {
-      color:
-        theme.palette.type === 'dark'
-          ? theme.palette.grey[700]
-          : theme.palette.grey[400],
-    },
-    scrollContainer: {
-      width: '17px',
-      flex: 1,
-      background:
-        theme.palette.type === 'dark'
-          ? theme.palette.grey[800]
-          : theme.palette.grey[100],
-    },
-    checkboxIconButton: {
-      padding: '6px',
-    },
-  });
+import { css } from './cell.styles';
 
 interface ActivityProgressCellProps {
   onComplete?: () => void;
@@ -71,7 +27,7 @@ type Props = ActivityProgressCellProps &
   WithStyles;
 
 export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
-  withStyles(styles)(
+  withStyles(css)(
     ({ doday, active = false, onClick, onComplete, classes, t }: Props) => {
       const activity = doday as Activity;
 

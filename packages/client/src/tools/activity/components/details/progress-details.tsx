@@ -22,6 +22,7 @@ import {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
   RequestForSetUpdatesAction,
+  ClearDodayDetailsDirtyStuffAction,
 } from '@root/ducks/doday-details/actions';
 import { Pageflow } from '@root/components/shared/_support/pageflow';
 import {
@@ -123,6 +124,7 @@ interface PropsFromConnect {
     type: DodayType;
   }): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
+  clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction;
 }
 
 @(withRouter as any)
@@ -135,6 +137,11 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     WithStyles,
   ActivityProgressDetailsState
 > {
+  componentWillUnmount() {
+    this.props.clearSelectedDodayActionCreator();
+    this.props.clearDodayDetailsDirtyStuffActionCreator();
+  }
+
   getYouTubeLink = (resource: Resource) => {
     if (resource && resource.provider === 'YouTube') {
       const youtubeID = youtubeIDFromURL(resource.url);
@@ -225,10 +232,6 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     return markers;
   };
 
-  onRequestClose = () => {
-    this.props.clearSelectedDodayActionCreator();
-  };
-
   render() {
     const { dirty, updates, selectedDoday, loading, classes, t } = this.props;
 
@@ -250,7 +253,6 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             withClose
             status={selectedDoday && this.status()}
             actions={selectedDoday && this.actions()}
-            onClose={this.onRequestClose}
           >
             {dirty && (
               <Button

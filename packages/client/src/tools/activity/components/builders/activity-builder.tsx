@@ -422,13 +422,33 @@ export const activityIconByType = (
           }
           placement={tooltipPlacement}
         >
-          <Icons.ActivityDoType key={cuid()} />
+          <Icons.ActivityDoType width={3} height={3} key={cuid()} />
         </Tooltip>
       );
     case 'read':
-      return <Icons.ActivityReadType key={cuid()} />;
+      return (
+        <Tooltip
+          key={cuid()}
+          title={
+            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+          }
+          placement={tooltipPlacement}
+        >
+          <Icons.ActivityReadType width={3} height={3} key={cuid()} />
+        </Tooltip>
+      );
     case 'watch':
-      return <Icons.ActivityWatchType key={cuid()} />;
+      return (
+        <Tooltip
+          key={cuid()}
+          title={
+            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+          }
+          placement={tooltipPlacement}
+        >
+          <Icons.ActivityWatchType width={3} height={3} key={cuid()} />
+        </Tooltip>
+      );
   }
 };
 

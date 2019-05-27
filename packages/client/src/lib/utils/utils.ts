@@ -127,7 +127,8 @@ export const isDirty = (
   updates: Partial<ProgressLike>
 ): boolean =>
   !isEmptyObject(updates) &&
-  (updates.dateIsLocked !== initialObject.progress.dateIsLocked ||
+  (updates.dateIsLocked !==
+    (initialObject.progress && initialObject.progress.dateIsLocked) ||
     updates.date != null);
 
 const standartColorsForGoalsChart = [

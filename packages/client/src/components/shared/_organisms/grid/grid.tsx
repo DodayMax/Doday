@@ -38,6 +38,7 @@ const css = (theme: Theme) =>
       flex: '0 0 auto',
     },
     listConainer: {
+      flex: 1,
       padding: '0',
       overflowY: 'scroll',
       boxSizing: 'border-box',
