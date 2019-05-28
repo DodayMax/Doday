@@ -92,7 +92,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
             bottom="0"
             className={cx}
           >
-            <Icons.Pin width={1.6} height={1.6} />
+            {doday.progress.pinned && <Icons.Pin width={1.6} height={1.6} />}
           </LayoutBlock>
         </ListItem>
       );

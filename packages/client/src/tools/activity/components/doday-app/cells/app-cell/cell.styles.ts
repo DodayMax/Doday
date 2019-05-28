@@ -18,7 +18,8 @@ export const css = (theme: Theme) =>
       padding: `${config.spacing.spaceS}px`,
     },
     pinned: {
-      backgroundColor: `#BAA54A !important`,
+      backgroundColor: `#F6E184 !important`,
+      opacity: 0.77,
     },
     name: {
       paddingLeft: '6px',

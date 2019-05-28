@@ -164,7 +164,20 @@ export class ActivityDodayAppComponentClass extends React.Component<
   };
 
   render() {
-    const { loading, t } = this.props;
+    const { loading, routeParams, t } = this.props;
+    const items =
+      !routeParams.completed && !routeParams.published
+        ? this.items.filter(
+            (item: Activity) =>
+              !item.progress || (item.progress && !item.progress.pinned)
+          )
+        : this.items;
+    const pinnedItems =
+      !routeParams.completed && !routeParams.published
+        ? this.items.filter(
+            (item: Activity) => item.progress && item.progress.pinned
+          )
+        : undefined;
     return (
       <>
         <DefaultTopBar title={t('name')} />
@@ -173,10 +186,8 @@ export class ActivityDodayAppComponentClass extends React.Component<
           search
           filters={[this.progressFilterItems]}
           loading={loading}
-          items={this.items.filter((item: Activity) => !item.progress.pinned)}
-          pinnedItems={this.items.filter(
-            (item: Activity) => item.progress.pinned
-          )}
+          items={items}
+          pinnedItems={pinnedItems}
           renderCell={this.renderCell}
         />
       </>

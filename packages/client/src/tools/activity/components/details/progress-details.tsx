@@ -168,11 +168,13 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     ];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
-        <Typography variant="caption" className={classes.completed}>{`${t(
-          'activities:details.status.completed'
-        )}: ${moment(selectedDoday.progress.completedAt).format(
-          'll'
-        )}`}</Typography>
+        <Typography
+          key={cuid()}
+          variant="caption"
+          className={classes.completed}
+        >{`${t('activities:details.status.completed')}: ${moment(
+          selectedDoday.progress.completedAt
+        ).format('ll')}`}</Typography>
       );
     }
     if (selectedDoday.resource && selectedDoday.resource.icon) {
@@ -311,27 +313,6 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                   </LayoutBlock>
                 </>
               )}
-              {selectedDoday.duration && (
-                <LayoutBlock insideElementsMargin valign="vflexCenter">
-                  <HourGlassEmptyIcon />
-                  <Typography variant="body1">
-                    {durationToLabel(selectedDoday.duration, {
-                      hour: t('shell:time.h'),
-                      minute: t('shell:time.m'),
-                    })}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary">
-                    {`(
-                    ${t('activities:details.status.percentOfTheDay', {
-                      percent: Math.round(
-                        (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
-                          100
-                      ),
-                    })}
-                    )`}
-                  </Typography>
-                </LayoutBlock>
-              )}
             </LayoutBlock>
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflexCenter">
               <IconButton
@@ -357,13 +338,40 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                   }
                 />
               </IconButton>
-              <Typography
-                variant="h2"
-                noWrap={false}
-                className={classes.dodayName}
-              >
-                {selectedDoday.name}
-              </Typography>
+              <LayoutBlock spaceLeft={Space.Small} direction="column" flex="1">
+                <Typography
+                  variant="h2"
+                  noWrap={false}
+                  className={classes.dodayName}
+                >
+                  {selectedDoday.name}
+                </Typography>
+                {selectedDoday.duration && (
+                  <LayoutBlock
+                    spaceAbove={Space.Small}
+                    insideElementsMargin
+                    valign="vflexCenter"
+                  >
+                    <HourGlassEmptyIcon color="disabled" />
+                    <Typography variant="body1" color="textSecondary">
+                      {durationToLabel(selectedDoday.duration, {
+                        hour: t('shell:time.h'),
+                        minute: t('shell:time.m'),
+                      })}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary">
+                      {`(
+                    ${t('activities:details.status.percentOfTheDay', {
+                      percent: Math.round(
+                        (durationToMinutes(selectedDoday.duration) / (8 * 60)) *
+                          100
+                      ),
+                    })}
+                    )`}
+                    </Typography>
+                  </LayoutBlock>
+                )}
+              </LayoutBlock>
             </LayoutBlock>
             {youtubeLink ? (
               <div

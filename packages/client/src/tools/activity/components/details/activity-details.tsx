@@ -220,11 +220,21 @@ export class ActivityDetailsComponentClass extends React.Component<
       >
         {selectedDoday ? (
           <>
-            <LayoutBlock insideElementsMargin>
+            <LayoutBlock insideElementsMargin />
+            <LayoutBlock
+              spaceAbove={Space.Medium}
+              spaceBelow={Space.Medium}
+              direction="column"
+            >
+              <Typography variant="h2">{selectedDoday.name}</Typography>
               {selectedDoday.duration && (
-                <LayoutBlock insideElementsMargin valign="vflexCenter">
-                  <HourGlassEmptyIcon />
-                  <Typography variant="body1">
+                <LayoutBlock
+                  spaceAbove={Space.Small}
+                  insideElementsMargin
+                  valign="vflexCenter"
+                >
+                  <HourGlassEmptyIcon color="disabled" />
+                  <Typography variant="body1" color="textSecondary">
                     {durationToLabel(selectedDoday.duration, {
                       hour: t('shell:time.h'),
                       minute: t('shell:time.m'),
@@ -242,9 +252,6 @@ export class ActivityDetailsComponentClass extends React.Component<
                   </Typography>
                 </LayoutBlock>
               )}
-            </LayoutBlock>
-            <LayoutBlock spaceAbove={Space.Medium} spaceBelow={Space.Medium}>
-              <Typography variant="h2">{selectedDoday.name}</Typography>
             </LayoutBlock>
             <LayoutBlock childFlex spaceBelow={Space.Medium}>
               {youtubeLink ? (

@@ -9,7 +9,6 @@ export const css = (theme: Theme) =>
       paddingLeft: `${config.spacing.spaceS}px`,
     },
     dodayName: {
-      paddingLeft: `${config.spacing.spaceM}px`,
       wordBreak: 'break-word',
     },
     resourceDescription: utils.paddingTop(config.spacing.spaceL),

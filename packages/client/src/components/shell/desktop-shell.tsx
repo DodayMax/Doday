@@ -71,7 +71,6 @@ interface PropsFromConnect {
 interface DesktopShellState {
   resizeTaskId?: NodeJS.Timeout;
   isDrawerCollapsed: boolean;
-  accountMenuAnchor?: any;
 }
 
 class DesktopShell extends React.Component<
@@ -124,12 +123,8 @@ class DesktopShell extends React.Component<
     });
   }
 
-  handleAccountMenuOpen = event => {
-    this.setState({ accountMenuAnchor: event.currentTarget });
-  };
-
-  handleAccountMenuClose = () => {
-    this.setState({ accountMenuAnchor: null });
+  handleProfileOpen = () => {
+    this.props.history.push('/profile');
   };
 
   toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
@@ -148,15 +143,11 @@ class DesktopShell extends React.Component<
       theme,
       hero,
       activeTools,
-      toggleDrawerActionCreator,
       toggleDodayAppActionCreator,
-      isDrawerCollapsed,
       isDodayAppCollapsed,
       history,
       t,
     } = this.props;
-
-    const { accountMenuAnchor } = this.state;
 
     return (
       <div className={classes.root}>
@@ -180,7 +171,7 @@ class DesktopShell extends React.Component<
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap className={classes.white}>
+            <Typography variant="subtitle1" noWrap className={classes.white}>
               Welcome to the Doday app!
             </Typography>
             {hero ? (
@@ -196,34 +187,11 @@ class DesktopShell extends React.Component<
                 />
                 <div>
                   <IconButton
-                    aria-owns={open ? 'menu-appbar' : undefined}
-                    aria-haspopup="true"
-                    onClick={this.handleAccountMenuOpen}
+                    onClick={this.handleProfileOpen}
                     className={classes.white}
                   >
                     <FaceIcon />
                   </IconButton>
-                  <Menu
-                    id="menu-appbar"
-                    anchorEl={accountMenuAnchor}
-                    anchorOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={!!accountMenuAnchor}
-                    onClose={this.handleAccountMenuClose}
-                  >
-                    <MenuItem onClick={this.handleAccountMenuClose}>
-                      {t('shell:topbar.profile')}
-                    </MenuItem>
-                    <MenuItem onClick={this.handleAccountMenuClose}>
-                      {t('shell:topbar.logout')}
-                    </MenuItem>
-                  </Menu>
                 </div>
               </LayoutBlock>
             ) : (
