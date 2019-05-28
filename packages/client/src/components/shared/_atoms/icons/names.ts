@@ -28,7 +28,8 @@ export type IconNames =
   | 'Unlocked'
   | 'Duration'
   | 'Flag'
-  | 'Score';
+  | 'Score'
+  | 'Pin';
 
 export type IconProps = {
   width?: number;

@@ -25,6 +25,8 @@ export interface Activity extends DodayBase {
   tags?: string[];
   /** [:RESOURCE] relation */
   resource?: Resource;
+  /** Progress node for this Doday */
+  progress?: ActivityProgress;
 }
 
 export interface SerializedActivity extends SerializedDodayBase {
@@ -45,7 +47,9 @@ export interface APIResponseActivity extends APIResponseDodayBase {
   tags?: string[];
 }
 
-export interface ActivityProgress extends ProgressBase {}
+export interface ActivityProgress extends ProgressBase {
+  pinned?: boolean;
+}
 
 export interface SerializedActivityProgress extends SerializedProgressBase {}
 

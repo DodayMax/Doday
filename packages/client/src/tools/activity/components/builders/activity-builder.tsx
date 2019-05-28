@@ -38,6 +38,7 @@ import {
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,
   SetActivityTypeAction,
+  PinActivityAction,
 } from '../../duck/actions';
 import {
   SerializedActivity,
@@ -60,6 +61,7 @@ import {
   FormControlLabel,
   Switch,
   Button,
+  IconButton,
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
 import { config } from '@root/styles/config';
@@ -98,6 +100,7 @@ interface PropsFromConnect {
   isUrlParsing: boolean;
   parsedMetadata?: any;
   activityType: ActivityType;
+  pinned?: boolean;
   ownerDID: string;
   createDodayActionCreator(payload: {
     doday: DodayLike;
@@ -109,6 +112,7 @@ interface PropsFromConnect {
     resource?: Resource;
   }): CreateAndTakeDodayAction;
   setActivityTypeActionCreator(type: ActivityType): SetActivityTypeAction;
+  pinActivityActionCreator(value: boolean): PinActivityAction;
   parseUrlMetadataActionCreator: (url: string) => ParseUrlMetadataAction;
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
@@ -191,7 +195,7 @@ export class ActivityBuilderComponentClass extends React.Component<
   };
 
   handleCreateDoday = () => {
-    const { parsedMetadata, activityType, ownerDID } = this.props;
+    const { parsedMetadata, activityType, pinned, ownerDID } = this.props;
 
     const resource = parsedMetadata && {
       ...parsedMetadata,
@@ -213,6 +217,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     const progress: ActivityProgress = {
       date: this.state.date,
       dateIsLocked: this.state.dateIsLocked,
+      pinned,
       completed: false,
       ownerDID,
     };
@@ -261,6 +266,7 @@ export class ActivityBuilderComponentClass extends React.Component<
       isUrlParsing,
       parsedMetadata,
       classes,
+      pinned,
       t,
     } = this.props;
 
@@ -332,6 +338,22 @@ export class ActivityBuilderComponentClass extends React.Component<
               })
             }
           />
+          <Tooltip
+            title={
+              <Typography variant="caption">
+                {t('builder.pinDodayTooltip')}
+              </Typography>
+            }
+            placement="top"
+          >
+            {
+              <IconButton
+                onClick={() => this.props.pinActivityActionCreator(!pinned)}
+              >
+                {pinned ? <Icons.Pin color="primary" /> : <Icons.Pin />}
+              </IconButton>
+            }
+          </Tooltip>
         </LayoutBlock>
         <LayoutBlock spaceBelow={Space.Small} direction="column">
           <LayoutBlock
@@ -487,6 +509,7 @@ export const activityIconByType = (
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
   activityType: state.builder.tools.activities.activityType,
+  pinned: state.builder.tools.activities.pinned,
   isUrlParsing: state.builder.tools.activities.isUrlParsing,
   parsedMetadata: state.builder.tools.activities.parsedMetadata,
   loading: state.builder.status.loading,

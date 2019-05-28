@@ -45,6 +45,7 @@ import {
   Button,
   Chip,
   Divider,
+  Tooltip,
 } from '@material-ui/core';
 
 import { css } from './details.styles';
@@ -203,6 +204,13 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
           selectedDoday.progress &&
           selectedDoday.progress.dateIsLocked;
 
+    const isPinned =
+      updates && updates.pinned != null
+        ? updates.pinned
+        : selectedDoday &&
+          selectedDoday.progress &&
+          selectedDoday.progress.pinned;
+
     return (
       <Page
         header={
@@ -276,6 +284,30 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                         });
                       }}
                     />
+                    <Tooltip
+                      title={
+                        <Typography variant="caption">
+                          {t('activities:builder.pinDodayTooltip')}
+                        </Typography>
+                      }
+                      placement="top"
+                    >
+                      {
+                        <IconButton
+                          onClick={() =>
+                            this.props.requestForSetUpdatesActionCreator({
+                              pinned: !isPinned,
+                            })
+                          }
+                        >
+                          {isPinned ? (
+                            <Icons.Pin color="primary" />
+                          ) : (
+                            <Icons.Pin />
+                          )}
+                        </IconButton>
+                      }
+                    </Tooltip>
                   </LayoutBlock>
                 </>
               )}

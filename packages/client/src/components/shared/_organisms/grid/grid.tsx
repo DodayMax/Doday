@@ -18,6 +18,7 @@ import {
 
 interface GridProps {
   items: any[];
+  pinnedItems?: any[];
   search?: boolean;
   filters?: FilterItem[][];
   loading?: boolean;
@@ -76,6 +77,7 @@ export class GridComponentClass extends React.Component<
   render() {
     const {
       items,
+      pinnedItems,
       loading,
       renderCell,
       filters,
@@ -110,6 +112,12 @@ export class GridComponentClass extends React.Component<
               <Loader />
             </LayoutBlock>
           )}
+          {pinnedItems &&
+            (!loading &&
+              pinnedItems &&
+              pinnedItems.map((item: any, index) => {
+                return renderCell && renderCell(item, index);
+              }))}
           {!loading &&
             items.map((item: any, index) => {
               return renderCell && renderCell(item, index);

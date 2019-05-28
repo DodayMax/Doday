@@ -29,7 +29,8 @@
     "tagsPlaceholder": "Add tags that other people can easily find your doday",
     "public": "Publish to Store",
     "create": "Create",
-    "lockDateTooltip": "Lock the date, so that Doday app can't change it using automatic algorithms for planning"
+    "lockDateTooltip": "Lock the date, so that Doday app can't change it using automatic algorithms for planning",
+    "pinDodayTooltip": "Pin activity to the top of your dodays"
   },
   "details": {
     "status": {

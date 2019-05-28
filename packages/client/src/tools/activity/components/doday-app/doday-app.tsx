@@ -173,7 +173,10 @@ export class ActivityDodayAppComponentClass extends React.Component<
           search
           filters={[this.progressFilterItems]}
           loading={loading}
-          items={this.items}
+          items={this.items.filter((item: Activity) => !item.progress.pinned)}
+          pinnedItems={this.items.filter(
+            (item: Activity) => item.progress.pinned
+          )}
           renderCell={this.renderCell}
         />
       </>

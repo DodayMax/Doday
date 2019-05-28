@@ -1,6 +1,7 @@
 import * as React from 'react';
+import * as classnames from 'classnames';
 import { CellProps } from '@lib/common-interfaces';
-import { Checkbox } from '@shared';
+import { Checkbox, Icons } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { Activity } from '@root/tools/activity/entities/activity';
 import { durationToLabel, durationToMinutes } from '@root/lib/utils';
@@ -30,6 +31,11 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
   withStyles(css)(
     ({ doday, active = false, onClick, onComplete, classes, t }: Props) => {
       const activity = doday as Activity;
+
+      const cx = classnames({
+        [classes.scrollContainer]: true,
+        [classes.pinned]: doday.progress.pinned,
+      });
 
       return (
         <ListItem
@@ -79,11 +85,15 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
           </LayoutBlock>
           <LayoutBlock
             absolute
+            align="flexCenter"
+            valign="vflexEnd"
             top="0"
             right="0"
             bottom="0"
-            className={classes.scrollContainer}
-          />
+            className={cx}
+          >
+            <Icons.Pin width={1.6} height={1.6} />
+          </LayoutBlock>
         </ListItem>
       );
     }

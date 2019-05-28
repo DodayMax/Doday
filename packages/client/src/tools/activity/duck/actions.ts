@@ -11,6 +11,7 @@ export enum ActionConstants {
   SET_ACTIVITIES = '[activities] SET_ACTIVITIES',
   PARSE_URL = '[activities] PARSE_URL',
   SET_ACTIVITY_TYPE = '[activities] SET_ACTIVITY_TYPE',
+  PIN_ACTIVITY = '[activities] PIN_ACTIVITY',
   SET_URL_PARSING_PROGRESS = '[activities] SET_URL_PARSING_PROGRESS',
   SET_PARSED_URL_METADATA_OBJECT = '[activities] SET_PARSED_URL_METADATA_OBJECT',
   CLEAR_PARSED_URL_METADATA = '[activities] CLEAR_PARSED_URL_METADATA',
@@ -109,6 +110,19 @@ export function setActivityTypeActionCreator(
   return {
     type: ActionConstants.SET_ACTIVITY_TYPE,
     payload: type,
+  };
+}
+
+/**
+ * Pin activity
+ *
+ * @export
+ * @returns {PinActivityAction}
+ */
+export function pinActivityActionCreator(value: boolean): PinActivityAction {
+  return {
+    type: ActionConstants.PIN_ACTIVITY,
+    payload: value,
   };
 }
 
@@ -215,6 +229,7 @@ export const actionCreators = {
   fetchActivitiesActionCreator,
   setActivitiesActionCreator,
   setActivityTypeActionCreator,
+  pinActivityActionCreator,
   setUrlParsingProgressActionCreator,
   setParsedUrlMetadataObjectActionCreator,
   parseUrlMetadataActionCreator,
@@ -251,6 +266,11 @@ export interface ParseUrlMetadataAction extends AnyAction {
 export interface SetActivityTypeAction extends AnyAction {
   type: ActionConstants.SET_ACTIVITY_TYPE;
   payload: ActivityType;
+}
+
+export interface PinActivityAction extends AnyAction {
+  type: ActionConstants.PIN_ACTIVITY;
+  payload: boolean;
 }
 
 export interface SetParseUrlMetadataProgressAction extends AnyAction {
@@ -316,6 +336,7 @@ export type ActionTypes =
   | FetchActivitiesAction
   | SetActivitiesAction
   | SetActivityTypeAction
+  | PinActivityAction
   | ParseUrlMetadataAction
   | SetParseUrlMetadataProgressAction
   | SetParsedUrlMetadataObjectAction

@@ -17,8 +17,6 @@ export interface DodayBase {
   created: Date;
   /** [:CREATE] relation */
   owner?: Hero;
-  /** Progress node for this Doday */
-  progress?: ProgressBase;
 }
 
 export interface SerializedDodayBase {

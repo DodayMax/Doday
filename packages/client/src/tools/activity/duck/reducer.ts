@@ -128,6 +128,11 @@ export const builderReducer = (
         ...state,
         activityType: action!.payload,
       };
+    case actions.ActionConstants.PIN_ACTIVITY:
+      return {
+        ...state,
+        pinned: action!.payload,
+      };
     case actions.ActionConstants.SET_URL_PARSING_PROGRESS:
       return {
         ...state,
@@ -154,6 +159,7 @@ export const builderReducer = (
 
 export type ActivityBuilderState = {
   activityType?: ActivityType;
+  pinned?: boolean;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
 };

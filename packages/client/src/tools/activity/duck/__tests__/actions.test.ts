@@ -5,6 +5,7 @@ import {
   ParseUrlMetadataAction,
   SetActivityTypeAction,
   ClearParsedUrlMetadataAction,
+  PinActivityAction,
 } from '../actions';
 import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
 import { DodayType } from '@root/tools/types';
@@ -87,6 +88,17 @@ describe('Activity tool action creators tests', () => {
       payload: type,
     };
     expect(actionCreators.setActivityTypeActionCreator(type)).toEqual(
+      expectedActionObject
+    );
+  });
+
+  it('pin activity', () => {
+    const value = true;
+    const expectedActionObject: PinActivityAction = {
+      type: ActionConstants.PIN_ACTIVITY,
+      payload: value,
+    };
+    expect(actionCreators.pinActivityActionCreator(value)).toEqual(
       expectedActionObject
     );
   });

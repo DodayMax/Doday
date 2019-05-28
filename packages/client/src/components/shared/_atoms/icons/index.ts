@@ -23,5 +23,6 @@ export * from './unlocked/unlocked';
 export * from './duration/duration';
 export * from './flag/flag';
 export * from './score/score';
+export * from './pin/pin';
 
 export * from './names';
