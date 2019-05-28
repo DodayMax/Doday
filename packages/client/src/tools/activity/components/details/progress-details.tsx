@@ -15,7 +15,6 @@ import {
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
-  isDirty,
 } from '@root/lib/utils';
 import { LayoutBlock } from '@shared/_atoms/layout-block';
 import {
@@ -31,66 +30,24 @@ import {
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
 import { DodayType, ProgressLike, DodayLike } from '@root/tools/types';
-import { Activity, deserializeActivityProgress } from '../../entities/activity';
+import { Activity } from '../../entities/activity';
 import { activityIconByType } from '../builders/activity-builder';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Resource } from '@root/lib/models/entities/resource';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
-  Theme,
-  createStyles,
   WithStyles,
   withStyles,
   MenuItem,
   IconButton,
   Typography,
   Button,
+  Chip,
+  Divider,
 } from '@material-ui/core';
-import { config } from '@root/styles/config';
-import { utils } from '@root/styles/utils';
 
-const css = (theme: Theme) =>
-  createStyles({
-    input: {
-      fontSize: `${config.typographySizes.bodyM}rem`,
-      paddingLeft: `${config.spacing.spaceS}px`,
-    },
-    dodayName: {
-      paddingLeft: `${config.spacing.spaceM}px`,
-    },
-    resourceDescription: utils.paddingTop(config.spacing.spaceL),
-    resourceStatusIcon: {
-      height: '1.6rem',
-      paddingLeft: '0.4rem',
-    },
-    completed: {
-      color: theme.palette.text.secondary,
-    },
-    videoWrapper: {
-      position: 'relative',
-      paddingBottom: '56.25%' /* 16:9 */,
-      margin: '3rem 0 0 0',
-      height: 0,
-      '& iframe': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-      },
-    },
-    delete: {
-      color: theme.palette.common.white,
-      backgroundColor: theme.palette.error.dark,
-      '&:focus': {
-        backgroundColor: theme.palette.error.dark,
-      },
-      '&:hover': {
-        backgroundColor: theme.palette.error.main,
-      },
-    },
-  });
+import { css } from './details.styles';
 
 interface ActivityProgressDetailsProps {}
 
@@ -210,7 +167,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     ];
     if (selectedDoday.progress && selectedDoday.progress.completed) {
       markers.push(
-        <Typography variant="body1" className={classes.completed}>{`${t(
+        <Typography variant="caption" className={classes.completed}>{`${t(
           'activities:details.status.completed'
         )}: ${moment(selectedDoday.progress.completedAt).format(
           'll'
@@ -281,6 +238,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
         {selectedDoday && selectedDoday.progress ? (
           <>
             <LayoutBlock
+              wrap
               paddingAbove={Space.Small}
               paddingBelow={Space.Small}
               insideElementsMargin
@@ -324,13 +282,13 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflexCenter">
                   <HourGlassEmptyIcon />
-                  <Typography variant="h6">
+                  <Typography variant="body1">
                     {durationToLabel(selectedDoday.duration, {
                       hour: t('shell:time.h'),
                       minute: t('shell:time.m'),
                     })}
                   </Typography>
-                  <Typography variant="body1" color="textSecondary">
+                  <Typography variant="body2" color="textSecondary">
                     {`(
                     ${t('activities:details.status.percentOfTheDay', {
                       percent: Math.round(
@@ -367,7 +325,11 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                   }
                 />
               </IconButton>
-              <Typography variant="h3" className={classes.dodayName}>
+              <Typography
+                variant="h2"
+                noWrap={false}
+                className={classes.dodayName}
+              >
                 {selectedDoday.name}
               </Typography>
             </LayoutBlock>
@@ -375,7 +337,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               <div
                 className={classes.videoWrapper}
                 style={{
-                  background: `url(${preview})`,
+                  backgroundImage: `url(${preview})`,
                   backgroundSize: 'contain',
                 }}
               >
@@ -390,7 +352,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
               <div
                 className={classes.videoWrapper}
                 style={{
-                  background: `url(${preview})`,
+                  backgroundImage: `url(${preview})`,
                   backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                 }}
@@ -402,7 +364,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             {!youtubeLink && (resource && resource.url) ? (
               <LayoutBlock
                 spaceAbove={Space.Large}
-                spaceBelow={Space.Small}
+                spaceBelow={Space.Large}
                 align="flexCenter"
               >
                 <Button
@@ -415,6 +377,21 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 </Button>
               </LayoutBlock>
             ) : null}
+            {selectedDoday.tags && !!selectedDoday.tags.length && (
+              <>
+                <Divider variant="middle" />
+                <LayoutBlock
+                  wrap
+                  insideElementsMargin
+                  spaceAbove={Space.Medium}
+                  spaceBelow={Space.Medium}
+                >
+                  {selectedDoday.tags.map((tag, index) => (
+                    <Chip key={index} label={tag} className={classes.spaced} />
+                  ))}
+                </LayoutBlock>
+              </>
+            )}
           </>
         ) : null}
       </Page>

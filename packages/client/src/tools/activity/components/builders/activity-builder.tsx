@@ -62,6 +62,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
+import { config } from '@root/styles/config';
 
 const vars = require('@styles/_config.scss');
 
@@ -84,6 +85,9 @@ const css = (theme: Theme) =>
     },
     dateContainer: {
       width: '40%',
+    },
+    spaced: {
+      marginBottom: `${config.spacing.spaceXS}px`,
     },
   });
 
@@ -111,7 +115,8 @@ interface PropsFromConnect {
 
 interface ActivityBuilderState {
   dodayName: string;
-  selectedTags?: Tag[];
+  tagInputValue: string;
+  selectedTags: string[];
   parsingFinished?: string;
   date: Date;
   dateIsLocked: boolean;
@@ -138,6 +143,8 @@ export class ActivityBuilderComponentClass extends React.Component<
       isPublic: false,
       dateIsLocked: false,
       estimateTime: 'PT60M',
+      tagInputValue: '',
+      selectedTags: [],
     };
   }
 
@@ -145,18 +152,11 @@ export class ActivityBuilderComponentClass extends React.Component<
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
       const parsedTags =
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
-      const mappedTags =
-        (parsedTags &&
-          parsedTags.map(tag => ({
-            label: tag,
-            value: tag,
-          }))) ||
-        [];
       this.setState({
         dodayName: '',
         selectedTags: this.state.selectedTags
-          ? this.state.selectedTags.concat(mappedTags)
-          : mappedTags,
+          ? this.state.selectedTags.concat(parsedTags)
+          : parsedTags,
       });
     }
 
@@ -204,9 +204,7 @@ export class ActivityBuilderComponentClass extends React.Component<
       type: DodayType.Activity,
       duration: this.state.estimateTime,
       name: this.state.dodayName || parsedMetadata.title,
-      tags:
-        this.state.selectedTags &&
-        this.state.selectedTags.map(tag => tag.value),
+      tags: this.state.selectedTags || [],
       public: this.state.isPublic,
       ownerDID,
       created: new Date(),
@@ -271,7 +269,9 @@ export class ActivityBuilderComponentClass extends React.Component<
     return (
       <>
         <LayoutBlock insideElementsMargin valign="vflexCenter">
-          <Typography variant="h6">{t('builder.activityType')}:</Typography>
+          <Typography variant="subtitle2">
+            {t('builder.activityType')}:
+          </Typography>
           {loading || isUrlParsing ? (
             <Icons.InlineLoader />
           ) : (
@@ -339,7 +339,9 @@ export class ActivityBuilderComponentClass extends React.Component<
             valign="vflexCenter"
             spaceBelow={Space.XSmall}
           >
-            <Typography variant="h6">{t('builder.estimateTime')}:</Typography>
+            <Typography variant="subtitle2">
+              {t('builder.estimateTime')}:
+            </Typography>
             <Chip
               label={durationToLabel(this.state.estimateTime, {
                 hour: t('shell:time.h'),
@@ -361,19 +363,49 @@ export class ActivityBuilderComponentClass extends React.Component<
           />
         </LayoutBlock>
         <LayoutBlock childFlex flex={'1'} paddingBelow={Space.Small}>
-          <div>
-            <AsyncCreatableSelect
-              value={this.state.selectedTags}
-              onChange={(value: Tag[]) => {
-                this.setState({ selectedTags: value });
+          <LayoutBlock direction="column" flex="1">
+            <TextField
+              id="standard-with-placeholder"
+              label="Write tag and hit enter to describe your doday"
+              placeholder="HTML, React, etc."
+              value={this.state.tagInputValue}
+              onChange={e => this.setState({ tagInputValue: e.target.value })}
+              onKeyDown={e => {
+                if (e.keyCode === 13) {
+                  this.setState({
+                    selectedTags: [
+                      ...this.state.selectedTags,
+                      this.state.tagInputValue,
+                    ],
+                    tagInputValue: '',
+                  });
+                }
               }}
-              placeholder={t('builder.tagsPlaceholder')}
-              isMulti
-              cacheOptions
-              defaultOptions
-              loadOptions={this.promiseOptions}
+              InputProps={{
+                classes: {
+                  input: classes.tagInput,
+                },
+              }}
             />
-          </div>
+            <LayoutBlock wrap spaceAbove={Space.Small} insideElementsMargin>
+              {this.state.selectedTags.map((tag, index) => {
+                return (
+                  <Chip
+                    key={index}
+                    label={tag}
+                    onDelete={e => {
+                      const newArray = [...this.state.selectedTags];
+                      newArray.splice(index, 1);
+                      this.setState({
+                        selectedTags: newArray,
+                      });
+                    }}
+                    className={classes.spaced}
+                  />
+                );
+              })}
+            </LayoutBlock>
+          </LayoutBlock>
         </LayoutBlock>
         <LayoutBlock insideElementsMargin align="flexEnd" valign="vflexCenter">
           <FormControlLabel
@@ -418,7 +450,7 @@ export const activityIconByType = (
         <Tooltip
           key={cuid()}
           title={
-            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+            <Typography variant="caption">{`Activity type: ${type}`}</Typography>
           }
           placement={tooltipPlacement}
         >
@@ -430,7 +462,7 @@ export const activityIconByType = (
         <Tooltip
           key={cuid()}
           title={
-            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+            <Typography variant="caption">{`Activity type: ${type}`}</Typography>
           }
           placement={tooltipPlacement}
         >
@@ -442,7 +474,7 @@ export const activityIconByType = (
         <Tooltip
           key={cuid()}
           title={
-            <Typography variant="body1">{`Activity type: ${type}`}</Typography>
+            <Typography variant="caption">{`Activity type: ${type}`}</Typography>
           }
           placement={tooltipPlacement}
         >

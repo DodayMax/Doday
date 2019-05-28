@@ -54,10 +54,16 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
           <ListItemText
             primary={activity.name}
             secondary="July 20, 2014"
+            primaryTypographyProps={{
+              variant: 'caption',
+            }}
+            secondaryTypographyProps={{
+              variant: 'caption',
+            }}
             className={classes.name}
           />
           <LayoutBlock absolute bottom="0" right="2.6rem">
-            <Typography className={classes.timeLabel} variant="body2">
+            <Typography className={classes.timeLabel} variant="caption">
               {durationToLabel(activity.duration, {
                 hour: t('shell:time.h'),
                 minute: t('shell:time.m'),

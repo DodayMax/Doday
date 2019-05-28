@@ -61,6 +61,9 @@ export const utils = {
     column: {
       flexDirection: 'column',
     },
+    wrap: {
+      flexWrap: 'wrap',
+    },
     insideElementsMargin: {
       '& > *': {
         marginRight: '1rem',

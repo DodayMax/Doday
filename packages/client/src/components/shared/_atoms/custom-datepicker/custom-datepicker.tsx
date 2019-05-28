@@ -77,7 +77,7 @@ export const CustomDatePicker = withStyles(css)(
         {withLocker ? (
           tooltip ? (
             <Tooltip
-              title={<Typography variant="body1">{tooltip}</Typography>}
+              title={<Typography variant="caption">{tooltip}</Typography>}
               placement="top"
             >
               {renderLockIcon()}

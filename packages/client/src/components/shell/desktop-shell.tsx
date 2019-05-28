@@ -275,7 +275,7 @@ class DesktopShell extends React.Component<
                   </ListItemIcon>
                   <ListItemText
                     primary={tool.text}
-                    primaryTypographyProps={{ variant: 'h6' }}
+                    primaryTypographyProps={{ variant: 'body1' }}
                   />
                 </ListItem>
               );

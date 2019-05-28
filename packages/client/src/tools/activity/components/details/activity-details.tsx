@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as cuid from 'cuid';
 import * as _ from 'lodash';
 import { Space } from '@root/lib/common-interfaces';
 import { Page, PageHeader } from '@shared/_molecules/page';
@@ -33,10 +34,15 @@ import { activityIconByType } from '../builders/activity-builder';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
-import { Card, Typography, Button } from '@material-ui/core';
+import {
+  Card,
+  Typography,
+  Button,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 
-const vars = require('@styles/_config.scss');
-const css = require('./activity-details.module.scss');
+import { css } from './details.styles';
 
 interface ActivityDetailsProps {}
 
@@ -44,7 +50,7 @@ interface ActivityDetailsState {}
 
 interface PropsFromConnect {
   loading: boolean;
-  updates: Partial<ProgressLike>;
+  updates?: Partial<ProgressLike>;
   myDID?: string;
   selectedDoday: Activity;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
@@ -67,7 +73,8 @@ interface PropsFromConnect {
 type Props = ActivityDetailsProps &
   Partial<PropsFromConnect> &
   Partial<RouteComponentProps<any>> &
-  WithTranslation;
+  WithTranslation &
+  WithStyles;
 
 @(withRouter as any)
 @Pageflow({ path: '/dodays/:did' })
@@ -97,14 +104,15 @@ export class ActivityDetailsComponentClass extends React.Component<
   };
 
   status = () => {
-    const { selectedDoday } = this.props;
+    const { selectedDoday, classes } = this.props;
     const markers = [
-      activityIconByType(selectedDoday.activityType, 30, vars.gray8, 'right'),
+      activityIconByType(selectedDoday.activityType, 30, undefined, 'right'),
     ];
     if (selectedDoday.resource && selectedDoday.resource.icon) {
       markers.push(
         <img
-          className={css.resourceStatusIcon}
+          key={cuid()}
+          className={classes.resourceStatusIcon}
           src={selectedDoday.resource.icon}
         />
       );
@@ -163,8 +171,8 @@ export class ActivityDetailsComponentClass extends React.Component<
                 did: selectedDoday.did,
                 type: selectedDoday.type,
                 progress: {
-                  date: updates.date || new Date(),
-                  dateIsLocked: updates.dateIsLocked || false,
+                  date: (updates && updates.date) || new Date(),
+                  dateIsLocked: (updates && updates.dateIsLocked) || false,
                   completed: false,
                   ownerDID: this.props.myDID,
                 },
@@ -181,7 +189,7 @@ export class ActivityDetailsComponentClass extends React.Component<
   };
 
   render() {
-    const { loading, selectedDoday, t } = this.props;
+    const { loading, selectedDoday, classes, t } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -216,13 +224,13 @@ export class ActivityDetailsComponentClass extends React.Component<
               {selectedDoday.duration && (
                 <LayoutBlock insideElementsMargin valign="vflexCenter">
                   <HourGlassEmptyIcon />
-                  <Typography variant="h6">
+                  <Typography variant="body1">
                     {durationToLabel(selectedDoday.duration, {
                       hour: t('shell:time.h'),
                       minute: t('shell:time.m'),
                     })}
                   </Typography>
-                  <Typography variant="body1" color="textSecondary">
+                  <Typography variant="body2" color="textSecondary">
                     {`(
                     ${t('activities:details.status.percentOfTheDay', {
                       percent: Math.round(
@@ -236,35 +244,39 @@ export class ActivityDetailsComponentClass extends React.Component<
               )}
             </LayoutBlock>
             <LayoutBlock spaceAbove={Space.Medium} spaceBelow={Space.Medium}>
-              <Typography variant="h3">{selectedDoday.name}</Typography>
+              <Typography variant="h2">{selectedDoday.name}</Typography>
             </LayoutBlock>
-            {youtubeLink ? (
-              <div
-                className={css.videoWrapper}
-                style={{
-                  background: `url(${preview})`,
-                  backgroundSize: 'contain',
-                }}
-              >
-                <iframe
-                  frameBorder="0"
-                  src={youtubeLink}
-                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+            <LayoutBlock childFlex spaceBelow={Space.Medium}>
+              {youtubeLink ? (
+                <div
+                  className={classes.videoWrapper}
+                  style={{
+                    background: `url(${preview})`,
+                    backgroundSize: 'contain',
+                  }}
+                >
+                  <iframe
+                    frameBorder="0"
+                    src={youtubeLink}
+                    allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                </div>
+              ) : preview ? (
+                <div
+                  className={classes.videoWrapper}
+                  style={{
+                    background: `url(${preview})`,
+                    backgroundSize: 'contain',
+                  }}
                 />
-              </div>
-            ) : preview ? (
-              <div
-                className={css.videoWrapper}
-                style={{
-                  background: `url(${preview})`,
-                  backgroundSize: 'contain',
-                }}
-              />
-            ) : null}
-            <Typography variant="body1">
-              {resource && resource.description}
-            </Typography>
+              ) : null}
+            </LayoutBlock>
+            <LayoutBlock spaceBelow={Space.Medium}>
+              <Typography variant="body1">
+                {resource && resource.description}
+              </Typography>
+            </LayoutBlock>
             <Card>
               <LayoutBlock
                 paddingAbove={Space.Medium}
@@ -298,4 +310,8 @@ export const ActivityDetails = connect(
     ...dodayDetailsActions,
     ...dodaysApiActions,
   }
-)(withTranslation(['shell', 'activities'])(ActivityDetailsComponentClass));
+)(
+  withStyles(css)(
+    withTranslation(['shell', 'activities'])(ActivityDetailsComponentClass)
+  )
+);

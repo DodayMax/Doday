@@ -1,18 +1,25 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import { amber } from '@material-ui/core/colors';
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  withTheme,
+  WithTheme,
+  Theme,
+} from '@material-ui/core/styles';
 import i18next from 'i18next';
 import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
 import { RootState } from './lib/models';
 import { ThemeType } from './lib/common-interfaces';
+import { colors } from '@styles/dodayColors';
 
 interface AppProps {}
 
 interface PropsFromConnect {
-  theme: ThemeType;
+  theme: Theme;
+  themeType: ThemeType;
 }
 
 interface TranslationProps {
@@ -21,19 +28,56 @@ interface TranslationProps {
 }
 
 export class AppComponent extends React.Component<
-  AppProps & Partial<PropsFromConnect> & TranslationProps
+  AppProps & Partial<PropsFromConnect> & TranslationProps & WithTheme
 > {
   private get theme() {
-    const theme = createMuiTheme({
+    const { theme, themeType } = this.props;
+    const themeConfig = createMuiTheme({
       palette: {
-        type: this.props.theme,
-        primary: amber,
+        type: themeType,
+        primary: {
+          ...colors.yellow,
+        },
+        secondary: {
+          ...colors.blue,
+        },
+        error: {
+          ...colors.red,
+        },
+      },
+      overrides: {
+        MuiButton: {
+          label: {
+            fontSize: '1.2rem',
+            fontWeight: 600,
+          },
+          containedPrimary: {
+            backgroundColor: colors.yellow.dark,
+            border: `2px solid ${
+              theme.palette.type === 'light'
+                ? theme.palette.common.white
+                : theme.palette.grey[800]
+            }`,
+            '&:hover': {
+              backgroundColor: colors.yellow.main,
+            },
+          },
+        },
+        MuiTooltip: {
+          tooltip: {
+            color: theme.palette.common.white,
+          },
+        },
       },
       typography: {
         useNextVariants: true,
+        htmlFontSize: 10,
+        h2: {
+          fontSize: '3.6rem',
+        },
       },
     });
-    return theme;
+    return themeConfig;
   }
 
   render() {
@@ -58,7 +102,7 @@ export class AppComponent extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  theme: state.heroSettings.theme,
+  themeType: state.heroSettings.theme,
 });
 
-export const App = connect(mapState)(AppComponent);
+export const App = connect(mapState)(withTheme()(AppComponent));

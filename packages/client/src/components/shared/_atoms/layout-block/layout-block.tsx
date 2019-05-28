@@ -41,6 +41,7 @@ interface LayoutBlockProps {
   left?: string;
   right?: string;
   bottom?: string;
+  wrap?: boolean;
   insideElementsMargin?: boolean;
   className?: string;
   styles?: { [key: string]: string };
@@ -69,6 +70,7 @@ export const LayoutBlock = withStyles(css)(
         [props.classes.relative]: !!props.relative,
         [props.classes.insideElementsMargin]: !!props.insideElementsMargin,
         [props.classes.fullHeight]: !!props.fullHeight,
+        [props.classes.wrap]: !!props.wrap,
         [props.className]: !!props.className,
       }
     );

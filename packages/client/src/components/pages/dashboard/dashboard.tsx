@@ -12,8 +12,14 @@ import { DodayApp } from '@root/components/shell/doday-app';
 import { ToolBeacon } from '@root/tools/types';
 import { Store } from '../store';
 import { LayoutBlock } from '@root/components/shared';
+import { WithStyles, Theme, createStyles, withStyles } from '@material-ui/core';
 
-const css = require('./_dashboard.module.scss');
+const css = (theme: Theme) =>
+  createStyles({
+    mainContentContainer: {
+      height: 'calc(100vh - 64px)',
+    },
+  });
 
 interface DashboardProps {
   activeTools: ToolBeacon[];
@@ -21,12 +27,14 @@ interface DashboardProps {
   isDodayAppCollapsed: boolean;
 }
 
-export class Dashboard extends React.Component<DashboardProps> {
+export class DashboardComponent extends React.Component<
+  DashboardProps & WithStyles
+> {
   render() {
-    const { isDodayAppCollapsed, activeTools } = this.props;
+    const { activeTools, classes } = this.props;
 
     return (
-      <LayoutBlock flex={'1'}>
+      <LayoutBlock flex={'1'} className={classes.mainContentContainer}>
         {activeTools.map((tool, index) => (
           <Route
             key={index}
@@ -56,3 +64,5 @@ export class Dashboard extends React.Component<DashboardProps> {
     );
   }
 }
+
+export const Dashboard = withStyles(css)(DashboardComponent);

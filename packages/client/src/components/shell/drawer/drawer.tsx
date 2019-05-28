@@ -169,7 +169,7 @@ export class DrawerComponent extends React.Component<
   }
 
   render() {
-    const { collapsed, toolBeacons, history, dodayAppRoute, t } = this.props;
+    const { collapsed } = this.props;
     const classNames = classnames({
       [css.drawerContainerCollapsed]: collapsed,
       [css.drawerContainer]: !collapsed,
