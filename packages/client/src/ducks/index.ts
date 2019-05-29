@@ -7,6 +7,7 @@ import * as auth from '@ducks/auth';
 import * as herosettings from '@ducks/hero-settings';
 import * as api from '@ducks/api';
 import * as store from '@ducks/store';
+import * as toast from '@ducks/toast';
 import { toolBeacons } from '@tools';
 
 const ducks: any = {
@@ -18,6 +19,7 @@ const ducks: any = {
   payments,
   api,
   store,
+  toast,
 };
 
 toolBeacons.map(tool => {

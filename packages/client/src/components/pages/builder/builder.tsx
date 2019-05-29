@@ -28,7 +28,6 @@ export class Builder extends React.Component<
 > {
   componentDidUpdate(prevProps) {
     if (this.props.success) {
-      this.props.history.push('/');
       this.props.clearBuilderActionCreator();
       this.props.setBuilderSuccessFlagActionCreator(undefined);
     }
@@ -48,7 +47,9 @@ export class Builder extends React.Component<
           <Route
             key={entity.name}
             path={`/builder/${entity.name}`}
-            render={() => <Builder activeTools={activeTools} />}
+            render={routerProps => (
+              <Builder {...routerProps} activeTools={activeTools} />
+            )}
           />
         );
       })

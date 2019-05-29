@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
+import * as cuid from 'cuid';
 import { RouteComponentProps, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dashboard } from '@components';
@@ -15,6 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import FaceIcon from '@material-ui/icons/Face';
+import AppsIcon from '@material-ui/icons/Apps';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
@@ -56,6 +58,7 @@ import { withTranslation, WithTranslation } from 'react-i18next';
 interface DesktopShellProps extends RouteComponentProps {}
 
 interface PropsFromConnect {
+  dodayAppRoute: string;
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
   hero: Hero;
@@ -234,7 +237,11 @@ class DesktopShell extends React.Component<
                   key={tool.text}
                   onClick={() => {
                     this.props.changeDodayAppRouteActionCreator(tool.route);
-                    history.push(tool.route);
+                    if (this.props.dodayAppRoute !== tool.route) {
+                    }
+                    if (this.props.dodayAppRoute === tool.route) {
+                      history.push(tool.route);
+                    }
                     this.props.clearSelectedDodayActionCreator();
                   }}
                 >
@@ -248,6 +255,22 @@ class DesktopShell extends React.Component<
                 </ListItem>
               );
             })}
+            <ListItem
+              button
+              key={cuid()}
+              onClick={() => {
+                history.push('/store');
+                this.props.clearSelectedDodayActionCreator();
+              }}
+            >
+              <ListItemIcon>
+                <AppsIcon fontSize={'large'} />
+              </ListItemIcon>
+              <ListItemText
+                primary={'Store'}
+                primaryTypographyProps={{ variant: 'body1' }}
+              />
+            </ListItem>
           </List>
         </Drawer>
         <main className={classes.content}>
@@ -286,6 +309,7 @@ const mapState = (state: RootState) => ({
   isDodayAppCollapsed: state.heroSettings.isDodayAppCollapsed,
   hero: state.auth.hero,
   activeTools: state.auth.activeTools,
+  dodayAppRoute: state.dodayApp.status.route,
 });
 
 export default connect(

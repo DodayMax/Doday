@@ -24,6 +24,7 @@ import {
   SerializedProgressLike,
 } from '@root/tools/types';
 import { Resource } from '@root/lib/models/entities/resource';
+import { openToastActionCreator } from '@root/ducks/toast/actions';
 
 /**
  * Create Doday node and relations to Hero
@@ -119,6 +120,12 @@ export function* createAndTakeDodayActionSaga(
   yield all(sideEffects);
   yield call(api.dodays.mutations.createAndTakeDodayMutation, serialized);
   yield put(setBuilderSuccessFlagActionCreator(true));
+  yield put(
+    openToastActionCreator({
+      open: true,
+      messages: ['Your new Activity created!'],
+    })
+  );
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 
@@ -170,6 +177,12 @@ export function* takeDodayActionSaga(action: TakeDodayAction) {
     did: action.payload.did,
     progress: serialized,
   });
+  yield put(
+    openToastActionCreator({
+      open: true,
+      messages: ['Taken!'],
+    })
+  );
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -202,6 +215,12 @@ export function* deleteDodayActionSaga(action: DeleteDodayAction) {
   });
   yield all(sideEffects);
   yield call(api.dodays.mutations.deleteDodayMutation, action.payload.did);
+  yield put(
+    openToastActionCreator({
+      open: true,
+      messages: ['Your doday is deleted!'],
+    })
+  );
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 
@@ -238,6 +257,12 @@ export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   }
   yield all(sideEffects);
   yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
+  yield put(
+    openToastActionCreator({
+      open: true,
+      messages: ['Untaken!'],
+    })
+  );
   yield put(setDodayDetailsLoadingStateActionCreator(false));
 }
 

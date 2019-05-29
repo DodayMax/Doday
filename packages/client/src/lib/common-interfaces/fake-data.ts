@@ -131,6 +131,12 @@ export const rootState: RootState = {
   heroSettings: initialHeroSettingsState,
   tools: {},
   store: initialStoreState,
+  toast: {
+    open: false,
+    type: 'success',
+    messages: [],
+    autoHideDuration: 3000,
+  },
 };
 
 export const stripeToken: Token = {

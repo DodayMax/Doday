@@ -14,6 +14,7 @@ import { Shell, DesktopShell } from '@components';
 import { RootState } from './lib/models';
 import { ThemeType } from './lib/common-interfaces';
 import { colors } from '@styles/dodayColors';
+import { Toast } from './containers';
 
 interface AppProps {}
 
@@ -96,6 +97,7 @@ export class AppComponent extends React.Component<
             </Media>
           </React.Suspense>
         </div>
+        <Toast />
       </MuiThemeProvider>
     );
   }

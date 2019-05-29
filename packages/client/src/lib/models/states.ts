@@ -7,7 +7,7 @@ import {
   ToolsBuilderState,
   ProgressLike,
 } from '@root/tools/types';
-import { DodayAppQueryParams } from '../common-interfaces';
+import { DodayAppQueryParams, ToastType } from '../common-interfaces';
 
 export interface RootState {
   auth: AuthState;
@@ -17,6 +17,7 @@ export interface RootState {
   heroSettings: HeroSettingsState;
   store: StoreState;
   tools: ToolsState;
+  toast: ToastState;
 }
 
 export interface DodayAppStatusState {
@@ -55,4 +56,11 @@ export interface DodayDetailsState {
   dirty?: boolean;
   updates?: Partial<ProgressLike>;
   selectedDoday?: DodayLike;
+}
+
+export interface ToastState {
+  open: boolean;
+  type?: ToastType;
+  messages: string[];
+  autoHideDuration?: number;
 }

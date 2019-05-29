@@ -74,23 +74,13 @@ export class ActivityDodayAppComponentClass extends React.Component<
     const { routeParams, dodays, myDID } = this.props;
     if (!dodays) return [];
     if (!routeParams.completed && !routeParams.published) {
-      return Object.values(
-        filterObject(
-          dodays,
-          doday => doday.progress && !doday.progress.completed
-        )
+      return dodays.filter(
+        doday => doday.progress && !doday.progress.completed
       );
     } else if (routeParams.completed) {
-      return Object.values(
-        filterObject(
-          dodays,
-          doday => doday.progress && doday.progress.completed
-        )
-      );
+      return dodays.filter(doday => doday.progress && doday.progress.completed);
     } else if (routeParams.published) {
-      return Object.values(
-        filterObject(dodays, doday => doday.public && doday.ownerDID === myDID)
-      );
+      return dodays.filter(doday => doday.public && doday.ownerDID === myDID);
     }
   }
 

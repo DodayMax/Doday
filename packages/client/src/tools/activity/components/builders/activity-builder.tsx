@@ -40,14 +40,8 @@ import {
   SetActivityTypeAction,
   PinActivityAction,
 } from '../../duck/actions';
-import {
-  SerializedActivity,
-  SerializedActivityProgress,
-  ActivityProgress,
-  Activity,
-} from '../../entities/activity';
+import { ActivityProgress, Activity } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
-import DoneIcon from '@material-ui/icons/Done';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   createStyles,
@@ -65,6 +59,7 @@ import {
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
 import { config } from '@root/styles/config';
+import { RouteComponentProps } from 'react-router';
 
 const vars = require('@styles/_config.scss');
 
@@ -131,6 +126,7 @@ interface ActivityBuilderState {
 type Props = ActivityBuilderProps &
   WithTools &
   Partial<PropsFromConnect> &
+  Partial<RouteComponentProps> &
   WithTranslation &
   WithStyles;
 
@@ -233,6 +229,7 @@ export class ActivityBuilderComponentClass extends React.Component<
         resource,
       });
     }
+    this.props.history.push('/activities');
   };
 
   handleEstimateTimeChange = props => {

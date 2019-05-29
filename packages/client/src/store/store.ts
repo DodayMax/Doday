@@ -51,6 +51,7 @@ const rootReducer = combineReducers<RootState>({
         ...spreadToolsMainReducers(),
       })
     : undefined,
+  toast: ducks.toast.default,
 });
 
 function* rootSaga() {

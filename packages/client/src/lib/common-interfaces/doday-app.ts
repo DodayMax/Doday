@@ -21,3 +21,5 @@ export type DodayAppQueryParams = {
 };
 
 export type ThemeType = 'dark' | 'light';
+
+export type ToastType = 'success' | 'error' | 'warning' | 'info';
