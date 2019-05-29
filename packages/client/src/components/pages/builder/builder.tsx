@@ -9,7 +9,7 @@ import {
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 
-import { Pageflow } from '../../shared/_support/pageflow';
+import { Pageflow } from '../../shared/_decorators/pageflow';
 import { WithTools } from '@root/tools/types';
 
 export interface BuilderProps {}

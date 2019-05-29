@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 import { Space } from '@root/lib/common-interfaces';
-import { Page, PageHeader } from '@shared/_molecules/page';
+import { Page, PageHeader, PageHeaderAction } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { Icons, CustomDatePicker } from '@shared';
+import { Icons, CustomDatePicker, withDialog, WithDialog } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
@@ -23,7 +23,7 @@ import {
   RequestForSetUpdatesAction,
   ClearDodayDetailsDirtyStuffAction,
 } from '@root/ducks/doday-details/actions';
-import { Pageflow } from '@root/components/shared/_support/pageflow';
+import { Pageflow } from '@root/components/shared/_decorators/pageflow';
 import {
   UpdateDodayAction,
   DeleteDodayAction,
@@ -92,7 +92,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps<any>> &
     WithTranslation &
-    WithStyles,
+    WithStyles &
+    WithDialog,
   ActivityProgressDetailsState
 > {
   componentWillUnmount() {
@@ -119,43 +120,55 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   actions = () => {
     const { history, selectedDoday, classes, t } = this.props;
 
-    const actions = [];
+    const actions: PageHeaderAction[] = [];
 
     // Add untake action for public dodays
     if (selectedDoday.public) {
-      actions.push(
-        <MenuItem
-          key={cuid()}
-          onClick={() => {
-            this.props.untakeDodayActionCreator({
-              did: selectedDoday.did,
-              type: selectedDoday.type,
-            });
-            history.push('/');
-          }}
-        >
-          {t('activities:details.actions.untake')}
-        </MenuItem>
-      );
+      actions.push({
+        title: t('activities:details.actions.untake'),
+        action: () => {
+          this.props.untakeDodayActionCreator({
+            did: selectedDoday.did,
+            type: selectedDoday.type,
+          });
+          history.push('/');
+        },
+      });
     }
 
     // Add owner actions
     if (this.isOwner) {
-      actions.push(
-        <MenuItem
-          key={cuid()}
-          onClick={() => {
-            this.props.deleteDodayActionCreator({
-              did: selectedDoday.did,
-              type: selectedDoday.type,
-            });
-            history.push('/');
-          }}
-          className={classes.delete}
-        >
-          {t('activities:details.actions.delete')}
-        </MenuItem>
-      );
+      actions.push({
+        title: t('activities:details.actions.delete'),
+        action: () => {
+          this.props.openDialog({
+            open: true,
+            title: 'Are you sure want to delete this doday?',
+            actions: [
+              <Button
+                onClick={() => {
+                  this.props.closeDialog();
+                }}
+              >
+                No
+              </Button>,
+              <Button
+                onClick={() => {
+                  this.props.closeDialog();
+                  this.props.deleteDodayActionCreator({
+                    did: selectedDoday.did,
+                    type: selectedDoday.type,
+                  });
+                  history.push('/');
+                }}
+              >
+                Yes
+              </Button>,
+            ],
+          });
+        },
+        className: classes.delete,
+      });
     }
 
     return actions;
@@ -455,9 +468,11 @@ export const ActivityProgressDetails = connect(
     ...dodaysApiActions,
   }
 )(
-  withStyles(css)(
-    withTranslation(['shell', 'activities'])(
-      ActivityProgressDetailsComponentClass
+  withDialog(
+    withStyles(css)(
+      withTranslation(['shell', 'activities'])(
+        ActivityProgressDetailsComponentClass
+      )
     )
   )
 );

@@ -6,7 +6,7 @@ import * as detailsActions from '@ducks/doday-details/actions';
 import {
   Pageflow,
   PageWrapperChildContext,
-} from '@root/components/shared/_support/pageflow';
+} from '@root/components/shared/_decorators/pageflow';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
 

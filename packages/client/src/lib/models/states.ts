@@ -18,6 +18,7 @@ export interface RootState {
   store: StoreState;
   tools: ToolsState;
   toast: ToastState;
+  dialog: DialogState;
 }
 
 export interface DodayAppStatusState {
@@ -63,4 +64,11 @@ export interface ToastState {
   type?: ToastType;
   messages: string[];
   autoHideDuration?: number;
+}
+
+export interface DialogState {
+  open: boolean;
+  title: string;
+  message?: string;
+  actions: React.ReactNode[];
 }

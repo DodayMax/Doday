@@ -52,6 +52,7 @@ const rootReducer = combineReducers<RootState>({
       })
     : undefined,
   toast: ducks.toast.default,
+  dialog: ducks.dialog.default,
 });
 
 function* rootSaga() {

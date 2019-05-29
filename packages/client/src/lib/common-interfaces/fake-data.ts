@@ -15,6 +15,7 @@ import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
 import { initialStoreState } from '@root/ducks/store/reducer';
 import { Token } from 'react-stripe-checkout';
 import { Resource, SerializedResource } from '../models/entities/resource';
+import { initialDialogState } from '@root/ducks/dialog/reducer';
 
 export const hero: Hero = {
   did: 'test did',
@@ -137,6 +138,7 @@ export const rootState: RootState = {
     messages: [],
     autoHideDuration: 3000,
   },
+  dialog: initialDialogState,
 };
 
 export const stripeToken: Token = {

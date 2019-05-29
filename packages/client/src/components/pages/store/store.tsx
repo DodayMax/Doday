@@ -4,7 +4,7 @@ import { actions } from '@ducks/store';
 import { Text } from '../../shared/_atoms/typography';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 import { TypographySize, Space } from '@root/lib/common-interfaces';
-import { Pageflow } from '../../shared/_support/pageflow';
+import { Pageflow } from '../../shared/_decorators/pageflow';
 import { RootState } from '@root/lib/models';
 import { FetchPublicDodaysForStoreAction } from '@root/ducks/store/actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';

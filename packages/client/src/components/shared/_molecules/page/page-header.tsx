@@ -1,11 +1,12 @@
 import * as React from 'react';
+import * as cuid from 'cuid';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { config } from '@styles/config';
 import { LayoutBlock } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
 import { RootState } from '@root/lib/models';
-import { PageWrapperChildContext } from '../../_support/pageflow';
+import { PageWrapperChildContext } from '../../_decorators/pageflow';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
@@ -28,10 +29,16 @@ const css = (theme: Theme) =>
     },
   });
 
+export interface PageHeaderAction {
+  title: string;
+  action: () => void;
+  className?: string;
+}
+
 interface PageHeaderProps extends Partial<RouteComponentProps> {
   status?: React.ReactElement<any>[];
   /** Use actions to add items to collapsed action menu */
-  actions?: React.ReactElement<any>[];
+  actions?: PageHeaderAction[];
   withClose?: boolean;
   onClose?: () => void;
 }
@@ -112,7 +119,18 @@ class PageHeaderComponentClass extends React.Component<
                   },
                 }}
               >
-                {actions}
+                {actions.map(item => (
+                  <MenuItem
+                    key={cuid()}
+                    onClick={() => {
+                      this.handleClose();
+                      item.action();
+                    }}
+                    className={item.className}
+                  >
+                    {item.title}
+                  </MenuItem>
+                ))}
               </Menu>
             </>
           )}

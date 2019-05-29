@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import * as detailsActions from '@ducks/doday-details/actions';
-import { PageWrapperChildContext } from '@root/components/shared/_support/pageflow';
+import { PageWrapperChildContext } from '@root/components/shared/_decorators/pageflow';
 import { RootState } from '@root/lib/models';
 import { DodayLike, WithTools } from '@root/tools/types';
 

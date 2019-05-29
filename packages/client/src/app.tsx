@@ -14,7 +14,7 @@ import { Shell, DesktopShell } from '@components';
 import { RootState } from './lib/models';
 import { ThemeType } from './lib/common-interfaces';
 import { colors } from '@styles/dodayColors';
-import { Toast } from './containers';
+import { Toast, DodayDialog } from './containers';
 
 interface AppProps {}
 
@@ -32,6 +32,7 @@ export class AppComponent extends React.Component<
   AppProps & Partial<PropsFromConnect> & TranslationProps & WithTheme
 > {
   private get theme() {
+    console.log('theme');
     const { theme, themeType } = this.props;
     const themeConfig = createMuiTheme({
       palette: {
@@ -98,6 +99,7 @@ export class AppComponent extends React.Component<
           </React.Suspense>
         </div>
         <Toast />
+        <DodayDialog />
       </MuiThemeProvider>
     );
   }

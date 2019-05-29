@@ -10,8 +10,8 @@ const css = (theme: Theme) =>
       width: '80%',
       margin: '0 auto',
       position: 'relative',
-      padding: `${theme.spacing.unit * 2}`,
       color: theme.palette.action.active,
+      marginBottom: `${theme.spacing.unit * 3}px`,
     },
     scroll: {
       width: '100%',

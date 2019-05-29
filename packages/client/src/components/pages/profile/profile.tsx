@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text } from '../../shared/_atoms/typography';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 import { TypographySize } from '@root/lib/common-interfaces';
-import { Pageflow } from '../../shared/_support/pageflow';
+import { Pageflow } from '../../shared/_decorators/pageflow';
 
 @Pageflow({ path: '/profile' })
 export class Profile extends React.Component {

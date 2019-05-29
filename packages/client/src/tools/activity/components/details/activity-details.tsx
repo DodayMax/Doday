@@ -23,7 +23,7 @@ import {
   RequestForSetUpdatesAction,
   ClearDodayDetailsDirtyStuffAction,
 } from '@root/ducks/doday-details/actions';
-import { Pageflow } from '@root/components/shared/_support/pageflow';
+import { Pageflow } from '@root/components/shared/_decorators/pageflow';
 import {
   TakeDodayAction,
   UntakeDodayAction,
@@ -258,7 +258,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                 <div
                   className={classes.videoWrapper}
                   style={{
-                    background: `url(${preview})`,
+                    backgroundImage: `url(${preview})`,
                     backgroundSize: 'contain',
                   }}
                 >
@@ -273,7 +273,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                 <div
                   className={classes.videoWrapper}
                   style={{
-                    background: `url(${preview})`,
+                    backgroundImage: `url(${preview})`,
                     backgroundSize: 'contain',
                   }}
                 />
