@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { ClickableIcon } from '../../_atoms/clickable-icon/clickable-icon';
-import { Marker } from '../../_atoms/marker';
 import { LayoutBlock } from '../../_atoms/layout-block';
 import ArrowLeft from '@material-ui/icons/ArrowLeft';
 import ArrowRight from '@material-ui/icons/ArrowRight';
@@ -9,6 +7,7 @@ import {
   withStyles,
   createStyles,
   WithStyles,
+  Chip,
 } from '@material-ui/core';
 
 const css = theme =>
@@ -72,7 +71,7 @@ export class SwitcherComponent extends React.Component<
         {render ? (
           render(items[currentIndex])
         ) : (
-          <Marker rounded text={items[currentIndex].sysname} />
+          <Chip label={items[currentIndex].sysname} />
         )}
         <IconButton
           className={classes.iconButton}

@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { Text, LayoutBlock, ClickableIcon, Icons } from '@shared';
+import { LayoutBlock, Icons } from '@shared';
+import { Space } from '@root/lib/common-interfaces';
+import { css } from './css.parsed-url-view';
 import {
-  TypographyColor,
-  TypographySize,
-  Space,
-} from '@root/lib/common-interfaces';
-import { AnyAction } from 'redux';
-
-const vars = require('@styles/_config.scss');
-const css = require('./_parsed-url-view.module.scss');
+  WithStyles,
+  withStyles,
+  IconButton,
+  Typography,
+} from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface ParsedUrlViewProps {
   loading?: boolean;
@@ -16,9 +16,9 @@ interface ParsedUrlViewProps {
   onClose?: () => void;
 }
 
-export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
-  render() {
-    const { loading, parsedMetadata, onClose } = this.props;
+export const ParsedUrlView = withStyles(css)(
+  (props: ParsedUrlViewProps & WithStyles) => {
+    const { loading, parsedMetadata, onClose, classes } = props;
     return (
       <>
         {loading && (
@@ -35,23 +35,25 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
         )}
         {!loading && parsedMetadata && (
           <LayoutBlock direction="column">
-            <div className={css.builderAttachmentContainer}>
+            <div className={classes.builderAttachmentContainer}>
               {onClose && (
-                <div className={css.builderAttachmentCloseIconContainer}>
-                  <ClickableIcon backdrop onClick={onClose}>
-                    <Icons.CloseCircle color={vars.gray3} />
-                  </ClickableIcon>
+                <div className={classes.builderAttachmentCloseIconContainer}>
+                  <IconButton onClick={onClose}>
+                    <CloseIcon />
+                  </IconButton>
                 </div>
               )}
               <img
-                className={css.builderAttachmentImage}
+                className={classes.builderAttachmentImage}
                 src={parsedMetadata ? parsedMetadata.image || '' : ''}
               />
-              <div className={css.builderAttachmentTextContainer}>
-                <Text>{parsedMetadata ? parsedMetadata.title || '' : ''}</Text>
-                <Text color={TypographyColor.Disabled} size={TypographySize.s}>
+              <div className={classes.builderAttachmentTextContainer}>
+                <Typography variant="body1">
+                  {parsedMetadata ? parsedMetadata.title || '' : ''}
+                </Typography>
+                <Typography color="textSecondary" variant="caption">
                   {parsedMetadata ? parsedMetadata.url || '' : ''}
-                </Text>
+                </Typography>
               </div>
             </div>
           </LayoutBlock>
@@ -59,4 +61,4 @@ export class ParsedUrlView extends React.Component<ParsedUrlViewProps> {
       </>
     );
   }
-}
+);

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as Loadable from 'react-loadable';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import { DodayTopBar } from '@components';
 
 const LoadableComponent = Loadable({
   loader: () => import('./mobile-shell'),
@@ -13,7 +12,6 @@ export class Shell extends React.Component {
     return (
       <Router>
         <div className="shell_container">
-          <DodayTopBar coins={50} energy={8} />
           <Route path="/" component={LoadableComponent} />
         </div>
       </Router>

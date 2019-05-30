@@ -51,7 +51,7 @@ import { toolBeacons } from '@root/tools';
 import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
 import { ClearSelectedDodayAction } from '@root/ducks/doday-details/actions';
 
-import { css } from './desktop-shell.styles';
+import { css } from './css.desktop-shell';
 import { DodayApp } from './doday-app';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
@@ -174,7 +174,7 @@ class DesktopShell extends React.Component<
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="subtitle1" noWrap className={classes.white}>
+            <Typography variant="subtitle2" noWrap className={classes.white}>
               Welcome to the Doday app!
             </Typography>
             {hero ? (

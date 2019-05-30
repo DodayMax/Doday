@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { Text, LayoutBlock } from '@shared';
+import { LayoutBlock } from '@shared';
 import { TypographySize } from '@root/lib/common-interfaces';
-import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
+import {
+  createStyles,
+  Theme,
+  withStyles,
+  WithStyles,
+  Typography,
+} from '@material-ui/core';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -33,7 +39,7 @@ export class DefaultTopBarComponent extends React.Component<
           <LayoutBlock flex={'1'}>{this.props.leftAction}</LayoutBlock>
         )}
         <LayoutBlock flex={'2'} align="flexCenter">
-          <Text size={TypographySize.s}>{this.props.title}</Text>
+          <Typography variant="body2">{this.props.title}</Typography>
         </LayoutBlock>
         {this.props.rightAction && (
           <LayoutBlock align="flexEnd" flex={'1'}>

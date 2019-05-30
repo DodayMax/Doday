@@ -1,9 +1,7 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
-import * as moment from 'moment';
 import { connect } from 'react-redux';
 import Slider, { Handle } from 'rc-slider';
-import AsyncCreatableSelect from 'react-select/lib/AsyncCreatable';
 import {
   LayoutBlock,
   Icons,
@@ -13,12 +11,8 @@ import {
 } from '@shared';
 import { Space, ActivityType } from '@root/lib/common-interfaces';
 import { detectURL, durationToLabel } from '@root/lib/utils';
-import { Tag } from '@root/lib/models/entities/tag';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
-import {
-  SerializedResource,
-  Resource,
-} from '@root/lib/models/entities/resource';
+import { Resource } from '@root/lib/models/entities/resource';
 import * as activitiesBuilderActions from '../../duck';
 import * as dodaysApiActions from '@ducks/api/dodays-api-actions';
 import { RootState } from '@root/lib/models';
@@ -27,8 +21,6 @@ import {
   CreateAndTakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
 import {
-  SerializedDodayLike,
-  SerializedProgressLike,
   WithTools,
   DodayType,
   DodayLike,
@@ -60,8 +52,6 @@ import {
 import { TooltipProps } from '@material-ui/core/Tooltip';
 import { config } from '@root/styles/config';
 import { RouteComponentProps } from 'react-router';
-
-const vars = require('@styles/_config.scss');
 
 const css = (theme: Theme) =>
   createStyles({
@@ -281,7 +271,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             <Switcher
               items={this.activitTypesSwitcherItems}
               onChange={item => setActivityTypeActionCreator(item)}
-              render={type => activityIconByType(type, 30, vars.gray8)}
+              render={type => activityIconByType(type, 30, config.colors.grey8)}
             />
           )}
         </LayoutBlock>
@@ -460,7 +450,7 @@ export class ActivityBuilderComponentClass extends React.Component<
 export const activityIconByType = (
   type: ActivityType,
   size = 20,
-  color = vars.black,
+  color = config.colors.black,
   tooltipPlacement: TooltipProps['placement'] = 'top'
 ) => {
   switch (type) {

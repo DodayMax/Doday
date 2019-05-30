@@ -39,7 +39,6 @@ import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
   WithStyles,
   withStyles,
-  MenuItem,
   IconButton,
   Typography,
   Button,
@@ -48,7 +47,7 @@ import {
   Tooltip,
 } from '@material-ui/core';
 
-import { css } from './details.styles';
+import { css } from './css.details';
 
 interface ActivityProgressDetailsProps {}
 

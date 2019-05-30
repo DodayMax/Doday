@@ -42,7 +42,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { css } from './details.styles';
+import { css } from './css.details';
 
 interface ActivityDetailsProps {}
 

@@ -5,8 +5,6 @@ import { Space } from '@root/lib/common-interfaces';
 import { WithTranslation } from 'react-i18next';
 import { Divider } from '@material-ui/core';
 
-const css = require('./filter.module.scss');
-
 interface FilterProps {
   items: FilterItem[];
   hidden?: boolean;

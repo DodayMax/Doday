@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { Icons } from '@shared';
-import { ActivityType } from '@root/lib/common-interfaces';
-import { activityIconByType } from '@root/tools/activity/components/builders/activity-builder';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
 
 interface CheckboxProps {

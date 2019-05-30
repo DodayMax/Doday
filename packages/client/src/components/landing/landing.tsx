@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { LayoutBlock } from '../shared/_atoms/layout-block';
+import { css } from './css.landing';
+import { withStyles, WithStyles } from '@material-ui/core';
 
-const css = require('./_landing.module.scss');
+interface LandingProps {}
 
-export class Landing extends React.Component {
-  render() {
-    return <LayoutBlock className={css.landingContainer} />;
-  }
-}
+export const Landing = withStyles(css)((props: LandingProps & WithStyles) => {
+  return <LayoutBlock className={props.classes.landingContainer} />;
+});

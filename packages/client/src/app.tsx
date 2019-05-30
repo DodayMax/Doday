@@ -74,8 +74,36 @@ export class AppComponent extends React.Component<
       typography: {
         useNextVariants: true,
         htmlFontSize: 10,
+        fontFamily: [
+          'Avenir',
+          'Roboto',
+          '"Helvetica Neue"',
+          'Arial',
+          'sans-serif',
+          '"Apple Color Emoji"',
+          '"Segoe UI Emoji"',
+          '"Segoe UI Symbol"',
+        ].join(','),
+        h1: {
+          fontSize: '5rem',
+          fontFamily: 'Avenir Light',
+        },
         h2: {
-          fontSize: '3.6rem',
+          fontSize: '3.2rem',
+          fontFamily: 'Avenir Light',
+        },
+        h3: {
+          fontSize: '3rem',
+          fontFamily: 'Avenir Medium',
+        },
+        subtitle1: {
+          fontSize: '2rem',
+          fontFamily: 'Avenir Medium',
+          textTransform: 'uppercase',
+        },
+        subtitle2: {
+          fontSize: '2rem',
+          fontFamily: 'Avenir Medium',
         },
       },
     });

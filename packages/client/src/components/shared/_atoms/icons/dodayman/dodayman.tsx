@@ -1,14 +1,13 @@
 import * as React from 'react';
 import { IconProps } from '../names';
-
-const vars = require('@styles/_config.scss');
+import { config } from '@styles/config';
 
 interface DodaymanProps extends IconProps {}
 
 export const Dodayman = ({
   width = 20,
   height = 20,
-  color = vars.black,
+  color = config.colors.black,
 }: DodaymanProps) => {
   return (
     <svg

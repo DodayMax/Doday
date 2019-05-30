@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Text } from '../../shared/_atoms/typography';
 import { Page, PageHeader } from '../../shared/_molecules/page';
-import { TypographySize } from '@root/lib/common-interfaces';
 import { Pageflow } from '../../shared/_decorators/pageflow';
+import { Typography } from '@material-ui/core';
 
 @Pageflow({ path: '/profile' })
 export class Profile extends React.Component {
@@ -15,7 +14,7 @@ export class Profile extends React.Component {
           </PageHeader>
         }
       >
-        <Text size={TypographySize.h1}>Profile</Text>
+        <Typography variant="h2">Profile</Typography>
       </Page>
     );
   }

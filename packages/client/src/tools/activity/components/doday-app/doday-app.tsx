@@ -78,7 +78,11 @@ export class ActivityDodayAppComponentClass extends React.Component<
         doday => doday.progress && !doday.progress.completed
       );
     } else if (routeParams.completed) {
-      return dodays.filter(doday => doday.progress && doday.progress.completed);
+      return dodays
+        .filter(doday => doday.progress && doday.progress.completed)
+        .sort((a, b) =>
+          a.progress.completedAt < b.progress.completedAt ? 1 : -1
+        );
     } else if (routeParams.published) {
       return dodays.filter(doday => doday.public && doday.ownerDID === myDID);
     }

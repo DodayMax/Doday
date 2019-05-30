@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { IconProps } from '../names';
-
-const vars = require('@styles/_config.scss');
-const styles = require('./_pie-chart.module.scss');
+import { config } from '@styles/config';
 
 interface PieChartProps extends IconProps {
   active?: boolean;
@@ -12,7 +10,7 @@ export const PieChart = ({
   width = 20,
   height = 20,
   active = false,
-  color = vars.black,
+  color = config.colors.black,
 }: PieChartProps) => {
   return (
     <svg
@@ -29,7 +27,7 @@ export const PieChart = ({
         />
         <path
           d="M14.724 9.163V3.58h.347c.767 0 2.643.14 3.939 1.396 1.428 1.395 1.428 4.186 1.428 4.186h-5.714z"
-          fill={active ? vars.yellowLight : vars.dark}
+          fill={active ? config.colors.yellowLight : config.colors.black}
         />
         <path
           d="M18.533 11.488h-6.19V5.442c0-.77-.64-1.395-1.429-1.395-4.728 0-8.571 3.883-8.571 8.837 0 4.795 3.662 8.837 8.571 8.837 4.968-.068 8.979-3.985 9.048-8.837 0-.77-.64-1.396-1.429-1.396zm-7.619 8.838c-4.128 0-7.143-3.41-7.143-7.442 0-4.033 3.015-7.442 7.143-7.442v7.442h7.62c-.057 4.087-3.435 7.387-7.62 7.442z"

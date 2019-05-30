@@ -1,75 +1,7 @@
-import { DodayColor, ActivityType } from '../common-interfaces';
 import { Hero } from '../models/entities/hero';
 import { ToolBeacon, ProgressLike, DodayLike } from '@root/tools/types';
 import { toolBeacons } from '@root/tools';
-
-const vars = require('@styles/_config.scss');
-
-export const detectColor: (color?: DodayColor) => string = color => {
-  if (color != null) {
-    switch (color) {
-      case DodayColor.blue:
-        return vars.blue;
-      case DodayColor.blueLight:
-        return vars.blueLight;
-      case DodayColor.blueDark:
-        return vars.blueDark;
-      case DodayColor.yellow:
-        return vars.yellow;
-      case DodayColor.yellowLight:
-        return vars.yellowLight;
-      case DodayColor.yellowDark:
-        return vars.yellowDark;
-      case DodayColor.green:
-        return vars.green;
-      case DodayColor.greenLight:
-        return vars.greenLight;
-      case DodayColor.greenDark:
-        return vars.greenDark;
-      case DodayColor.violet:
-        return vars.violet;
-      case DodayColor.violetLight:
-        return vars.violetLight;
-      case DodayColor.violetDark:
-        return vars.violetDark;
-      case DodayColor.red:
-        return vars.red;
-      case DodayColor.redLight:
-        return vars.redLight;
-      case DodayColor.redDark:
-        return vars.redDark;
-      case DodayColor.gray1:
-        return vars.gray1;
-      case DodayColor.gray2:
-        return vars.gray2;
-      case DodayColor.gray3:
-        return vars.gray3;
-      case DodayColor.gray4:
-        return vars.gray4;
-      case DodayColor.gray5:
-        return vars.gray5;
-      case DodayColor.gray6:
-        return vars.gray6;
-      case DodayColor.gray7:
-        return vars.gray7;
-      case DodayColor.gray8:
-        return vars.gray8;
-      case DodayColor.gray9:
-        return vars.gray9;
-      case DodayColor.gray10:
-        return vars.gray10;
-      default:
-        return undefined;
-    }
-  }
-};
-
-export const activityTypeColor = (type: ActivityType) => {
-  switch (type) {
-    default:
-      return DodayColor.gray3;
-  }
-};
+import { config } from '@styles/config';
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
 
@@ -132,9 +64,9 @@ export const isDirty = (
     updates.date != null);
 
 const standartColorsForGoalsChart = [
-  vars.yellow,
-  vars.green,
-  vars.blue,
-  vars.violet,
-  vars.red,
+  config.colors.yellow,
+  config.colors.green,
+  config.colors.blue,
+  config.colors.violet,
+  config.colors.red,
 ];

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as moment from 'moment';
 import * as classnames from 'classnames';
 import { CellProps } from '@lib/common-interfaces';
 import { Checkbox, Icons } from '@shared';
@@ -16,7 +17,7 @@ import {
   IconButton,
 } from '@material-ui/core';
 
-import { css } from './cell.styles';
+import { css } from './css.cell';
 
 interface ActivityProgressCellProps {
   onComplete?: () => void;
@@ -59,7 +60,11 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
           </IconButton>
           <ListItemText
             primary={activity.name}
-            secondary="July 20, 2014"
+            secondary={
+              activity.progress && activity.progress.completed
+                ? moment(activity.progress.completedAt).format('ll')
+                : ''
+            }
             primaryTypographyProps={{
               variant: 'caption',
             }}

@@ -25,7 +25,27 @@ export class ActivityOverviewComponentClass extends React.Component<
   render() {
     return (
       <Page header={<PageHeader>{this.actions}</PageHeader>}>
+        <Typography variant="h1">{this.props.t('overview.title')}</Typography>
+        <Typography variant="h2">{this.props.t('overview.title')}</Typography>
         <Typography variant="h3">{this.props.t('overview.title')}</Typography>
+        <Typography variant="subtitle1">
+          {this.props.t('overview.title')}
+        </Typography>
+        <Typography variant="subtitle2">
+          {this.props.t('overview.title')}
+        </Typography>
+        <Typography variant="body1">
+          {this.props.t('overview.title')}
+        </Typography>
+        <Typography variant="body2">
+          {this.props.t('overview.title')}
+        </Typography>
+        <Typography variant="caption">
+          {this.props.t('overview.title')}
+        </Typography>
+        <Typography variant="button">
+          {this.props.t('overview.title')}
+        </Typography>
       </Page>
     );
   }

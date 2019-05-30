@@ -1,14 +1,10 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
-import { Drawer, Builder } from '@components';
-import {
-  ToggleDrawerAction,
-  ToggleDodayAppAction,
-} from '@root/ducks/hero-settings/actions';
+import { Builder } from '@components';
+import { ToggleDodayAppAction } from '@root/ducks/hero-settings/actions';
 import { Profile } from '../profile';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
-import { DodayApp } from '@root/components/shell/doday-app';
 import { ToolBeacon } from '@root/tools/types';
 import { Store } from '../store';
 import { LayoutBlock } from '@root/components/shared';
@@ -27,12 +23,9 @@ interface DashboardProps {
   isDodayAppCollapsed: boolean;
 }
 
-export class DashboardComponent extends React.Component<
-  DashboardProps & WithStyles
-> {
-  render() {
-    const { activeTools, classes } = this.props;
-
+export const Dashboard = withStyles(css)(
+  (props: DashboardProps & WithStyles) => {
+    const { activeTools, classes } = props;
     return (
       <LayoutBlock flex={'1'} className={classes.mainContentContainer}>
         {activeTools.map((tool, index) => (
@@ -63,6 +56,4 @@ export class DashboardComponent extends React.Component<
       </LayoutBlock>
     );
   }
-}
-
-export const Dashboard = withStyles(css)(DashboardComponent);
+);

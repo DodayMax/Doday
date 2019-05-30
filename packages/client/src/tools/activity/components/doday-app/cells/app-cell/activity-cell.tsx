@@ -10,14 +10,12 @@ import {
   ListItem,
   ListItemText,
   Typography,
-  Theme,
-  createStyles,
   withStyles,
   WithStyles,
 } from '@material-ui/core';
 import { Progress } from '@root/components/shared/_atoms/progress/progress';
 
-import { css } from './cell.styles';
+import { css } from './css.cell';
 
 interface ActivityCellProps {}
 
@@ -56,7 +54,7 @@ export const ActivityCell = withStyles(css)(
             valign="vflexCenter"
           >
             <Typography variant="body1">{24}</Typography>
-            <Icons.Score width={16} height={16} color={'white'} />
+            <Icons.Score width={16} height={16} />
           </LayoutBlock>
           <LayoutBlock absolute top="0" bottom="0" right="17px">
             <Progress
