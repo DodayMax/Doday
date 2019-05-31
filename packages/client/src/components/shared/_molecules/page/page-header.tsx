@@ -83,7 +83,6 @@ class PageHeaderComponentClass extends React.Component<
       children,
       withClose,
       classes,
-      route,
     } = this.props;
 
     return (
@@ -139,7 +138,7 @@ class PageHeaderComponentClass extends React.Component<
               onClick={() => {
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
-                  this.props.history.push(route);
+                  this.props.history.push('/');
                   if (onClose) {
                     onClose();
                   }

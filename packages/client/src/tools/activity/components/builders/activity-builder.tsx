@@ -144,9 +144,11 @@ export class ActivityBuilderComponentClass extends React.Component<
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
       this.setState({
         dodayName: '',
-        selectedTags: this.state.selectedTags
-          ? this.state.selectedTags.concat(parsedTags)
-          : parsedTags,
+        selectedTags: parsedTags
+          ? this.state.selectedTags
+            ? this.state.selectedTags.concat(parsedTags)
+            : parsedTags
+          : this.state.selectedTags,
       });
     }
 
@@ -219,7 +221,7 @@ export class ActivityBuilderComponentClass extends React.Component<
         resource,
       });
     }
-    this.props.history.push('/activities');
+    this.props.history.push('/');
   };
 
   handleEstimateTimeChange = props => {

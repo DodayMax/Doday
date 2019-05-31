@@ -12,11 +12,6 @@ export default (
         ...state,
         loading: action.payload,
       };
-    case actions.ActionConstants.SET_BUILDER_SUCCESS_FLAG:
-      return {
-        ...state,
-        success: action.payload,
-      };
     case actions.ActionConstants.CLEAR_BUILDER:
       return initialBuilderStatusState;
     default:
@@ -26,5 +21,4 @@ export default (
 
 export type BuilderStatus = {
   loading?: boolean;
-  success?: boolean;
 };

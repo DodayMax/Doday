@@ -64,6 +64,9 @@ export class AppComponent extends React.Component<
               backgroundColor: colors.yellow.main,
             },
           },
+          disabled: {
+            border: `2px solid ${theme.palette.action.disabledBackground}`,
+          },
         },
         MuiTooltip: {
           tooltip: {
@@ -87,23 +90,28 @@ export class AppComponent extends React.Component<
         h1: {
           fontSize: '5rem',
           fontFamily: 'Avenir Light',
+          lineHeight: '6rem',
         },
         h2: {
           fontSize: '3.2rem',
           fontFamily: 'Avenir Light',
+          lineHeight: '3.6rem',
         },
         h3: {
           fontSize: '3rem',
           fontFamily: 'Avenir Medium',
+          lineHeight: '3.6rem',
         },
         subtitle1: {
           fontSize: '2rem',
           fontFamily: 'Avenir Medium',
           textTransform: 'uppercase',
+          lineHeight: '2.6rem',
         },
         subtitle2: {
           fontSize: '2rem',
           fontFamily: 'Avenir Medium',
+          lineHeight: '2.4rem',
         },
       },
     });

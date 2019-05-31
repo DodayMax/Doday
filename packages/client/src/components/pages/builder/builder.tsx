@@ -2,9 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 import { actions as builderActions } from '@ducks/builder';
-import { RootState } from '@root/lib/models';
 import {
-  SetBuilderSuccessFlagAction,
   ClearBuilderAction,
 } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../../shared/_molecules/page';
@@ -16,9 +14,6 @@ export interface BuilderProps {}
 
 interface PropsFromConnect {
   success?: boolean;
-  setBuilderSuccessFlagActionCreator: (
-    state?: boolean
-  ) => SetBuilderSuccessFlagAction;
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
@@ -26,13 +21,6 @@ interface PropsFromConnect {
 export class Builder extends React.Component<
   BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
 > {
-  componentDidUpdate(prevProps) {
-    if (this.props.success) {
-      this.props.clearBuilderActionCreator();
-      this.props.setBuilderSuccessFlagActionCreator(undefined);
-    }
-  }
-
   onRequestClose = () => {
     this.props.clearBuilderActionCreator();
   };
@@ -65,13 +53,9 @@ export class Builder extends React.Component<
   }
 }
 
-const mapState = (state: RootState) => ({
-  success: state.builder.status.success,
-});
-
 export default withRouter(
   connect(
-    mapState,
+    null,
     { ...builderActions }
   )(Builder)
 );

@@ -12,6 +12,7 @@ import 'rc-slider/assets/index.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import '@root/services/i18n';
 import '@styles/_fonts.scss';
+import '@styles/_animations.scss';
 
 const Root = () => (
   <ApolloProvider client={api.client}>

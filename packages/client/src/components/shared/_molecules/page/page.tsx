@@ -18,21 +18,44 @@ const css = (theme: Theme) =>
       height: '100%',
       overflowY: 'scroll',
     },
+    stacked: {
+      position: 'relative',
+      zIndex: 1,
+      backgroundColor: theme.palette.background.default,
+    },
+    static: {
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      right: 0,
+      left: 0,
+      zIndex: 0,
+    },
   });
 
 interface PageProps extends React.HTMLAttributes<HTMLElement> {
   header?: React.ReactElement<any>;
+  /**
+   * Static pages don't stacked on top of another page
+   * (use when you need page without close btn)
+   **/
+  isStatic?: boolean;
 }
 @(withRouter as any)
 export class PageComponent extends React.Component<PageProps & WithStyles, {}> {
   render() {
-    const { classes, className } = this.props;
+    const { isStatic, classes, className } = this.props;
     const cx = classnames({
       [classes.pageContainer]: true,
       [className]: !!className,
     });
+    const scrollContainer = classnames({
+      [classes.scroll]: true,
+      [classes.stacked]: !isStatic,
+      [classes.static]: isStatic,
+    });
     return (
-      <div className={classes.scroll}>
+      <div className={scrollContainer}>
         {this.props.header}
         <div className={cx}>
           <LayoutBlock direction="column">{this.props.children}</LayoutBlock>

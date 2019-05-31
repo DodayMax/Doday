@@ -31,13 +31,14 @@ import {
   SerializedProgressLike,
   DodayType,
 } from '@root/tools/types';
-import { setBuilderSuccessFlagActionCreator } from '@root/ducks/builder/actions';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
 import {
   setDodayDetailsLoadingStateActionCreator,
   updateSelectedDodayActionCreator,
   clearDodayDetailsDirtyStuffActionCreator,
 } from '@root/ducks/doday-details/actions';
+import { clearBuilderActionCreator } from '@root/ducks/builder/actions';
+import { openToastActionCreator } from '@root/ducks/toast/actions';
 
 describe('Test api sagas', () => {
   it('createDodayActionSaga with valid entity', () => {
@@ -74,7 +75,7 @@ describe('Test api sagas', () => {
       call(api.dodays.mutations.createDodayMutation, serialized)
     );
     expect(gen.next().value).toEqual(
-      put(setBuilderSuccessFlagActionCreator(true))
+      put(clearBuilderActionCreator())
     );
     expect(gen.next().value).toEqual(
       put(setDodayAppLoadingStateActionCreator(false))
@@ -122,7 +123,15 @@ describe('Test api sagas', () => {
       call(api.dodays.mutations.createAndTakeDodayMutation, serialized)
     );
     expect(gen.next().value).toEqual(
-      put(setBuilderSuccessFlagActionCreator(true))
+      put(clearBuilderActionCreator())
+    );
+    expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Your new Activity created!'],
+        })
+      )
     );
     expect(gen.next().value).toEqual(
       put(setDodayAppLoadingStateActionCreator(false))

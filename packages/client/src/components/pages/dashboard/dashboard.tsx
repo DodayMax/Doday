@@ -15,6 +15,14 @@ const css = (theme: Theme) =>
     mainContentContainer: {
       height: 'calc(100vh - 64px)',
     },
+    backdrop: {
+      position: 'absolute',
+      top: 0,
+      rigth: 0,
+      left: 0,
+      bottom: 0,
+      backgroundColor: theme.palette.background.default,
+    },
   });
 
 interface DashboardProps {
@@ -27,7 +35,7 @@ export const Dashboard = withStyles(css)(
   (props: DashboardProps & WithStyles) => {
     const { activeTools, classes } = props;
     return (
-      <LayoutBlock flex={'1'} className={classes.mainContentContainer}>
+      <LayoutBlock relative flex={'1'} className={classes.mainContentContainer}>
         {activeTools.map((tool, index) => (
           <Route
             key={index}
@@ -52,7 +60,7 @@ export const Dashboard = withStyles(css)(
           render={props => <Builder {...props} activeTools={activeTools} />}
         />
         <Route path="/profile" component={Profile} />
-        <Route path="/store" component={Store} />
+        <Route path="/" component={Store} />
       </LayoutBlock>
     );
   }

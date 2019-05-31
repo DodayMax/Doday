@@ -22,21 +22,6 @@ export function setBuilderLoadingStateActionCreator(
 }
 
 /**
- * Set success flag for builder to close after creation
- *
- * @export
- * @returns {SetBuilderSuccessFlagAction}
- */
-export function setBuilderSuccessFlagActionCreator(
-  state?: boolean
-): SetBuilderSuccessFlagAction {
-  return {
-    type: ActionConstants.SET_BUILDER_SUCCESS_FLAG,
-    payload: state,
-  };
-}
-
-/**
  * Clear all data in builder
  *
  * @export
@@ -50,7 +35,6 @@ export function clearBuilderActionCreator(): ClearBuilderAction {
 
 export const actionCreators = {
   setBuilderLoadingStateActionCreator,
-  setBuilderSuccessFlagActionCreator,
   clearBuilderActionCreator,
 };
 
@@ -63,11 +47,6 @@ export interface SetBuilderLoadingStateAction extends AnyAction {
   payload: boolean;
 }
 
-export interface SetBuilderSuccessFlagAction extends AnyAction {
-  type: ActionConstants.SET_BUILDER_SUCCESS_FLAG;
-  payload?: boolean;
-}
-
 export interface ClearBuilderAction extends AnyAction {
   type: ActionConstants.CLEAR_BUILDER;
 }
@@ -78,5 +57,4 @@ export interface ClearBuilderAction extends AnyAction {
 
 export type ActionTypes =
   | SetBuilderLoadingStateAction
-  | SetBuilderSuccessFlagAction
   | ClearBuilderAction;

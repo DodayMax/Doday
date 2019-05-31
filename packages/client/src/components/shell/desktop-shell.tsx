@@ -45,7 +45,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '../shared';
-import { DrawerMenuItem, ThemeType } from '@root/lib/common-interfaces';
+import { DrawerMenuItem, ThemeType, Space } from '@root/lib/common-interfaces';
 import { capitalize } from '@root/lib/utils';
 import { toolBeacons } from '@root/tools';
 import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
@@ -149,6 +149,7 @@ class DesktopShell extends React.Component<
       toggleDodayAppActionCreator,
       isDodayAppCollapsed,
       history,
+      location,
       t,
     } = this.props;
 
@@ -165,20 +166,39 @@ class DesktopShell extends React.Component<
             className={classes.topBar}
             disableGutters={this.state.isDrawerCollapsed}
           >
-            <IconButton
-              onClick={this.toggleMenu.bind(this)}
-              aria-label="Open drawer"
-              className={classnames(classes.menuButton, classes.white, {
-                [classes.hide]: !this.state.isDrawerCollapsed,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
+            <LayoutBlock valign="vflexCenter" insideElementsMargin>
+              <LayoutBlock spaceLeft={Space.Small} spaceRight={Space.Medium}>
+                <Typography className={classes.white}>Logo</Typography>
+              </LayoutBlock>
+              <IconButton
+                onClick={() => {
+                  history.push('/');
+                  this.props.clearSelectedDodayActionCreator();
+                }}
+              >
+                <AppsIcon fontSize="large" className={classes.white} />
+              </IconButton>
+            </LayoutBlock>
             <Typography variant="subtitle2" noWrap className={classes.white}>
               Welcome to the Doday app!
             </Typography>
             {hero ? (
-              <LayoutBlock>
+              <LayoutBlock insideElementsMargin>
+                {activeTools.length ? (
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    disabled={location.pathname.startsWith('/builder')}
+                    onClick={() =>
+                      history.push(
+                        `/builder/${activeTools[0].config.entities[0].name}`
+                      )
+                    }
+                  >
+                    {`New ${activeTools[0].config.entities[0].name}`}
+                  </Button>
+                ) : null}
                 <Switch
                   onChange={e => {
                     const theme = e.target.checked ? 'dark' : 'light';
@@ -218,17 +238,9 @@ class DesktopShell extends React.Component<
           }}
           open={!this.state.isDrawerCollapsed}
         >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.toggleMenu.bind(this)}>
-              {theme.direction === 'rtl' ? (
-                <KeyboardArrowRightIcon />
-              ) : (
-                <KeyboardArrowLeftIcon />
-              )}
-            </IconButton>
-          </div>
+          <div className={classes.toolbar} />
           <Divider />
-          <List>
+          <LayoutBlock flex="1" direction="column" align="spaceBetween">
             {this.toolsToDrawerMenuItems(toolBeacons).map((tool, index) => {
               const Icon = Icons[tool.icon];
               return (
@@ -237,11 +249,6 @@ class DesktopShell extends React.Component<
                   key={tool.text}
                   onClick={() => {
                     this.props.changeDodayAppRouteActionCreator(tool.route);
-                    if (this.props.dodayAppRoute !== tool.route) {
-                    }
-                    if (this.props.dodayAppRoute === tool.route) {
-                      history.push(tool.route);
-                    }
                     this.props.clearSelectedDodayActionCreator();
                   }}
                 >
@@ -255,23 +262,27 @@ class DesktopShell extends React.Component<
                 </ListItem>
               );
             })}
-            <ListItem
-              button
-              key={cuid()}
-              onClick={() => {
-                history.push('/store');
-                this.props.clearSelectedDodayActionCreator();
-              }}
-            >
-              <ListItemIcon>
-                <AppsIcon fontSize={'large'} />
-              </ListItemIcon>
-              <ListItemText
-                primary={'Store'}
-                primaryTypographyProps={{ variant: 'body1' }}
-              />
-            </ListItem>
-          </List>
+            <LayoutBlock direction="column">
+              <Divider />
+              <ListItem
+                button
+                key={cuid()}
+                onClick={this.toggleMenu.bind(this)}
+              >
+                <ListItemIcon>
+                  {this.state.isDrawerCollapsed ? (
+                    <KeyboardArrowRightIcon color="action" fontSize="large" />
+                  ) : (
+                    <KeyboardArrowLeftIcon color="action" fontSize="large" />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={'Collapse drawer'}
+                  primaryTypographyProps={{ variant: 'body1' }}
+                />
+              </ListItem>
+            </LayoutBlock>
+          </LayoutBlock>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />
