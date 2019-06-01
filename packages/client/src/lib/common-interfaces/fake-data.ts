@@ -81,6 +81,8 @@ export const activity: Activity = {
   progress: {
     date: new Date('2019-02-15'),
     completed: false,
+    dateIsLocked: false,
+    pinned: false,
     ownerDID: 'test hero did',
   },
 };

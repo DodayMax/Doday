@@ -243,7 +243,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             {dirty && (
               <Button
                 key={cuid()}
-                color="primary"
+                color="secondary"
                 variant="contained"
                 disabled={!dirty}
                 onClick={() => {

@@ -1,3 +1,4 @@
+import * as moment from 'moment';
 import { Hero } from '../models/entities/hero';
 import { ToolBeacon, ProgressLike, DodayLike } from '@root/tools/types';
 import { toolBeacons } from '@root/tools';
@@ -57,11 +58,24 @@ export const activeToolsForHero = (hero: Hero): ToolBeacon[] =>
 export const isDirty = (
   initialObject: DodayLike,
   updates: Partial<ProgressLike>
-): boolean =>
-  !isEmptyObject(updates) &&
-  (updates.dateIsLocked !==
-    (initialObject.progress && initialObject.progress.dateIsLocked) ||
-    updates.date != null);
+): boolean => {
+  if (isEmptyObject(updates)) return false;
+  if (
+    (updates.pinned != null &&
+      updates.pinned !==
+        (initialObject.progress && initialObject.progress.pinned)) ||
+    (updates.dateIsLocked != null &&
+      updates.dateIsLocked !==
+        (initialObject.progress && initialObject.progress.dateIsLocked)) ||
+    (updates.date != null &&
+      moment(updates.date).format('ll') !==
+        (initialObject.progress &&
+          moment(initialObject.progress.date).format('ll')))
+  ) {
+    return true;
+  }
+  return false;
+};
 
 const standartColorsForGoalsChart = [
   config.colors.yellow,
