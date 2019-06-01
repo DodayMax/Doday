@@ -2,10 +2,13 @@ import { applyMiddleware, createStore, combineReducers } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
+import { read_cookie } from 'sfcookies';
 import ducks from '@ducks';
 import { RootState, BuilderState, DodayAppState } from '@lib/models';
 import { ToolsState, ToolsBuilderState } from '@root/tools/types';
 import { toolBeacons } from '@root/tools';
+import { changeDodayAppRouteActionCreator } from '@root/ducks/doday-app/actions';
+import { toggleDrawerActionCreator } from '@root/ducks/hero-settings/actions';
 
 const spreadToolsBuilderReducers = () => {
   const toolReducers = {};
@@ -60,6 +63,7 @@ function* rootSaga() {
     ...ducks.auth.authSagas,
     ...ducks.dodayDetails.dodayDetailsSagas,
     ...ducks.herosettings.herosettingsSagas,
+    ...ducks.dodayapp.dodayAppSagas,
     ...ducks.payments.coinsSagas,
     ...ducks.api.dodays.apisagas,
     ...ducks.store.storeSagas,
@@ -73,6 +77,16 @@ const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(sagaMiddleware))
 );
+
+const route = read_cookie('route');
+store.dispatch(changeDodayAppRouteActionCreator(route));
+
+/**
+ * set stored values
+ * TODO: Refactor this to store whole hero-settings in localstorage
+ * */
+const isDrawerCollapsed = read_cookie('isDrawerCollapsed');
+store.dispatch(toggleDrawerActionCreator(isDrawerCollapsed == 'true'));
 
 sagaMiddleware.run(rootSaga);
 

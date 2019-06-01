@@ -13,7 +13,7 @@ import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
 import { RootState } from './lib/models';
 import { ThemeType } from './lib/common-interfaces';
-import { colors } from '@styles/dodayColors';
+import { colors } from '@root/styles/doday-colors';
 import { Toast, DodayDialog } from './containers';
 
 interface AppProps {}
@@ -32,7 +32,6 @@ export class AppComponent extends React.Component<
   AppProps & Partial<PropsFromConnect> & TranslationProps & WithTheme
 > {
   private get theme() {
-    console.log('theme');
     const { theme, themeType } = this.props;
     const themeConfig = createMuiTheme({
       palette: {
@@ -63,9 +62,9 @@ export class AppComponent extends React.Component<
             '&:hover': {
               backgroundColor: colors.yellow.main,
             },
-          },
-          disabled: {
-            border: `2px solid ${theme.palette.action.disabledBackground}`,
+            '&$disabled': {
+              border: '2px solid rgba(0, 0, 0, 0.12)',
+            },
           },
         },
         MuiTooltip: {

@@ -3,7 +3,7 @@
 exports[`Flag renders correctly without props 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown />,
+  Symbol(enzyme.__unrendered__): <UNDEFINED />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "checkPropTypes": [Function],
@@ -16,49 +16,24 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "host",
+    "nodeType": "class",
     "props": Object {
-      "children": <path
-        d="M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z"
-        fill="black"
-        fillRule="evenodd"
-      />,
-      "height": 20,
-      "viewBox": "0 0 24 24",
-      "width": 20,
-      "xmlns": "http://www.w3.org/2000/svg",
+      "children": <React.Fragment>
+        <path
+          d="M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z"
+        />
+      </React.Fragment>,
+      "data-doday-test": "FlagIcon",
     },
     "ref": null,
     "rendered": Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "host",
-      "props": Object {
-        "d": "M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z",
-        "fill": "black",
-        "fillRule": "evenodd",
-      },
-      "ref": null,
-      "rendered": null,
-      "type": "path",
-    },
-    "type": "svg",
-  },
-  Symbol(enzyme.__nodes__): Array [
-    Object {
-      "instance": null,
-      "key": undefined,
-      "nodeType": "host",
+      "nodeType": "function",
       "props": Object {
         "children": <path
           d="M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z"
-          fill="black"
-          fillRule="evenodd"
         />,
-        "height": 20,
-        "viewBox": "0 0 24 24",
-        "width": 20,
-        "xmlns": "http://www.w3.org/2000/svg",
       },
       "ref": null,
       "rendered": Object {
@@ -67,14 +42,53 @@ ShallowWrapper {
         "nodeType": "host",
         "props": Object {
           "d": "M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z",
-          "fill": "black",
-          "fillRule": "evenodd",
         },
         "ref": null,
         "rendered": null,
         "type": "path",
       },
-      "type": "svg",
+      "type": Symbol(react.fragment),
+    },
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": <React.Fragment>
+          <path
+            d="M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z"
+          />
+        </React.Fragment>,
+        "data-doday-test": "FlagIcon",
+      },
+      "ref": null,
+      "rendered": Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "function",
+        "props": Object {
+          "children": <path
+            d="M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z"
+          />,
+        },
+        "ref": null,
+        "rendered": Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "host",
+          "props": Object {
+            "d": "M18.63 8.9l2.093-3.624a1.404 1.404 0 0 0-.008-1.424c-.261-.439-.74-.71-1.26-.71H5.807a.722.722 0 0 0-.729-.713.722.722 0 0 0-.728.714v18.095c0 .395.326.714.728.714.403 0 .729-.32.729-.714v-6.19h13.6c.504-.001.973-.258 1.238-.678.265-.421.289-.947.064-1.389L18.629 8.9zM5.807 13.619V4.571h13.6l-2.463 4.286 2.429 4.762H5.807z",
+          },
+          "ref": null,
+          "rendered": null,
+          "type": "path",
+        },
+        "type": Symbol(react.fragment),
+      },
+      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {

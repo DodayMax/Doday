@@ -75,13 +75,21 @@ export class DodayAppComponent extends React.Component<
   };
 
   private renderDodayApp = () => {
-    const { activeTools, history, location, match, classes } = this.props;
+    const {
+      loading,
+      activeTools,
+      history,
+      location,
+      match,
+      classes,
+    } = this.props;
     const tool = activeTools.find(
       tool => tool.config.route === this.props.route
     );
     if (tool)
       return (
         <tool.components.dodayApp
+          loading={loading}
           className={classes.container}
           history={history}
           location={location}

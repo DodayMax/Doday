@@ -25,7 +25,7 @@ import { Activity } from '../../entities/activity';
 import { DodayType, DodayLike, ProgressLike } from '@root/tools/types';
 import { WithTranslation, withTranslation } from 'react-i18next';
 
-interface ActivityDodayAppProps {
+export interface ActivityDodayAppProps {
   loading: boolean;
 }
 

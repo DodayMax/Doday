@@ -10,6 +10,16 @@ describe('hero settings action creators', () => {
     );
   });
 
+  it('toggle drawer with payload value action creator', () => {
+    const expectedActionObject = {
+      type: ActionConstants.TOGGLE_DRAWER,
+      payload: true,
+    };
+    expect(actionCreators.toggleDrawerActionCreator(true)).toEqual(
+      expectedActionObject
+    );
+  });
+
   it('toggle doday app action creator', () => {
     const expectedActionObject = {
       type: ActionConstants.TOGGLE_DODAY_APP,

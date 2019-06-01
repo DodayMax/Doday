@@ -11,6 +11,15 @@ describe("test hero-settings's reducers", () => {
     ).toBe(true);
   });
 
+  it('toggle drawer with payload value reducer', () => {
+    expect(
+      reducer(
+        initialHeroSettingsState,
+        actionCreators.toggleDrawerActionCreator(false)
+      ).isDrawerCollapsed
+    ).toBe(false);
+  });
+
   it('toggle theme reducer', () => {
     const mode = 'light';
     expect(

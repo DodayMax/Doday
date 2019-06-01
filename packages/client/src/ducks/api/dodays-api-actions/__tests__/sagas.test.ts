@@ -74,8 +74,14 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.createDodayMutation, serialized)
     );
+    expect(gen.next().value).toEqual(put(clearBuilderActionCreator()));
     expect(gen.next().value).toEqual(
-      put(clearBuilderActionCreator())
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Your new Activity created!'],
+        })
+      )
     );
     expect(gen.next().value).toEqual(
       put(setDodayAppLoadingStateActionCreator(false))
@@ -122,9 +128,7 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.createAndTakeDodayMutation, serialized)
     );
-    expect(gen.next().value).toEqual(
-      put(clearBuilderActionCreator())
-    );
+    expect(gen.next().value).toEqual(put(clearBuilderActionCreator()));
     expect(gen.next().value).toEqual(
       put(
         openToastActionCreator({
@@ -177,6 +181,14 @@ describe('Test api sagas', () => {
       })
     );
     expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Taken!'],
+        })
+      )
+    );
+    expect(gen.next().value).toEqual(
       put(setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
@@ -225,6 +237,14 @@ describe('Test api sagas', () => {
       })
     );
     expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Taken!'],
+        })
+      )
+    );
+    expect(gen.next().value).toEqual(
       put(setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
@@ -254,6 +274,14 @@ describe('Test api sagas', () => {
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.deleteDodayMutation, action.payload.did)
+    );
+    expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Your doday is deleted!'],
+        })
+      )
     );
     expect(gen.next().value).toEqual(
       put(setDodayDetailsLoadingStateActionCreator(false))
@@ -292,6 +320,14 @@ describe('Test api sagas', () => {
       call(api.dodays.mutations.untakeDodayMutation, action.payload.did)
     );
     expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Untaken!'],
+        })
+      )
+    );
+    expect(gen.next().value).toEqual(
       put(setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
@@ -323,6 +359,14 @@ describe('Test api sagas', () => {
     expect(gen.next(selected).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.untakeDodayMutation, action.payload.did)
+    );
+    expect(gen.next().value).toEqual(
+      put(
+        openToastActionCreator({
+          open: true,
+          messages: ['Untaken!'],
+        })
+      )
     );
     expect(gen.next().value).toEqual(
       put(setDodayDetailsLoadingStateActionCreator(false))

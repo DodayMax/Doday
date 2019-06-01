@@ -6,11 +6,12 @@ import * as moment from 'moment';
 import { Space } from '@root/lib/common-interfaces';
 import { Page, PageHeader, PageHeaderAction } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { RootState } from '@root/lib/models';
+import { RootState, DialogState } from '@root/lib/models';
 import { Icons, CustomDatePicker, withDialog, WithDialog } from '@shared';
 import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
 import { actions as dodaysActions } from '@ducks/doday-app';
 import { actions as dodayDetailsActions } from '@ducks/doday-details';
+import { actions as dialogActions } from '@ducks/dialog';
 import {
   youtubeIDFromURL,
   durationToLabel,
@@ -48,6 +49,10 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.details';
+import {
+  OpenDialogAction,
+  CloseDialogAction,
+} from '@root/ducks/dialog/actions';
 
 interface ActivityProgressDetailsProps {}
 
@@ -63,6 +68,8 @@ interface PropsFromConnect {
   requestForSetUpdatesActionCreator(
     progress?: Partial<ProgressLike>
   ): RequestForSetUpdatesAction;
+  openDialogActionCreator: (options: DialogState) => OpenDialogAction;
+  closeDialogActionCreator: () => CloseDialogAction;
   updateDodayActionCreator(payload: {
     did: string;
     type: DodayType;
@@ -140,20 +147,20 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
       actions.push({
         title: t('activities:details.actions.delete'),
         action: () => {
-          this.props.openDialog({
+          this.props.openDialogActionCreator({
             open: true,
             title: 'Are you sure want to delete this doday?',
             actions: [
               <Button
                 onClick={() => {
-                  this.props.closeDialog();
+                  this.props.closeDialogActionCreator();
                 }}
               >
                 No
               </Button>,
               <Button
                 onClick={() => {
-                  this.props.closeDialog();
+                  this.props.closeDialogActionCreator();
                   this.props.deleteDodayActionCreator({
                     did: selectedDoday.did,
                     type: selectedDoday.type,
@@ -462,16 +469,15 @@ const mapState = (state: RootState) => ({
 export const ActivityProgressDetails = connect(
   mapState,
   {
-    ...dodaysActions,
-    ...dodayDetailsActions,
-    ...dodaysApiActions,
+    ...dodaysActions.actionCreators,
+    ...dodayDetailsActions.actionCreators,
+    ...dodaysApiActions.actionCreators,
+    ...dialogActions.actionCreators,
   }
 )(
-  withDialog(
-    withStyles(css)(
-      withTranslation(['shell', 'activities'])(
-        ActivityProgressDetailsComponentClass
-      )
+  withStyles(css)(
+    withTranslation(['shell', 'activities'])(
+      ActivityProgressDetailsComponentClass
     )
   )
 );

@@ -107,6 +107,7 @@ class StoreClassComponent extends React.Component<
           {activeTools.map(tool =>
             tool.config.entities.map(entity => (
               <Chip
+                key={tool.config.sysname}
                 label={capitalize(entity.name)}
                 onClick={() => {
                   console.log(`filter by: ${entity.name}`);

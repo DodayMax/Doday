@@ -48,6 +48,8 @@ import {
   Switch,
   Button,
   IconButton,
+  withTheme,
+  WithTheme,
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
 import { config } from '@root/styles/config';
@@ -118,7 +120,8 @@ type Props = ActivityBuilderProps &
   Partial<PropsFromConnect> &
   Partial<RouteComponentProps> &
   WithTranslation &
-  WithStyles;
+  WithStyles &
+  WithTheme;
 
 export class ActivityBuilderComponentClass extends React.Component<
   Props,
@@ -256,6 +259,7 @@ export class ActivityBuilderComponentClass extends React.Component<
       parsedMetadata,
       classes,
       pinned,
+      theme,
       t,
     } = this.props;
 
@@ -268,7 +272,7 @@ export class ActivityBuilderComponentClass extends React.Component<
             {t('builder.activityType')}:
           </Typography>
           {loading || isUrlParsing ? (
-            <Icons.InlineLoader />
+            <Icons.InlineLoader color={theme.palette.action.active} />
           ) : (
             <Switcher
               items={this.activitTypesSwitcherItems}
@@ -441,7 +445,7 @@ export class ActivityBuilderComponentClass extends React.Component<
               {t('builder.create')}
             </Button>
           ) : (
-            <Icons.InlineLoader />
+            <Icons.InlineLoader color={theme.palette.action.active} />
           )}
         </LayoutBlock>
       </>
@@ -511,5 +515,7 @@ export const ActivityBuilder = connect(
     ...activitiesBuilderActions.actions.actionCreators,
   }
 )(
-  withTranslation('activities')(withStyles(css)(ActivityBuilderComponentClass))
+  withTranslation('activities')(
+    withStyles(css)(withTheme()(ActivityBuilderComponentClass))
+  )
 );

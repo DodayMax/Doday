@@ -12,7 +12,7 @@ export default (
   state = initialToastState,
   action?: actions.ActionTypes
 ): ToastState => {
-  switch (action && action.type) {
+  switch (action!.type) {
     case actions.ActionConstants.OPEN:
       return {
         ...state,

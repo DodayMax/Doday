@@ -40,6 +40,8 @@ import {
   Button,
   WithStyles,
   withStyles,
+  WithTheme,
+  withTheme,
 } from '@material-ui/core';
 
 import { css } from './css.details';
@@ -74,7 +76,8 @@ type Props = ActivityDetailsProps &
   Partial<PropsFromConnect> &
   Partial<RouteComponentProps<any>> &
   WithTranslation &
-  WithStyles;
+  WithStyles &
+  WithTheme;
 
 @(withRouter as any)
 @Pageflow({ path: '/dodays/:did' })
@@ -121,7 +124,7 @@ export class ActivityDetailsComponentClass extends React.Component<
   };
 
   renderTakeDodayBlock = () => {
-    const { selectedDoday, updates, loading, t } = this.props;
+    const { selectedDoday, updates, loading, theme, t } = this.props;
     if (selectedDoday.progress) {
       return <>{t('activities:details.status.alreadyTaken')}</>;
     }
@@ -182,14 +185,14 @@ export class ActivityDetailsComponentClass extends React.Component<
             {t('activities:details.actions.take')}
           </Button>
         ) : (
-          <Icons.InlineLoader />
+          <Icons.InlineLoader color={theme.palette.action.active} />
         )}
       </>
     );
   };
 
   render() {
-    const { loading, selectedDoday, classes, t } = this.props;
+    const { loading, selectedDoday, classes, theme, t } = this.props;
 
     const resource = selectedDoday && selectedDoday.resource;
     const preview = resource && resource.image;
@@ -200,7 +203,7 @@ export class ActivityDetailsComponentClass extends React.Component<
         header={
           <PageHeader withClose status={selectedDoday && this.status()}>
             {loading ? (
-              <Icons.InlineLoader />
+              <Icons.InlineLoader color={theme.palette.action.active} />
             ) : selectedDoday.progress ? (
               <Button
                 key={1}
@@ -319,6 +322,8 @@ export const ActivityDetails = connect(
   }
 )(
   withStyles(css)(
-    withTranslation(['shell', 'activities'])(ActivityDetailsComponentClass)
+    withTranslation(['shell', 'activities'])(
+      withTheme()(ActivityDetailsComponentClass)
+    )
   )
 );

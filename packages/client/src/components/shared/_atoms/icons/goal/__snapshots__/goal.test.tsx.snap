@@ -3,7 +3,7 @@
 exports[`Goal renders correctly without props 1`] = `
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
-  Symbol(enzyme.__unrendered__): <Unknown />,
+  Symbol(enzyme.__unrendered__): <UNDEFINED />,
   Symbol(enzyme.__renderer__): Object {
     "batchedUpdates": [Function],
     "checkPropTypes": [Function],
@@ -16,13 +16,9 @@ ShallowWrapper {
   Symbol(enzyme.__node__): Object {
     "instance": null,
     "key": undefined,
-    "nodeType": "host",
+    "nodeType": "class",
     "props": Object {
-      "children": <g
-        fill="black"
-        fillRule="evenodd"
-        transform="translate(1 1)"
-      >
+      "children": <React.Fragment>
         <path
           d="M11.108.196C5.168.196.352 5.01.352 10.95s4.815 10.756 10.756 10.756c5.94 0 10.755-4.816 10.755-10.756S17.048.196 11.108.196zm0 20.044a9.289 9.289 0 1 1 0-18.578 9.289 9.289 0 0 1 0 18.578z"
         />
@@ -37,17 +33,14 @@ ShallowWrapper {
           cy="10.951"
           r="1"
         />
-      </g>,
-      "height": 20,
-      "viewBox": "0 0 24 24",
-      "width": 20,
-      "xmlns": "http://www.w3.org/2000/svg",
+      </React.Fragment>,
+      "data-doday-test": "GoalIcon",
     },
     "ref": null,
     "rendered": Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "host",
+      "nodeType": "function",
       "props": Object {
         "children": Array [
           <path
@@ -65,9 +58,6 @@ ShallowWrapper {
             r="1"
           />,
         ],
-        "fill": "black",
-        "fillRule": "evenodd",
-        "transform": "translate(1 1)",
       },
       "ref": null,
       "rendered": Array [
@@ -118,21 +108,17 @@ ShallowWrapper {
           "type": "circle",
         },
       ],
-      "type": "g",
+      "type": Symbol(react.fragment),
     },
-    "type": "svg",
+    "type": [Function],
   },
   Symbol(enzyme.__nodes__): Array [
     Object {
       "instance": null,
       "key": undefined,
-      "nodeType": "host",
+      "nodeType": "class",
       "props": Object {
-        "children": <g
-          fill="black"
-          fillRule="evenodd"
-          transform="translate(1 1)"
-        >
+        "children": <React.Fragment>
           <path
             d="M11.108.196C5.168.196.352 5.01.352 10.95s4.815 10.756 10.756 10.756c5.94 0 10.755-4.816 10.755-10.756S17.048.196 11.108.196zm0 20.044a9.289 9.289 0 1 1 0-18.578 9.289 9.289 0 0 1 0 18.578z"
           />
@@ -147,17 +133,14 @@ ShallowWrapper {
             cy="10.951"
             r="1"
           />
-        </g>,
-        "height": 20,
-        "viewBox": "0 0 24 24",
-        "width": 20,
-        "xmlns": "http://www.w3.org/2000/svg",
+        </React.Fragment>,
+        "data-doday-test": "GoalIcon",
       },
       "ref": null,
       "rendered": Object {
         "instance": null,
         "key": undefined,
-        "nodeType": "host",
+        "nodeType": "function",
         "props": Object {
           "children": Array [
             <path
@@ -175,9 +158,6 @@ ShallowWrapper {
               r="1"
             />,
           ],
-          "fill": "black",
-          "fillRule": "evenodd",
-          "transform": "translate(1 1)",
         },
         "ref": null,
         "rendered": Array [
@@ -228,9 +208,9 @@ ShallowWrapper {
             "type": "circle",
           },
         ],
-        "type": "g",
+        "type": Symbol(react.fragment),
       },
-      "type": "svg",
+      "type": [Function],
     },
   ],
   Symbol(enzyme.__options__): Object {

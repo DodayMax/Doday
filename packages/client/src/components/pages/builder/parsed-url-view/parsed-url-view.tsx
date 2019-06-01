@@ -7,6 +7,8 @@ import {
   withStyles,
   IconButton,
   Typography,
+  withTheme,
+  WithTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -17,7 +19,7 @@ interface ParsedUrlViewProps {
 }
 
 export const ParsedUrlView = withStyles(css)(
-  (props: ParsedUrlViewProps & WithStyles) => {
+  withTheme()((props: ParsedUrlViewProps & WithStyles & WithTheme) => {
     const { loading, parsedMetadata, onClose, classes } = props;
     return (
       <>
@@ -30,7 +32,7 @@ export const ParsedUrlView = withStyles(css)(
             paddingRight={Space.Small}
             paddingAbove={Space.Small}
           >
-            <Icons.InlineLoader />
+            <Icons.InlineLoader color={props.theme.palette.action.active} />
           </LayoutBlock>
         )}
         {!loading && parsedMetadata && (
@@ -60,5 +62,5 @@ export const ParsedUrlView = withStyles(css)(
         )}
       </>
     );
-  }
+  })
 );

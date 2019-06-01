@@ -34,7 +34,8 @@ export interface ToolBeacon {
   config: ToolConfig;
   components: {
     dodayApp: React.ComponentType<
-      React.HTMLAttributes<HTMLElement> & RouteComponentProps
+      React.HTMLAttributes<HTMLElement> &
+        RouteComponentProps & { loading: boolean }
     >;
     cells: {
       [K in DodayType]?: {

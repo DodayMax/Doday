@@ -3,6 +3,7 @@ import * as classnames from 'classnames';
 import * as cuid from 'cuid';
 import { RouteComponentProps, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { read_cookie } from 'sfcookies';
 import { Dashboard } from '@components';
 import { RootState } from '@lib/models';
 import { actions as settingsActions } from '@ducks/hero-settings';
@@ -12,11 +13,11 @@ import { actions as detailsActions } from '@ducks/doday-details';
 import { Hero } from '@root/lib/models/entities/hero';
 import { FetchHeroAction } from '@root/ducks/auth/actions';
 import { Landing } from '../landing';
-import MenuIcon from '@material-ui/icons/Menu';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import FaceIcon from '@material-ui/icons/Face';
 import AppsIcon from '@material-ui/icons/Apps';
+import BugReportIcon from '@material-ui/icons/BugReport';
 import {
   ToggleDrawerAction,
   ToggleDodayAppAction,
@@ -41,8 +42,6 @@ import {
   withStyles,
   Button,
   Switch,
-  Menu,
-  MenuItem,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '../shared';
 import { DrawerMenuItem, ThemeType, Space } from '@root/lib/common-interfaces';
@@ -65,7 +64,7 @@ interface PropsFromConnect {
   activeTools: ToolBeacon[];
   changeDodayAppRouteActionCreator(route: string): ChangeDodayAppRouteAction;
   clearSelectedDodayActionCreator(): ClearSelectedDodayAction;
-  toggleDrawerActionCreator: () => ToggleDrawerAction;
+  toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
   toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   fetchHeroActionCreator(): FetchHeroAction;
   toggleThemeActionCreator(mode: ThemeType): ToggleThemeAction;
@@ -97,9 +96,9 @@ class DesktopShell extends React.Component<
     this.props.fetchHeroActionCreator();
     const taskID = this.state.resizeTaskId;
     const documentWidth = document.documentElement.scrollWidth;
-    this.setState({
-      isDrawerCollapsed: documentWidth <= 1100,
-    });
+    if (documentWidth <= 1100) {
+      this.props.toggleDrawerActionCreator(true);
+    }
 
     window.addEventListener('resize', evt => {
       if (taskID != null) {
@@ -109,11 +108,11 @@ class DesktopShell extends React.Component<
       this.setState({
         resizeTaskId: setTimeout(() => {
           const documentWidth = document.documentElement.scrollWidth;
-          if (!this.state.isDrawerCollapsed) {
+          if (!this.props.isDrawerCollapsed) {
             this.setState({
               resizeTaskId: undefined,
-              isDrawerCollapsed: documentWidth <= 1100,
             });
+            this.props.toggleDrawerActionCreator(documentWidth <= 1100);
           }
         }, 100),
       });
@@ -121,9 +120,7 @@ class DesktopShell extends React.Component<
   }
 
   toggleMenu() {
-    this.setState({
-      isDrawerCollapsed: !this.state.isDrawerCollapsed,
-    });
+    this.props.toggleDrawerActionCreator();
   }
 
   handleProfileOpen = () => {
@@ -143,7 +140,6 @@ class DesktopShell extends React.Component<
   render() {
     const {
       classes,
-      theme,
       hero,
       activeTools,
       toggleDodayAppActionCreator,
@@ -159,12 +155,12 @@ class DesktopShell extends React.Component<
         <AppBar
           position="fixed"
           className={classnames(classes.appBar, {
-            [classes.appBarShift]: !this.state.isDrawerCollapsed,
+            [classes.appBarShift]: !this.props.isDrawerCollapsed,
           })}
         >
           <Toolbar
             className={classes.topBar}
-            disableGutters={this.state.isDrawerCollapsed}
+            disableGutters={this.props.isDrawerCollapsed}
           >
             <LayoutBlock valign="vflexCenter" insideElementsMargin>
               <LayoutBlock spaceLeft={Space.Small} spaceRight={Space.Medium}>
@@ -183,7 +179,7 @@ class DesktopShell extends React.Component<
               Welcome to the Doday app!
             </Typography>
             {hero ? (
-              <LayoutBlock insideElementsMargin>
+              <LayoutBlock insideElementsMargin valign="vflexCenter">
                 {activeTools.length ? (
                   <Button
                     variant="contained"
@@ -227,42 +223,58 @@ class DesktopShell extends React.Component<
         <Drawer
           variant="permanent"
           className={classnames(classes.drawer, {
-            [classes.drawerOpen]: !this.state.isDrawerCollapsed,
-            [classes.drawerClose]: this.state.isDrawerCollapsed,
+            [classes.drawerOpen]: !this.props.isDrawerCollapsed,
+            [classes.drawerClose]: this.props.isDrawerCollapsed,
           })}
           classes={{
             paper: classnames({
-              [classes.drawerOpen]: !this.state.isDrawerCollapsed,
-              [classes.drawerClose]: this.state.isDrawerCollapsed,
+              [classes.drawerOpen]: !this.props.isDrawerCollapsed,
+              [classes.drawerClose]: this.props.isDrawerCollapsed,
             }),
           }}
-          open={!this.state.isDrawerCollapsed}
+          open={!this.props.isDrawerCollapsed}
         >
           <div className={classes.toolbar} />
           <Divider />
           <LayoutBlock flex="1" direction="column" align="spaceBetween">
-            {this.toolsToDrawerMenuItems(toolBeacons).map((tool, index) => {
-              const Icon = Icons[tool.icon];
-              return (
-                <ListItem
-                  button
-                  key={tool.text}
-                  onClick={() => {
-                    this.props.changeDodayAppRouteActionCreator(tool.route);
-                    this.props.clearSelectedDodayActionCreator();
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon fontSize={'large'} />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={tool.text}
-                    primaryTypographyProps={{ variant: 'body1' }}
-                  />
-                </ListItem>
-              );
-            })}
             <LayoutBlock direction="column">
+              {this.toolsToDrawerMenuItems(toolBeacons).map((tool, index) => {
+                const Icon = Icons[tool.icon];
+                return (
+                  <>
+                    <ListItem
+                      button
+                      key={tool.text}
+                      onClick={() => {
+                        this.props.changeDodayAppRouteActionCreator(tool.route);
+                        this.props.clearSelectedDodayActionCreator();
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon fontSize={'large'} />
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={tool.text}
+                        primaryTypographyProps={{ variant: 'body1' }}
+                      />
+                    </ListItem>
+                    <Divider />
+                  </>
+                );
+              })}
+            </LayoutBlock>
+            <LayoutBlock direction="column">
+              <Divider />
+              <ListItem button key={cuid()} onClick={() => {}}>
+                <ListItemIcon>
+                  <BugReportIcon fontSize="large" />
+                </ListItemIcon>
+                <ListItemText
+                  primary={'Report bug'}
+                  secondary="20DDC reward"
+                  primaryTypographyProps={{ variant: 'body1' }}
+                />
+              </ListItem>
               <Divider />
               <ListItem
                 button
@@ -270,7 +282,7 @@ class DesktopShell extends React.Component<
                 onClick={this.toggleMenu.bind(this)}
               >
                 <ListItemIcon>
-                  {this.state.isDrawerCollapsed ? (
+                  {this.props.isDrawerCollapsed ? (
                     <KeyboardArrowRightIcon color="action" fontSize="large" />
                   ) : (
                     <KeyboardArrowLeftIcon color="action" fontSize="large" />
@@ -327,7 +339,7 @@ export default connect(
   mapState,
   {
     changeDodayAppRouteActionCreator:
-      appActions.changeDodayAppRouteActionCreator,
+      appActions.actionCreators.changeDodayAppRouteActionCreator,
     clearSelectedDodayActionCreator:
       detailsActions.clearSelectedDodayActionCreator,
     toggleDrawerActionCreator: settingsActions.toggleDrawerActionCreator,

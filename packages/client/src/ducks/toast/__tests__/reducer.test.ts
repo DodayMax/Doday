@@ -12,7 +12,7 @@ describe("test toast's reducers", () => {
       reducer(initialToastState, actionCreators.openToastActionCreator(options))
     ).toEqual({
       ...initialToastState,
-      options,
+      ...options,
     });
   });
 

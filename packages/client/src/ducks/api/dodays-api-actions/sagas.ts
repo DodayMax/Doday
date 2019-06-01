@@ -68,6 +68,12 @@ export function* createDodayActionSaga(action: CreateDodayAction) {
   yield all(sideEffects);
   yield call(api.dodays.mutations.createDodayMutation, serialized);
   yield put(clearBuilderActionCreator());
+  yield put(
+    openToastActionCreator({
+      open: true,
+      messages: ['Your new Activity created!'],
+    })
+  );
   yield put(setDodayAppLoadingStateActionCreator(false));
 }
 

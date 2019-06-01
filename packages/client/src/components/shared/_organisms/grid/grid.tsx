@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
 import { actions } from '@ducks/doday-app';
-import { Loader, LayoutBlock } from '@shared';
+import { Loader, LayoutBlock, Icons } from '@shared';
 import { Space } from '@root/lib/common-interfaces';
 import { FilterItem } from './filter/filter-item';
 import { Filter } from './filter/filter';
@@ -14,6 +14,8 @@ import {
   Theme,
   WithStyles,
   withStyles,
+  withTheme,
+  WithTheme,
 } from '@material-ui/core';
 
 interface GridProps {
@@ -51,7 +53,8 @@ export class GridComponentClass extends React.Component<
   GridProps &
     Partial<RouteComponentProps> &
     Partial<WithTranslation> &
-    WithStyles,
+    WithStyles &
+    WithTheme,
   GridState
 > {
   constructor(props) {
@@ -83,6 +86,7 @@ export class GridComponentClass extends React.Component<
       filters,
       search,
       classes,
+      theme,
       t,
     } = this.props;
 
@@ -109,7 +113,7 @@ export class GridComponentClass extends React.Component<
               paddingAbove={Space.XSmall}
               paddingBelow={Space.XSmall}
             >
-              <Loader />
+              <Icons.InlineLoader color={theme.palette.action.active} />
             </LayoutBlock>
           )}
           {pinnedItems &&
@@ -131,4 +135,4 @@ export class GridComponentClass extends React.Component<
 export const Grid = connect(
   undefined,
   { ...actions }
-)(withStyles(css)(GridComponentClass));
+)(withStyles(css)(withTheme()(GridComponentClass)));

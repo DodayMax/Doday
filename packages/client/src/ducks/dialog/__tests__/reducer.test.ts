@@ -2,8 +2,8 @@ import reducer, { initialDialogState } from '../reducer';
 import { actionCreators } from '../actions';
 import { DialogState } from '@root/lib/models';
 
-describe("test toast's reducers", () => {
-  it('open reducer', () => {
+describe("test dialog's reducers", () => {
+  it('open dialog reducer', () => {
     const payload: DialogState = {
       open: true,
       title: 'Title',
@@ -17,11 +17,11 @@ describe("test toast's reducers", () => {
       )
     ).toEqual({
       ...initialDialogState,
-      payload,
+      ...payload,
     });
   });
 
-  it('close reducer', () => {
+  it('close dialog reducer', () => {
     const testState: DialogState = {
       open: true,
       title: 'Title',
