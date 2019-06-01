@@ -8,6 +8,8 @@ import {
   RequestForSetUpdatesAction,
   setUpdatesForSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
+  clearSelectedDodayActionCreator,
+  clearDodayDetailsDirtyStuffActionCreator,
 } from './actions';
 import { api } from '@root/services';
 import { ProgressLike, DodayLike } from '@root/tools/types';
@@ -34,6 +36,7 @@ export function* fetchSelectedDodayActionSaga(
 export function* fetchSelectedProgressActionSaga(
   action: FetchSelectedProgressAction
 ) {
+  yield put(clearDodayDetailsDirtyStuffActionCreator());
   const doday = yield call(
     api.dodays.queries.fetchDodayWithProgressByDID,
     action.payload

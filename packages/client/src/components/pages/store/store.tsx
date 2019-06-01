@@ -8,7 +8,7 @@ import { RootState } from '@root/lib/models';
 import { FetchPublicDodaysForStoreAction } from '@root/ducks/store/actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { DodayLike, ToolBeacon } from '@root/tools/types';
-import { LayoutBlock } from '@root/components/shared';
+import { LayoutBlock, Icons } from '@root/components/shared';
 import {
   Grid,
   Card,
@@ -28,6 +28,7 @@ import {
 import SearchIcon from '@material-ui/icons/Search';
 import { capitalize } from '@root/lib/utils';
 import { RouteComponentProps } from 'react-router';
+import { config } from '@root/styles/config';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -50,6 +51,9 @@ const css = (theme: Theme) =>
       bottom: 0,
       right: 0,
       left: 0,
+    },
+    paddedLabel: {
+      paddingRight: `${config.spacing.spaceXXS}px`,
     },
   });
 
@@ -134,6 +138,19 @@ class StoreClassComponent extends React.Component<
                     <Typography gutterBottom variant="subtitle2" component="h2">
                       {doday.name}
                     </Typography>
+                    <LayoutBlock
+                      spaceAbove={Space.XXSmall}
+                      spaceBelow={Space.XXSmall}
+                      valign="vflexCenter"
+                    >
+                      <Typography
+                        variant="body1"
+                        className={classes.paddedLabel}
+                      >
+                        {doday.rate || 0}
+                      </Typography>
+                      <Icons.Score color="primary" width={2} height={2} />
+                    </LayoutBlock>
                     <Typography>
                       {doday.resource && doday.resource.description}
                     </Typography>

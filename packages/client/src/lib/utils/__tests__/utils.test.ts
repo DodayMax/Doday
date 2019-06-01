@@ -8,9 +8,15 @@ describe('test utils functions', () => {
     expect(isDirty(activity, { dateIsLocked: true })).toBe(true);
     /** with isDateLocked equal */
     expect(isDirty(activity, { dateIsLocked: false })).toBe(false);
+    /** with isDateLocked undefined equal */
+    activity.progress.dateIsLocked = undefined;
+    expect(isDirty(activity, { dateIsLocked: false })).toBe(false);
     /** with pinned update */
     expect(isDirty(activity, { pinned: true })).toBe(true);
     /** with pinned equal update */
+    expect(isDirty(activity, { pinned: false })).toBe(false);
+    /** with pinned undefined update */
+    activity.progress.pinned = undefined;
     expect(isDirty(activity, { pinned: false })).toBe(false);
     /** with date update */
     expect(isDirty(activity, { date: new Date() })).toBe(true);

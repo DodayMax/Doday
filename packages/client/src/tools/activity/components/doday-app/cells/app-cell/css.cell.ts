@@ -41,4 +41,7 @@ export const css = (theme: Theme) =>
     checkboxIconButton: {
       padding: '6px',
     },
+    paddedLabel: {
+      paddingRight: `${config.spacing.spaceXXS}px`,
+    },
   });

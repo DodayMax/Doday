@@ -9,6 +9,8 @@ import {
   RequestForSetUpdatesAction,
   setUpdatesForSelectedDodayActionCreator,
   setDirtyStatusActionCreator,
+  clearSelectedDodayActionCreator,
+  clearDodayDetailsDirtyStuffActionCreator,
 } from '../actions';
 import {
   fetchSelectedDodayActionSaga,
@@ -41,6 +43,9 @@ describe("Test DodayDetails's sagas", () => {
       payload: activity.did,
     };
     const gen = fetchSelectedProgressActionSaga(action);
+    expect(gen.next().value).toEqual(
+      put(clearDodayDetailsDirtyStuffActionCreator())
+    );
     expect(gen.next().value).toEqual(
       call(api.dodays.queries.fetchDodayWithProgressByDID, action.payload)
     );

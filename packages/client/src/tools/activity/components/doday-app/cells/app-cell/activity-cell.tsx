@@ -53,8 +53,10 @@ export const ActivityCell = withStyles(css)(
             spaceRight={Space.XSmall}
             valign="vflexCenter"
           >
-            <Typography variant="body1">{24}</Typography>
-            <Icons.Score width={16} height={16} />
+            <Typography variant="body1" className={classes.paddedLabel}>
+              {activity.rate || 0}
+            </Typography>
+            <Icons.Score color="primary" width={2} height={2} />
           </LayoutBlock>
           <LayoutBlock absolute top="0" bottom="0" right="17px">
             <Progress

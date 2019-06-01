@@ -19,11 +19,18 @@ export const dodaysQuery = (
       AND d.public = true
       ${props.type ? `AND d.type = $type` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
+      OPTIONAL MATCH (d)-[]-(take:Progress)
+      OPTIONAL MATCH (d)-[]-(complete:Progress {completed: true})
+      OPTIONAL MATCH (d)-[]-(pin:Progress {pinned: true})
+      OPTIONAL MATCH (d)-[]-(overdue:Progress {overdue: true})
       OPTIONAL MATCH (r:Resource)-[]-(d)
+      with d, r, (count(take) * 10) + (count(complete) * 20) + (count(pin) * 12) - (count(overdue) * 11) as rate
       RETURN {
         doday: d,
+        rate: rate,
         resource: r
       }
+      ORDER BY rate DESC
     `,
     {
       ...props,

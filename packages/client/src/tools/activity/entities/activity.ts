@@ -23,6 +23,8 @@ export interface Activity extends DodayBase {
   duration?: string;
   /** Tags related to doday */
   tags?: string[];
+  /** Public doday's rate */
+  rate?: number;
   /** [:RESOURCE] relation */
   resource?: Resource;
   /** Progress node for this Doday */

@@ -94,7 +94,12 @@ class PageHeaderComponentClass extends React.Component<
         >
           {status}
         </LayoutBlock>
-        <LayoutBlock flex="1" align="flexEnd" valign="vflexCenter">
+        <LayoutBlock
+          insideElementsMargin
+          flex="1"
+          align="flexEnd"
+          valign="vflexCenter"
+        >
           {children}
           {actions && !!actions.length && (
             <>

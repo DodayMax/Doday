@@ -63,10 +63,10 @@ export const isDirty = (
   if (
     (updates.pinned != null &&
       updates.pinned !==
-        (initialObject.progress && initialObject.progress.pinned)) ||
+        (initialObject.progress && !!initialObject.progress.pinned)) ||
     (updates.dateIsLocked != null &&
       updates.dateIsLocked !==
-        (initialObject.progress && initialObject.progress.dateIsLocked)) ||
+        (initialObject.progress && !!initialObject.progress.dateIsLocked)) ||
     (updates.date != null &&
       moment(updates.date).format('ll') !==
         (initialObject.progress &&
