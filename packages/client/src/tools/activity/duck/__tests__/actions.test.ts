@@ -8,20 +8,19 @@ import {
   PinActivityAction,
 } from '../actions';
 import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
-import { DodayType } from '@root/tools/types';
 import {
   SetActivitiesAction,
   FetchActivitiesAction,
   setActivitiesActionCreator,
   SetParseUrlMetadataProgressAction,
 } from '../actions';
-import { Activity } from '../../entities/activity';
 import {
   activity,
   deserializedResource,
 } from '@root/lib/common-interfaces/fake-data';
-import { ActivityType } from '@root/lib/common-interfaces';
 import { Resource } from '@root/lib/models/entities/resource';
+import { DodayType } from '@root/lib/models/entities/common';
+import { Activity, ActivityType } from '@root/lib/models/entities/activity';
 
 describe('Activity tool action creators tests', () => {
   it('fetch activities', () => {

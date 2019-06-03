@@ -1,19 +1,19 @@
 import {
-  serializeActivity,
-  deserializeActivity,
-  serializeActivityProgress,
-  deserializeActivityProgress,
-  isActivity,
-  SerializedActivityProgress,
-  ActivityProgress,
-} from '../../entities/activity';
-import {
   deserializedActivity,
   serializedActivity,
   deserialzedActivityProgress,
   serializedActivityProgress,
 } from '@root/lib/common-interfaces/fake-data';
-import { DodayType } from '@root/tools/types';
+import {
+  serializeActivity,
+  deserializeActivity,
+  serializeActivityProgress,
+  ActivityProgress,
+  deserializeActivityProgress,
+  SerializedActivityProgress,
+  isActivity,
+} from '@root/lib/models/entities/activity';
+import { DodayType } from '@root/lib/models/entities/common';
 
 describe('Test activities serialize helper functions', () => {
   it('serialize activity', () => {
@@ -78,7 +78,7 @@ describe('Test activities serialize helper functions', () => {
 
   it('isActivity returns correct value', () => {
     expect(isActivity(deserializedActivity)).toBe(true);
-    deserializedActivity.type = DodayType.FlashCard;
+    deserializedActivity.type = 3;
     expect(isActivity(deserializedActivity)).toBe(false);
   });
 });

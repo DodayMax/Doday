@@ -14,7 +14,7 @@ import {
   deserialzedActivityProgress,
   partialProgress,
 } from '@root/lib/common-interfaces/fake-data';
-import { DodayType } from '@root/tools/types';
+import { DodayType } from '@root/lib/models/entities/common';
 
 describe('test api action creators', () => {
   it('createDodayActionCreator', () => {

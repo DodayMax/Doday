@@ -7,7 +7,6 @@ import {
 } from '../actions';
 import { api } from '@root/services';
 import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
-import { DodayType } from '@root/tools/types';
 import {
   fetchActivitiesActionSaga,
   parseUrlMetadataActionSaga,
@@ -18,9 +17,10 @@ import {
   doday,
   deserializedResource,
 } from '@root/lib/common-interfaces/fake-data';
-import { Activity } from '../../entities/activity';
 import { detectActivityType } from '@root/lib/utils';
 import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
+import { Activity } from '@root/lib/models/entities/activity';
+import { DodayType } from '@root/lib/models/entities/common';
 
 describe('Test Activities sagas', () => {
   it('fetchActivitiesActionSaga', () => {
