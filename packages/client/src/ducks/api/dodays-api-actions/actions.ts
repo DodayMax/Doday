@@ -1,6 +1,10 @@
 import { AnyAction } from 'redux';
 import { Resource } from '@root/lib/models/entities/resource';
-import { DodayLike, ProgressLike, DodayType } from '@root/tools/types';
+import {
+  DodayLike,
+  DodayType,
+  ProgressLike,
+} from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',

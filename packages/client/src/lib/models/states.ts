@@ -1,13 +1,8 @@
 import { Hero } from './entities/hero';
 import { BuilderStatus } from '@root/ducks/builder/reducer';
-import {
-  ToolsState,
-  ToolBeacon,
-  DodayLike,
-  ToolsBuilderState,
-  ProgressLike,
-} from '@root/tools/types';
+import { ToolsState, ToolBeacon, ToolsBuilderState } from '@root/tools/types';
 import { DodayAppQueryParams, ToastType } from '../common-interfaces';
+import { DodayLike, ProgressLike } from './entities/common';
 
 export interface RootState {
   auth: AuthState;

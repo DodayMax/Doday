@@ -7,8 +7,8 @@ import {
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { fetchPublicDodaysForStoreActionSaga } from '../sagas';
-import { DodayLike } from '@root/tools/types';
 import { activity } from '@root/lib/common-interfaces/fake-data';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 describe("Test Store's sagas", () => {
   it('fetchPublicDodaysForStoreActionSaga', () => {

@@ -4,7 +4,6 @@ import { Space, CellProps } from '@lib/common-interfaces';
 import { Icons } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { durationToMinutes, durationToLabel } from '@root/lib/utils';
-import { Activity } from '@root/tools/activity/entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import {
   ListItem,
@@ -16,6 +15,7 @@ import {
 import { Progress } from '@root/components/shared/_atoms/progress/progress';
 
 import { css } from './css.cell';
+import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityCellProps {}
 

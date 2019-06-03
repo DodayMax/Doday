@@ -1,6 +1,6 @@
 import * as actions from './actions';
 import { StoreState } from '@lib/models';
-import { DodayLike } from '@root/tools/types';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 export const initialStoreState: StoreState = {
   dodays: [],

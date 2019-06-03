@@ -1,7 +1,7 @@
 import reducer, { initialStoreState } from '../reducer';
 import { actionCreators } from '../actions';
 import { activity } from '@root/lib/common-interfaces/fake-data';
-import { DodayLike } from '@root/tools/types';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 describe("test store's reducers", () => {
   it('set dodays reducer', () => {

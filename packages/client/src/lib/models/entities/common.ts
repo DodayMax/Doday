@@ -1,6 +1,44 @@
 import { Hero, APIResponseHero } from './hero';
 import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
-import { DodayType } from '@root/tools/types';
+import {
+  Activity,
+  SerializedActivity,
+  ActivityProgress,
+  SerializedActivityProgress,
+} from './activity';
+
+/**
+ * Entity object for using it in Tools
+ */
+export interface Entity {
+  type: DodayType;
+  name: string;
+  /**
+   * Since you may want to serialize or deserialize only a
+   * a part of the `Entity`, for example for `update doday`
+   * we use `Partial`
+   */
+  serialize: (doday: Partial<DodayLike>) => Partial<SerializedDodayLike>;
+  deserialize: (doday: Partial<SerializedDodayLike>) => Partial<DodayLike>;
+  serializeProgress: (
+    progress: Partial<ProgressLike>
+  ) => Partial<SerializedProgressLike>;
+  deserializeProgress: (
+    progress: Partial<SerializedDodayLike>
+  ) => Partial<ProgressLike>;
+  isActivity: (doday: DodayLike) => boolean;
+}
+
+/**
+ * Union types for abstract from particular entities
+ */
+export enum DodayType {
+  Activity,
+}
+export type DodayLike = Activity;
+export type SerializedDodayLike = SerializedActivity;
+export type ProgressLike = ActivityProgress;
+export type SerializedProgressLike = SerializedActivityProgress;
 
 /** Doday base abstract interface */
 

@@ -1,8 +1,8 @@
 import * as builderActions from '@ducks/builder/actions';
 import * as actions from './actions';
-import { ActivityType } from '@root/lib/common-interfaces';
-import { DodayType } from '@root/tools/types';
-import { Activity } from '../entities/activity';
+import { BaseToolState, BaseToolBuilderState } from '@root/tools/types';
+import { ActivityType, Activity } from '@root/lib/models/entities/activity';
+import { DodayType } from '@root/lib/models/entities/common';
 
 export const initialActivityBuilderState: ActivityBuilderState = {
   activityType: 'do',
@@ -157,13 +157,13 @@ export const builderReducer = (
   }
 };
 
-export type ActivityBuilderState = {
+export interface ActivityBuilderState extends BaseToolBuilderState {
   activityType?: ActivityType;
   pinned?: boolean;
   isUrlParsing?: boolean;
   parsedMetadata?: any;
-};
+}
 
-export interface ActivityToolState {
+export interface ActivityToolState extends BaseToolState {
   dodays: Activity[];
 }

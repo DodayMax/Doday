@@ -9,8 +9,9 @@ import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
 import { RouteComponentProps } from 'react-router';
 import { DodayAppQueryParams } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
-import { DodayLike, WithTools } from '@root/tools/types';
+import { WithTools } from '@root/tools/types';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 const styles = (theme: Theme) =>
   createStyles({

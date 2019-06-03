@@ -21,9 +21,14 @@ import { filterObject } from '@root/lib/utils';
 import { Resource } from '@root/lib/models/entities/resource';
 import { UpdateDodayAction } from '@root/ducks/api/dodays-api-actions/actions';
 import { FetchActivitiesAction } from '../../duck/actions';
-import { Activity } from '../../entities/activity';
-import { DodayType, DodayLike, ProgressLike } from '@root/tools/types';
 import { WithTranslation, withTranslation } from 'react-i18next';
+import { Activity } from '@root/lib/models/entities/activity';
+import {
+  DodayType,
+  DodayLike,
+  ProgressLike,
+} from '@root/lib/models/entities/common';
+import { ActivityToolState } from '../../duck/reducer';
 
 export interface ActivityDodayAppProps {
   loading: boolean;
@@ -192,7 +197,9 @@ export class ActivityDodayAppComponentClass extends React.Component<
 const mapState = (state: RootState) => ({
   route: state.dodayApp.status.route,
   routeParams: state.dodayApp.status.routeParams,
-  dodays: state.tools.activities && state.tools.activities.dodays,
+  dodays:
+    state.tools.activities &&
+    (state.tools.activities as ActivityToolState).dodays,
   myDID: state.auth.hero && state.auth.hero.did,
 });
 

@@ -1,5 +1,5 @@
 import { IconNames } from '@root/components/shared/_atoms/icons';
-import { DodayLike } from '@root/tools/types';
+import { DodayLike } from '../models/entities/common';
 
 export type DrawerMenuItem = {
   text: string;

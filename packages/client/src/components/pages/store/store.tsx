@@ -1,22 +1,17 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { actions } from '@ducks/store';
-import { Page } from '../../shared/_molecules/page';
+import { Page, PageChildContext } from '../../shared/_molecules/page';
 import { Space } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
 import { FetchPublicDodaysForStoreAction } from '@root/ducks/store/actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { DodayLike, ToolBeacon } from '@root/tools/types';
-import { LayoutBlock, Icons } from '@root/components/shared';
+import { ToolBeacon } from '@root/tools/types';
+import { LayoutBlock, Icons, Masonry } from '@shared';
 import {
   Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
   withStyles,
   Theme,
   createStyles,
@@ -29,6 +24,8 @@ import SearchIcon from '@material-ui/icons/Search';
 import { capitalize } from '@root/lib/utils';
 import { RouteComponentProps } from 'react-router';
 import { config } from '@root/styles/config';
+import { MasonryItem } from './store-item';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -55,6 +52,9 @@ const css = (theme: Theme) =>
     paddedLabel: {
       paddingRight: `${config.spacing.spaceXXS}px`,
     },
+    container: {
+      marginBottom: '3rem',
+    },
   });
 
 interface StoreProps {}
@@ -73,6 +73,12 @@ class StoreClassComponent extends React.Component<
     Partial<RouteComponentProps> &
     WithStyles
 > {
+  public static contextTypes = {
+    scrollContainer: PropTypes.any,
+  };
+
+  public context!: PageChildContext;
+
   componentDidMount() {
     this.props.fetchPublicDodaysForStoreActionCreator({});
   }
@@ -120,50 +126,22 @@ class StoreClassComponent extends React.Component<
             ))
           )}
         </LayoutBlock>
-        <Grid container spacing={8}>
-          {dodays.map(doday => (
-            <Grid item key={doday.did} xs={12} sm={6} md={4}>
-              <Card
-                onClick={() => this.props.history.push(`/dodays/${doday.did}`)}
-              >
-                <CardActionArea>
-                  {doday.resource && doday.resource.image && (
-                    <CardMedia
-                      image={(doday.resource && doday.resource.image) || ''}
-                      title="Image title"
-                      className={classes.cardMedia}
-                    />
-                  )}
-                  <CardContent>
-                    <Typography gutterBottom variant="subtitle2" component="h2">
-                      {doday.name}
-                    </Typography>
-                    <LayoutBlock
-                      spaceAbove={Space.XXSmall}
-                      spaceBelow={Space.XXSmall}
-                      valign="vflexCenter"
-                    >
-                      <Typography
-                        variant="body1"
-                        className={classes.paddedLabel}
-                      >
-                        {doday.rate || 0}
-                      </Typography>
-                      <Icons.Score color="primary" width={2} height={2} />
-                    </LayoutBlock>
-                    <Typography>
-                      {doday.resource && doday.resource.description}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-                <CardActions>
-                  <Button variant="outlined" size="small">
-                    Take
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          ))}
+        <Grid container>
+          <Masonry
+            items={dodays}
+            layoutClassName={classes.container}
+            itemComponent={MasonryItem}
+            alignCenter={true}
+            loadingElement={<span>Loading...</span>}
+            hasMore={false}
+            isLoading={false}
+            onInfiniteLoad={() => console.log('load batch')}
+            columnWidth={200}
+            columnGutter={10}
+            getState={() => this.props.dodays}
+            scrollAnchor={this.context.scrollContainer}
+            scrollOffset={0}
+          />
         </Grid>
       </Page>
     );

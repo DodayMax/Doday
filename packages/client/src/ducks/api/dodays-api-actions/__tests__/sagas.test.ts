@@ -26,11 +26,6 @@ import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/acti
 import { put, select, all, call } from 'redux-saga/effects';
 import { activeTools } from '@root/ducks/auth/selectors';
 import { api } from '@root/services';
-import {
-  SerializedDodayLike,
-  SerializedProgressLike,
-  DodayType,
-} from '@root/tools/types';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
 import {
   setDodayDetailsLoadingStateActionCreator,
@@ -39,6 +34,11 @@ import {
 } from '@root/ducks/doday-details/actions';
 import { clearBuilderActionCreator } from '@root/ducks/builder/actions';
 import { openToastActionCreator } from '@root/ducks/toast/actions';
+import {
+  SerializedDodayLike,
+  SerializedProgressLike,
+  DodayType,
+} from '@root/lib/models/entities/common';
 
 describe('Test api sagas', () => {
   it('createDodayActionSaga with valid entity', () => {

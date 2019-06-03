@@ -12,9 +12,9 @@ import {
   clearDodayDetailsDirtyStuffActionCreator,
 } from './actions';
 import { api } from '@root/services';
-import { ProgressLike, DodayLike } from '@root/tools/types';
 import { isDirty } from '@root/lib/utils';
 import { selectedDoday, updatesSelector } from './selectors';
+import { ProgressLike, DodayLike } from '@root/lib/models/entities/common';
 
 /**
  * Fetch selected published Doday node saga

@@ -1,6 +1,9 @@
 import { neo4jResponseDateTimeToJSDate, firstItem } from '@root/lib/utils';
 import { encodeQueryData } from '@root/lib/utils/api-utils';
-import { DodayLike, APIResponseProgressLike } from '@root/tools/types';
+import {
+  DodayLike,
+  APIResponseProgressBase,
+} from '@root/lib/models/entities/common';
 
 // Dodays
 
@@ -74,7 +77,7 @@ export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
   return dodays;
 };
 
-export const deserializeProgressNode = (progress: APIResponseProgressLike) => {
+export const deserializeProgressNode = (progress: APIResponseProgressBase) => {
   return {
     ...progress,
     date: progress.date && neo4jResponseDateTimeToJSDate(progress.date),

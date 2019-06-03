@@ -9,7 +9,7 @@ import {
   SwitcherItem,
   CustomDatePicker,
 } from '@shared';
-import { Space, ActivityType } from '@root/lib/common-interfaces';
+import { Space } from '@root/lib/common-interfaces';
 import { detectURL, durationToLabel } from '@root/lib/utils';
 import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
 import { Resource } from '@root/lib/models/entities/resource';
@@ -20,19 +20,13 @@ import {
   CreateDodayAction,
   CreateAndTakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
-import {
-  WithTools,
-  DodayType,
-  DodayLike,
-  ProgressLike,
-} from '@root/tools/types';
+import { WithTools } from '@root/tools/types';
 import {
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,
   SetActivityTypeAction,
   PinActivityAction,
 } from '../../duck/actions';
-import { ActivityProgress, Activity } from '../../entities/activity';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
@@ -54,6 +48,17 @@ import {
 import { TooltipProps } from '@material-ui/core/Tooltip';
 import { config } from '@root/styles/config';
 import { RouteComponentProps } from 'react-router';
+import {
+  DodayLike,
+  ProgressLike,
+  DodayType,
+} from '@root/lib/models/entities/common';
+import {
+  ActivityType,
+  Activity,
+  ActivityProgress,
+} from '@root/lib/models/entities/activity';
+import { ActivityBuilderState } from '../../duck/reducer';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -104,7 +109,7 @@ interface PropsFromConnect {
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
 
-interface ActivityBuilderState {
+interface ActivityBuilderLocalState {
   dodayName: string;
   tagInputValue: string;
   selectedTags: string[];
@@ -125,7 +130,7 @@ type Props = ActivityBuilderProps &
 
 export class ActivityBuilderComponentClass extends React.Component<
   Props,
-  ActivityBuilderState
+  ActivityBuilderLocalState
 > {
   constructor(props: Props) {
     super(props);
@@ -501,10 +506,13 @@ export const activityIconByType = (
 
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
-  activityType: state.builder.tools.activities.activityType,
-  pinned: state.builder.tools.activities.pinned,
-  isUrlParsing: state.builder.tools.activities.isUrlParsing,
-  parsedMetadata: state.builder.tools.activities.parsedMetadata,
+  activityType: (state.builder.tools.activities as ActivityBuilderState)
+    .activityType,
+  pinned: (state.builder.tools.activities as ActivityBuilderState).pinned,
+  isUrlParsing: (state.builder.tools.activities as ActivityBuilderState)
+    .isUrlParsing,
+  parsedMetadata: (state.builder.tools.activities as ActivityBuilderState)
+    .parsedMetadata,
   loading: state.builder.status.loading,
 });
 

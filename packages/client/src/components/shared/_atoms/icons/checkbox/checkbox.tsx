@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IconProps } from '../names';
-import { ActivityType } from '@root/lib/common-interfaces';
 import { config } from '@styles/config';
+import { ActivityType } from '@root/lib/models/entities/activity';
 
 interface CheckboxProps extends IconProps {
   checked?: boolean;

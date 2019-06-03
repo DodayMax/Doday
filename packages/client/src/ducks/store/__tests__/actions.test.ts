@@ -5,8 +5,8 @@ import {
   SetPublicDodaysForStoreAction,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { DodayLike } from '@root/tools/types';
 import { activity } from '@root/lib/common-interfaces/fake-data';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 describe('store action creators', () => {
   it('fetch dodays for store without params action creator', () => {

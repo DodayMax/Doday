@@ -18,13 +18,13 @@ import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/acti
 import { clearBuilderActionCreator } from '@root/ducks/builder/actions';
 import { activeTools } from '@root/ducks/auth/selectors';
 import { selectedDoday } from '@root/ducks/doday-details/selectors';
-import {
-  ToolBeacon,
-  SerializedDodayLike,
-  SerializedProgressLike,
-} from '@root/tools/types';
+import { ToolBeacon } from '@root/tools/types';
 import { Resource } from '@root/lib/models/entities/resource';
 import { openToastActionCreator } from '@root/ducks/toast/actions';
+import {
+  SerializedDodayLike,
+  SerializedProgressLike,
+} from '@root/lib/models/entities/common';
 
 /**
  * Create Doday node and relations to Hero

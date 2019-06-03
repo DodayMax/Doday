@@ -30,8 +30,6 @@ import {
   DeleteDodayAction,
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
-import { DodayType, ProgressLike, DodayLike } from '@root/tools/types';
-import { Activity } from '../../entities/activity';
 import { activityIconByType } from '../builders/activity-builder';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { Resource } from '@root/lib/models/entities/resource';
@@ -53,6 +51,12 @@ import {
   OpenDialogAction,
   CloseDialogAction,
 } from '@root/ducks/dialog/actions';
+import {
+  DodayLike,
+  ProgressLike,
+  DodayType,
+} from '@root/lib/models/entities/common';
+import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityProgressDetailsProps {}
 

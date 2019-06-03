@@ -1,8 +1,9 @@
 import * as moment from 'moment';
 import { Hero } from '../models/entities/hero';
-import { ToolBeacon, ProgressLike, DodayLike } from '@root/tools/types';
+import { ToolBeacon } from '@root/tools/types';
 import { toolBeacons } from '@root/tools';
 import { config } from '@styles/config';
+import { DodayLike, ProgressLike } from '../models/entities/common';
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
 

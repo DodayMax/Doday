@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { DodayLike } from '@root/tools/types';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 export enum ActionConstants {
   FETCH_DODAYS_WITH_PARAMS = '[store] FETCH_DODAYS_WITH_PARAMS',

@@ -4,7 +4,6 @@ import * as classnames from 'classnames';
 import { CellProps } from '@lib/common-interfaces';
 import { Checkbox, Icons } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Activity } from '@root/tools/activity/entities/activity';
 import { durationToLabel, durationToMinutes } from '@root/lib/utils';
 import { Progress } from '@root/components/shared/_atoms/progress/progress';
 import { WithTranslation, withTranslation } from 'react-i18next';
@@ -18,6 +17,7 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.cell';
+import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityProgressCellProps {
   onComplete?: () => void;

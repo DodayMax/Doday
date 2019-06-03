@@ -14,6 +14,7 @@ export * from './_atoms/dialog';
 export * from './_molecules/page';
 export * from './_molecules/switcher/switcher';
 export * from './_organisms/grid';
+export * from './_organisms/masonry';
 export * from './_decorators/pageflow/pageflow';
 export * from './_decorators/with-toast';
 export * from './_decorators/with-dialog';

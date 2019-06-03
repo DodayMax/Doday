@@ -28,8 +28,6 @@ import {
   TakeDodayAction,
   UntakeDodayAction,
 } from '@root/ducks/api/dodays-api-actions/actions';
-import { Activity } from '../../entities/activity';
-import { DodayType, ProgressLike } from '@root/tools/types';
 import { activityIconByType } from '../builders/activity-builder';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
@@ -45,6 +43,8 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.details';
+import { ProgressLike, DodayType } from '@root/lib/models/entities/common';
+import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityDetailsProps {}
 

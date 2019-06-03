@@ -1,15 +1,17 @@
-import { ActivityType } from '@root/lib/common-interfaces';
 import {
   DodayBase,
   SerializedDodayBase,
   ProgressBase,
-  APIResponseDodayBase,
   SerializedProgressBase,
-  APIResponseProgressBase,
+  Entity,
+  DodayLike,
+  DodayType,
 } from '@root/lib/models/entities/common';
 import { Resource } from '@root/lib/models/entities/resource';
-import { DodayLike, DodayType } from '@root/tools/types';
 
+/**
+ * Main entity type used for operating in App
+ */
 export interface Activity extends DodayBase {
   /** Activity type of the doday based on Resource */
   activityType: ActivityType;
@@ -31,6 +33,9 @@ export interface Activity extends DodayBase {
   progress?: ActivityProgress;
 }
 
+/**
+ * Serialized types used for communicate with API
+ */
 export interface SerializedActivity extends SerializedDodayBase {
   activityType: ActivityType;
   name: string;
@@ -40,27 +45,36 @@ export interface SerializedActivity extends SerializedDodayBase {
   tags?: string[];
 }
 
-export interface APIResponseActivity extends APIResponseDodayBase {
-  activityType: ActivityType;
-  name: string;
-  description?: string;
-  image?: string;
-  duration?: string;
-  tags?: string[];
-}
-
+/**
+ * Progress type describe Progress node for Activity
+ * more about data model of the Doday app - https://github.com/dodayio/doday-pwa/wiki/Data-model-in-graph-database
+ */
 export interface ActivityProgress extends ProgressBase {
   pinned?: boolean;
 }
 
+/**
+ * Serialized progress node
+ */
 export interface SerializedActivityProgress extends SerializedProgressBase {}
 
-export interface APIresponseActivityProgress extends APIResponseProgressBase {}
+/**
+ * Type of Activity
+ */
+export type ActivityType = 'do' | 'read' | 'watch';
 
-export const serializeActivity = (activity?: Activity): SerializedActivity => {
+/**
+ * Each Entity has own serialization,
+ * deserialization methods for both Entity and Progress nodes
+ * and method for check type of the Entity - isActivity(someEntity)
+ */
+
+export const serializeActivity = (
+  activity?: Partial<Activity>
+): Partial<SerializedActivity> => {
   if (!activity) return undefined;
   const { owner, progress, ...omitted } = activity;
-  const serialized: SerializedActivity = {
+  const serialized: Partial<SerializedActivity> = {
     ...omitted,
     created: activity.created.getTime(),
   };
@@ -81,15 +95,15 @@ export const deserializeActivity = (
 };
 
 export const serializeActivityProgress = (
-  progress?: ActivityProgress
-): SerializedActivityProgress => {
+  progress?: Partial<ActivityProgress>
+): Partial<SerializedActivityProgress> => {
   if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = progress.date.getTime();
   if (progress.tookAt) convertedDates.tookAt = progress.tookAt.getTime();
   if (progress.completedAt)
     convertedDates.completedAt = progress.completedAt.getTime();
-  const serialized: SerializedActivityProgress = {
+  const serialized: Partial<SerializedActivityProgress> = {
     ...progress,
     ...convertedDates,
   };
@@ -98,7 +112,7 @@ export const serializeActivityProgress = (
 
 export const deserializeActivityProgress = (
   progress?: Partial<SerializedActivityProgress>
-): ActivityProgress => {
+): Partial<ActivityProgress> => {
   if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = new Date(progress.date);
@@ -115,3 +129,16 @@ export const deserializeActivityProgress = (
 export function isActivity(doday: DodayLike): doday is Activity {
   return doday.type === DodayType.Activity;
 }
+
+/**
+ * Finally, you need to export Entity object
+ */
+export const ActivityEntity: Entity = {
+  type: DodayType.Activity,
+  name: 'activity',
+  serialize: serializeActivity,
+  deserialize: deserializeActivity,
+  serializeProgress: serializeActivityProgress,
+  deserializeProgress: deserializeActivityProgress,
+  isActivity,
+};

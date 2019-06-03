@@ -8,7 +8,8 @@ import {
   PageWrapperChildContext,
 } from '@root/components/shared/_decorators/pageflow';
 import { RootState } from '@root/lib/models';
-import { DodayLike, WithTools } from '@root/tools/types';
+import { WithTools } from '@root/tools/types';
+import { DodayLike } from '@root/lib/models/entities/common';
 
 interface ProgressDetailsProps {}
 

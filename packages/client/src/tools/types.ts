@@ -1,35 +1,18 @@
 import { IconNames } from '@root/components/shared/_atoms/icons';
-import {
-  ActivityToolState,
-  ActivityBuilderState,
-} from './activity/duck/reducer';
-import {
-  Activity,
-  SerializedActivity,
-  ActivityProgress,
-  SerializedActivityProgress,
-  APIresponseActivityProgress,
-} from './activity/entities/activity';
 import { RouteComponentProps } from 'react-router';
 import { CellProps } from '@root/lib/common-interfaces';
+import { DodayType, Entity } from '@root/lib/models/entities/common';
 
 export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
-export type ToolState = ActivityToolState;
-export type ToolBuilderState = ActivityBuilderState;
-export type ToolsBuilderState = { [K in ToolSysname]?: ToolBuilderState };
-export type ToolsState = { [K in ToolSysname]?: ToolState };
 
-export enum DodayType {
-  Activity,
-  FlashCard,
-}
+/** Base interfaces to extends from */
+export type BaseToolState = {};
+export type BaseToolBuilderState = {};
+/** Generic interfaces for RootState */
+export type ToolsBuilderState = { [K in ToolSysname]?: BaseToolBuilderState };
+export type ToolsState = { [K in ToolSysname]?: BaseToolState };
 
-export type DodayLike = Activity;
-export type SerializedDodayLike = SerializedActivity;
-export type ProgressLike = ActivityProgress;
-export type SerializedProgressLike = SerializedActivityProgress;
-export type APIResponseProgressLike = APIresponseActivityProgress;
-
+/** ToolBeacon export interface */
 export interface ToolBeacon {
   config: ToolConfig;
   components: {
@@ -74,21 +57,7 @@ export interface ToolBeacon {
 
 export type ToolConfig = {
   sysname: ToolSysname;
-  entities: {
-    type: DodayType;
-    name: string;
-    serialize: (doday?: Partial<DodayLike>) => Partial<SerializedDodayLike>;
-    deserialize: (
-      doday?: Partial<SerializedDodayLike>
-    ) => Partial<DodayLike> | undefined;
-    serializeProgress: (
-      progress?: Partial<ProgressLike>
-    ) => Partial<SerializedProgressLike>;
-    deserializeProgress: (
-      progress?: Partial<SerializedProgressLike>
-    ) => Partial<ProgressLike> | undefined;
-    isActivity: (doday: DodayLike) => doday is DodayLike;
-  }[];
+  entities: Entity[];
   price: number;
   route: string;
   icon: IconNames;

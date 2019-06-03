@@ -1,10 +1,3 @@
-import { DodayType, DodayLike, ProgressLike } from '@root/tools/types';
-import {
-  SerializedActivity,
-  SerializedActivityProgress,
-  Activity,
-  ActivityProgress,
-} from '@root/tools/activity/entities/activity';
 import { Hero } from '../models/entities/hero';
 import { RootState } from '../models';
 import { activeToolsForHero } from '../utils';
@@ -16,6 +9,13 @@ import { initialStoreState } from '@root/ducks/store/reducer';
 import { Token } from 'react-stripe-checkout';
 import { Resource, SerializedResource } from '../models/entities/resource';
 import { initialDialogState } from '@root/ducks/dialog/reducer';
+import {
+  SerializedActivity,
+  Activity,
+  SerializedActivityProgress,
+  ActivityProgress,
+} from '../models/entities/activity';
+import { DodayType, DodayLike, ProgressLike } from '../models/entities/common';
 
 export const hero: Hero = {
   did: 'test did',

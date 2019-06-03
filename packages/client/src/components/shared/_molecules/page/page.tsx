@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import { LayoutBlock } from '@shared';
 import { withRouter } from 'react-router';
@@ -41,10 +42,28 @@ interface PageProps extends React.HTMLAttributes<HTMLElement> {
    **/
   isStatic?: boolean;
 }
+
+export interface PageChildContext {
+  scrollContainer: React.RefObject<HTMLDivElement>;
+}
+
 @(withRouter as any)
 export class PageComponent extends React.Component<PageProps & WithStyles, {}> {
+  private scrollContainer: React.RefObject<HTMLDivElement> = React.createRef();
+
+  public static childContextTypes: React.ValidationMap<any> = {
+    scrollContainer: PropTypes.any,
+  };
+
+  public getChildContext(): PageChildContext {
+    return {
+      scrollContainer: this.scrollContainer,
+    };
+  }
+
   render() {
     const { isStatic, classes, className } = this.props;
+
     const cx = classnames({
       [classes.pageContainer]: true,
       [className]: !!className,
@@ -57,7 +76,7 @@ export class PageComponent extends React.Component<PageProps & WithStyles, {}> {
     return (
       <div className={scrollContainer}>
         {this.props.header}
-        <div className={cx}>
+        <div className={cx} ref={this.scrollContainer}>
           <LayoutBlock direction="column">{this.props.children}</LayoutBlock>
         </div>
       </div>
