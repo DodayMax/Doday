@@ -4,6 +4,7 @@ import {
   FetchPublicDodaysForStoreAction,
   ActionConstants,
   actionCreators,
+  setStoreLoadingStateActionCreator,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { fetchPublicDodaysForStoreActionSaga } from '../sagas';
@@ -18,12 +19,58 @@ describe("Test Store's sagas", () => {
       payload: params,
     };
     const dodays: DodayLike[] = [activity];
+    const totalCount = 20;
     const gen = fetchPublicDodaysForStoreActionSaga(action);
+    expect(gen.next().value).toEqual(
+      put(setStoreLoadingStateActionCreator(true))
+    );
+    expect(gen.next().value).toEqual(
+      call(api.dodays.queries.fetchDodaysCount, action.payload)
+    );
+    expect(gen.next(totalCount).value).toEqual(
+      call(api.dodays.queries.fetchDodays, action.payload)
+    );
+    expect(gen.next(dodays).value).toEqual(
+      put(
+        actionCreators.setPublicDodaysForStoreActionCreator(
+          dodays,
+          !!params.skip,
+          totalCount
+        )
+      )
+    );
+    expect(gen.next(dodays).value).toEqual(
+      put(setStoreLoadingStateActionCreator(false))
+    );
+    expect(gen.next().done).toBe(true);
+  });
+
+  it('fetchPublicDodaysForStoreActionSaga with skip param', () => {
+    const params: DodaysQueryParams = {
+      skip: 20,
+    };
+    const action: FetchPublicDodaysForStoreAction = {
+      type: ActionConstants.FETCH_DODAYS_WITH_PARAMS,
+      payload: params,
+    };
+    const dodays: DodayLike[] = [activity];
+    const gen = fetchPublicDodaysForStoreActionSaga(action);
+    expect(gen.next().value).toEqual(
+      put(setStoreLoadingStateActionCreator(true))
+    );
     expect(gen.next().value).toEqual(
       call(api.dodays.queries.fetchDodays, action.payload)
     );
     expect(gen.next(dodays).value).toEqual(
-      put(actionCreators.setPublicDodaysForStoreActionCreator(dodays))
+      put(
+        actionCreators.setPublicDodaysForStoreActionCreator(
+          dodays,
+          !!params.skip
+        )
+      )
+    );
+    expect(gen.next(dodays).value).toEqual(
+      put(setStoreLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });

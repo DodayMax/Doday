@@ -13,7 +13,7 @@ import {
   ClearDodayDetailsDirtyStuffAction,
 } from '../actions';
 import { activity } from '@root/lib/common-interfaces/fake-data';
-import { ProgressLike } from '@root/tools/types';
+import { ProgressLike } from '@root/lib/models/entities/common';
 
 describe('Doday details action creators', () => {
   it('Set loading state for doday details peace of state', () => {

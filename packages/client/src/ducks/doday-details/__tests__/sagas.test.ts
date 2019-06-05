@@ -17,9 +17,9 @@ import {
   fetchSelectedProgressActionSaga,
   setUpdatesAndDirtyStatusSaga,
 } from '../sagas';
-import { ProgressLike } from '@root/tools/types';
 import { isDirty } from '@root/lib/utils';
 import { updatesSelector, selectedDoday } from '../selectors';
+import { ProgressLike } from '@root/lib/models/entities/common';
 
 describe("Test DodayDetails's sagas", () => {
   it('fetchSelectedDodayActionSaga', () => {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
 import * as classnames from 'classnames';
 import { LayoutBlock } from '@shared';
 import { withRouter } from 'react-router';
@@ -32,6 +31,9 @@ const css = (theme: Theme) =>
       left: 0,
       zIndex: 0,
     },
+    fullWidth: {
+      width: '100%',
+    },
   });
 
 interface PageProps extends React.HTMLAttributes<HTMLElement> {
@@ -40,43 +42,27 @@ interface PageProps extends React.HTMLAttributes<HTMLElement> {
    * Static pages don't stacked on top of another page
    * (use when you need page without close btn)
    **/
-  isStatic?: boolean;
-}
-
-export interface PageChildContext {
-  scrollContainer: React.RefObject<HTMLDivElement>;
+  permanent?: boolean;
 }
 
 @(withRouter as any)
-export class PageComponent extends React.Component<PageProps & WithStyles, {}> {
-  private scrollContainer: React.RefObject<HTMLDivElement> = React.createRef();
-
-  public static childContextTypes: React.ValidationMap<any> = {
-    scrollContainer: PropTypes.any,
-  };
-
-  public getChildContext(): PageChildContext {
-    return {
-      scrollContainer: this.scrollContainer,
-    };
-  }
-
+export class PageComponent extends React.Component<PageProps & WithStyles> {
   render() {
-    const { isStatic, classes, className } = this.props;
-
+    const { permanent, classes, className } = this.props;
     const cx = classnames({
       [classes.pageContainer]: true,
+      [classes.fullWidth]: permanent,
       [className]: !!className,
     });
     const scrollContainer = classnames({
       [classes.scroll]: true,
-      [classes.stacked]: !isStatic,
-      [classes.static]: isStatic,
+      [classes.stacked]: !permanent,
+      [classes.static]: permanent,
     });
     return (
       <div className={scrollContainer}>
         {this.props.header}
-        <div className={cx} ref={this.scrollContainer}>
+        <div className={cx}>
           <LayoutBlock direction="column">{this.props.children}</LayoutBlock>
         </div>
       </div>

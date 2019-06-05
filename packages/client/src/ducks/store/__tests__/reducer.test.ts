@@ -16,4 +16,36 @@ describe("test store's reducers", () => {
       dodays,
     });
   });
+
+  it('set Store loading state reducer', () => {
+    const value = true;
+    expect(
+      reducer(
+        initialStoreState,
+        actionCreators.setStoreLoadingStateActionCreator(value)
+      )
+    ).toEqual({
+      ...initialStoreState,
+      loading: true,
+    });
+  });
+
+  it('set dodays with totalCount reducer', () => {
+    const dodays: DodayLike[] = [activity];
+    const totalCount = 20;
+    expect(
+      reducer(
+        initialStoreState,
+        actionCreators.setPublicDodaysForStoreActionCreator(
+          dodays,
+          undefined,
+          totalCount
+        )
+      )
+    ).toEqual({
+      ...initialStoreState,
+      dodays,
+      totalCount,
+    });
+  });
 });

@@ -1,21 +1,23 @@
 export interface Resource {
   did: string;
-  // A user displayable description for the page.
+  /** A user displayable description for the page. */
   description?: string;
-  // A URL which contains an icon for the page.
+  /** A URL which contains an icon for the page. */
   icon?: string;
-  // A URL which contains a preview image for the page.
+  /** A URL which contains a preview image for the page. */
   image?: string;
-  // The meta keywords for the page.
+  /** The meta keywords for the page. */
   keywords?: string[];
-  // A string representation of the sub and primary domains.
+  /** A string representation of the sub and primary domains. */
   provider?: string;
-  // A user displayable title for the page.
+  /** A user displayable title for the page. */
   title?: string;
-  // The type of content as defined by opengraph.
+  /** The type of content as defined by opengraph. */
   type?: string;
-  // A canonical URL for the page.
+  /** A canonical URL for the page. */
   url?: string;
+  /** Image height */
+  imageHeight?: number;
 }
 
 export interface SerializedResource {
@@ -28,4 +30,5 @@ export interface SerializedResource {
   title?: string;
   type?: string;
   url?: string;
+  imageHeight?: number;
 }

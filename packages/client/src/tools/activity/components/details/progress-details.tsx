@@ -401,7 +401,8 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 className={classes.videoWrapper}
                 style={{
                   backgroundImage: `url(${preview})`,
-                  backgroundSize: 'contain',
+                  backgroundSize: 'cover',
+                  backgroundRepeat: 'no-repeat',
                 }}
               >
                 <iframe

@@ -11,6 +11,8 @@ module.exports = app => {
    * createdBy: DID(string) - created by Hero with passed DID
    */
   app.get('/api/dodays', dodaysController.getDodaysController);
+  /** Count all public dodays */
+  app.get('/api/dodays/count', dodaysController.getDodaysCountController);
   /** Get doday by did */
   app.get(
     '/api/dodays/:did',

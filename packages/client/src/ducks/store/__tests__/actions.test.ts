@@ -3,12 +3,24 @@ import {
   actionCreators,
   FetchPublicDodaysForStoreAction,
   SetPublicDodaysForStoreAction,
+  SetStoreLoadingStateAction,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { activity } from '@root/lib/common-interfaces/fake-data';
 import { DodayLike } from '@root/lib/models/entities/common';
 
 describe('store action creators', () => {
+  it('set Store loading state action creator', () => {
+    const value = true;
+    const expectedActionObject: SetStoreLoadingStateAction = {
+      type: ActionConstants.SET_LOADING_STATE,
+      payload: value,
+    };
+    expect(actionCreators.setStoreLoadingStateActionCreator(value)).toEqual(
+      expectedActionObject
+    );
+  });
+
   it('fetch dodays for store without params action creator', () => {
     const params: DodaysQueryParams = {};
     const expectedActionObject: FetchPublicDodaysForStoreAction = {
@@ -24,10 +36,35 @@ describe('store action creators', () => {
     const dodays: DodayLike[] = [activity];
     const expectedActionObject: SetPublicDodaysForStoreAction = {
       type: ActionConstants.SET_DODAYS,
-      payload: dodays,
+      payload: {
+        dodays,
+      },
     };
     expect(actionCreators.setPublicDodaysForStoreActionCreator(dodays)).toEqual(
       expectedActionObject
     );
+  });
+
+  it('set dodays for store action creator with all params', () => {
+    const payload = {
+      dodays: [activity],
+      concat: true,
+      totalCount: 20,
+    };
+    const expectedActionObject: SetPublicDodaysForStoreAction = {
+      type: ActionConstants.SET_DODAYS,
+      payload: {
+        dodays: payload.dodays,
+        concat: payload.concat,
+        totalCount: payload.totalCount,
+      },
+    };
+    expect(
+      actionCreators.setPublicDodaysForStoreActionCreator(
+        payload.dodays,
+        payload.concat,
+        payload.totalCount
+      )
+    ).toEqual(expectedActionObject);
   });
 });

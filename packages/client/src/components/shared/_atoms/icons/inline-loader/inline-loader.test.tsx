@@ -4,7 +4,7 @@ import { Icons } from '@shared';
 
 describe('InlineLoaderIcon', () => {
   it('renders correctly without props', () => {
-    const icon = shallow(<Icons.InlineLoader />);
+    const icon = shallow(<Icons.InlineLoader color={''} />);
 
     expect(icon).toMatchSnapshot();
   });

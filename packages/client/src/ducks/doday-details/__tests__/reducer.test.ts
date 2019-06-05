@@ -1,7 +1,6 @@
 import reducer from '../reducer';
 import { actionCreators } from '../actions';
 import { activity } from '@root/lib/common-interfaces/fake-data';
-import { ProgressLike } from '@root/tools/types';
 
 describe('DodayDetails reducers', () => {
   it('set DodayDetails loading state reducer', () => {

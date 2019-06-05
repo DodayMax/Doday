@@ -34,12 +34,15 @@ interface MasonryItemProps extends DodayLike {
   style: { [key: string]: string };
 }
 
+export const DEFAULT_IMAGE_HEIGHT = 112.5;
+
 @(withRouter as any)
 export class MasonryItemComponent extends React.PureComponent<
   MasonryItemProps & WithStyles & Partial<RouteComponentProps>
 > {
   render() {
     const { did, name, resource, rate, style, classes } = this.props;
+    const imageHeight = resource && resource.imageHeight;
     return (
       <Grid item key={did} style={style}>
         <Card onClick={() => this.props.history.push(`/dodays/${did}`)}>
@@ -49,6 +52,11 @@ export class MasonryItemComponent extends React.PureComponent<
                 image={(resource && resource.image) || ''}
                 title="Image title"
                 // className={classes.cardMedia}
+                style={{
+                  height: imageHeight
+                    ? `${imageHeight}px`
+                    : `${DEFAULT_IMAGE_HEIGHT}px`,
+                }}
               />
             )}
             <CardContent>

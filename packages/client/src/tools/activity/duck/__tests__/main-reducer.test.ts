@@ -1,11 +1,11 @@
 import { mainReducer, initialActivityToolState } from '../reducer';
 import { actionCreators, optimisticUpdatesActionCreators } from '../actions';
-import { Activity } from '../../entities/activity';
 import {
   activity,
   doday,
   progress,
 } from '@root/lib/common-interfaces/fake-data';
+import { Activity } from '@root/lib/models/entities/activity';
 
 describe("test activity's main reducer", () => {
   it('set fetched activities reducer', () => {

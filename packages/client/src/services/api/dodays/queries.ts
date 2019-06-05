@@ -21,6 +21,26 @@ export const fetchDodays = (params?: DodaysQueryParams) => {
   });
 };
 
+export const fetchDodaysCount = (params?: DodaysQueryParams) => {
+  let paramsString = '';
+  if (params) paramsString = `?${encodeQueryData(params)}`;
+
+  return fetch(`/api/dodays/count${paramsString}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    const response = await res.json();
+    return (
+      response[0] &&
+      response[0]._fields &&
+      response[0]._fields[0] &&
+      response[0]._fields[0].low
+    );
+  });
+};
+
 export const fetchDodayByDID = (did: string) => {
   return fetch(`/api/dodays/${did}`, {
     method: 'GET',
@@ -61,6 +81,7 @@ export const fetchDodayWithProgressByDID = (did: string) => {
 
 export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
   const json = await res.json();
+  console.log(json);
   const dodays: DodayLike[] = json.map(item => {
     const nodes = item._fields[0];
     const dodayNode = nodes.doday && nodes.doday.properties;
@@ -93,6 +114,10 @@ export type DodaysQueryParams = {
   dodaytype?: number;
   /** filter by Hero created doday */
   createdBy?: string;
+  /** Skip some amount of results - paging */
+  skip?: number;
+  /** Limit results count - paging */
+  limit?: number;
 };
 
 export type DodaysWithProgressQueryParams = {

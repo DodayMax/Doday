@@ -24,13 +24,34 @@ export const dodaysQuery = (
       OPTIONAL MATCH (d)-[]-(pin:Progress {pinned: true})
       OPTIONAL MATCH (d)-[]-(overdue:Progress {overdue: true})
       OPTIONAL MATCH (r:Resource)-[]-(d)
-      with d, r, (count(take) * 10) + (count(complete) * 20) + (count(pin) * 12) - (count(overdue) * 11) as rate
+      WITH d, r, (count(take) * 10) + (count(complete) * 20) + (count(pin) * 12) - (count(overdue) * 11) as rate
       RETURN {
         doday: d,
         rate: rate,
         resource: r
       }
       ORDER BY rate DESC
+      ${props.skip ? 'SKIP $skip' : ''}
+      ${props.limit ? 'LIMIT $limit' : ''}
+    `,
+    {
+      ...props,
+    }
+  );
+};
+
+export const dodaysCountQuery = (
+  tx: neo4j.Transaction,
+  props: DodaysQueryParams
+) => {
+  return tx.run(
+    `
+      MATCH (d:Doday)-[]-(h:Hero)
+      WHERE h.did = $heroDID
+      AND d.public = true
+      ${props.type ? `AND d.type = $type` : ''}
+      ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
+      RETURN count(d)
     `,
     {
       ...props,

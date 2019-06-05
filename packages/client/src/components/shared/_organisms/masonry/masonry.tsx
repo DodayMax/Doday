@@ -58,6 +58,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import throttle from 'lodash.throttle';
 import { DodayLike } from '@root/lib/models/entities/common';
+import { DEFAULT_IMAGE_HEIGHT } from '@root/components/pages/store';
 
 const noPage = { stop: 0 };
 const defaultColumnSpanSelector = () => 1;
@@ -130,18 +131,17 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
     scrollAnchor: window,
     threshold: window.innerHeight * 2,
   };
-
   state: MasonryState = { averageHeight: 300, pages: [] };
 
   componentDidMount() {
     this.layout(this.props);
     this.onScroll();
-    document.addEventListener('scroll', this.onScroll);
+    this.node && this.node.addEventListener('scroll', this.onScroll);
     window.addEventListener('resize', this.onResize);
   }
 
   componentWillUnmount() {
-    document.removeEventListener('scroll', this.onScroll);
+    this.node && this.node.removeEventListener('scroll', this.onScroll);
     window.removeEventListener('resize', this.onResize);
   }
 
@@ -229,10 +229,11 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
 
         // Determine the height of this item to stage
         const height =
-          (itemProps.imageHeight &&
-            itemProps.imageHeight.low + DEFAULT_ITEM_HEIGHT) ||
+          ((itemProps.resource && itemProps.resource.imageHeight) ||
+            (itemProps.resource &&
+              itemProps.resource.image &&
+              DEFAULT_IMAGE_HEIGHT)) + DEFAULT_ITEM_HEIGHT ||
           DEFAULT_ITEM_HEIGHT;
-        console.log(height);
 
         if (isNaN(height)) {
           console.warn(
@@ -563,10 +564,8 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
         return;
       }
 
-      const bounds = this.node.getBoundingClientRect();
-
       this.checkVisibility();
-      this.checkInfiniteLoad(bounds);
+      this.checkInfiniteLoad();
     },
     100,
     { leading: true, trailing: true }
@@ -613,20 +612,15 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
     return false;
   }
 
-  checkInfiniteLoad(bounds) {
-    if (this.props.scrollAnchor === window) {
-      if (
-        bounds.top + bounds.height <
-        window.innerHeight + this.props.threshold
-      ) {
-        this.props.onInfiniteLoad();
-        return;
-      }
-
-      return;
-    } else if (
+  checkInfiniteLoad() {
+    console.log(
+      this.props.threshold,
+      this.node.scrollHeight,
+      this.getScrollTop()
+    );
+    if (
       this.props.threshold >
-      this.props.scrollAnchor.scrollHeight - this.getScrollTop()
+      this.node.scrollHeight - (this.getScrollTop() + this.node.clientHeight)
     ) {
       this.props.onInfiniteLoad();
       return;
@@ -634,27 +628,15 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
   }
 
   getScrollTop() {
-    if (this.props.scrollAnchor === window) {
-      return window.pageYOffset;
-    }
-
-    return this.props.scrollAnchor.scrollTop;
+    return this.node.scrollTop;
   }
 
   getScrollOffset() {
-    if (this.props.scrollAnchor === window) {
-      return this.node.offsetTop;
-    }
-
-    return this.props.scrollOffset;
+    return this.node.offsetTop;
   }
 
   getViewableHeight() {
-    if (this.props.scrollAnchor === window) {
-      return window.innerHeight;
-    }
-
-    return this.props.scrollAnchor.offsetHeight;
+    return this.node.offsetHeight;
   }
 
   onReference = node => (this.node = node);
@@ -678,7 +660,7 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
     return (
       <div
         ref={this.onReference}
-        style={{ width: '100%', height: '100vh' }}
+        style={{ width: '100%', height: 'calc(100vh - 64px)' }}
         className={classNames(containerClassName)}
       >
         <div
