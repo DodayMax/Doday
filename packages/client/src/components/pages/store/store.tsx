@@ -18,6 +18,8 @@ import {
   TextField,
   Chip,
   CardActionArea,
+  WithTheme,
+  withTheme,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { capitalize } from '@root/lib/utils';
@@ -75,7 +77,8 @@ class StoreClassComponent extends React.Component<
   StoreProps &
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps> &
-    WithStyles
+    WithStyles &
+    WithTheme
 > {
   componentDidMount() {
     this.props.fetchPublicDodaysForStoreActionCreator({
@@ -94,7 +97,7 @@ class StoreClassComponent extends React.Component<
   };
 
   render() {
-    const { loading, dodays, activeTools, classes } = this.props;
+    const { loading, dodays, activeTools, classes, theme } = this.props;
 
     return (
       <Page permanent className={classnames(classes.page, classes.store)}>
@@ -105,7 +108,15 @@ class StoreClassComponent extends React.Component<
             containerClassName={classes.container}
             itemComponent={MasonryItem}
             alignCenter={true}
-            loadingElement={<span>Loading...</span>}
+            loadingElement={
+              <LayoutBlock
+                align="flexCenter"
+                paddingAbove={Space.XSmall}
+                paddingBelow={Space.XSmall}
+              >
+                <Icons.InlineLoader color={theme.palette.action.active} />
+              </LayoutBlock>
+            }
             hasMore={true}
             isLoading={loading}
             onInfiniteLoad={this.loadMore}
@@ -173,4 +184,4 @@ const mapState = (state: RootState) => ({
 export const Store = connect(
   mapState,
   { ...actions }
-)(withStyles(css)(StoreClassComponent));
+)(withStyles(css)(withTheme()(StoreClassComponent)));

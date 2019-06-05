@@ -30,7 +30,7 @@ export const dodaysQuery = (
         rate: rate,
         resource: r
       }
-      ORDER BY rate DESC
+      ORDER BY rate DESC, d.created DESC
       ${props.skip ? 'SKIP $skip' : ''}
       ${props.limit ? 'LIMIT $limit' : ''}
     `,
