@@ -16,6 +16,7 @@ export const dodaysQuery = (
     `
       MATCH (d:Doday)-[]-(h:Hero)
       WHERE h.did = $heroDID
+      AND NOT (d)-[]-(:Progress)-[]-(h)
       AND d.public = true
       ${props.type ? `AND d.type = $type` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
@@ -48,10 +49,65 @@ export const dodaysCountQuery = (
     `
       MATCH (d:Doday)-[]-(h:Hero)
       WHERE h.did = $heroDID
+      AND NOT (d)-[]-(:Progress)-[]-(h)
       AND d.public = true
       ${props.type ? `AND d.type = $type` : ''}
       ${props.createdBy ? `AND d.ownerDID = $createdBy` : ''}
       RETURN count(d)
+    `,
+    {
+      ...props,
+    }
+  );
+};
+
+export const dodaysSearchQuery = (
+  tx: neo4j.Transaction,
+  props: DodaysQueryParams
+) => {
+  return tx.run(
+    `
+      CALL db.index.fulltext.queryNodes("dodayIndex", $term) YIELD node, score
+      MATCH (node)-[]-(h:Hero)
+      WHERE h.did = $heroDID
+      AND NOT (node)-[]-(:Progress)-[]-(h)
+      AND node.public = true
+      ${props.type ? `AND node.type = $type` : ''}
+      ${props.createdBy ? `AND node.ownerDID = $createdBy` : ''}
+      OPTIONAL MATCH (node)-[]-(take:Progress)
+      OPTIONAL MATCH (node)-[]-(complete:Progress {completed: true})
+      OPTIONAL MATCH (node)-[]-(pin:Progress {pinned: true})
+      OPTIONAL MATCH (node)-[]-(overdue:Progress {overdue: true})
+      OPTIONAL MATCH (r:Resource)-[]-(node)
+      WITH node, r, (count(take) * 10) + (count(complete) * 20) + (count(pin) * 12) - (count(overdue) * 11) as rate
+      RETURN {
+        doday: node,
+        rate: rate,
+        resource: r
+      }
+      ${props.skip ? 'SKIP $skip' : ''}
+      ${props.limit ? 'LIMIT $limit' : ''}
+    `,
+    {
+      ...props,
+    }
+  );
+};
+
+export const dodaysSearchCountQuery = (
+  tx: neo4j.Transaction,
+  props: DodaysQueryParams
+) => {
+  return tx.run(
+    `
+      CALL db.index.fulltext.queryNodes("dodayIndex", $term) YIELD node, score
+      MATCH (node:Doday)-[]-(h:Hero)
+      WHERE h.did = $heroDID
+      AND NOT (node)-[]-(:Progress)-[]-(h)
+      AND node.public = true
+      ${props.type ? `AND node.type = $type` : ''}
+      ${props.createdBy ? `AND node.ownerDID = $createdBy` : ''}
+      RETURN count(node)
     `,
     {
       ...props,

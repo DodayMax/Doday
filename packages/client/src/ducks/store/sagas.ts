@@ -5,6 +5,7 @@ import {
   ActionConstants,
   setPublicDodaysForStoreActionCreator,
   setStoreLoadingStateActionCreator,
+  SearchPublicDodaysForStoreAction,
 } from './actions';
 
 /**
@@ -28,9 +29,34 @@ export function* fetchPublicDodaysForStoreActionSaga(
   yield put(setStoreLoadingStateActionCreator(false));
 }
 
+/**
+ * Search public dodays for store
+ *
+ * @param {SearchPublicDodaysForStoreAction} action
+ */
+export function* searchPublicDodaysForStoreActionSaga(
+  action: SearchPublicDodaysForStoreAction
+) {
+  yield put(setStoreLoadingStateActionCreator(true));
+  const count =
+    action.payload.skip != null
+      ? undefined
+      : yield call(api.dodays.queries.searchDodaysCount, action.payload);
+  const res = yield call(api.dodays.queries.searchDodays, action.payload);
+
+  yield put(
+    setPublicDodaysForStoreActionCreator(res, !!action.payload.skip, count)
+  );
+  yield put(setStoreLoadingStateActionCreator(false));
+}
+
 export default [
   takeLatest(
     ActionConstants.FETCH_DODAYS_WITH_PARAMS,
     fetchPublicDodaysForStoreActionSaga
+  ),
+  takeLatest(
+    ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+    searchPublicDodaysForStoreActionSaga
   ),
 ];

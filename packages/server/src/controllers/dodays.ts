@@ -12,6 +12,8 @@ import {
   dodayWithProgressByDIDQuery,
   dodaysWithProgressQuery,
   dodaysCountQuery,
+  dodaysSearchQuery,
+  dodaysSearchCountQuery,
 } from '../queries-mutations/dodays';
 
 export const getDodaysController = (req: Request, res: Response) => {
@@ -50,6 +52,54 @@ export const getDodaysCountController = (req: Request, res: Response) => {
 
   session
     .readTransaction(tx => dodaysCountQuery(tx, params))
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const searchDodaysController = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  const params: DodaysQueryParams = {
+    heroDID: req.user.did,
+    term: req.query.term,
+  };
+
+  if (req.query.type) params.type = Number(req.query.type);
+  if (req.query.createdBy) params.createdBy = req.query.createdBy;
+  if (req.query.skip) params.skip = Number(req.query.skip);
+  if (req.query.limit) params.limit = Number(req.query.limit);
+
+  session
+    .readTransaction(tx => dodaysSearchQuery(tx, params))
+    .then(result => {
+      session.close();
+      res.status(200).send(result.records);
+    })
+    .catch(e => {
+      console.error(e);
+      session.close();
+    });
+};
+
+export const searchDodaysCountController = (req: Request, res: Response) => {
+  const session = driver.session();
+
+  const params: DodaysQueryParams = {
+    heroDID: req.user.did,
+    term: req.query.term,
+  };
+
+  if (req.query.type) params.type = Number(req.query.type);
+  if (req.query.createdBy) params.createdBy = req.query.createdBy;
+
+  session
+    .readTransaction(tx => dodaysSearchCountQuery(tx, params))
     .then(result => {
       session.close();
       res.status(200).send(result.records);
@@ -285,6 +335,7 @@ export type DodaysQueryParams = {
   createdBy?: string;
   skip?: number;
   limit?: number;
+  term?: string;
 };
 
 export type DodaysWithProgressQueryParams = {

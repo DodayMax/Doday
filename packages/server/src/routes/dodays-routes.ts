@@ -13,6 +13,13 @@ module.exports = app => {
   app.get('/api/dodays', dodaysController.getDodaysController);
   /** Count all public dodays */
   app.get('/api/dodays/count', dodaysController.getDodaysCountController);
+  /** Search Doday nodes by dodayIndex (name, description) */
+  app.get('/api/dodays/search', dodaysController.searchDodaysController);
+  /** Count all public dodays */
+  app.get(
+    '/api/dodays/search/count',
+    dodaysController.searchDodaysCountController
+  );
   /** Get doday by did */
   app.get(
     '/api/dodays/:did',

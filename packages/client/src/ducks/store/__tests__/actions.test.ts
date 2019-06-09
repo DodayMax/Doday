@@ -4,6 +4,7 @@ import {
   FetchPublicDodaysForStoreAction,
   SetPublicDodaysForStoreAction,
   SetStoreLoadingStateAction,
+  SearchPublicDodaysForStoreAction,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { activity } from '@root/lib/common-interfaces/fake-data';
@@ -19,6 +20,17 @@ describe('store action creators', () => {
     expect(actionCreators.setStoreLoadingStateActionCreator(value)).toEqual(
       expectedActionObject
     );
+  });
+
+  it('search dodays action creator', () => {
+    const params: DodaysQueryParams = {};
+    const expectedActionObject: SearchPublicDodaysForStoreAction = {
+      type: ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+      payload: params,
+    };
+    expect(
+      actionCreators.searchPublicDodaysForStoreActionCreator(params)
+    ).toEqual(expectedActionObject);
   });
 
   it('fetch dodays for store without params action creator', () => {

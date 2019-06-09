@@ -88,6 +88,7 @@ interface LayoutItem extends Partial<Position> {
 }
 
 interface MasonryProps {
+  header?: () => React.ReactNode;
   alignCenter: boolean;
   columnGutter: number;
   columnWidth: number;
@@ -643,6 +644,7 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
 
   render() {
     const {
+      header,
       containerClassName,
       layoutClassName,
       pageClassName,
@@ -658,48 +660,51 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
     const layoutHeight = (pages[pages.length - 1] || noPage).stop;
 
     return (
-      <div
-        ref={this.onReference}
-        style={{ width: '100%', height: 'calc(100vh - 64px)' }}
-        className={classNames(containerClassName)}
-      >
+      <>
         <div
-          className={classNames(layoutClassName)}
-          style={{ height: `${layoutHeight}px`, position: 'relative' }}
+          ref={this.onReference}
+          style={{ width: '100%', height: 'calc(100vh - 64px)' }}
+          className={classNames(containerClassName)}
         >
-          {pages.map((page, index) => {
-            if (!page.visible) {
-              return null;
-            }
+          {header && header()}
+          <div
+            className={classNames(layoutClassName)}
+            style={{ height: `${layoutHeight}px`, position: 'relative' }}
+          >
+            {pages.map((page, index) => {
+              if (!page.visible) {
+                return null;
+              }
 
-            return (
-              <div className={classNames(pageClassName)} key={index}>
-                {page.items.map(
-                  (
-                    { props, left, top, width, height, columnSpan },
-                    itemIndex
-                  ) => {
-                    return (
-                      <Item
-                        key={itemIndex}
-                        columnSpan={columnSpan}
-                        style={{
-                          position: 'absolute',
-                          left: left + 'px',
-                          top: top + 'px',
-                          width: width + 'px',
-                        }}
-                        {...props}
-                      />
-                    );
-                  }
-                )}
-              </div>
-            );
-          })}
+              return (
+                <div className={classNames(pageClassName)} key={index}>
+                  {page.items.map(
+                    (
+                      { props, left, top, width, height, columnSpan },
+                      itemIndex
+                    ) => {
+                      return (
+                        <Item
+                          key={itemIndex}
+                          columnSpan={columnSpan}
+                          style={{
+                            position: 'absolute',
+                            left: left + 'px',
+                            top: top + 'px',
+                            width: width + 'px',
+                          }}
+                          {...props}
+                        />
+                      );
+                    }
+                  )}
+                </div>
+              );
+            })}
+          </div>
+          {hasMore && isLoading && loadingElement}
         </div>
-        {hasMore && isLoading && loadingElement}
-      </div>
+      </>
     );
   }
 }

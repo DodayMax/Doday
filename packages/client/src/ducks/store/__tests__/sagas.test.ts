@@ -5,9 +5,13 @@ import {
   ActionConstants,
   actionCreators,
   setStoreLoadingStateActionCreator,
+  SearchPublicDodaysForStoreAction,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { fetchPublicDodaysForStoreActionSaga } from '../sagas';
+import {
+  fetchPublicDodaysForStoreActionSaga,
+  searchPublicDodaysForStoreActionSaga,
+} from '../sagas';
 import { activity } from '@root/lib/common-interfaces/fake-data';
 import { DodayLike } from '@root/lib/models/entities/common';
 
@@ -66,6 +70,41 @@ describe("Test Store's sagas", () => {
         actionCreators.setPublicDodaysForStoreActionCreator(
           dodays,
           !!params.skip
+        )
+      )
+    );
+    expect(gen.next(dodays).value).toEqual(
+      put(setStoreLoadingStateActionCreator(false))
+    );
+    expect(gen.next().done).toBe(true);
+  });
+
+  it('searchPublicDodaysForStoreActionSaga', () => {
+    const params: DodaysQueryParams = {
+      term: 'test term',
+    };
+    const action: SearchPublicDodaysForStoreAction = {
+      type: ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+      payload: params,
+    };
+    const totalCount = 20;
+    const dodays: DodayLike[] = [activity];
+    const gen = searchPublicDodaysForStoreActionSaga(action);
+    expect(gen.next().value).toEqual(
+      put(setStoreLoadingStateActionCreator(true))
+    );
+    expect(gen.next().value).toEqual(
+      call(api.dodays.queries.searchDodaysCount, action.payload)
+    );
+    expect(gen.next(totalCount).value).toEqual(
+      call(api.dodays.queries.searchDodays, action.payload)
+    );
+    expect(gen.next(dodays).value).toEqual(
+      put(
+        actionCreators.setPublicDodaysForStoreActionCreator(
+          dodays,
+          !!params.skip,
+          totalCount
         )
       )
     );

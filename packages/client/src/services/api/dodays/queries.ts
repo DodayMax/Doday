@@ -7,6 +7,40 @@ import {
 
 // Dodays
 
+export const searchDodays = (params?: DodaysQueryParams) => {
+  let paramsString = '';
+  if (params) paramsString = `?${encodeQueryData(params)}`;
+
+  return fetch(`/api/dodays/search${paramsString}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    return await parseAPIResponseDodays(res);
+  });
+};
+
+export const searchDodaysCount = (params?: DodaysQueryParams) => {
+  let paramsString = '';
+  if (params) paramsString = `?${encodeQueryData(params)}`;
+
+  return fetch(`/api/dodays/search/count${paramsString}`, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+    },
+  }).then(async (res: Response) => {
+    const response = await res.json();
+    return (
+      response[0] &&
+      response[0]._fields &&
+      response[0]._fields[0] &&
+      response[0]._fields[0].low
+    );
+  });
+};
+
 export const fetchDodays = (params?: DodaysQueryParams) => {
   let paramsString = '';
   if (params) paramsString = `?${encodeQueryData(params)}`;
@@ -118,6 +152,8 @@ export type DodaysQueryParams = {
   skip?: number;
   /** Limit results count - paging */
   limit?: number;
+  /** Search term */
+  term?: string;
 };
 
 export type DodaysWithProgressQueryParams = {

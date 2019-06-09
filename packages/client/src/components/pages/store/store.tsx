@@ -5,7 +5,10 @@ import { actions } from '@ducks/store';
 import { Page } from '../../shared/_molecules/page';
 import { Space } from '@root/lib/common-interfaces';
 import { RootState } from '@root/lib/models';
-import { FetchPublicDodaysForStoreAction } from '@root/ducks/store/actions';
+import {
+  FetchPublicDodaysForStoreAction,
+  SearchPublicDodaysForStoreAction,
+} from '@root/ducks/store/actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { ToolBeacon } from '@root/tools/types';
 import { LayoutBlock, Icons, Masonry } from '@shared';
@@ -30,6 +33,11 @@ import { DodayLike } from '@root/lib/models/entities/common';
 
 const css = (theme: Theme) =>
   createStyles({
+    searchContainer: {
+      width: '70%',
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
     searchInput: {
       fontSize: '2.6rem',
     },
@@ -60,12 +68,19 @@ const css = (theme: Theme) =>
   });
 
 interface StoreProps {}
+interface StoreState {
+  term: string;
+  searching: boolean;
+}
 
 interface PropsFromConnect {
   loading?: boolean;
   totalCount?: number;
   dodays: DodayLike[];
   activeTools: ToolBeacon[];
+  searchPublicDodaysForStoreActionCreator(
+    params: DodaysQueryParams
+  ): SearchPublicDodaysForStoreAction;
   fetchPublicDodaysForStoreActionCreator(
     params: DodaysQueryParams
   ): FetchPublicDodaysForStoreAction;
@@ -78,8 +93,18 @@ class StoreClassComponent extends React.Component<
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps> &
     WithStyles &
-    WithTheme
+    WithTheme,
+  StoreState
 > {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      term: '',
+      searching: false,
+    };
+  }
+
   componentDidMount() {
     this.props.fetchPublicDodaysForStoreActionCreator({
       limit: ITEMS_PER_PAGE,
@@ -89,10 +114,36 @@ class StoreClassComponent extends React.Component<
   loadMore = () => {
     const { loading, totalCount, dodays } = this.props;
     if (!loading && dodays.length !== totalCount) {
-      this.props.fetchPublicDodaysForStoreActionCreator({
-        skip: dodays.length,
-        limit: ITEMS_PER_PAGE,
-      });
+      !this.state.searching
+        ? this.props.fetchPublicDodaysForStoreActionCreator({
+            skip: dodays.length,
+            limit: ITEMS_PER_PAGE,
+          })
+        : this.props.searchPublicDodaysForStoreActionCreator({
+            skip: dodays.length,
+            limit: ITEMS_PER_PAGE,
+          });
+    }
+  };
+
+  onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.keyCode === 13) {
+      if (this.state.term) {
+        this.props.searchPublicDodaysForStoreActionCreator({
+          term: this.state.term,
+          limit: ITEMS_PER_PAGE,
+        });
+        this.setState({
+          searching: true,
+        });
+      } else {
+        this.props.fetchPublicDodaysForStoreActionCreator({
+          limit: ITEMS_PER_PAGE,
+        });
+        this.setState({
+          searching: false,
+        });
+      }
     }
   };
 
@@ -103,6 +154,55 @@ class StoreClassComponent extends React.Component<
       <Page permanent className={classnames(classes.page, classes.store)}>
         <Grid container>
           <Masonry
+            header={() => (
+              <LayoutBlock flex="1" align="flexCenter" direction="column">
+                <LayoutBlock
+                  flex="1"
+                  align="flexCenter"
+                  valign="vflexEnd"
+                  spaceAbove={Space.Medium}
+                  spaceBelow={Space.Medium}
+                  className={classes.searchContainer}
+                >
+                  <LayoutBlock
+                    spaceBelow={Space.Small}
+                    spaceRight={Space.Medium}
+                  >
+                    <SearchIcon color="disabled" />
+                  </LayoutBlock>
+                  <TextField
+                    fullWidth
+                    id="doday-search"
+                    label={'Search for doday'}
+                    onChange={e => this.setState({ term: e.target.value })}
+                    onKeyDown={this.onSearch}
+                    InputProps={{
+                      classes: {
+                        input: classes.searchInput,
+                      },
+                    }}
+                    InputLabelProps={{
+                      FormLabelClasses: {
+                        root: classes.searchLabel,
+                      },
+                    }}
+                  />
+                </LayoutBlock>
+                <LayoutBlock align="flexCenter" spaceBelow={Space.Medium}>
+                  {activeTools.map(tool =>
+                    tool.config.entities.map(entity => (
+                      <Chip
+                        key={tool.config.sysname}
+                        label={capitalize(entity.name)}
+                        onClick={() => {
+                          console.log(`filter by: ${entity.name}`);
+                        }}
+                      />
+                    ))
+                  )}
+                </LayoutBlock>
+              </LayoutBlock>
+            )}
             items={dodays}
             layoutClassName={classes.layout}
             containerClassName={classes.container}
@@ -130,46 +230,7 @@ class StoreClassComponent extends React.Component<
       </Page>
     );
     return (
-      <Page permanent className={classnames(classes.page, classes.store)}>
-        <LayoutBlock
-          flex="1"
-          align="flexCenter"
-          valign="vflexEnd"
-          spaceAbove={Space.Medium}
-          spaceBelow={Space.Medium}
-        >
-          <LayoutBlock spaceBelow={Space.Small} spaceRight={Space.Medium}>
-            <SearchIcon color="disabled" />
-          </LayoutBlock>
-          <TextField
-            id="doday-search"
-            label={'Search for doday'}
-            InputProps={{
-              classes: {
-                input: classes.searchInput,
-              },
-            }}
-            InputLabelProps={{
-              FormLabelClasses: {
-                root: classes.searchLabel,
-              },
-            }}
-          />
-        </LayoutBlock>
-        <LayoutBlock align="flexCenter" spaceBelow={Space.Medium}>
-          {activeTools.map(tool =>
-            tool.config.entities.map(entity => (
-              <Chip
-                key={tool.config.sysname}
-                label={capitalize(entity.name)}
-                onClick={() => {
-                  console.log(`filter by: ${entity.name}`);
-                }}
-              />
-            ))
-          )}
-        </LayoutBlock>
-      </Page>
+      <Page permanent className={classnames(classes.page, classes.store)} />
     );
   }
 }
