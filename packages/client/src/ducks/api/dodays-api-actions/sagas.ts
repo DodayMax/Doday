@@ -7,6 +7,7 @@ import {
   TakeDodayAction,
   CreateDodayAction,
   CreateAndTakeDodayAction,
+  CompleteWithoutTakenAction,
 } from './actions';
 import { api } from '@services';
 import {

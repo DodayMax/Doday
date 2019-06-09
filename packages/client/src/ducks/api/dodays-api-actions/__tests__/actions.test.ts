@@ -7,6 +7,7 @@ import {
   UpdateDodayAction,
   UntakeDodayAction,
   DeleteDodayAction,
+  CompleteWithoutTakenAction,
 } from '../actions';
 import {
   deserializedActivity,
@@ -57,6 +58,20 @@ describe('test api action creators', () => {
       payload,
     };
     expect(actionCreators.takeDodayActionCreator(payload)).toEqual(
+      expectedActionObject
+    );
+  });
+
+  it('completeWithoutTakenActionCreator', () => {
+    const payload = {
+      doday: doday,
+      progress: deserialzedActivityProgress,
+    };
+    const expectedActionObject: CompleteWithoutTakenAction = {
+      type: ActionConstants.COMPLETE_WITHOUT_TAKEN,
+      payload,
+    };
+    expect(actionCreators.completeWithoutTakenActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });

@@ -42,6 +42,7 @@
       "save": "Save",
       "saving": "Saving...",
       "take": "Take",
+      "complete": "Complete",
       "untake": "Untake",
       "delete": "Delete",
       "goToResource": "Go to resource"

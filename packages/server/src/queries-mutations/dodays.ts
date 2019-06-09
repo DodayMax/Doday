@@ -299,13 +299,14 @@ export const takeDodayTransaction = (
   }
 ) => {
   /** Omit date to convert it to neo4j datetime */
-  const { date, ...passthrough } = props.progress;
+  const { date, completedAt, ...passthrough } = props.progress;
   return tx.run(
     `
       MATCH (d:Doday { did: $dodayDID })
       MATCH (h:Hero { did: $heroDID })
       CREATE (p:Progress $progress)
       ${date ? 'SET p.date = datetime($date)' : ''}
+      ${completedAt ? 'SET p.completedAt = datetime($completedAt)' : ''}
       SET p.tookAt = datetime($tookAt)
       CREATE (h)-[:DOING]->(p)
       CREATE (p)-[:ORIGIN]->(d)
@@ -315,6 +316,7 @@ export const takeDodayTransaction = (
       dodayDID: props.dodayDID,
       progress: passthrough,
       date: date && new Date(date).toISOString(),
+      completedAt: completedAt && new Date(completedAt).toISOString(),
       tookAt: new Date().toISOString(),
     }
   );

@@ -175,27 +175,51 @@ export class ActivityDetailsComponentClass extends React.Component<
           />
         </LayoutBlock>
         {!loading ? (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={() => {
-              this.props.takeDodayActionCreator({
-                doday: selectedDoday,
-                progress: {
-                  date: (updates && updates.date) || new Date(),
-                  dateIsLocked: (updates && updates.dateIsLocked) || false,
-                  completed: false,
-                  ownerDID: this.props.myDID,
-                },
-              });
-              if (this.context.requestClose) this.context.requestClose();
-              setTimeout(() => {
-                this.props.history.push('/');
-              }, 200);
-            }}
-          >
-            {t('activities:details.actions.take')}
-          </Button>
+          <LayoutBlock insideElementsMargin>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => {
+                this.props.takeDodayActionCreator({
+                  doday: selectedDoday,
+                  progress: {
+                    date: new Date(),
+                    dateIsLocked: false,
+                    completed: true,
+                    completedAt: new Date(),
+                    ownerDID: this.props.myDID,
+                  },
+                });
+                if (this.context.requestClose) this.context.requestClose();
+                setTimeout(() => {
+                  this.props.history.push('/');
+                }, 200);
+              }}
+            >
+              {t('activities:details.actions.complete')}
+            </Button>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={() => {
+                this.props.takeDodayActionCreator({
+                  doday: selectedDoday,
+                  progress: {
+                    date: (updates && updates.date) || new Date(),
+                    dateIsLocked: (updates && updates.dateIsLocked) || false,
+                    completed: false,
+                    ownerDID: this.props.myDID,
+                  },
+                });
+                if (this.context.requestClose) this.context.requestClose();
+                setTimeout(() => {
+                  this.props.history.push('/');
+                }, 200);
+              }}
+            >
+              {t('activities:details.actions.take')}
+            </Button>
+          </LayoutBlock>
         ) : (
           <Icons.InlineLoader color={theme.palette.action.active} />
         )}
@@ -301,6 +325,22 @@ export class ActivityDetailsComponentClass extends React.Component<
                 {resource && resource.description}
               </Typography>
             </LayoutBlock>
+            {!youtubeLink && (resource && resource.url) ? (
+              <LayoutBlock
+                spaceAbove={Space.Large}
+                spaceBelow={Space.Large}
+                align="flexCenter"
+              >
+                <Button
+                  color="primary"
+                  variant="contained"
+                  href={resource.url}
+                  target="_blank"
+                >
+                  {t('activities:details.actions.goToResource')}
+                </Button>
+              </LayoutBlock>
+            ) : null}
             <Card>
               <LayoutBlock
                 paddingAbove={Space.Medium}
