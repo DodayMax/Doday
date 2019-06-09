@@ -57,8 +57,7 @@ export function createAndTakeDodayActionCreator(payload: {
  * @returns {TakeDodayAction}
  */
 export function takeDodayActionCreator(payload: {
-  did: string;
-  type: DodayType;
+  doday: DodayLike;
   progress: Partial<ProgressLike>;
 }): TakeDodayAction {
   return {
@@ -140,8 +139,7 @@ export interface CreateDodayAction extends AnyAction {
 export interface TakeDodayAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY;
   payload: {
-    did: string;
-    type: DodayType;
+    doday: DodayLike;
     progress: Partial<ProgressLike>;
   };
 }

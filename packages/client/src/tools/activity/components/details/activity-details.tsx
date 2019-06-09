@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import * as _ from 'lodash';
@@ -23,7 +24,10 @@ import {
   RequestForSetUpdatesAction,
   ClearDodayDetailsDirtyStuffAction,
 } from '@root/ducks/doday-details/actions';
-import { Pageflow } from '@root/components/shared/_decorators/pageflow';
+import {
+  Pageflow,
+  PageWrapperChildContext,
+} from '@root/components/shared/_decorators/pageflow';
 import {
   TakeDodayAction,
   UntakeDodayAction,
@@ -60,8 +64,7 @@ interface PropsFromConnect {
     progress?: Partial<ProgressLike>
   ): RequestForSetUpdatesAction;
   takeDodayActionCreator(payload: {
-    did: string;
-    type: DodayType;
+    doday: Activity;
     progress: Partial<ProgressLike>;
   }): TakeDodayAction;
   untakeDodayActionCreator(payload: {
@@ -85,6 +88,12 @@ export class ActivityDetailsComponentClass extends React.Component<
   Props,
   ActivityDetailsState
 > {
+  public static contextTypes = {
+    requestClose: PropTypes.func,
+  };
+
+  public context!: PageWrapperChildContext;
+
   componentWillUnmount() {
     this.props.clearSelectedDodayActionCreator();
     this.props.clearDodayDetailsDirtyStuffActionCreator();
@@ -171,8 +180,7 @@ export class ActivityDetailsComponentClass extends React.Component<
             variant="contained"
             onClick={() => {
               this.props.takeDodayActionCreator({
-                did: selectedDoday.did,
-                type: selectedDoday.type,
+                doday: selectedDoday,
                 progress: {
                   date: (updates && updates.date) || new Date(),
                   dateIsLocked: (updates && updates.dateIsLocked) || false,
@@ -180,6 +188,10 @@ export class ActivityDetailsComponentClass extends React.Component<
                   ownerDID: this.props.myDID,
                 },
               });
+              if (this.context.requestClose) this.context.requestClose();
+              setTimeout(() => {
+                this.props.history.push('/');
+              }, 200);
             }}
           >
             {t('activities:details.actions.take')}

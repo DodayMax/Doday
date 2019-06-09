@@ -83,7 +83,7 @@ describe("test activity's main reducer", () => {
   it('take doday optimistic update', () => {
     const activitiesWithoutProgess: Activity[] = [doday];
     const payload = {
-      did: doday.did,
+      doday,
       progress,
     };
     const newState = mainReducer(
@@ -98,23 +98,19 @@ describe("test activity's main reducer", () => {
     expect(newState.dodays[0].progress).toEqual(progress);
   });
 
-  it('dont take doday optimistically if there are no dodays', () => {
+  it('take doday optimistically if there are no dodays', () => {
     const activities: Activity[] = [];
     const payload = {
-      did: doday.did,
+      doday,
       progress,
     };
-    const oldState = {
-      ...initialActivityToolState,
-      dodays: activities,
-    };
     const newState = mainReducer(
-      { ...oldState },
+      { ...initialActivityToolState },
       optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
         payload
       )
     );
-    expect(newState).toEqual(oldState);
+    expect(newState.dodays.length).toBe(1);
   });
 
   it('untake doday optimistic update', () => {

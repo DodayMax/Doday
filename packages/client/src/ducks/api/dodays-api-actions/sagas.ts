@@ -25,6 +25,13 @@ import {
   SerializedDodayLike,
   SerializedProgressLike,
 } from '@root/lib/models/entities/common';
+import {
+  optimisticRemovePublicDodayActionCreator,
+  searchPublicDodaysForStoreActionCreator,
+  fetchPublicDodaysForStoreActionCreator,
+} from '@root/ducks/store/actions';
+import { searchTerm, publicDodays } from '@root/ducks/store/selectors';
+import { ITEMS_PER_PAGE } from '@root/components';
 
 /**
  * Create Doday node and relations to Hero
@@ -143,7 +150,6 @@ export function* createAndTakeDodayActionSaga(
 export function* takeDodayActionSaga(action: TakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   const tools = yield select(activeTools);
-  const selected = yield select(selectedDoday);
   const sideEffects = [];
   let serialized: SerializedProgressLike;
   /**
@@ -152,35 +158,32 @@ export function* takeDodayActionSaga(action: TakeDodayAction) {
    */
   tools.map((tool: ToolBeacon) => {
     const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.type
+      entity => entity.type === action.payload.doday.type
     );
     if (entity) {
       sideEffects.push(
-        /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
           tool.duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
             {
-              did: action.payload.did,
+              doday: action.payload.doday,
               progress: action.payload.progress,
             }
           )
         )
       );
-      if (selected && selected.did === action.payload.did) {
-        sideEffects.push(
-          put(
-            updateSelectedDodayActionCreator({
-              progress: action.payload.progress,
-            })
-          )
-        );
-      }
+      /** Serialize payload to update doday in graph (in app we use deserialized dodays) */
       serialized = entity.serializeProgress(action.payload.progress);
     }
   });
+  /** Store side effect */
+  sideEffects.push(
+    put(optimisticRemovePublicDodayActionCreator(action.payload.doday.did))
+  );
+  /** Clear selected doday, because we are close details */
+  yield put(updateSelectedDodayActionCreator(undefined));
   yield all(sideEffects);
   yield call(api.dodays.mutations.takeDodayMutation, {
-    did: action.payload.did,
+    did: action.payload.doday.did,
     progress: serialized,
   });
   yield put(
@@ -239,6 +242,8 @@ export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   yield put(setDodayDetailsLoadingStateActionCreator(true));
   const tools = yield select(activeTools);
   const selected = yield select(selectedDoday);
+  const term = yield select(searchTerm);
+  const dodays = yield select(publicDodays);
   const sideEffects = [];
   /**
    * Collect all sideeffects from active tools
@@ -258,11 +263,26 @@ export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
       );
     }
   });
-  if (selected && selected.did === action.payload.did) {
-    yield put(updateSelectedDodayActionCreator(undefined));
-  }
+  /** Clear selected doday, because we are close details */
+  yield put(updateSelectedDodayActionCreator(undefined));
   yield all(sideEffects);
   yield call(api.dodays.mutations.untakeDodayMutation, action.payload.did);
+  /**
+   * Refetch public dodays for store
+   * When you untake doday - it appears in Store again
+   */
+  yield term
+    ? put(
+        searchPublicDodaysForStoreActionCreator({
+          term,
+          limit: dodays.length + 1,
+        })
+      )
+    : put(
+        fetchPublicDodaysForStoreActionCreator({
+          limit: dodays.length + 1,
+        })
+      );
   yield put(
     openToastActionCreator({
       open: true,

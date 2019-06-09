@@ -6,6 +6,7 @@ import {
   actionCreators,
   setStoreLoadingStateActionCreator,
   SearchPublicDodaysForStoreAction,
+  setPublicDodaysForStoreActionCreator,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import {
@@ -90,6 +91,9 @@ describe("Test Store's sagas", () => {
     const totalCount = 20;
     const dodays: DodayLike[] = [activity];
     const gen = searchPublicDodaysForStoreActionSaga(action);
+    expect(gen.next().value).toEqual(
+      put(setPublicDodaysForStoreActionCreator([]))
+    );
     expect(gen.next().value).toEqual(
       put(setStoreLoadingStateActionCreator(true))
     );

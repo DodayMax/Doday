@@ -15,6 +15,16 @@ export default (
         ...state,
         loading: action.payload,
       };
+    case actions.ActionConstants.SET_SEARCH_TERM:
+      return {
+        ...state,
+        searchTerm: action.payload,
+      };
+    case actions.ActionConstants.SET_SEARCH_FLAG:
+      return {
+        ...state,
+        searching: action.payload,
+      };
     case actions.ActionConstants.SET_DODAYS:
       return {
         ...state,
@@ -25,6 +35,12 @@ export default (
           action.payload.totalCount != null
             ? action.payload.totalCount
             : state.totalCount,
+      };
+    case actions.ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY:
+      return {
+        ...state,
+        dodays: state.dodays.filter(doday => doday.did !== action.payload),
+        totalCount: state.totalCount - 1,
       };
     default:
       return state;

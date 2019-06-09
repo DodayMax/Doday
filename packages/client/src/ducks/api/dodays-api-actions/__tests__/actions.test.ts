@@ -13,6 +13,7 @@ import {
   deserializedResource,
   deserialzedActivityProgress,
   partialProgress,
+  doday,
 } from '@root/lib/common-interfaces/fake-data';
 import { DodayType } from '@root/lib/models/entities/common';
 
@@ -48,8 +49,7 @@ describe('test api action creators', () => {
 
   it('takeDodayActionCreator', () => {
     const payload = {
-      did: 'string',
-      type: DodayType.Activity,
+      doday: doday,
       progress: deserialzedActivityProgress,
     };
     const expectedActionObject: TakeDodayAction = {

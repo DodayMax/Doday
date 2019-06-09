@@ -69,18 +69,14 @@ export const mainReducer = (
         dodays: withoutUpdated,
       };
     case actions.ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE:
-      if (!state.dodays.length) return state;
-      const taken = state.dodays.find(
-        doday => doday.did === action.payload.did
-      );
       const withoutTaken = state.dodays.filter(
-        doday => doday.did !== action.payload.did
+        doday => doday.did !== action.payload.doday.did
       );
 
       return {
         dodays: [
           {
-            ...taken,
+            ...action.payload.doday,
             progress: action.payload.progress,
           },
           ...withoutTaken,

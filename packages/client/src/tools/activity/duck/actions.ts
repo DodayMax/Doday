@@ -185,7 +185,7 @@ export function updateDodayOptimisticUpdateActionCreator(payload: {
  * @returns {TakeDodayOptimisticUpdateAction}
  */
 export function takeDodayOptimisticUpdateActionCreator(payload: {
-  did: string;
+  doday: Activity;
   progress: Partial<ProgressLike>;
 }): TakeDodayOptimisticUpdateAction {
   return {
@@ -312,7 +312,7 @@ export interface UpdateDodayOptimisticUpdateAction extends AnyAction {
 export interface TakeDodayOptimisticUpdateAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY_OPTIMISTIC_UPDATE;
   payload: {
-    did: string;
+    doday: Activity;
     progress: Partial<ProgressLike>;
   };
 }

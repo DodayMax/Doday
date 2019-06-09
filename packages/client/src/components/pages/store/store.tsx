@@ -8,6 +8,8 @@ import { RootState } from '@root/lib/models';
 import {
   FetchPublicDodaysForStoreAction,
   SearchPublicDodaysForStoreAction,
+  SetSearchFlagAction,
+  SetSearchTermAction,
 } from '@root/ducks/store/actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
 import { ToolBeacon } from '@root/tools/types';
@@ -68,16 +70,16 @@ const css = (theme: Theme) =>
   });
 
 interface StoreProps {}
-interface StoreState {
-  term: string;
-  searching: boolean;
-}
 
 interface PropsFromConnect {
   loading?: boolean;
+  searching?: boolean;
+  searchTerm?: string;
   totalCount?: number;
   dodays: DodayLike[];
   activeTools: ToolBeacon[];
+  setSearchTermActionCreator(term: string): SetSearchTermAction;
+  setSearchFlagActionCreator(value: boolean): SetSearchFlagAction;
   searchPublicDodaysForStoreActionCreator(
     params: DodaysQueryParams
   ): SearchPublicDodaysForStoreAction;
@@ -86,23 +88,17 @@ interface PropsFromConnect {
   ): FetchPublicDodaysForStoreAction;
 }
 
-const ITEMS_PER_PAGE = 10;
+export const ITEMS_PER_PAGE = 10;
 
 class StoreClassComponent extends React.Component<
   StoreProps &
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps> &
     WithStyles &
-    WithTheme,
-  StoreState
+    WithTheme
 > {
   constructor(props) {
     super(props);
-
-    this.state = {
-      term: '',
-      searching: false,
-    };
   }
 
   componentDidMount() {
@@ -112,9 +108,9 @@ class StoreClassComponent extends React.Component<
   }
 
   loadMore = () => {
-    const { loading, totalCount, dodays } = this.props;
-    if (!loading && dodays.length !== totalCount) {
-      !this.state.searching
+    const { loading, totalCount, dodays, searching } = this.props;
+    if (!loading && dodays.length < totalCount) {
+      !searching
         ? this.props.fetchPublicDodaysForStoreActionCreator({
             skip: dodays.length,
             limit: ITEMS_PER_PAGE,
@@ -128,21 +124,17 @@ class StoreClassComponent extends React.Component<
 
   onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13) {
-      if (this.state.term) {
+      if (this.props.searchTerm) {
         this.props.searchPublicDodaysForStoreActionCreator({
-          term: this.state.term,
+          term: this.props.searchTerm,
           limit: ITEMS_PER_PAGE,
         });
-        this.setState({
-          searching: true,
-        });
+        this.props.setSearchFlagActionCreator(true);
       } else {
         this.props.fetchPublicDodaysForStoreActionCreator({
           limit: ITEMS_PER_PAGE,
         });
-        this.setState({
-          searching: false,
-        });
+        this.props.setSearchFlagActionCreator(false);
       }
     }
   };
@@ -174,7 +166,9 @@ class StoreClassComponent extends React.Component<
                     fullWidth
                     id="doday-search"
                     label={'Search for doday'}
-                    onChange={e => this.setState({ term: e.target.value })}
+                    onChange={e =>
+                      this.props.setSearchTermActionCreator(e.target.value)
+                    }
                     onKeyDown={this.onSearch}
                     InputProps={{
                       classes: {
@@ -237,6 +231,8 @@ class StoreClassComponent extends React.Component<
 
 const mapState = (state: RootState) => ({
   loading: state.store.loading,
+  searching: state.store.searching,
+  searchTerm: state.store.searchTerm,
   totalCount: state.store.totalCount,
   dodays: state.store.dodays,
   activeTools: state.auth.activeTools,

@@ -5,8 +5,11 @@ import { DodayLike } from '@root/lib/models/entities/common';
 export enum ActionConstants {
   SET_LOADING_STATE = '[store] SET_LOADING_STATE',
   FETCH_DODAYS_WITH_PARAMS = '[store] FETCH_DODAYS_WITH_PARAMS',
+  SET_SEARCH_TERM = '[store] SET_SEARCH_TERM',
+  SET_SEARCH_FLAG = '[store] SET_SEARCH_FLAG',
   SEARCH_DODAYS_WITH_PARAMS = '[store] SEARCH_DODAYS_WITH_PARAMS',
   SET_DODAYS = '[store] SET_DODAYS',
+  OPTIMISTIC_REMOVE_PUBLIC_DODAY = '[store] OPTIMISTIC_REMOVE_PUBLIC_DODAY',
 }
 
 /**
@@ -20,6 +23,35 @@ export function setStoreLoadingStateActionCreator(
 ): SetStoreLoadingStateAction {
   return {
     type: ActionConstants.SET_LOADING_STATE,
+    payload: value,
+  };
+}
+
+/**
+ * Set search term
+ *
+ * @export
+ * @returns {SetSearchTermAction}
+ */
+export function setSearchTermActionCreator(term: string): SetSearchTermAction {
+  return {
+    type: ActionConstants.SET_SEARCH_TERM,
+    payload: term,
+  };
+}
+
+/**
+ * Set search flag to choose between fetch and search actions
+ * when trigger loadMore
+ *
+ * @export
+ * @returns {SetSearchFlagAction}
+ */
+export function setSearchFlagActionCreator(
+  value: boolean
+): SetSearchFlagAction {
+  return {
+    type: ActionConstants.SET_SEARCH_FLAG,
     payload: value,
   };
 }
@@ -75,11 +107,29 @@ export function setPublicDodaysForStoreActionCreator(
   };
 }
 
+/**
+ * Optimistic remove from public dodays
+ *
+ * @export
+ * @returns {OptimisticRemovePublicDodayAction}
+ */
+export function optimisticRemovePublicDodayActionCreator(
+  did: string
+): OptimisticRemovePublicDodayAction {
+  return {
+    type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
+    payload: did,
+  };
+}
+
 export const actionCreators = {
   setStoreLoadingStateActionCreator,
+  setSearchTermActionCreator,
+  setSearchFlagActionCreator,
   searchPublicDodaysForStoreActionCreator,
   fetchPublicDodaysForStoreActionCreator,
   setPublicDodaysForStoreActionCreator,
+  optimisticRemovePublicDodayActionCreator,
 };
 
 /**
@@ -88,6 +138,16 @@ export const actionCreators = {
 
 export interface SetStoreLoadingStateAction extends AnyAction {
   type: ActionConstants.SET_LOADING_STATE;
+  payload: boolean;
+}
+
+export interface SetSearchTermAction extends AnyAction {
+  type: ActionConstants.SET_SEARCH_TERM;
+  payload: string;
+}
+
+export interface SetSearchFlagAction extends AnyAction {
+  type: ActionConstants.SET_SEARCH_FLAG;
   payload: boolean;
 }
 
@@ -110,12 +170,20 @@ export interface SetPublicDodaysForStoreAction extends AnyAction {
   };
 }
 
+export interface OptimisticRemovePublicDodayAction extends AnyAction {
+  type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY;
+  payload: string;
+}
+
 /**
  * Export all action types for reducers
  */
 
 export type ActionTypes =
   | SetStoreLoadingStateAction
+  | SetSearchTermAction
+  | SetSearchFlagAction
   | SearchPublicDodaysForStoreAction
   | FetchPublicDodaysForStoreAction
-  | SetPublicDodaysForStoreAction;
+  | SetPublicDodaysForStoreAction
+  | OptimisticRemovePublicDodayAction;

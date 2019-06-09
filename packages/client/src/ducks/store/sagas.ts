@@ -37,6 +37,7 @@ export function* fetchPublicDodaysForStoreActionSaga(
 export function* searchPublicDodaysForStoreActionSaga(
   action: SearchPublicDodaysForStoreAction
 ) {
+  yield put(setPublicDodaysForStoreActionCreator([]));
   yield put(setStoreLoadingStateActionCreator(true));
   const count =
     action.payload.skip != null

@@ -5,9 +5,12 @@ import {
   SetPublicDodaysForStoreAction,
   SetStoreLoadingStateAction,
   SearchPublicDodaysForStoreAction,
+  OptimisticRemovePublicDodayAction,
+  SetSearchTermAction,
+  SetSearchFlagAction,
 } from '../actions';
 import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { activity } from '@root/lib/common-interfaces/fake-data';
+import { activity, doday } from '@root/lib/common-interfaces/fake-data';
 import { DodayLike } from '@root/lib/models/entities/common';
 
 describe('store action creators', () => {
@@ -18,6 +21,28 @@ describe('store action creators', () => {
       payload: value,
     };
     expect(actionCreators.setStoreLoadingStateActionCreator(value)).toEqual(
+      expectedActionObject
+    );
+  });
+
+  it('set search term action creator', () => {
+    const term = 'Search term';
+    const expectedActionObject: SetSearchTermAction = {
+      type: ActionConstants.SET_SEARCH_TERM,
+      payload: term,
+    };
+    expect(actionCreators.setSearchTermActionCreator(term)).toEqual(
+      expectedActionObject
+    );
+  });
+
+  it('set search flag action creator', () => {
+    const flag = true;
+    const expectedActionObject: SetSearchFlagAction = {
+      type: ActionConstants.SET_SEARCH_FLAG,
+      payload: flag,
+    };
+    expect(actionCreators.setSearchFlagActionCreator(flag)).toEqual(
       expectedActionObject
     );
   });
@@ -77,6 +102,16 @@ describe('store action creators', () => {
         payload.concat,
         payload.totalCount
       )
+    ).toEqual(expectedActionObject);
+  });
+
+  it('optimistic remove public doday from store dodays', () => {
+    const expectedActionObject: OptimisticRemovePublicDodayAction = {
+      type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
+      payload: doday.did,
+    };
+    expect(
+      actionCreators.optimisticRemovePublicDodayActionCreator(doday.did)
     ).toEqual(expectedActionObject);
   });
 });

@@ -45,6 +45,8 @@ export interface HeroSettingsState {
 
 export interface StoreState {
   loading?: boolean;
+  searching?: boolean;
+  searchTerm?: string;
   totalCount?: number;
   dodays: DodayLike[];
 }
