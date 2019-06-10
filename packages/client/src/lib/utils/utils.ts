@@ -51,10 +51,12 @@ export const filterObject = (obj, predicate) => {
   return result;
 };
 
-export const activeToolsForHero = (hero: Hero): ToolBeacon[] =>
-  toolBeacons.filter(tool =>
+export const activeToolsForHero = (hero: Hero): ToolBeacon[] => {
+  if (!hero) return;
+  return toolBeacons.filter(tool =>
     hero.tools.find(item => item === tool.config.sysname)
   );
+};
 
 export const isDirty = (
   initialObject: DodayLike,

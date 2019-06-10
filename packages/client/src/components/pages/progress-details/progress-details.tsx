@@ -27,7 +27,7 @@ type Props = ProgressDetailsProps &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
-@Pageflow({ path: '/progress/:did' })
+@Pageflow({ path: '/dashboard/progress/:did' })
 @(withRouter as any)
 class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
   public static contextTypes = {

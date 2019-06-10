@@ -2,9 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 import { actions as builderActions } from '@ducks/builder';
-import {
-  ClearBuilderAction,
-} from '@root/ducks/builder/actions';
+import { ClearBuilderAction } from '@root/ducks/builder/actions';
 import { Page, PageHeader } from '../../shared/_molecules/page';
 
 import { Pageflow } from '../../shared/_decorators/pageflow';
@@ -17,7 +15,7 @@ interface PropsFromConnect {
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
-@Pageflow({ path: '/builder' })
+@Pageflow({ path: '/dashboard/builder' })
 export class Builder extends React.Component<
   BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
 > {
@@ -34,7 +32,7 @@ export class Builder extends React.Component<
         return (
           <Route
             key={entity.name}
-            path={`/builder/${entity.name}`}
+            path={`/dashboard/builder/${entity.name}`}
             render={routerProps => (
               <Builder {...routerProps} activeTools={activeTools} />
             )}

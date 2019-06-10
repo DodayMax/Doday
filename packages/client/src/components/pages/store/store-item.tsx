@@ -45,7 +45,9 @@ export class MasonryItemComponent extends React.PureComponent<
     const imageHeight = resource && resource.imageHeight;
     return (
       <Grid item key={did} style={style}>
-        <Card onClick={() => this.props.history.push(`/dodays/${did}`)}>
+        <Card
+          onClick={() => this.props.history.push(`/dashboard/dodays/${did}`)}
+        >
           <CardActionArea>
             {resource && resource.image && (
               <CardMedia

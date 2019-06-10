@@ -42,7 +42,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
         <ListItem
           className={classes.listItemContainer}
           onClick={() =>
-            onClick && onClick(`/progress/${activity.did}`, activity)
+            onClick && onClick(`/dashboard/progress/${activity.did}`, activity)
           }
         >
           <IconButton

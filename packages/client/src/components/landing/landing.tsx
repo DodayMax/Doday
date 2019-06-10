@@ -6,5 +6,9 @@ import { withStyles, WithStyles } from '@material-ui/core';
 interface LandingProps {}
 
 export const Landing = withStyles(css)((props: LandingProps & WithStyles) => {
-  return <LayoutBlock className={props.classes.landingContainer} />;
+  return (
+    <LayoutBlock flex="1" className={props.classes.landingContainer}>
+      Landing
+    </LayoutBlock>
+  );
 });

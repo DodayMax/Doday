@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import * as cuid from 'cuid';
-import { RouteComponentProps, Route } from 'react-router-dom';
+import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { read_cookie } from 'sfcookies';
 import { Dashboard } from '@components';
@@ -124,7 +124,7 @@ class DesktopShell extends React.Component<
   }
 
   handleProfileOpen = () => {
-    this.props.history.push('/profile');
+    this.props.history.push('/dashboard/profile');
   };
 
   toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
@@ -151,6 +151,7 @@ class DesktopShell extends React.Component<
 
     return (
       <div className={classes.root}>
+        <Route exact path="/" render={() => <Redirect to="/welcome" />} />
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -164,16 +165,20 @@ class DesktopShell extends React.Component<
           >
             <LayoutBlock valign="vflexCenter" insideElementsMargin>
               <LayoutBlock spaceLeft={Space.Small} spaceRight={Space.Medium}>
-                <Typography className={classes.white}>Logo</Typography>
+                <IconButton onClick={() => this.props.history.push('/welcome')}>
+                  <Icons.Checkbox />
+                </IconButton>
               </LayoutBlock>
-              <IconButton
-                onClick={() => {
-                  history.push('/');
-                  this.props.clearSelectedDodayActionCreator();
-                }}
-              >
-                <AppsIcon fontSize="large" className={classes.white} />
-              </IconButton>
+              {hero && (
+                <IconButton
+                  onClick={() => {
+                    history.push('/dashboard');
+                    this.props.clearSelectedDodayActionCreator();
+                  }}
+                >
+                  <AppsIcon fontSize="large" className={classes.white} />
+                </IconButton>
+              )}
             </LayoutBlock>
             <Typography variant="subtitle2" noWrap className={classes.white}>
               Welcome to the Doday app!
@@ -185,10 +190,14 @@ class DesktopShell extends React.Component<
                     variant="contained"
                     color="primary"
                     size="small"
-                    disabled={location.pathname.startsWith('/builder')}
+                    disabled={location.pathname.startsWith(
+                      '/dashboard/builder'
+                    )}
                     onClick={() =>
                       history.push(
-                        `/builder/${activeTools[0].config.entities[0].name}`
+                        `/dashboard/builder/${
+                          activeTools[0].config.entities[0].name
+                        }`
                       )
                     }
                   >
@@ -215,113 +224,143 @@ class DesktopShell extends React.Component<
               </LayoutBlock>
             ) : (
               <LayoutBlock>
-                <Button href="/auth/google">Login</Button>
+                <IconButton href="/auth/google">
+                  <Icons.Google />
+                </IconButton>
               </LayoutBlock>
             )}
           </Toolbar>
         </AppBar>
-        <Drawer
-          variant="permanent"
-          className={classnames(classes.drawer, {
-            [classes.drawerOpen]: !this.props.isDrawerCollapsed,
-            [classes.drawerClose]: this.props.isDrawerCollapsed,
-          })}
-          classes={{
-            paper: classnames({
-              [classes.drawerOpen]: !this.props.isDrawerCollapsed,
-              [classes.drawerClose]: this.props.isDrawerCollapsed,
-            }),
-          }}
-          open={!this.props.isDrawerCollapsed}
-        >
-          <div className={classes.toolbar} />
-          <Divider />
-          <LayoutBlock flex="1" direction="column" align="spaceBetween">
-            <LayoutBlock direction="column">
-              {this.toolsToDrawerMenuItems(toolBeacons).map((tool, index) => {
-                const Icon = Icons[tool.icon];
-                return (
-                  <>
-                    <ListItem
-                      button
-                      key={tool.text}
-                      onClick={() => {
-                        this.props.changeDodayAppRouteActionCreator(tool.route);
-                        this.props.clearSelectedDodayActionCreator();
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon fontSize={'large'} />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={tool.text}
-                        primaryTypographyProps={{ variant: 'body1' }}
+        {hero && (
+          <Route
+            path="/dashboard"
+            render={() => (
+              <>
+                <Drawer
+                  variant="permanent"
+                  className={classnames(classes.drawer, {
+                    [classes.drawerOpen]: !this.props.isDrawerCollapsed,
+                    [classes.drawerClose]: this.props.isDrawerCollapsed,
+                  })}
+                  classes={{
+                    paper: classnames({
+                      [classes.drawerOpen]: !this.props.isDrawerCollapsed,
+                      [classes.drawerClose]: this.props.isDrawerCollapsed,
+                    }),
+                  }}
+                  open={!this.props.isDrawerCollapsed}
+                >
+                  <div className={classes.toolbar} />
+                  <Divider />
+                  <LayoutBlock flex="1" direction="column" align="spaceBetween">
+                    <LayoutBlock direction="column">
+                      {this.toolsToDrawerMenuItems(toolBeacons).map(
+                        (tool, index) => {
+                          const Icon = Icons[tool.icon];
+                          return (
+                            <>
+                              <ListItem
+                                button
+                                key={tool.text}
+                                onClick={() => {
+                                  this.props.changeDodayAppRouteActionCreator(
+                                    tool.route
+                                  );
+                                  this.props.clearSelectedDodayActionCreator();
+                                }}
+                              >
+                                <ListItemIcon>
+                                  <Icon fontSize={'large'} />
+                                </ListItemIcon>
+                                <ListItemText
+                                  primary={tool.text}
+                                  primaryTypographyProps={{ variant: 'body1' }}
+                                />
+                              </ListItem>
+                              <Divider />
+                            </>
+                          );
+                        }
+                      )}
+                    </LayoutBlock>
+                    <LayoutBlock direction="column">
+                      <Divider />
+                      <ListItem button key={cuid()} onClick={() => {}}>
+                        <ListItemIcon>
+                          <BugReportIcon fontSize="large" />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={'Report bug'}
+                          secondary="20DDC reward"
+                          primaryTypographyProps={{ variant: 'body1' }}
+                        />
+                      </ListItem>
+                      <Divider />
+                      <ListItem
+                        button
+                        key={cuid()}
+                        onClick={this.toggleMenu.bind(this)}
+                      >
+                        <ListItemIcon>
+                          {this.props.isDrawerCollapsed ? (
+                            <KeyboardArrowRightIcon
+                              color="action"
+                              fontSize="large"
+                            />
+                          ) : (
+                            <KeyboardArrowLeftIcon
+                              color="action"
+                              fontSize="large"
+                            />
+                          )}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={'Collapse drawer'}
+                          primaryTypographyProps={{ variant: 'body1' }}
+                        />
+                      </ListItem>
+                    </LayoutBlock>
+                  </LayoutBlock>
+                </Drawer>
+                <main className={classes.content}>
+                  <div className={classes.toolbar} />
+
+                  <LayoutBlock>
+                    <section>
+                      {!isDodayAppCollapsed && (
+                        <Route
+                          path="/dashboard"
+                          render={props => (
+                            <DodayApp {...props} activeTools={activeTools} />
+                          )}
+                        />
+                      )}
+                    </section>
+
+                    <React.Suspense fallback={null}>
+                      <Dashboard
+                        activeTools={activeTools}
+                        toggleDodayAppActionCreator={
+                          toggleDodayAppActionCreator
+                        }
+                        isDodayAppCollapsed={isDodayAppCollapsed}
                       />
-                    </ListItem>
-                    <Divider />
-                  </>
-                );
-              })}
-            </LayoutBlock>
-            <LayoutBlock direction="column">
-              <Divider />
-              <ListItem button key={cuid()} onClick={() => {}}>
-                <ListItemIcon>
-                  <BugReportIcon fontSize="large" />
-                </ListItemIcon>
-                <ListItemText
-                  primary={'Report bug'}
-                  secondary="20DDC reward"
-                  primaryTypographyProps={{ variant: 'body1' }}
-                />
-              </ListItem>
-              <Divider />
-              <ListItem
-                button
-                key={cuid()}
-                onClick={this.toggleMenu.bind(this)}
-              >
-                <ListItemIcon>
-                  {this.props.isDrawerCollapsed ? (
-                    <KeyboardArrowRightIcon color="action" fontSize="large" />
-                  ) : (
-                    <KeyboardArrowLeftIcon color="action" fontSize="large" />
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={'Collapse drawer'}
-                  primaryTypographyProps={{ variant: 'body1' }}
-                />
-              </ListItem>
-            </LayoutBlock>
-          </LayoutBlock>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <LayoutBlock>
-            <section>
-              {!isDodayAppCollapsed && (
-                <Route
-                  path="/"
-                  render={props => (
-                    <DodayApp {...props} activeTools={activeTools} />
-                  )}
-                />
-              )}
-            </section>
-            {hero ? (
-              <React.Suspense fallback={null}>
-                <Dashboard
-                  activeTools={activeTools}
-                  toggleDodayAppActionCreator={toggleDodayAppActionCreator}
-                  isDodayAppCollapsed={isDodayAppCollapsed}
-                />
-              </React.Suspense>
-            ) : (
-              <Landing />
+                    </React.Suspense>
+                  </LayoutBlock>
+                </main>
+              </>
             )}
-          </LayoutBlock>
-        </main>
+          />
+        )}
+        <Route
+          path="/welcome"
+          render={() => (
+            <LayoutBlock flex="1" direction="column">
+              <div className={classes.toolbar} />
+              <Landing />
+            </LayoutBlock>
+          )}
+        />
       </div>
     );
   }

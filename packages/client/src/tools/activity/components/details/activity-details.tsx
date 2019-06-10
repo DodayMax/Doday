@@ -83,7 +83,7 @@ type Props = ActivityDetailsProps &
   WithTheme;
 
 @(withRouter as any)
-@Pageflow({ path: '/dodays/:did' })
+@Pageflow({ path: '/dashboard/dodays/:did' })
 export class ActivityDetailsComponentClass extends React.Component<
   Props,
   ActivityDetailsState

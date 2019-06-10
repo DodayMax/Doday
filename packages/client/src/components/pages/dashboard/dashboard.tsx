@@ -44,23 +44,23 @@ export const Dashboard = withStyles(css)(
           />
         ))}
         <Route
-          path="/dodays/:did"
+          path="/dashboard/dodays/:did"
           render={props => (
             <DodayDetails {...props} activeTools={activeTools} />
           )}
         />
         <Route
-          path="/progress/:did"
+          path="/dashboard/progress/:did"
           render={props => (
             <ProgressDetails {...props} activeTools={activeTools} />
           )}
         />
         <Route
-          path="/builder"
+          path="/dashboard/builder"
           render={props => <Builder {...props} activeTools={activeTools} />}
         />
-        <Route path="/profile" component={Profile} />
-        <Route path="/" component={Store} />
+        <Route path="/dashboard/profile" component={Profile} />
+        <Route path="/dashboard" component={Store} />
       </LayoutBlock>
     );
   }

@@ -143,7 +143,7 @@ class PageHeaderComponentClass extends React.Component<
               onClick={() => {
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
-                  this.props.history.push('/');
+                  this.props.history.push('/dashboard');
                   if (onClose) {
                     onClose();
                   }

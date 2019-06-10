@@ -63,7 +63,7 @@ export let postLogin = (req: Request, res: Response, next: NextFunction) => {
  */
 export let logout = (req: Request, res: Response) => {
   req.logout();
-  res.redirect('/');
+  res.redirect('/welcome');
 };
 
 /**

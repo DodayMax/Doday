@@ -5,6 +5,7 @@ export * from './inline-loader/inline-loader';
 export * from './checkbox/checkbox';
 export * from './pie-chart/pie-chart';
 export * from './goal/goal';
+export * from './google/google';
 export * from './activities/activities';
 export * from './silver/silver';
 export * from './dodayman/dodayman';

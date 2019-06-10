@@ -7,6 +7,7 @@ export type IconNames =
   | 'InlineLoader'
   | 'PieChart'
   | 'Goal'
+  | 'Google'
   | 'Activities'
   | 'Silver'
   | 'Dodayman'

@@ -3,7 +3,7 @@ import { Page, PageHeader } from '../../shared/_molecules/page';
 import { Pageflow } from '../../shared/_decorators/pageflow';
 import { Typography } from '@material-ui/core';
 
-@Pageflow({ path: '/profile' })
+@Pageflow({ path: '/dashboard/profile' })
 export class Profile extends React.Component {
   render() {
     return (

@@ -96,7 +96,7 @@ interface PropsFromConnect {
 }
 
 @(withRouter as any)
-@Pageflow({ path: '/progress/:did' })
+@Pageflow({ path: '/dashboard/progress/:did' })
 export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
