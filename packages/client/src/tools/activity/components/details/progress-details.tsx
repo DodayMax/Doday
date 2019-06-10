@@ -346,6 +346,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     updates: {
                       progress: {
                         completed: !selectedDoday.progress.completed,
+                        completedAt: new Date(),
                       },
                     },
                   });

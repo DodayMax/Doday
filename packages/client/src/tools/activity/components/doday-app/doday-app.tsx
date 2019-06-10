@@ -154,7 +154,10 @@ export class ActivityDodayAppComponentClass extends React.Component<
             did: item.did,
             type: item.type,
             updates: {
-              progress: { completed: !item.progress.completed },
+              progress: {
+                completed: !item.progress.completed,
+                completedAt: new Date(),
+              },
             },
           });
         }}

@@ -360,8 +360,6 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
         return page;
       });
 
-    console.log(pages);
-
     // Facilitate the average height for next layout's itemsPerPage
     const averageHeight = Math.round(
       stagedItems
@@ -528,7 +526,6 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
           this.getLeftPositionForColumn(column, viewableStart)
         );
 
-        //console.log("filled by spannable gap");
         return {
           left,
           top: gap[0],
@@ -614,11 +611,6 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
   }
 
   checkInfiniteLoad() {
-    console.log(
-      this.props.threshold,
-      this.node.scrollHeight,
-      this.getScrollTop()
-    );
     if (
       this.props.threshold >
       this.node.scrollHeight - (this.getScrollTop() + this.node.clientHeight)

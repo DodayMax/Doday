@@ -379,7 +379,7 @@ export const updateDodayTransaction = (
   }
 ) => {
   /** Omit date to convert it to neo4j datetime */
-  const { date, ...passthrough } = props.updates.progress;
+  const { date, completedAt, ...passthrough } = props.updates.progress;
   return tx.run(
     `
       MATCH (d:Doday {did: $did})
@@ -411,7 +411,9 @@ export const updateDodayTransaction = (
       progress: passthrough,
       resource: props.updates.resource,
       date: date && new Date(date).toISOString(),
-      completedAt: new Date().toISOString(),
+      completedAt: completedAt
+        ? new Date(completedAt).toISOString()
+        : new Date().toISOString(),
     }
   );
 };
@@ -428,7 +430,7 @@ export const multyUpdateDodaysTransaction = (
   }
 ) => {
   /** Omit date to convert it to neo4j datetime */
-  const { date, ...passthrough } = props.updates.progress;
+  const { date, completedAt, ...passthrough } = props.updates.progress;
   return tx.run(
     `
       MATCH (h:Hero {did: $heroDID})
@@ -449,7 +451,9 @@ export const multyUpdateDodaysTransaction = (
       doday: props.updates.doday,
       progress: passthrough,
       date: date && new Date(date).toISOString(),
-      completedAt: new Date().toISOString(),
+      completedAt: completedAt
+        ? new Date(completedAt).toISOString()
+        : new Date().toISOString(),
     }
   );
 };

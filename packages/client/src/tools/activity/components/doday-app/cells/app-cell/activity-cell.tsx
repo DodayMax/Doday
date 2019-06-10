@@ -32,7 +32,7 @@ export const ActivityCell = withStyles(css)(
         <ListItem
           className={cx}
           onClick={() =>
-            onClick && onClick(`/dodays/${activity.did}`, activity)
+            onClick && onClick(`/dashboard/dodays/${activity.did}`, activity)
           }
         >
           <ListItemText
