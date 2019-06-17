@@ -66,7 +66,7 @@ export type ActivityType = 'do' | 'read' | 'watch';
 /**
  * Each Entity has own serialization,
  * deserialization methods for both Entity and Progress nodes
- * and method for check type of the Entity - isActivity(someEntity)
+ * and method for check type of the Entity - isEntity(someEntity)
  */
 
 export const serializeActivity = (
@@ -126,7 +126,7 @@ export const deserializeActivityProgress = (
   return deserialized;
 };
 
-export function isActivity(doday: DodayLike): doday is Activity {
+export function isEntity(doday: DodayLike): doday is Activity {
   return doday.type === DodayType.Activity;
 }
 
@@ -140,5 +140,5 @@ export const ActivityEntity: Entity = {
   deserialize: deserializeActivity,
   serializeProgress: serializeActivityProgress,
   deserializeProgress: deserializeActivityProgress,
-  isActivity,
+  isEntity,
 };

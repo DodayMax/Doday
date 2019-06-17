@@ -49,6 +49,7 @@ import {
 import { css } from './css.details';
 import { ProgressLike, DodayType } from '@root/lib/models/entities/common';
 import { Activity } from '@root/lib/models/entities/activity';
+import Media from 'react-media';
 
 interface ActivityDetailsProps {}
 
@@ -176,28 +177,35 @@ export class ActivityDetailsComponentClass extends React.Component<
         </LayoutBlock>
         {!loading ? (
           <LayoutBlock insideElementsMargin>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => {
-                this.props.takeDodayActionCreator({
-                  doday: selectedDoday,
-                  progress: {
-                    date: new Date(),
-                    dateIsLocked: false,
-                    completed: true,
-                    completedAt: new Date(),
-                    ownerDID: this.props.myDID,
-                  },
-                });
-                if (this.context.requestClose) this.context.requestClose();
-                setTimeout(() => {
-                  this.props.history.push('/');
-                }, 200);
-              }}
-            >
-              {t('activities:details.actions.complete')}
-            </Button>
+            <Media query="(max-width: 915px)">
+              {matches =>
+                !matches && (
+                  <Button
+                    color="primary"
+                    variant="outlined"
+                    onClick={() => {
+                      this.props.takeDodayActionCreator({
+                        doday: selectedDoday,
+                        progress: {
+                          date: new Date(),
+                          dateIsLocked: false,
+                          completed: true,
+                          completedAt: new Date(),
+                          ownerDID: this.props.myDID,
+                        },
+                      });
+                      if (this.context.requestClose)
+                        this.context.requestClose();
+                      setTimeout(() => {
+                        this.props.history.push('/dashboard');
+                      }, 200);
+                    }}
+                  >
+                    {t('activities:details.actions.complete')}
+                  </Button>
+                )
+              }
+            </Media>
             <Button
               color="primary"
               variant="contained"
@@ -213,7 +221,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                 });
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
-                  this.props.history.push('/');
+                  this.props.history.push('/dashboard');
                 }, 200);
               }}
             >

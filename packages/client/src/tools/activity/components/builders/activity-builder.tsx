@@ -229,7 +229,7 @@ export class ActivityBuilderComponentClass extends React.Component<
         resource,
       });
     }
-    this.props.history.push('/');
+    this.props.history.push('/dashboard');
   };
 
   handleEstimateTimeChange = props => {

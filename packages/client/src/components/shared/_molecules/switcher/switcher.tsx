@@ -20,6 +20,8 @@ const css = theme =>
 interface SwitcherProps {
   /** Items to switch between */
   items: SwitcherItem[];
+  /** Selected index */
+  selected?: number;
   /** Render custom component between arrows */
   render?: (item: SwitcherItem) => React.ReactNode;
   /** onChange callback to get active index item */
@@ -40,7 +42,7 @@ export class SwitcherComponent extends React.Component<
     super(props);
 
     this.state = {
-      currentIndex: 0,
+      currentIndex: props.selected || 0,
     };
   }
 

@@ -49,14 +49,20 @@ export const ParsedUrlView = withStyles(css)(
                 className={classes.builderAttachmentImage}
                 src={parsedMetadata ? parsedMetadata.image || '' : ''}
               />
-              <div className={classes.builderAttachmentTextContainer}>
-                <Typography variant="body1">
+              <LayoutBlock
+                direction="column"
+                spaceAbove={Space.Small}
+                spaceLeft={Space.Small}
+                spaceBelow={Space.Small}
+                spaceRight={Space.Small}
+              >
+                <Typography variant="subtitle2">
                   {parsedMetadata ? parsedMetadata.title || '' : ''}
                 </Typography>
-                <Typography color="textSecondary" variant="caption">
+                <Typography color="textSecondary" variant="body2">
                   {parsedMetadata ? parsedMetadata.url || '' : ''}
                 </Typography>
-              </div>
+              </LayoutBlock>
             </div>
           </LayoutBlock>
         )}

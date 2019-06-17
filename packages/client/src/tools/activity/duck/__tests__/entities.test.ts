@@ -11,7 +11,7 @@ import {
   ActivityProgress,
   deserializeActivityProgress,
   SerializedActivityProgress,
-  isActivity,
+  isEntity,
 } from '@root/lib/models/entities/activity';
 import { DodayType } from '@root/lib/models/entities/common';
 
@@ -76,9 +76,9 @@ describe('Test activities serialize helper functions', () => {
     expect(deserialized.hasOwnProperty('completedAt')).toBe(false);
   });
 
-  it('isActivity returns correct value', () => {
-    expect(isActivity(deserializedActivity)).toBe(true);
+  it('isEntity returns correct value', () => {
+    expect(isEntity(deserializedActivity)).toBe(true);
     deserializedActivity.type = 3;
-    expect(isActivity(deserializedActivity)).toBe(false);
+    expect(isEntity(deserializedActivity)).toBe(false);
   });
 });

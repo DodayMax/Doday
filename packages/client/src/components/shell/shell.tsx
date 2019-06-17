@@ -4,7 +4,12 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 const LoadableComponent = Loadable({
   loader: () => import('./mobile-shell'),
-  loading: () => <div>Loading...</div>,
+  loading: props => {
+    if (props.error) {
+      console.log(props.error);
+    }
+    return <div>Loading...</div>;
+  },
 });
 
 export class Shell extends React.Component {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classnames from 'classnames';
-import { CellProps } from '@lib/common-interfaces';
+import { CellProps, Space } from '@lib/common-interfaces';
 import { Checkbox, Icons } from '@shared';
 import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
 import { durationToLabel, durationToMinutes } from '@root/lib/utils';
@@ -58,21 +58,29 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
               checked={activity.progress && activity.progress.completed}
             />
           </IconButton>
-          <ListItemText
-            primary={activity.name}
-            secondary={
-              activity.progress && activity.progress.completed
-                ? moment(activity.progress.completedAt).format('ll')
-                : ''
-            }
-            primaryTypographyProps={{
-              variant: 'caption',
-            }}
-            secondaryTypographyProps={{
-              variant: 'caption',
-            }}
-            className={classes.name}
-          />
+          <LayoutBlock
+            flex="1"
+            spaceLeft={Space.XSmall}
+            spaceAbove={Space.XSmall}
+            spaceBelow={Space.XSmall}
+            spaceRight={Space.XSmall}
+          >
+            <ListItemText
+              primary={activity.name}
+              secondary={
+                activity.progress && activity.progress.completed
+                  ? moment(activity.progress.completedAt).format('ll')
+                  : ''
+              }
+              primaryTypographyProps={{
+                variant: 'caption',
+              }}
+              secondaryTypographyProps={{
+                variant: 'caption',
+              }}
+              className={classes.name}
+            />
+          </LayoutBlock>
           <LayoutBlock absolute bottom="0" right="2.6rem">
             <Typography className={classes.timeLabel} variant="caption">
               {durationToLabel(activity.duration, {

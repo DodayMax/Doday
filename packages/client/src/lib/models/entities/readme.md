@@ -13,7 +13,7 @@ export const ActivityEntity: Entity = {
   deserialize: deserializeActivity,
   serializeProgress: serializeActivityProgress,
   deserializeProgress: deserializeActivityProgress,
-  isActivity,
+  isEntity: (doday: DodayLike) => boolean,
 };
 ```
 

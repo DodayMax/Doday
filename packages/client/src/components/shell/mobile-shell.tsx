@@ -1,8 +1,22 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { Route, match } from 'react-router-dom';
 import i18next from 'i18next';
-
-const { translate } = require('react-i18next');
+import * as cuid from 'cuid';
+import { actions as settingsActions } from '@ducks/hero-settings';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import { RootState } from '@root/lib/models';
+import { ToggleDrawerAction } from '@root/ducks/hero-settings/actions';
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Button,
+  AppBar,
+  Toolbar,
+} from '@material-ui/core';
+import { LayoutBlock } from '@shared';
 
 interface TranslationProps {
   t?: i18next.TFunction;
@@ -13,22 +27,51 @@ interface ShellProps {
   match?: match;
 }
 
-import { Grid } from '@shared';
+interface PropsFromConnect {
+  isDrawerCollapsed: boolean;
+  toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
+}
 
-export class MobileShell extends React.Component<
-  ShellProps & TranslationProps
+export class MobileShellComponent extends React.Component<
+  ShellProps & PropsFromConnect & TranslationProps
 > {
   render() {
     return (
       <>
-        <Route exact path={`/`} render={() => null} />
-        <Route path={`/paths`} render={() => <div>Paths</div>} />
-        <Route path={`/store`} render={() => <div>Store</div>} />
-        <button className="control_button" onClick={() => {}} />
-        <button className="drawer_button">=</button>
+        <AppBar position="fixed">
+          <Toolbar>Menu</Toolbar>
+        </AppBar>
+        <SwipeableDrawer
+          open={!this.props.isDrawerCollapsed}
+          onClose={() => this.props.toggleDrawerActionCreator(true)}
+          onOpen={() => this.props.toggleDrawerActionCreator(false)}
+        >
+          <ListItem button key={cuid()} onClick={() => {}}>
+            <ListItemIcon>
+              <BugReportIcon fontSize="large" />
+            </ListItemIcon>
+            <ListItemText
+              primary={'Report bug'}
+              secondary="20DDC reward"
+              primaryTypographyProps={{ variant: 'body1' }}
+            />
+          </ListItem>
+        </SwipeableDrawer>
+        <LayoutBlock align="flexCenter" valign="vflexCenter">
+          <Button onClick={() => this.props.toggleDrawerActionCreator()}>
+            Open
+          </Button>
+        </LayoutBlock>
       </>
     );
   }
 }
 
-export default translate()(MobileShell);
+const mapState = (state: RootState) => ({
+  isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
+});
+
+export default connect(
+  mapState,
+  { toggleDrawerActionCreator: settingsActions.toggleDrawerActionCreator }
+)(MobileShellComponent);

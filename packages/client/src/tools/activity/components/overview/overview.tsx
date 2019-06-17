@@ -15,7 +15,7 @@ export class ActivityOverviewComponentClass extends React.Component<
         variant="contained"
         color="primary"
         key={index}
-        onClick={() => history.push(`/builder/${entity.name}`)}
+        onClick={() => history.push(`/dashboard/builder/${entity.name}`)}
       >
         {t('overview.actions.create')}
       </Button>

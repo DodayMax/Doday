@@ -10,7 +10,6 @@ export enum ActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
   CREATE_AND_TAKE_DODAY = '[dodays-api] CREATE_AND_TAKE_DODAY',
   TAKE_DODAY = '[dodays-api] TAKE_DODAY',
-  COMPLETE_WITHOUT_TAKEN = '[dodays-api] COMPLETE_WITHOUT_TAKEN',
   UPDATE_DODAY = '[dodays-api] UPDATE_DODAY',
   UNTAKE_DODAY = '[dodays-api] UNTAKE_DODAY',
   DELETE_DODAY = '[dodays-api] DELETE_DODAY',
@@ -63,23 +62,6 @@ export function takeDodayActionCreator(payload: {
 }): TakeDodayAction {
   return {
     type: ActionConstants.TAKE_DODAY,
-    payload,
-  };
-}
-
-/**
- * Complete Doday without taken
- * Add Progress node with completed and completedAt
- *
- * @export
- * @returns {CompleteWithoutTakenAction}
- */
-export function completeWithoutTakenActionCreator(payload: {
-  doday: DodayLike;
-  progress: Partial<ProgressLike>;
-}): CompleteWithoutTakenAction {
-  return {
-    type: ActionConstants.COMPLETE_WITHOUT_TAKEN,
     payload,
   };
 }
@@ -140,7 +122,6 @@ export function deleteDodayActionCreator(payload: {
 export const actionCreators = {
   createDodayActionCreator,
   takeDodayActionCreator,
-  completeWithoutTakenActionCreator,
   createAndTakeDodayActionCreator,
   updateDodayActionCreator,
   untakeDodayActionCreator,
@@ -157,14 +138,6 @@ export interface CreateDodayAction extends AnyAction {
 
 export interface TakeDodayAction extends AnyAction {
   type: ActionConstants.TAKE_DODAY;
-  payload: {
-    doday: DodayLike;
-    progress: Partial<ProgressLike>;
-  };
-}
-
-export interface CompleteWithoutTakenAction extends AnyAction {
-  type: ActionConstants.COMPLETE_WITHOUT_TAKEN;
   payload: {
     doday: DodayLike;
     progress: Partial<ProgressLike>;
@@ -217,7 +190,6 @@ export type ActionTypes =
   | CreateDodayAction
   | CreateAndTakeDodayAction
   | TakeDodayAction
-  | CompleteWithoutTakenAction
   | UpdateDodayAction
   | UntakeDodayAction
   | DeleteDodayAction;

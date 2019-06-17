@@ -141,7 +141,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             did: selectedDoday.did,
             type: selectedDoday.type,
           });
-          history.push('/');
+          history.push('/dashboard');
         },
       });
     }
@@ -169,7 +169,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                     did: selectedDoday.did,
                     type: selectedDoday.type,
                   });
-                  history.push('/');
+                  history.push('/dashboard');
                 }}
               >
                 Yes

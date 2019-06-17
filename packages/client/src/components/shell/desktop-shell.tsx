@@ -3,7 +3,6 @@ import * as classnames from 'classnames';
 import * as cuid from 'cuid';
 import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { read_cookie } from 'sfcookies';
 import { Dashboard } from '@components';
 import { RootState } from '@lib/models';
 import { actions as settingsActions } from '@ducks/hero-settings';

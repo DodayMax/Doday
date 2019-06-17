@@ -26,7 +26,7 @@ export interface Entity {
   deserializeProgress: (
     progress: Partial<SerializedDodayLike>
   ) => Partial<ProgressLike>;
-  isActivity: (doday: DodayLike) => boolean;
+  isEntity: (doday: DodayLike) => boolean;
 }
 
 /**

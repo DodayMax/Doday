@@ -17,9 +17,4 @@ export const css = (theme: Theme) =>
     builderAttachmentImage: {
       width: 'inherit',
     },
-    builderAttachmentTextContainer: {
-      display: 'flex',
-      flexDirection: 'column',
-      padding: `${config.spacing.spaceXS} ${config.spacing.spaceM}`,
-    }
   });

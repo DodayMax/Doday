@@ -29,6 +29,7 @@ export const css = (theme: Theme) =>
         theme.palette.type === 'dark'
           ? theme.palette.grey[700]
           : theme.palette.grey[400],
+      fontSize: '1rem',
     },
     scrollContainer: {
       width: '17px',
