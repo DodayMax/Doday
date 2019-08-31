@@ -3,70 +3,67 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import { all } from 'redux-saga/effects';
 import { read_cookie } from 'sfcookies';
-import ducks from '@ducks';
-import { RootState, BuilderState, DodayAppState } from '@lib/models';
-import { ToolsState, ToolsBuilderState } from '@root/tools/types';
-import { toolBeacons } from '@root/tools';
-import { changeDodayAppRouteActionCreator } from '@root/ducks/doday-app/actions';
-import { toggleDrawerActionCreator } from '@root/ducks/hero-settings/actions';
+import ducks from '@doday/duck';
+import {
+  RootState,
+  BuilderState,
+  DodayAppState,
+  ToolsBuilderState,
+} from '@doday/lib';
 
 const spreadToolsBuilderReducers = () => {
   const toolReducers = {};
-  toolBeacons.map(
-    tool =>
-      (toolReducers[tool.config.sysname] = tool.duck.reducers.builderReducer)
-  );
+  // toolBeacons.map(
+  //   tool =>
+  //     (toolReducers[tool.config.sysname] = tool.duck.reducers.builderReducer)
+  // );
   return toolReducers;
 };
 
 const spreadToolsMainReducers = () => {
   const toolReducers = {};
-  toolBeacons.map(
-    tool => (toolReducers[tool.config.sysname] = tool.duck.reducers.mainReducer)
-  );
+  // toolBeacons.map(
+  //   tool => (toolReducers[tool.config.sysname] = tool.duck.reducers.mainReducer)
+  // );
   return toolReducers;
 };
 
 const spreadToolsSagas = () => {
-  let toolSagas = [];
-  toolBeacons.map(tool => {
-    toolSagas = toolSagas.concat(tool.duck.sagas);
-  });
+  const toolSagas = [];
+  // toolBeacons.map(tool => {
+  //   toolSagas = toolSagas.concat(tool.duck.sagas);
+  // });
   return toolSagas;
 };
 
 const rootReducer = combineReducers<RootState>({
-  auth: ducks.auth.default,
+  auth: ducks.auth.reducer,
   dodayApp: combineReducers<DodayAppState>({
-    status: ducks.dodayapp.default,
+    status: ducks.dodayApp.reducer,
   }),
-  dodayDetails: ducks.dodayDetails.default,
+  dodayDetails: ducks.details.reducer,
   builder: combineReducers<BuilderState>({
-    status: ducks.builder.default,
-    tools: combineReducers<ToolsBuilderState>({
-      ...spreadToolsBuilderReducers(),
-    }),
+    status: ducks.builder.reducer,
   }),
-  heroSettings: ducks.herosettings.default,
-  store: ducks.store.default,
-  tools: toolBeacons.length
-    ? combineReducers<ToolsState>({
-        ...spreadToolsMainReducers(),
-      })
-    : undefined,
-  toast: ducks.toast.default,
-  dialog: ducks.dialog.default,
+  heroSettings: ducks.settings.reducer,
+  store: ducks.store.reducer,
+  // tools: toolBeacons.length
+  //   ? combineReducers<ToolsState>({
+  //       ...spreadToolsMainReducers(),
+  //     })
+  //   : undefined,
+  toast: ducks.toast.reducer,
+  dialog: ducks.dialog.reducer,
 });
 
 function* rootSaga() {
   yield all([
-    ...ducks.auth.authSagas,
-    ...ducks.dodayDetails.dodayDetailsSagas,
-    ...ducks.herosettings.herosettingsSagas,
-    ...ducks.dodayapp.dodayAppSagas,
-    ...ducks.payments.coinsSagas,
-    ...ducks.api.dodays.apisagas,
-    ...ducks.store.storeSagas,
+    ...ducks.auth.sagas,
+    ...ducks.details.sagas,
+    ...ducks.settings.sagas,
+    ...ducks.dodayApp.sagas,
+    ...ducks.api.sagas,
+    ...ducks.store.sagas,
     ...spreadToolsSagas(),
   ]);
 }
@@ -79,14 +76,16 @@ const store = createStore(
 );
 
 const route = read_cookie('route');
-store.dispatch(changeDodayAppRouteActionCreator(route));
+store.dispatch(ducks.dodayApp.actions.changeDodayAppRouteActionCreator(route));
 
 /**
  * set stored values
  * TODO: Refactor this to store whole hero-settings in localstorage
  * */
 const isDrawerCollapsed = read_cookie('isDrawerCollapsed');
-store.dispatch(toggleDrawerActionCreator(isDrawerCollapsed == 'true'));
+store.dispatch(
+  ducks.settings.actions.toggleDrawerActionCreator(isDrawerCollapsed == 'true')
+);
 
 sagaMiddleware.run(rootSaga);
 

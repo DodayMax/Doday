@@ -61,7 +61,7 @@ import classNames from 'classnames';
 import throttle from 'lodash.throttle';
 import { DodayLike } from '@doday/lib';
 
-export const DEFAULT_IMAGE_HEIGHT = 112.5;
+const DEFAULT_IMAGE_HEIGHT = 112.5;
 
 const noPage = { stop: 0 };
 const sortAscending = (a: any, b: any) => a - b;

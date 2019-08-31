@@ -1,13 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, match } from 'react-router-dom';
 import i18next from 'i18next';
 import * as cuid from 'cuid';
-import { actions as settingsActions } from '@ducks/hero-settings';
+import ducks, { ToggleDrawerAction } from '@doday/duck';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import BugReportIcon from '@material-ui/icons/BugReport';
-import { RootState } from '@root/lib/models';
-import { ToggleDrawerAction } from '@root/ducks/hero-settings/actions';
+import { RootState } from '@doday/lib';
 import {
   ListItem,
   ListItemIcon,
@@ -16,15 +14,11 @@ import {
   AppBar,
   Toolbar,
 } from '@material-ui/core';
-import { LayoutBlock } from '@shared';
+import { LayoutBlock } from '@doday/shared';
 
 interface TranslationProps {
   t?: i18next.TFunction;
   i18n?: i18next.i18n;
-}
-
-interface ShellProps {
-  match?: match;
 }
 
 interface PropsFromConnect {
@@ -33,7 +27,7 @@ interface PropsFromConnect {
 }
 
 export class MobileShellComponent extends React.Component<
-  ShellProps & PropsFromConnect & TranslationProps
+  PropsFromConnect & TranslationProps
 > {
   render() {
     return (
@@ -73,5 +67,7 @@ const mapState = (state: RootState) => ({
 
 export default connect(
   mapState,
-  { toggleDrawerActionCreator: settingsActions.toggleDrawerActionCreator }
+  {
+    toggleDrawerActionCreator: ducks.settings.actions.toggleDrawerActionCreator,
+  }
 )(MobileShellComponent);

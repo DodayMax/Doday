@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { LayoutBlock } from '../shared/_atoms/layout-block';
+import { LayoutBlock } from '@doday/shared';
 import { css } from './css.landing';
 import { withStyles, WithStyles } from '@material-ui/core';
 

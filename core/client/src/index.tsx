@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { ApolloProvider } from 'react-apollo';
 import { Router } from 'react-router-dom';
 import { App } from './app';
 import * as serviceWorker from './serviceWorker';

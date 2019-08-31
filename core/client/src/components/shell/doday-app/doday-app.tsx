@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
-import { actions as appActions } from '@ducks/doday-app';
-import { actions as dodayDetailsActions } from '@ducks/doday-details';
-import { actions as settingsActions } from '@ducks/hero-settings';
-import * as api from '@ducks/api';
-import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
+import ducks, { ChangeDodayAppRouteAction } from '@doday/duck';
 import { RouteComponentProps } from 'react-router';
-import { DodayAppQueryParams } from '@root/lib/common-interfaces';
-import { RootState } from '@root/lib/models';
-import { WithTools } from '@root/tools/types';
+import {
+  DodayAppQueryParams,
+  RootState,
+  WithTools,
+  DodayLike,
+} from '@doday/lib';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
-import { DodayLike } from '@root/lib/models/entities/common';
 
 const styles = (theme: Theme) =>
   createStyles({
@@ -66,7 +64,7 @@ export class DodayAppComponent extends React.Component<
       const entity = tool.config.entities.find(
         entity => entity.type === item.type
       );
-      if (entity != null) {
+      if (entity != undefined) {
         const Tag = tool.components.cells[entity.type].progress;
         return (
           <Tag doday={item} key={cuid()} onClick={this.handleDodayCellClick} />
@@ -97,7 +95,7 @@ export class DodayAppComponent extends React.Component<
           match={match}
         />
       );
-    return null;
+    return undefined;
   };
 
   // renderContent() {
@@ -166,9 +164,9 @@ const mapState = ({ dodayApp }: RootState) => ({
 export default connect(
   mapState,
   {
-    ...appActions,
-    ...settingsActions,
-    ...dodayDetailsActions,
-    ...api.dodays.actions,
+    ...ducks.dodayApp.actions,
+    ...ducks.settings.actions,
+    ...ducks.details.actions,
+    ...ducks.api.actions,
   }
 )(withStyles(styles)(DodayAppComponent));

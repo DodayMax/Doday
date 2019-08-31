@@ -8,7 +8,7 @@ import actions, {
   SetSearchTermAction,
   SetSearchFlagAction,
 } from '../actions';
-import { DodaysQueryParams } from '@doday/api/dist/src/dodays/queries';
+import { DodaysQueryParams } from '@doday/api';
 import { DodayLike, activity, doday } from '@doday/lib';
 
 describe('store action creators', () => {

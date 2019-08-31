@@ -1,19 +1,23 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import { actions } from '@ducks/store';
-import { Page } from '../../shared/_molecules/page';
-import { Space } from '@root/lib/common-interfaces';
-import { RootState } from '@root/lib/models';
-import {
+import { RouteComponentProps } from 'react-router';
+import ducks, {
   FetchPublicDodaysForStoreAction,
   SearchPublicDodaysForStoreAction,
   SetSearchFlagAction,
   SetSearchTermAction,
-} from '@root/ducks/store/actions';
-import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { ToolBeacon } from '@root/tools/types';
-import { LayoutBlock, Icons, Masonry } from '@shared';
+} from '@doday/duck';
+import { Page, LayoutBlock, Icons, Masonry } from '@doday/shared';
+import {
+  Space,
+  RootState,
+  ToolBeacon,
+  capitalize,
+  config,
+  DodayLike,
+} from '@doday/lib';
+import { DodaysQueryParams } from '@doday/api';
 import {
   Grid,
   withStyles,
@@ -22,16 +26,11 @@ import {
   WithStyles,
   TextField,
   Chip,
-  CardActionArea,
   WithTheme,
   withTheme,
 } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
-import { capitalize } from '@root/lib/utils';
-import { RouteComponentProps } from 'react-router';
-import { config } from '@root/styles/config';
 import { MasonryItem } from './store-item';
-import { DodayLike } from '@root/lib/models/entities/common';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -223,9 +222,6 @@ class StoreClassComponent extends React.Component<
         </Grid>
       </Page>
     );
-    return (
-      <Page permanent className={classnames(classes.page, classes.store)} />
-    );
   }
 }
 
@@ -240,5 +236,5 @@ const mapState = (state: RootState) => ({
 
 export const Store = connect(
   mapState,
-  { ...actions }
+  { ...ducks.store.actions }
 )(withStyles(css)(withTheme()(StoreClassComponent)));

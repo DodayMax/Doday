@@ -10,7 +10,7 @@ export interface RootState {
   builder: BuilderState;
   heroSettings: HeroSettingsState;
   store: StoreState;
-  tools: ToolsState;
+  tools?: ToolsState;
   toast: ToastState;
   dialog: DialogState;
 }
@@ -30,7 +30,7 @@ export interface BuilderState {
   status: {
     loading: boolean;
   };
-  tools: ToolsBuilderState;
+  tools?: ToolsBuilderState;
 }
 
 export interface AuthState {

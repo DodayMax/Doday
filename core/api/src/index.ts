@@ -4,4 +4,5 @@ import * as heroes from './heroes';
 import * as days from './days';
 import * as payments from './payments';
 
-export { dodays, goals, heroes, days, payments };
+export * from './types';
+export default { dodays, goals, heroes, days, payments };

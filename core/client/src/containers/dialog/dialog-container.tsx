@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { DodayDialogComponent } from '@shared';
-import { RootState } from '@root/lib/models';
-import { actionCreators, CloseDialogAction } from '@root/ducks/dialog/actions';
+import { DodayDialogComponent } from '@doday/shared';
+import { RootState } from '@doday/lib';
+import ducks from '@doday/duck';
 
 const mapState = (rootState: RootState) => ({
   ...rootState.dialog,
@@ -10,6 +10,6 @@ const mapState = (rootState: RootState) => ({
 export const DodayDialog = connect(
   mapState,
   {
-    closeDialog: actionCreators.closeDialogActionCreator,
+    closeDialog: ducks.dialog.actions.closeDialogActionCreator,
   }
 )(DodayDialogComponent);

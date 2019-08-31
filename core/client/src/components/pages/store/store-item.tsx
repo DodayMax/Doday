@@ -11,10 +11,10 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { LayoutBlock, Icons } from '@root/components/shared';
-import { Space } from '@root/lib/common-interfaces';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { DodayLike } from '@root/lib/models/entities/common';
+import { LayoutBlock, Icons } from '@doday/shared';
+import { Space, DodayLike } from '@doday/lib';
+const DEFAULT_IMAGE_HEIGHT = 112.5;
 
 const css = (theme: Theme) =>
   createStyles({

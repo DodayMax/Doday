@@ -1,28 +1,33 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
 import * as cuid from 'cuid';
+import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Dashboard } from '@components';
-import { RootState } from '@lib/models';
-import { actions as settingsActions } from '@ducks/hero-settings';
-import { actions as authActions } from '@ducks/auth';
-import { actions as appActions } from '@ducks/doday-app';
-import { actions as detailsActions } from '@ducks/doday-details';
-import { Hero } from '@root/lib/models/entities/hero';
-import { FetchHeroAction } from '@root/ducks/auth/actions';
+import {
+  RootState,
+  Hero,
+  ToolBeacon,
+  DrawerMenuItem,
+  ThemeType,
+  Space,
+  capitalize,
+} from '@doday/lib';
+import ducks, {
+  FetchHeroAction,
+  ToggleDrawerAction,
+  ToggleDodayAppAction,
+  ToggleThemeAction,
+  ChangeDodayAppRouteAction,
+  ClearSelectedDodayAction,
+} from '@doday/duck';
 import { Landing } from '../landing';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import FaceIcon from '@material-ui/icons/Face';
 import AppsIcon from '@material-ui/icons/Apps';
 import BugReportIcon from '@material-ui/icons/BugReport';
-import {
-  ToggleDrawerAction,
-  ToggleDodayAppAction,
-  ToggleThemeAction,
-} from '@root/ducks/hero-settings/actions';
-import { ToolBeacon } from '@root/tools/types';
 
 import {
   WithStyles,
@@ -42,16 +47,10 @@ import {
   Button,
   Switch,
 } from '@material-ui/core';
-import { Icons, LayoutBlock } from '../shared';
-import { DrawerMenuItem, ThemeType, Space } from '@root/lib/common-interfaces';
-import { capitalize } from '@root/lib/utils';
-import { toolBeacons } from '@root/tools';
-import { ChangeDodayAppRouteAction } from '@root/ducks/doday-app/actions';
-import { ClearSelectedDodayAction } from '@root/ducks/doday-details/actions';
+import { Icons, LayoutBlock } from '@doday/shared';
 
 import { css } from './css.desktop-shell';
 import { DodayApp } from './doday-app';
-import { withTranslation, WithTranslation } from 'react-i18next';
 
 interface DesktopShellProps extends RouteComponentProps {}
 
@@ -100,7 +99,7 @@ class DesktopShell extends React.Component<
     }
 
     window.addEventListener('resize', evt => {
-      if (taskID != null) {
+      if (taskID != undefined) {
         clearTimeout(taskID);
       }
 
@@ -194,15 +193,15 @@ class DesktopShell extends React.Component<
                     )}
                     onClick={() =>
                       history.push(
-                        `/dashboard/builder/${
-                          activeTools[0].config.entities[0].name
-                        }`
+                        `/dashboard/builder/${activeTools[0].config.entities[0].name}`
                       )
                     }
                   >
                     {`New ${activeTools[0].config.entities[0].name}`}
                   </Button>
-                ) : null}
+                ) : (
+                  undefined
+                )}
                 <Switch
                   onChange={e => {
                     const theme = e.target.checked ? 'dark' : 'light';
@@ -253,7 +252,7 @@ class DesktopShell extends React.Component<
                   <Divider />
                   <LayoutBlock flex="1" direction="column" align="spaceBetween">
                     <LayoutBlock direction="column">
-                      {this.toolsToDrawerMenuItems(toolBeacons).map(
+                      {/* {this.toolsToDrawerMenuItems(toolBeacons).map(
                         (tool, index) => {
                           const Icon = Icons[tool.icon];
                           return (
@@ -280,7 +279,7 @@ class DesktopShell extends React.Component<
                             </>
                           );
                         }
-                      )}
+                      )} */}
                     </LayoutBlock>
                     <LayoutBlock direction="column">
                       <Divider />
@@ -330,7 +329,7 @@ class DesktopShell extends React.Component<
                         <Route
                           path="/dashboard"
                           render={props => (
-                            <DodayApp {...props} activeTools={activeTools} />
+                            <DodayApp {...props} activeTools={[]} />
                           )}
                         />
                       )}
@@ -377,12 +376,13 @@ export default connect(
   mapState,
   {
     changeDodayAppRouteActionCreator:
-      appActions.actionCreators.changeDodayAppRouteActionCreator,
+      ducks.dodayApp.actions.changeDodayAppRouteActionCreator,
     clearSelectedDodayActionCreator:
-      detailsActions.clearSelectedDodayActionCreator,
-    toggleDrawerActionCreator: settingsActions.toggleDrawerActionCreator,
-    toggleDodayAppActionCreator: settingsActions.toggleDodayAppActionCreator,
-    fetchHeroActionCreator: authActions.actionCreators.fetchHeroActionCreator,
-    toggleThemeActionCreator: settingsActions.toggleThemeActionCreator,
+      ducks.details.actions.clearSelectedDodayActionCreator,
+    toggleDrawerActionCreator: ducks.settings.actions.toggleDrawerActionCreator,
+    toggleDodayAppActionCreator:
+      ducks.settings.actions.toggleDodayAppActionCreator,
+    fetchHeroActionCreator: ducks.auth.actions.fetchHeroActionCreator,
+    toggleThemeActionCreator: ducks.settings.actions.toggleThemeActionCreator,
   }
 )(withStyles(css, { withTheme: true })(withTranslation('shell')(DesktopShell)));

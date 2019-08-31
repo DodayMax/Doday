@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Route, Redirect } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import {
   MuiThemeProvider,
   createMuiTheme,
@@ -11,9 +11,7 @@ import {
 import i18next from 'i18next';
 import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
-import { RootState } from './lib/models';
-import { ThemeType } from './lib/common-interfaces';
-import { colors } from '@root/styles/doday-colors';
+import { RootState, ThemeType, colors } from '@doday/lib';
 import { Toast, DodayDialog } from './containers';
 
 interface AppProps {}

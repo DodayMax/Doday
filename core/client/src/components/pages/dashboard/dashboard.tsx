@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { Builder } from '@components';
-import { ToggleDodayAppAction } from '@root/ducks/hero-settings/actions';
+import { ToggleDodayAppAction } from '@doday/duck';
 import { Profile } from '../profile';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
-import { ToolBeacon } from '@root/tools/types';
+import { ToolBeacon } from '@doday/lib';
 import { Store } from '../store';
-import { LayoutBlock } from '@root/components/shared';
+import { LayoutBlock } from '@doday/shared';
 import { WithStyles, Theme, createStyles, withStyles } from '@material-ui/core';
 
 const css = (theme: Theme) =>

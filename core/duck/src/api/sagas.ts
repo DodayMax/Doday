@@ -71,7 +71,7 @@ export function* createDodayActionSaga(action: CreateDodayAction) {
         )
       );
       serialized = {
-        doday: entity.serialize(action.payload.doday) as SerializedDodayLike,
+        doday: entity.serialize!(action.payload.doday) as SerializedDodayLike,
         resource: action.payload.resource,
       };
     }
@@ -131,8 +131,8 @@ export function* createAndTakeDodayActionSaga(
         )
       );
       serialized = {
-        doday: entity.serialize(action.payload.doday) as SerializedDodayLike,
-        progress: entity.serializeProgress(
+        doday: entity.serialize!(action.payload.doday) as SerializedDodayLike,
+        progress: entity.serializeProgress!(
           action.payload.progress
         ) as SerializedProgressLike,
         resource: action.payload.resource,
@@ -184,7 +184,7 @@ export function* takeDodayActionSaga(action: TakeDodayAction) {
         )
       );
       /** Serialize payload to update doday in graph (in app we use deserialized dodays) */
-      serialized = entity.serializeProgress(action.payload.progress);
+      serialized = entity.serializeProgress!(action.payload.progress);
     }
   });
   /** Store side effect */
@@ -368,10 +368,10 @@ export function* updateDodayActionSaga(action: UpdateDodayAction) {
         );
       }
       serialized = {
-        doday: entity.serialize(
+        doday: entity.serialize!(
           action.payload.updates.doday!
         ) as SerializedActivity,
-        progress: entity.serializeProgress(
+        progress: entity.serializeProgress!(
           action.payload.updates.progress!
         ) as SerializedActivityProgress,
         resource: action.payload.updates.resource,

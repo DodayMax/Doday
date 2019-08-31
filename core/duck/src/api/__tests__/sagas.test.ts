@@ -62,7 +62,7 @@ describe('Test api sagas', () => {
     const serialized = {
       doday:
         activeTool[0].config &&
-        (activeTool[0].config.entities[0].serialize(
+        (activeTool[0].config.entities[0].serialize!(
           action.payload.doday
         ) as SerializedDodayLike),
       resource: action.payload.resource,
@@ -116,10 +116,10 @@ describe('Test api sagas', () => {
       ),
     ];
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(
+      doday: activeTool[0].config.entities[0].serialize!(
         action.payload.doday
       ) as SerializedDodayLike,
-      progress: activeTool[0].config.entities[0].serializeProgress(
+      progress: activeTool[0].config.entities[0].serializeProgress!(
         action.payload.progress
       ) as SerializedProgressLike,
       resource: action.payload.resource,
@@ -175,7 +175,7 @@ describe('Test api sagas', () => {
         )
       ),
     ];
-    const serialized = activeTool[0].config.entities[0].serializeProgress(
+    const serialized = activeTool[0].config.entities[0].serializeProgress!(
       action.payload.progress
     );
     const gen = takeDodayActionSaga(action);
@@ -432,9 +432,9 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(action.payload.updates
+      doday: activeTool[0].config.entities[0].serialize!(action.payload.updates
         .doday as Partial<Activity>),
-      progress: activeTool[0].config.entities[0].serializeProgress(action
+      progress: activeTool[0].config.entities[0].serializeProgress!(action
         .payload.updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };
@@ -493,9 +493,9 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(action.payload.updates
+      doday: activeTool[0].config.entities[0].serialize!(action.payload.updates
         .doday as Partial<Activity>),
-      progress: activeTool[0].config.entities[0].serializeProgress(action
+      progress: activeTool[0].config.entities[0].serializeProgress!(action
         .payload.updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };

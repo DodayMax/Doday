@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { DodaysQueryParams } from '@doday/api/dist/src/dodays/queries';
+import { DodaysQueryParams } from '@doday/api';
 import { DodayLike } from '@doday/lib';
 
 export enum StoreActionConstants {

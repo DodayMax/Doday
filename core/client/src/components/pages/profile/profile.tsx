@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Page, PageHeader } from '../../shared/_molecules/page';
-import { Pageflow } from '../../shared/_decorators/pageflow';
+import { Page, PageHeader, Pageflow } from '@doday/shared';
 import { Typography } from '@material-ui/core';
 
 @Pageflow({ path: '/dashboard/profile' })

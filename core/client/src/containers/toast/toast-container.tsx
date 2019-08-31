@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
-import { Snackbar } from '@shared';
-import { RootState } from '@root/lib/models';
-import { actionCreators } from '@root/ducks/toast/actions';
+import { Snackbar } from '@doday/shared';
+import { RootState } from '@doday/lib';
+import actions from '@doday/duck';
 
 const mapState = (rootState: RootState) => ({
   ...rootState.toast,
@@ -9,5 +9,5 @@ const mapState = (rootState: RootState) => ({
 
 export const Toast = connect(
   mapState,
-  { onClose: actionCreators.closeToastActionCreator }
+  { onClose: actions.toast.actions.closeToastActionCreator }
 )(Snackbar);

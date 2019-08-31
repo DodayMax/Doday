@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { LayoutBlock } from '@shared';
-import { TypographySize } from '@root/lib/common-interfaces';
+import { LayoutBlock } from '@doday/shared';
+import { TypographySize } from '@doday/lib';
 import {
   createStyles,
   Theme,

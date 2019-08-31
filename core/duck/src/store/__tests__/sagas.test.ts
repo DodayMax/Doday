@@ -9,7 +9,7 @@ import {
   fetchPublicDodaysForStoreActionSaga,
   searchPublicDodaysForStoreActionSaga,
 } from '../sagas';
-import { DodaysQueryParams } from '@doday/api/dist/src/dodays/queries';
+import { DodaysQueryParams } from '@doday/api';
 import { DodayLike, activity } from '@doday/lib';
 
 describe("Test Store's sagas", () => {

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { LayoutBlock, Icons } from '@shared';
-import { Space } from '@root/lib/common-interfaces';
+import { LayoutBlock, Icons } from '@doday/shared';
+import { Space } from '@doday/lib';
 import { css } from './css.parsed-url-view';
 import {
   WithStyles,

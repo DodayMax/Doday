@@ -2,14 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
-import * as detailsActions from '@ducks/doday-details/actions';
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '@root/components/shared/_decorators/pageflow';
-import { RootState } from '@root/lib/models';
-import { WithTools } from '@root/tools/types';
-import { DodayLike } from '@root/lib/models/entities/common';
+import ducks, { FetchSelectedProgressAction } from '@doday/duck';
+import { Pageflow, PageWrapperChildContext } from '@doday/shared';
+import { RootState, WithTools, DodayLike } from '@doday/lib';
 
 interface ProgressDetailsProps {}
 
@@ -17,7 +12,7 @@ interface PropsFromConnect {
   selectedDoday: DodayLike;
   fetchSelectedProgressActionCreator: (
     did: string
-  ) => detailsActions.FetchSelectedProgressAction;
+  ) => FetchSelectedProgressAction;
 }
 
 interface ProgressDetailsState {}
@@ -62,7 +57,7 @@ class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
       return <Component />;
     }
 
-    return null;
+    return undefined;
   }
 }
 
@@ -74,6 +69,6 @@ export default connect(
   mapState,
   {
     fetchSelectedProgressActionCreator:
-      detailsActions.actionCreators.fetchSelectedProgressActionCreator,
+      ducks.details.actions.fetchSelectedProgressActionCreator,
   }
 )(ProgressDetails);

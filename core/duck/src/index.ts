@@ -1,9 +1,9 @@
 //reducers and sagas
-import dodayapp from './doday-app';
-import dodayDetails from './doday-details';
+import dodayApp from './doday-app';
+import details from './doday-details';
 import builder from './builder';
 import auth from './auth';
-import herosettings from './hero-settings';
+import settings from './hero-settings';
 import api from './api';
 import store from './store';
 import toast from './toast';
@@ -20,11 +20,11 @@ export * from './store';
 export * from './toast';
 
 const ducks: any = {
-  dodayapp,
-  dodayDetails,
+  dodayApp,
+  details,
   builder,
   auth,
-  herosettings,
+  settings,
   api,
   store,
   toast,

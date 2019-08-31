@@ -2,19 +2,15 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
-import * as detailsActions from '@ducks/doday-details/actions';
-import { PageWrapperChildContext } from '@root/components/shared/_decorators/pageflow';
-import { RootState } from '@root/lib/models';
-import { WithTools } from '@root/tools/types';
-import { DodayLike } from '@root/lib/models/entities/common';
+import ducks, { FetchSelectedDodayAction } from '@doday/duck';
+import { PageWrapperChildContext } from '@doday/shared';
+import { RootState, WithTools, DodayLike } from '@doday/lib';
 
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
   selectedDoday: DodayLike;
-  fetchSelectedDodayActionCreator: (
-    did: string
-  ) => detailsActions.FetchSelectedDodayAction;
+  fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
 }
 
 interface DodayDetailsState {}
@@ -70,6 +66,6 @@ export default connect(
   mapState,
   {
     fetchSelectedDodayActionCreator:
-      detailsActions.actionCreators.fetchSelectedDodayActionCreator,
+      ducks.details.actions.fetchSelectedDodayActionCreator,
   }
 )(DodayDetails);
