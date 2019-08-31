@@ -1,11 +1,11 @@
 import { Hero, APIResponseHero } from './hero';
-import { Neo4jResponseDateTime } from '@root/lib/common-interfaces';
 import {
   Activity,
   SerializedActivity,
   ActivityProgress,
   SerializedActivityProgress,
 } from './activity';
+import { Neo4jResponseDateTime } from '../../common-interfaces';
 
 /**
  * Entity object for using it in Tools
@@ -18,14 +18,18 @@ export interface Entity {
    * a part of the `Entity`, for example for `update doday`
    * we use `Partial`
    */
-  serialize: (doday: Partial<DodayLike>) => Partial<SerializedDodayLike>;
-  deserialize: (doday: Partial<SerializedDodayLike>) => Partial<DodayLike>;
-  serializeProgress: (
+  serialize?: (
+    doday: Partial<DodayLike>
+  ) => Partial<SerializedDodayLike> | undefined;
+  deserialize?: (
+    doday: Partial<SerializedDodayLike>
+  ) => Partial<DodayLike> | undefined;
+  serializeProgress?: (
     progress: Partial<ProgressLike>
-  ) => Partial<SerializedProgressLike>;
-  deserializeProgress: (
+  ) => Partial<SerializedProgressLike> | undefined;
+  deserializeProgress?: (
     progress: Partial<SerializedDodayLike>
-  ) => Partial<ProgressLike>;
+  ) => Partial<ProgressLike> | undefined;
   isEntity: (doday: DodayLike) => boolean;
 }
 

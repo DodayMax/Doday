@@ -1,6 +1,5 @@
-import {
-  ActionConstants,
-  actionCreators,
+import actions, {
+  StoreActionConstants,
   FetchPublicDodaysForStoreAction,
   SetPublicDodaysForStoreAction,
   SetStoreLoadingStateAction,
@@ -9,18 +8,17 @@ import {
   SetSearchTermAction,
   SetSearchFlagAction,
 } from '../actions';
-import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { activity, doday } from '@root/lib/common-interfaces/fake-data';
-import { DodayLike } from '@root/lib/models/entities/common';
+import { DodaysQueryParams } from '@doday/api/dist/src/dodays/queries';
+import { DodayLike, activity, doday } from '@doday/lib';
 
 describe('store action creators', () => {
   it('set Store loading state action creator', () => {
     const value = true;
     const expectedActionObject: SetStoreLoadingStateAction = {
-      type: ActionConstants.SET_LOADING_STATE,
+      type: StoreActionConstants.SET_LOADING_STATE,
       payload: value,
     };
-    expect(actionCreators.setStoreLoadingStateActionCreator(value)).toEqual(
+    expect(actions.setStoreLoadingStateActionCreator(value)).toEqual(
       expectedActionObject
     );
   });
@@ -28,10 +26,10 @@ describe('store action creators', () => {
   it('set search term action creator', () => {
     const term = 'Search term';
     const expectedActionObject: SetSearchTermAction = {
-      type: ActionConstants.SET_SEARCH_TERM,
+      type: StoreActionConstants.SET_SEARCH_TERM,
       payload: term,
     };
-    expect(actionCreators.setSearchTermActionCreator(term)).toEqual(
+    expect(actions.setSearchTermActionCreator(term)).toEqual(
       expectedActionObject
     );
   });
@@ -39,10 +37,10 @@ describe('store action creators', () => {
   it('set search flag action creator', () => {
     const flag = true;
     const expectedActionObject: SetSearchFlagAction = {
-      type: ActionConstants.SET_SEARCH_FLAG,
+      type: StoreActionConstants.SET_SEARCH_FLAG,
       payload: flag,
     };
-    expect(actionCreators.setSearchFlagActionCreator(flag)).toEqual(
+    expect(actions.setSearchFlagActionCreator(flag)).toEqual(
       expectedActionObject
     );
   });
@@ -50,34 +48,34 @@ describe('store action creators', () => {
   it('search dodays action creator', () => {
     const params: DodaysQueryParams = {};
     const expectedActionObject: SearchPublicDodaysForStoreAction = {
-      type: ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+      type: StoreActionConstants.SEARCH_DODAYS_WITH_PARAMS,
       payload: params,
     };
-    expect(
-      actionCreators.searchPublicDodaysForStoreActionCreator(params)
-    ).toEqual(expectedActionObject);
+    expect(actions.searchPublicDodaysForStoreActionCreator(params)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('fetch dodays for store without params action creator', () => {
     const params: DodaysQueryParams = {};
     const expectedActionObject: FetchPublicDodaysForStoreAction = {
-      type: ActionConstants.FETCH_DODAYS_WITH_PARAMS,
+      type: StoreActionConstants.FETCH_DODAYS_WITH_PARAMS,
       payload: params,
     };
-    expect(
-      actionCreators.fetchPublicDodaysForStoreActionCreator(params)
-    ).toEqual(expectedActionObject);
+    expect(actions.fetchPublicDodaysForStoreActionCreator(params)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('set dodays for store action creator', () => {
     const dodays: DodayLike[] = [activity];
     const expectedActionObject: SetPublicDodaysForStoreAction = {
-      type: ActionConstants.SET_DODAYS,
+      type: StoreActionConstants.SET_DODAYS,
       payload: {
         dodays,
       },
     };
-    expect(actionCreators.setPublicDodaysForStoreActionCreator(dodays)).toEqual(
+    expect(actions.setPublicDodaysForStoreActionCreator(dodays)).toEqual(
       expectedActionObject
     );
   });
@@ -89,7 +87,7 @@ describe('store action creators', () => {
       totalCount: 20,
     };
     const expectedActionObject: SetPublicDodaysForStoreAction = {
-      type: ActionConstants.SET_DODAYS,
+      type: StoreActionConstants.SET_DODAYS,
       payload: {
         dodays: payload.dodays,
         concat: payload.concat,
@@ -97,7 +95,7 @@ describe('store action creators', () => {
       },
     };
     expect(
-      actionCreators.setPublicDodaysForStoreActionCreator(
+      actions.setPublicDodaysForStoreActionCreator(
         payload.dodays,
         payload.concat,
         payload.totalCount
@@ -107,11 +105,11 @@ describe('store action creators', () => {
 
   it('optimistic remove public doday from store dodays', () => {
     const expectedActionObject: OptimisticRemovePublicDodayAction = {
-      type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
+      type: StoreActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
       payload: doday.did,
     };
-    expect(
-      actionCreators.optimisticRemovePublicDodayActionCreator(doday.did)
-    ).toEqual(expectedActionObject);
+    expect(actions.optimisticRemovePublicDodayActionCreator(doday.did)).toEqual(
+      expectedActionObject
+    );
   });
 });

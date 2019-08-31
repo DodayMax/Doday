@@ -1,6 +1,6 @@
-import { ToastState } from '@root/lib/models';
+import { ToastState } from '@doday/lib';
 import reducer, { initialToastState } from '../reducer';
-import { actionCreators } from '../actions';
+import actions from '../actions';
 
 describe("test toast's reducers", () => {
   it('open reducer', () => {
@@ -9,7 +9,7 @@ describe("test toast's reducers", () => {
       messages: ['Test message'],
     };
     expect(
-      reducer(initialToastState, actionCreators.openToastActionCreator(options))
+      reducer(initialToastState, actions.openToastActionCreator(options))
     ).toEqual({
       ...initialToastState,
       ...options,
@@ -26,7 +26,7 @@ describe("test toast's reducers", () => {
         ...initialToastState,
         ...testState,
       },
-      actionCreators.closeToastActionCreator()
+      actions.closeToastActionCreator()
     );
     expect(newState.messages.length).toBe(0);
     expect(newState.open).toBe(false);

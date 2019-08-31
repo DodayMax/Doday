@@ -2,10 +2,8 @@ import * as React from 'react';
 import * as cuid from 'cuid';
 import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { config } from '@styles/config';
-import { LayoutBlock } from '@shared';
 import { withRouter, RouteComponentProps } from 'react-router';
-import { RootState } from '@root/lib/models';
+import { RootState, config } from '@doday/lib';
 import { PageWrapperChildContext } from '../../_decorators/pageflow';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -18,6 +16,7 @@ import {
   Menu,
   MenuItem,
 } from '@material-ui/core';
+import { LayoutBlock } from '../../_atoms/layout-block';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -58,7 +57,7 @@ class PageHeaderComponentClass extends React.Component<
   PageHeaderProps & Partial<PropsFromConnect> & WithStyles,
   PageHeaderState
 > {
-  constructor(props) {
+  constructor(props: PageHeaderProps & Partial<PropsFromConnect> & WithStyles) {
     super(props);
 
     this.state = {};
@@ -143,7 +142,7 @@ class PageHeaderComponentClass extends React.Component<
               onClick={() => {
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
-                  this.props.history.push('/dashboard');
+                  this.props.history && this.props.history.push('/dashboard');
                   if (onClose) {
                     onClose();
                   }

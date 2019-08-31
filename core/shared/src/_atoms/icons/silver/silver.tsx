@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createSvgIcon } from '../createIcon';
-import { config } from '@styles/config';
+import { config } from '@doday/lib';
 
 export const Silver = createSvgIcon(
   <>

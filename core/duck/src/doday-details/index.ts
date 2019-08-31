@@ -1,7 +1,6 @@
 import reducer from './reducer';
-import * as actions from './actions';
+import actions from './actions';
 import dodayDetailsSagas from './sagas';
 
-export { actions, dodayDetailsSagas };
-
-export default reducer;
+export * from './actions';
+export default { actions, sagas: dodayDetailsSagas, reducer };

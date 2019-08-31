@@ -14,7 +14,7 @@ import {
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import { LayoutBlock } from '../layout-block';
-import { Space } from '@root/lib/common-interfaces';
+import { Space } from '@doday/lib';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -66,7 +66,7 @@ export const CustomDatePicker = withStyles(css)(
               className={classes.dateButtonPadding}
             >
               <LayoutBlock spaceRight={Space.Small}>{icon}</LayoutBlock>
-              {moment(props.selected).format('ll')}
+              {props.selected != null && moment(props.selected).format('ll')}
             </Button>
           }
           selected={props.selected}

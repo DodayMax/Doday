@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Icons } from '@shared';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
+import { Icons } from '../..';
 
 interface CheckboxProps {
   checked?: boolean;

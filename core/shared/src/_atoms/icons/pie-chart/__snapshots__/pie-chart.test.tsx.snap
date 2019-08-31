@@ -1,5 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`PieChart renders correctly with active prop 1`] = `ShallowWrapper {}`;
-
-exports[`PieChart renders correctly without props 1`] = `ShallowWrapper {}`;

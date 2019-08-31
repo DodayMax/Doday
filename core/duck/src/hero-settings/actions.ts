@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-export enum ActionConstants {
+export enum HeroSettingsActionConstants {
   TOGGLE_DRAWER = '[heroSettings] TOGGLE_DRAWER',
   TOGGLE_DODAY_APP = '[heroSettings] TOGGLE_DODAY_APP',
   TOGGLE_THEME = '[heroSettings] TOGGLE_THEME',
@@ -12,9 +12,9 @@ export enum ActionConstants {
  * @export
  * @returns {ToggleDrawerAction}
  */
-export function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
+function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
   return {
-    type: ActionConstants.TOGGLE_DRAWER,
+    type: HeroSettingsActionConstants.TOGGLE_DRAWER,
     payload: value,
   };
 }
@@ -25,9 +25,9 @@ export function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
  * @export
  * @returns {ToggleDodayAppAction}
  */
-export function toggleDodayAppActionCreator(): ToggleDodayAppAction {
+function toggleDodayAppActionCreator(): ToggleDodayAppAction {
   return {
-    type: ActionConstants.TOGGLE_DODAY_APP,
+    type: HeroSettingsActionConstants.TOGGLE_DODAY_APP,
   };
 }
 
@@ -37,16 +37,14 @@ export function toggleDodayAppActionCreator(): ToggleDodayAppAction {
  * @export
  * @returns {ToggleThemeAction}
  */
-export function toggleThemeActionCreator(
-  mode: 'dark' | 'light'
-): ToggleThemeAction {
+function toggleThemeActionCreator(mode: 'dark' | 'light'): ToggleThemeAction {
   return {
-    type: ActionConstants.TOGGLE_THEME,
+    type: HeroSettingsActionConstants.TOGGLE_THEME,
     payload: mode,
   };
 }
 
-export const actionCreators = {
+export default {
   toggleDrawerActionCreator,
   toggleDodayAppActionCreator,
   toggleThemeActionCreator,
@@ -57,16 +55,16 @@ export const actionCreators = {
  */
 
 export interface ToggleDrawerAction extends AnyAction {
-  type: ActionConstants.TOGGLE_DRAWER;
+  type: HeroSettingsActionConstants.TOGGLE_DRAWER;
   payload?: boolean;
 }
 
 export interface ToggleDodayAppAction extends AnyAction {
-  type: ActionConstants.TOGGLE_DODAY_APP;
+  type: HeroSettingsActionConstants.TOGGLE_DODAY_APP;
 }
 
 export interface ToggleThemeAction extends AnyAction {
-  type: ActionConstants.TOGGLE_THEME;
+  type: HeroSettingsActionConstants.TOGGLE_THEME;
   payload: 'light' | 'dark';
 }
 
@@ -74,4 +72,4 @@ export interface ToggleThemeAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type ActionTypes = ToggleDrawerAction | ToggleThemeAction;
+export type HeroSettingsActionTypes = ToggleDrawerAction | ToggleThemeAction;

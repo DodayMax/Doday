@@ -1,8 +1,7 @@
 import { AnyAction } from 'redux';
-import { Resource } from '@root/lib/models/entities/resource';
-import { DodayLike, ProgressLike } from '@root/lib/models/entities/common';
+import { Resource, DodayLike, ProgressLike } from '@doday/lib';
 
-export enum ActionConstants {
+export enum DodayDetailsActionConstants {
   SET_LOADING_STATE = '[doday-details] SET_LOADING_STATE',
   FETCH_SELECTED_DODAY = '[doday-details] FETCH_SELECTED_DODAY',
   FETCH_SELECTED_PROGRESS = '[doday-details] FETCH_SELECTED_PROGRESS',
@@ -21,11 +20,11 @@ export enum ActionConstants {
  * @export
  * @returns {SetDodayDetailsLoadingStateAction}
  */
-export function setDodayDetailsLoadingStateActionCreator(
+function setDodayDetailsLoadingStateActionCreator(
   state: boolean
 ): SetDodayDetailsLoadingStateAction {
   return {
-    type: ActionConstants.SET_LOADING_STATE,
+    type: DodayDetailsActionConstants.SET_LOADING_STATE,
     payload: state,
   };
 }
@@ -36,11 +35,11 @@ export function setDodayDetailsLoadingStateActionCreator(
  * @export
  * @returns {FetchSelectedDodayAction}
  */
-export function fetchSelectedDodayActionCreator(
+function fetchSelectedDodayActionCreator(
   did: string
 ): FetchSelectedDodayAction {
   return {
-    type: ActionConstants.FETCH_SELECTED_DODAY,
+    type: DodayDetailsActionConstants.FETCH_SELECTED_DODAY,
     payload: did,
   };
 }
@@ -51,11 +50,11 @@ export function fetchSelectedDodayActionCreator(
  * @export
  * @returns {FetchSelectedProgressAction}
  */
-export function fetchSelectedProgressActionCreator(
+function fetchSelectedProgressActionCreator(
   did: string
 ): FetchSelectedProgressAction {
   return {
-    type: ActionConstants.FETCH_SELECTED_PROGRESS,
+    type: DodayDetailsActionConstants.FETCH_SELECTED_PROGRESS,
     payload: did,
   };
 }
@@ -66,11 +65,11 @@ export function fetchSelectedProgressActionCreator(
  * @export
  * @returns {SetSelectedDodayAction}
  */
-export function setSelectedDodayActionCreator(
+function setSelectedDodayActionCreator(
   progress: DodayLike
 ): SetSelectedDodayAction {
   return {
-    type: ActionConstants.SET_SELECTED_DODAY,
+    type: DodayDetailsActionConstants.SET_SELECTED_DODAY,
     payload: progress,
   };
 }
@@ -82,13 +81,13 @@ export function setSelectedDodayActionCreator(
  * @export
  * @returns {UpdateSelectedDodayAction}
  */
-export function updateSelectedDodayActionCreator(payload?: {
+function updateSelectedDodayActionCreator(payload?: {
   doday?: Partial<DodayLike>;
   progress?: Partial<ProgressLike>;
   resource?: Resource;
 }): UpdateSelectedDodayAction {
   return {
-    type: ActionConstants.UPDATE_SELECTED_DODAY,
+    type: DodayDetailsActionConstants.UPDATE_SELECTED_DODAY,
     payload,
   };
 }
@@ -99,9 +98,9 @@ export function updateSelectedDodayActionCreator(payload?: {
  * @export
  * @returns {ClearSelectedDodayAction}
  */
-export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
+function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
   return {
-    type: ActionConstants.CLEAR_SELECTED_DODAY,
+    type: DodayDetailsActionConstants.CLEAR_SELECTED_DODAY,
   };
 }
 
@@ -112,11 +111,9 @@ export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
  * @export
  * @returns {SetDirtyStatusAction}
  */
-export function setDirtyStatusActionCreator(
-  status: boolean
-): SetDirtyStatusAction {
+function setDirtyStatusActionCreator(status: boolean): SetDirtyStatusAction {
   return {
-    type: ActionConstants.SET_DIRTY_STATUS,
+    type: DodayDetailsActionConstants.SET_DIRTY_STATUS,
     payload: status,
   };
 }
@@ -129,11 +126,11 @@ export function setDirtyStatusActionCreator(
  * @export
  * @returns {RequestForSetUpdatesAction}
  */
-export function requestForSetUpdatesActionCreator(
+function requestForSetUpdatesActionCreator(
   progress?: Partial<ProgressLike>
 ): RequestForSetUpdatesAction {
   return {
-    type: ActionConstants.REQUEST_FOR_SET_UPDATES,
+    type: DodayDetailsActionConstants.REQUEST_FOR_SET_UPDATES,
     payload: {
       progress,
     },
@@ -146,11 +143,11 @@ export function requestForSetUpdatesActionCreator(
  * @export
  * @returns {SetUpdatesForSelectedDodayAction}
  */
-export function setUpdatesForSelectedDodayActionCreator(
+function setUpdatesForSelectedDodayActionCreator(
   updates: Partial<ProgressLike>
 ): SetUpdatesForSelectedDodayAction {
   return {
-    type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
+    type: DodayDetailsActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
     payload: updates,
   };
 }
@@ -161,13 +158,13 @@ export function setUpdatesForSelectedDodayActionCreator(
  * @export
  * @returns {ClearDodayDetailsDirtyStuffAction}
  */
-export function clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction {
+function clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction {
   return {
-    type: ActionConstants.CLEAR_DIRTY_STUFF,
+    type: DodayDetailsActionConstants.CLEAR_DIRTY_STUFF,
   };
 }
 
-export const actionCreators = {
+export default {
   setDodayDetailsLoadingStateActionCreator,
   fetchSelectedDodayActionCreator,
   setSelectedDodayActionCreator,
@@ -185,28 +182,28 @@ export const actionCreators = {
  */
 
 export interface SetDodayDetailsLoadingStateAction extends AnyAction {
-  type: ActionConstants.SET_LOADING_STATE;
+  type: DodayDetailsActionConstants.SET_LOADING_STATE;
   payload: boolean;
 }
 
 export interface FetchSelectedDodayAction extends AnyAction {
-  type: ActionConstants.FETCH_SELECTED_DODAY;
+  type: DodayDetailsActionConstants.FETCH_SELECTED_DODAY;
   payload: string;
 }
 
 export interface FetchSelectedProgressAction extends AnyAction {
-  type: ActionConstants.FETCH_SELECTED_PROGRESS;
+  type: DodayDetailsActionConstants.FETCH_SELECTED_PROGRESS;
   payload: string;
 }
 
 export interface SetSelectedDodayAction extends AnyAction {
-  type: ActionConstants.SET_SELECTED_DODAY;
+  type: DodayDetailsActionConstants.SET_SELECTED_DODAY;
   payload: DodayLike;
 }
 
 export interface UpdateSelectedDodayAction extends AnyAction {
-  type: ActionConstants.UPDATE_SELECTED_DODAY;
-  payload: {
+  type: DodayDetailsActionConstants.UPDATE_SELECTED_DODAY;
+  payload?: {
     doday?: Partial<DodayLike>;
     progress?: Partial<ProgressLike>;
     resource?: Resource;
@@ -214,35 +211,35 @@ export interface UpdateSelectedDodayAction extends AnyAction {
 }
 
 export interface ClearSelectedDodayAction extends AnyAction {
-  type: ActionConstants.CLEAR_SELECTED_DODAY;
+  type: DodayDetailsActionConstants.CLEAR_SELECTED_DODAY;
 }
 
 export interface SetDirtyStatusAction extends AnyAction {
-  type: ActionConstants.SET_DIRTY_STATUS;
+  type: DodayDetailsActionConstants.SET_DIRTY_STATUS;
   payload: boolean;
 }
 
 export interface SetUpdatesForSelectedDodayAction extends AnyAction {
-  type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY;
+  type: DodayDetailsActionConstants.SET_UPDATES_FOR_SELECTED_DODAY;
   payload: Partial<ProgressLike>;
 }
 
 export interface RequestForSetUpdatesAction extends AnyAction {
-  type: ActionConstants.REQUEST_FOR_SET_UPDATES;
-  payload: {
-    progress: Partial<ProgressLike>;
+  type: DodayDetailsActionConstants.REQUEST_FOR_SET_UPDATES;
+  payload?: {
+    progress: Partial<ProgressLike> | undefined;
   };
 }
 
 export interface ClearDodayDetailsDirtyStuffAction extends AnyAction {
-  type: ActionConstants.CLEAR_DIRTY_STUFF;
+  type: DodayDetailsActionConstants.CLEAR_DIRTY_STUFF;
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type DodayDetailsActionTypes =
   | SetDodayDetailsLoadingStateAction
   | FetchSelectedDodayAction
   | FetchSelectedProgressAction

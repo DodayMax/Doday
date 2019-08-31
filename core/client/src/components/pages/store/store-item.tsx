@@ -34,8 +34,6 @@ interface MasonryItemProps extends DodayLike {
   style: { [key: string]: string };
 }
 
-export const DEFAULT_IMAGE_HEIGHT = 112.5;
-
 @(withRouter as any)
 export class MasonryItemComponent extends React.PureComponent<
   MasonryItemProps & WithStyles & Partial<RouteComponentProps>

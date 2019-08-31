@@ -1,6 +1,5 @@
-import {
-  actionCreators,
-  ActionConstants,
+import actions, {
+  DodayDetailsActionConstants,
   SetDodayDetailsLoadingStateAction,
   FetchSelectedDodayAction,
   FetchSelectedProgressAction,
@@ -12,28 +11,27 @@ import {
   SetUpdatesForSelectedDodayAction,
   ClearDodayDetailsDirtyStuffAction,
 } from '../actions';
-import { activity } from '@root/lib/common-interfaces/fake-data';
-import { ProgressLike } from '@root/lib/models/entities/common';
+import { activity, ProgressLike } from '@doday/lib';
 
 describe('Doday details action creators', () => {
   it('Set loading state for doday details peace of state', () => {
     const loading = true;
     const expectedActionObject: SetDodayDetailsLoadingStateAction = {
-      type: ActionConstants.SET_LOADING_STATE,
+      type: DodayDetailsActionConstants.SET_LOADING_STATE,
       payload: loading,
     };
-    expect(
-      actionCreators.setDodayDetailsLoadingStateActionCreator(loading)
-    ).toEqual(expectedActionObject);
+    expect(actions.setDodayDetailsLoadingStateActionCreator(loading)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('Fetch selected doday', () => {
     const did = 'test did';
     const expectedActionObject: FetchSelectedDodayAction = {
-      type: ActionConstants.FETCH_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.FETCH_SELECTED_DODAY,
       payload: did,
     };
-    expect(actionCreators.fetchSelectedDodayActionCreator(did)).toEqual(
+    expect(actions.fetchSelectedDodayActionCreator(did)).toEqual(
       expectedActionObject
     );
   });
@@ -41,20 +39,20 @@ describe('Doday details action creators', () => {
   it('Fetch selected doday with progress node', () => {
     const did = 'test did';
     const expectedActionObject: FetchSelectedProgressAction = {
-      type: ActionConstants.FETCH_SELECTED_PROGRESS,
+      type: DodayDetailsActionConstants.FETCH_SELECTED_PROGRESS,
       payload: did,
     };
-    expect(actionCreators.fetchSelectedProgressActionCreator(did)).toEqual(
+    expect(actions.fetchSelectedProgressActionCreator(did)).toEqual(
       expectedActionObject
     );
   });
 
   it('Set selected doday to store', () => {
     const expectedActionObject: SetSelectedDodayAction = {
-      type: ActionConstants.SET_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.SET_SELECTED_DODAY,
       payload: activity,
     };
-    expect(actionCreators.setSelectedDodayActionCreator(activity)).toEqual(
+    expect(actions.setSelectedDodayActionCreator(activity)).toEqual(
       expectedActionObject
     );
   });
@@ -66,19 +64,19 @@ describe('Doday details action creators', () => {
       },
     };
     const expectedActionObject: UpdateSelectedDodayAction = {
-      type: ActionConstants.UPDATE_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.UPDATE_SELECTED_DODAY,
       payload: updates,
     };
-    expect(actionCreators.updateSelectedDodayActionCreator(updates)).toEqual(
+    expect(actions.updateSelectedDodayActionCreator(updates)).toEqual(
       expectedActionObject
     );
   });
 
   it('Clear selected doday from store', () => {
     const expectedActionObject: ClearSelectedDodayAction = {
-      type: ActionConstants.CLEAR_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.CLEAR_SELECTED_DODAY,
     };
-    expect(actionCreators.clearSelectedDodayActionCreator()).toEqual(
+    expect(actions.clearSelectedDodayActionCreator()).toEqual(
       expectedActionObject
     );
   });
@@ -86,10 +84,10 @@ describe('Doday details action creators', () => {
   it('Set dirty flag for selected doday when it has some updates', () => {
     const status = true;
     const expectedActionObject: SetDirtyStatusAction = {
-      type: ActionConstants.SET_DIRTY_STATUS,
+      type: DodayDetailsActionConstants.SET_DIRTY_STATUS,
       payload: status,
     };
-    expect(actionCreators.setDirtyStatusActionCreator(status)).toEqual(
+    expect(actions.setDirtyStatusActionCreator(status)).toEqual(
       expectedActionObject
     );
   });
@@ -97,10 +95,10 @@ describe('Doday details action creators', () => {
   it('Set dirty flag for selected doday when it has some updates', () => {
     const status = true;
     const expectedActionObject: SetDirtyStatusAction = {
-      type: ActionConstants.SET_DIRTY_STATUS,
+      type: DodayDetailsActionConstants.SET_DIRTY_STATUS,
       payload: status,
     };
-    expect(actionCreators.setDirtyStatusActionCreator(status)).toEqual(
+    expect(actions.setDirtyStatusActionCreator(status)).toEqual(
       expectedActionObject
     );
   });
@@ -113,12 +111,12 @@ describe('Doday details action creators', () => {
       progress: updates,
     };
     const expectedActionObject: RequestForSetUpdatesAction = {
-      type: ActionConstants.REQUEST_FOR_SET_UPDATES,
+      type: DodayDetailsActionConstants.REQUEST_FOR_SET_UPDATES,
       payload,
     };
-    expect(
-      actionCreators.requestForSetUpdatesActionCreator(payload.progress)
-    ).toEqual(expectedActionObject);
+    expect(actions.requestForSetUpdatesActionCreator(payload.progress)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('Set updates for selected doday to store', () => {
@@ -126,19 +124,19 @@ describe('Doday details action creators', () => {
       completed: false,
     };
     const expectedActionObject: SetUpdatesForSelectedDodayAction = {
-      type: ActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.SET_UPDATES_FOR_SELECTED_DODAY,
       payload: updates,
     };
-    expect(
-      actionCreators.setUpdatesForSelectedDodayActionCreator(updates)
-    ).toEqual(expectedActionObject);
+    expect(actions.setUpdatesForSelectedDodayActionCreator(updates)).toEqual(
+      expectedActionObject
+    );
   });
 
   it('Clear all updates and dirty status for selected doday', () => {
     const expectedActionObject: ClearDodayDetailsDirtyStuffAction = {
-      type: ActionConstants.CLEAR_DIRTY_STUFF,
+      type: DodayDetailsActionConstants.CLEAR_DIRTY_STUFF,
     };
-    expect(actionCreators.clearDodayDetailsDirtyStuffActionCreator()).toEqual(
+    expect(actions.clearDodayDetailsDirtyStuffActionCreator()).toEqual(
       expectedActionObject
     );
   });

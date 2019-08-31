@@ -1,5 +1,8 @@
-import * as actions from './actions';
-import { HeroSettingsState } from '@lib/models';
+import {
+  HeroSettingsActionConstants,
+  HeroSettingsActionTypes,
+} from './actions';
+import { HeroSettingsState } from '@doday/lib';
 
 export const initialHeroSettingsState: HeroSettingsState = {
   isDrawerCollapsed: false,
@@ -9,20 +12,21 @@ export const initialHeroSettingsState: HeroSettingsState = {
 
 export default (
   state = initialHeroSettingsState,
-  action?: actions.ActionTypes
+  action: HeroSettingsActionTypes
 ): HeroSettingsState => {
-  switch (action!.type) {
-    case actions.ActionConstants.TOGGLE_DRAWER:
+  switch (action.type) {
+    case HeroSettingsActionConstants.TOGGLE_DRAWER:
       const value =
-        action.payload != null ? action.payload : !state.isDrawerCollapsed;
+        action!.payload != null ? action!.payload : !state.isDrawerCollapsed;
       return {
         ...state,
         isDrawerCollapsed: value,
       };
-    case actions.ActionConstants.TOGGLE_THEME:
+    case HeroSettingsActionConstants.TOGGLE_THEME:
+      const theme = action.payload != null ? action.payload : 'dark';
       return {
+        theme,
         ...state,
-        theme: action!.payload,
       };
     default:
       return state;

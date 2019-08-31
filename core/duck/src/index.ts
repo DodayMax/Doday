@@ -1,15 +1,23 @@
 //reducers and sagas
-import * as dodayapp from '@ducks/doday-app';
-import * as dodayDetails from '@ducks/doday-details';
-import * as payments from '@ducks/payments';
-import * as builder from '@ducks/builder';
-import * as auth from '@ducks/auth';
-import * as herosettings from '@ducks/hero-settings';
-import * as api from '@ducks/api';
-import * as store from '@ducks/store';
-import * as toast from '@ducks/toast';
-import * as dialog from '@ducks/dialog';
-import { toolBeacons } from '@tools';
+import dodayapp from './doday-app';
+import dodayDetails from './doday-details';
+import builder from './builder';
+import auth from './auth';
+import herosettings from './hero-settings';
+import api from './api';
+import store from './store';
+import toast from './toast';
+import dialog from './dialog';
+
+export * from './api';
+export * from './auth';
+export * from './builder';
+export * from './dialog';
+export * from './doday-app';
+export * from './doday-details';
+export * from './hero-settings';
+export * from './store';
+export * from './toast';
 
 const ducks: any = {
   dodayapp,
@@ -17,15 +25,10 @@ const ducks: any = {
   builder,
   auth,
   herosettings,
-  payments,
   api,
   store,
   toast,
   dialog,
 };
-
-toolBeacons.map(tool => {
-  if (tool.duck) ducks[tool.config.sysname] = tool.duck;
-});
 
 export default ducks;

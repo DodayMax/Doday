@@ -1,34 +1,30 @@
-import {
+import actions, {
   OpenDialogAction,
-  ActionConstants,
-  actionCreators,
+  DialogActionConstants,
   CloseDialogAction,
 } from '../actions';
-import { DodayDialogProps } from '@root/components/shared';
 
 describe('Dialog action creators', () => {
   it('open dialog', () => {
-    const payload: DodayDialogProps = {
+    const payload: any = {
       open: true,
       title: 'Title',
       message: 'Test message',
       actions: [],
     };
     const expectedActionObject: OpenDialogAction = {
-      type: ActionConstants.OPEN,
+      type: DialogActionConstants.OPEN,
       payload,
     };
-    expect(actionCreators.openDialogActionCreator(payload)).toEqual(
+    expect(actions.openDialogActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });
 
   it('close dialog', () => {
     const expectedActionObject: CloseDialogAction = {
-      type: ActionConstants.CLOSE,
+      type: DialogActionConstants.CLOSE,
     };
-    expect(actionCreators.closeDialogActionCreator()).toEqual(
-      expectedActionObject
-    );
+    expect(actions.closeDialogActionCreator()).toEqual(expectedActionObject);
   });
 });

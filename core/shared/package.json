@@ -5,7 +5,19 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
+    "@doday/duck": "0.1.0",
+    "@doday/lib": "0.1.0",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15",
     "react": "^16.9.0"
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.9",
+    "@types/enzyme": "^3.10.3",
+    "@types/lodash": "^4.14.138",
+    "@types/lodash.throttle": "^4.1.6",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.11.2"
   },
   "scripts": {
     "build": "tsc"

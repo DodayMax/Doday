@@ -1,20 +1,13 @@
+import api from '@doday/api';
 import {
   CreateDodayAction,
-  ActionConstants,
+  APIActionConstants,
   CreateAndTakeDodayAction,
   TakeDodayAction,
   DeleteDodayAction,
   UntakeDodayAction,
   UpdateDodayAction,
 } from '../actions';
-import {
-  deserializedActivity,
-  rootState,
-  deserializedResource,
-  deserialzedActivityProgress,
-  partialProgress,
-  doday,
-} from '@root/lib/common-interfaces/fake-data';
 import {
   createDodayActionSaga,
   createAndTakeDodayActionSaga,
@@ -23,34 +16,33 @@ import {
   unTakeDodayActionSaga,
   updateDodayActionSaga,
 } from '../sagas';
-import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
 import { put, select, all, call } from 'redux-saga/effects';
-import { activeTools } from '@root/ducks/auth/selectors';
-import { api } from '@root/services';
-import { selectedDoday } from '@root/ducks/doday-details/selectors';
 import {
-  setDodayDetailsLoadingStateActionCreator,
-  updateSelectedDodayActionCreator,
-  clearDodayDetailsDirtyStuffActionCreator,
-} from '@root/ducks/doday-details/actions';
-import { clearBuilderActionCreator } from '@root/ducks/builder/actions';
-import { openToastActionCreator } from '@root/ducks/toast/actions';
-import {
+  deserializedActivity,
   SerializedDodayLike,
+  deserialzedActivityProgress,
+  deserializedResource,
   SerializedProgressLike,
+  doday,
   DodayType,
-} from '@root/lib/models/entities/common';
-import {
-  optimisticRemovePublicDodayActionCreator,
-  searchPublicDodaysForStoreActionCreator,
-  fetchPublicDodaysForStoreActionCreator,
-} from '@root/ducks/store/actions';
-import { publicDodays, searchTerm } from '@root/ducks/store/selectors';
+  partialProgress,
+  rootState,
+  Activity,
+  ActivityProgress,
+} from '@doday/lib';
+import storeActions from '../../store/actions';
+import dodayAppActions from '../../doday-app/actions';
+import builderActions from '../../builder/actions';
+import toastActions from '../../toast/actions';
+import dodayDetailsActions from '../../doday-details/actions';
+import { activeTools } from '../../auth/selectors';
+import { searchTerm, publicDodays } from '../../store/selectors';
+import { selectedDoday } from '../../doday-details/selectors';
 
 describe('Test api sagas', () => {
   it('createDodayActionSaga with valid entity', () => {
     const action: CreateDodayAction = {
-      type: ActionConstants.CREATE_DODAY,
+      type: APIActionConstants.CREATE_DODAY,
       payload: {
         doday: deserializedActivity,
       },
@@ -58,47 +50,52 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-          {
-            doday: action.payload.doday,
-            resource: action.payload.resource,
-          }
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+            {
+              doday: action.payload.doday,
+              resource: action.payload.resource,
+            }
+          )
       ),
     ];
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(
-        action.payload.doday
-      ) as SerializedDodayLike,
+      doday:
+        activeTool[0].config &&
+        (activeTool[0].config.entities[0].serialize(
+          action.payload.doday
+        ) as SerializedDodayLike),
       resource: action.payload.resource,
     };
     const gen = createDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(true))
+      put(dodayAppActions.setDodayAppLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.createDodayMutation, serialized)
     );
-    expect(gen.next().value).toEqual(put(clearBuilderActionCreator()));
+    expect(gen.next().value).toEqual(
+      put(builderActions.clearBuilderActionCreator())
+    );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Your new Activity created!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(false))
+      put(dodayAppActions.setDodayAppLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('createAndTakeDodayActionSaga with valid entity', () => {
     const action: CreateAndTakeDodayAction = {
-      type: ActionConstants.CREATE_AND_TAKE_DODAY,
+      type: APIActionConstants.CREATE_AND_TAKE_DODAY,
       payload: {
         doday: deserializedActivity,
         progress: deserialzedActivityProgress,
@@ -108,13 +105,14 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
-          {
-            doday: action.payload.doday,
-            progress: action.payload.progress,
-            resource: action.payload.resource,
-          }
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+            {
+              doday: action.payload.doday,
+              progress: action.payload.progress,
+              resource: action.payload.resource,
+            }
+          )
       ),
     ];
     const serialized = {
@@ -128,31 +126,33 @@ describe('Test api sagas', () => {
     };
     const gen = createAndTakeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(true))
+      put(dodayAppActions.setDodayAppLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.createAndTakeDodayMutation, serialized)
     );
-    expect(gen.next().value).toEqual(put(clearBuilderActionCreator()));
+    expect(gen.next().value).toEqual(
+      put(builderActions.clearBuilderActionCreator())
+    );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Your new Activity created!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(false))
+      put(dodayAppActions.setDodayAppLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('takeDodayActionSaga updated doday', () => {
     const action: TakeDodayAction = {
-      type: ActionConstants.TAKE_DODAY,
+      type: APIActionConstants.TAKE_DODAY,
       payload: {
         doday,
         progress: deserialzedActivityProgress,
@@ -161,50 +161,57 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
-          {
-            doday,
-            progress: action.payload.progress,
-          }
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
+            {
+              doday,
+              progress: action.payload.progress,
+            }
+          )
+      ),
+      put(
+        storeActions.optimisticRemovePublicDodayActionCreator(
+          action.payload.doday.did
         )
       ),
-      put(optimisticRemovePublicDodayActionCreator(action.payload.doday.did)),
     ];
     const serialized = activeTool[0].config.entities[0].serializeProgress(
       action.payload.progress
     );
     const gen = takeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(
-      put(updateSelectedDodayActionCreator(undefined))
+      put(dodayDetailsActions.updateSelectedDodayActionCreator(undefined))
     );
     expect(gen.next().value).toEqual(all(sideEffects));
-    expect(gen.next().value).toEqual(
-      call(api.dodays.mutations.takeDodayMutation, {
-        did: action.payload.doday.did,
-        progress: serialized,
-      })
-    );
+    if (serialized) {
+      expect(gen.next().value).toEqual(
+        call(api.dodays.mutations.takeDodayMutation, {
+          did: action.payload.doday.did,
+          progress: serialized,
+        })
+      );
+    }
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Taken!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('deleteDodayActionSaga', () => {
     const action: DeleteDodayAction = {
-      type: ActionConstants.DELETE_DODAY,
+      type: APIActionConstants.DELETE_DODAY,
       payload: {
         did: deserializedActivity.did,
         type: DodayType.Activity,
@@ -213,14 +220,15 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
-          action.payload.did
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
       ),
     ];
     const gen = deleteDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
@@ -229,21 +237,21 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Your doday is deleted!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('unTakeDodayActionSaga updated doday is selected in details', () => {
     const action: UntakeDodayAction = {
-      type: ActionConstants.UNTAKE_DODAY,
+      type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: deserializedActivity.did,
         type: DodayType.Activity,
@@ -255,21 +263,22 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
-          action.payload.did
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
       ),
     ];
     const gen = unTakeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(term).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
-      put(updateSelectedDodayActionCreator(undefined))
+      put(dodayDetailsActions.updateSelectedDodayActionCreator(undefined))
     );
     expect(gen.next().value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
@@ -277,7 +286,7 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        searchPublicDodaysForStoreActionCreator({
+        storeActions.searchPublicDodaysForStoreActionCreator({
           term,
           limit: dodays.length + 1,
         })
@@ -285,21 +294,21 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Untaken!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('unTakeDodayActionSaga updated doday isnt selected in details', () => {
     const action: UntakeDodayAction = {
-      type: ActionConstants.UNTAKE_DODAY,
+      type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: 'did',
         type: DodayType.Activity,
@@ -311,21 +320,22 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
-          action.payload.did
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
       ),
     ];
     const gen = unTakeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(term).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
-      put(updateSelectedDodayActionCreator(undefined))
+      put(dodayDetailsActions.updateSelectedDodayActionCreator(undefined))
     );
     expect(gen.next().value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
@@ -333,7 +343,7 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        searchPublicDodaysForStoreActionCreator({
+        storeActions.searchPublicDodaysForStoreActionCreator({
           term,
           limit: dodays.length + 1,
         })
@@ -341,21 +351,21 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Untaken!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('unTakeDodayActionSaga without search term and isnt selected', () => {
     const action: UntakeDodayAction = {
-      type: ActionConstants.UNTAKE_DODAY,
+      type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: 'did',
         type: DodayType.Activity,
@@ -366,21 +376,22 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
-          action.payload.did
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+            action.payload.did
+          )
       ),
     ];
     const gen = unTakeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(undefined).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
-      put(updateSelectedDodayActionCreator(undefined))
+      put(dodayDetailsActions.updateSelectedDodayActionCreator(undefined))
     );
     expect(gen.next().value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
@@ -388,28 +399,28 @@ describe('Test api sagas', () => {
     );
     expect(gen.next().value).toEqual(
       put(
-        fetchPublicDodaysForStoreActionCreator({
+        storeActions.fetchPublicDodaysForStoreActionCreator({
           limit: dodays.length + 1,
         })
       )
     );
     expect(gen.next().value).toEqual(
       put(
-        openToastActionCreator({
+        toastActions.openToastActionCreator({
           open: true,
           messages: ['Untaken!'],
         })
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('updateDodayActionSaga updated doday is selected in details', () => {
     const action: UpdateDodayAction = {
-      type: ActionConstants.UPDATE_DODAY,
+      type: APIActionConstants.UPDATE_DODAY,
       payload: {
         did: deserializedActivity.did,
         type: DodayType.Activity,
@@ -421,35 +432,34 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(
-        action.payload.updates.doday
-      ),
-      progress: activeTool[0].config.entities[0].serializeProgress(
-        action.payload.updates.progress
-      ),
+      doday: activeTool[0].config.entities[0].serialize(action.payload.updates
+        .doday as Partial<Activity>),
+      progress: activeTool[0].config.entities[0].serializeProgress(action
+        .payload.updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
-          {
-            did: action.payload.did,
-            updates: {
-              doday: action.payload.updates.doday,
-              progress: action.payload.updates.progress,
-            },
-          }
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+            {
+              did: action.payload.did,
+              updates: {
+                doday: action.payload.updates.doday,
+                progress: action.payload.updates.progress,
+              },
+            }
+          )
       ),
       put(
-        updateSelectedDodayActionCreator({
+        dodayDetailsActions.updateSelectedDodayActionCreator({
           progress: action.payload.updates.progress,
         })
       ),
     ];
     const gen = updateDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
@@ -461,17 +471,17 @@ describe('Test api sagas', () => {
       })
     );
     expect(gen.next().value).toEqual(
-      put(clearDodayDetailsDirtyStuffActionCreator())
+      put(dodayDetailsActions.clearDodayDetailsDirtyStuffActionCreator())
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('updateDodayActionSaga updated doday isnt selected in details', () => {
     const action: UpdateDodayAction = {
-      type: ActionConstants.UPDATE_DODAY,
+      type: APIActionConstants.UPDATE_DODAY,
       payload: {
         did: 'some did',
         type: DodayType.Activity,
@@ -483,30 +493,29 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize(
-        action.payload.updates.doday
-      ),
-      progress: activeTool[0].config.entities[0].serializeProgress(
-        action.payload.updates.progress
-      ),
+      doday: activeTool[0].config.entities[0].serialize(action.payload.updates
+        .doday as Partial<Activity>),
+      progress: activeTool[0].config.entities[0].serializeProgress(action
+        .payload.updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };
     const sideEffects = [
       put(
-        activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
-          {
-            did: action.payload.did,
-            updates: {
-              doday: action.payload.updates.doday,
-              progress: action.payload.updates.progress,
-            },
-          }
-        )
+        activeTool[0].duck &&
+          activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+            {
+              did: action.payload.did,
+              updates: {
+                doday: action.payload.updates.doday,
+                progress: action.payload.updates.progress,
+              },
+            }
+          )
       ),
     ];
     const gen = updateDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(true))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(select(activeTools));
     expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
@@ -518,10 +527,10 @@ describe('Test api sagas', () => {
       })
     );
     expect(gen.next().value).toEqual(
-      put(clearDodayDetailsDirtyStuffActionCreator())
+      put(dodayDetailsActions.clearDodayDetailsDirtyStuffActionCreator())
     );
     expect(gen.next().value).toEqual(
-      put(setDodayDetailsLoadingStateActionCreator(false))
+      put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });

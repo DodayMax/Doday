@@ -10,7 +10,7 @@ export const Snackbar = ({
   type,
   SnackbarContentProps,
   ...props
-}) => {
+}: any) => {
   return (
     <MuiSnackbar
       open={open}

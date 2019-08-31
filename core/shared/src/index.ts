@@ -5,7 +5,6 @@ export * from './_atoms/loader';
 export * from './_atoms/coins';
 export * from './_atoms/checkbox';
 import * as Icons from './_atoms/icons';
-export * from './_atoms/stripe-button';
 export * from './_atoms/custom-datepicker';
 export * from './_atoms/layout-block/layout-block';
 export * from './_atoms/svg-icon';

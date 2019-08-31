@@ -1,5 +1,5 @@
-import { isDirty } from '@root/lib/utils';
-import { activity } from '@root/lib/common-interfaces/fake-data';
+import { isDirty } from '../utils';
+import { activity } from '../../common-interfaces/fake-data';
 
 describe('test utils functions', () => {
   it('isDirty with empty updates object', () => {
@@ -9,14 +9,18 @@ describe('test utils functions', () => {
     /** with isDateLocked equal */
     expect(isDirty(activity, { dateIsLocked: false })).toBe(false);
     /** with isDateLocked undefined equal */
-    activity.progress.dateIsLocked = undefined;
+    if (activity.progress) {
+      activity.progress.dateIsLocked = undefined;
+    }
     expect(isDirty(activity, { dateIsLocked: false })).toBe(false);
     /** with pinned update */
     expect(isDirty(activity, { pinned: true })).toBe(true);
     /** with pinned equal update */
     expect(isDirty(activity, { pinned: false })).toBe(false);
     /** with pinned undefined update */
-    activity.progress.pinned = undefined;
+    if (activity.progress) {
+      activity.progress.pinned = undefined;
+    }
     expect(isDirty(activity, { pinned: false })).toBe(false);
     /** with date update */
     expect(isDirty(activity, { date: new Date() })).toBe(true);

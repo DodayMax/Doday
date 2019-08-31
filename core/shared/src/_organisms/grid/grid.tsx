@@ -1,9 +1,6 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router-dom';
-import { actions } from '@ducks/doday-app';
-import { Loader, LayoutBlock, Icons } from '@shared';
-import { Space } from '@root/lib/common-interfaces';
+import { Space } from '@doday/lib';
 import { FilterItem } from './filter/filter-item';
 import { Filter } from './filter/filter';
 import { WithTranslation } from 'react-i18next';
@@ -17,6 +14,8 @@ import {
   withTheme,
   WithTheme,
 } from '@material-ui/core';
+import { LayoutBlock } from '../../_atoms/layout-block';
+import { Icons } from '../..';
 
 interface GridProps {
   items: any[];
@@ -48,16 +47,15 @@ const css = (theme: Theme) =>
     },
   });
 
+type Props = GridProps &
+  Partial<RouteComponentProps> &
+  Partial<WithTranslation> &
+  WithStyles &
+  WithTheme;
+
 @(withRouter as any)
-export class GridComponentClass extends React.Component<
-  GridProps &
-    Partial<RouteComponentProps> &
-    Partial<WithTranslation> &
-    WithStyles &
-    WithTheme,
-  GridState
-> {
-  constructor(props) {
+export class GridComponentClass extends React.Component<Props, GridState> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -95,7 +93,7 @@ export class GridComponentClass extends React.Component<
         {search && (
           <Input
             id="dodayapp-search"
-            placeholder={t('dodayapp.search.placeholder')}
+            placeholder={t!('dodayapp.search.placeholder')}
             className={classes.search}
             inputProps={{
               'aria-label': 'Search',
@@ -132,7 +130,4 @@ export class GridComponentClass extends React.Component<
   }
 }
 
-export const Grid = connect(
-  undefined,
-  { ...actions }
-)(withStyles(css)(withTheme()(GridComponentClass)));
+export const Grid = withStyles(css)(withTheme()(GridComponentClass));

@@ -1,7 +1,8 @@
-import { Neo4jDateTime, Neo4jDate } from '@lib/common-interfaces';
 import {
   Neo4jResponseDate,
   Neo4jResponseDateTime,
+  Neo4jDateTime,
+  Neo4jDate,
 } from '../common-interfaces/neo4j';
 
 export const dateFromNeo4jDateTime = (datetime: Neo4jDateTime) => {
@@ -55,7 +56,7 @@ export const neo4jResponseDateTimeToJSDate = (date: Neo4jResponseDateTime) =>
     )}-${convertToTwoDigitNumber(date.day.low)}T${convertToTwoDigitNumber(
       date.hour.low
     )}:${convertToTwoDigitNumber(date.minute.low)}:${convertToTwoDigitNumber(
-      date.second.low
+      date.second && date.second.low
     )}`
   );
 
@@ -87,7 +88,7 @@ export const durationToLabel = (
 export const durationToMinutes = (duration: string) =>
   Number(duration.slice(2, -1));
 
-export const convertToTwoDigitNumber = number => {
+export const convertToTwoDigitNumber = (number?: number) => {
   if (!number) return '00';
   return String(number).length === 1 ? `0${number}` : number;
 };

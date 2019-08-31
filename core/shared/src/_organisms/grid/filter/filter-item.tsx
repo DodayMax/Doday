@@ -35,7 +35,7 @@ export class FilterItemComponentClass extends React.Component<
 > {
   render() {
     const { item, location, match, classes, t } = this.props;
-    const active = item.active(location, match);
+    const active = item.active(location!, match!);
     return (
       <Button
         variant="outlined"

@@ -3,11 +3,11 @@ import {
   SerializedDodayBase,
   ProgressBase,
   SerializedProgressBase,
-  Entity,
   DodayLike,
   DodayType,
-} from '@root/lib/models/entities/common';
-import { Resource } from '@root/lib/models/entities/resource';
+  Entity,
+} from './common';
+import { Resource } from './resource';
 
 /**
  * Main entity type used for operating in App
@@ -71,12 +71,12 @@ export type ActivityType = 'do' | 'read' | 'watch';
 
 export const serializeActivity = (
   activity?: Partial<Activity>
-): Partial<SerializedActivity> => {
+): Partial<SerializedActivity> | undefined => {
   if (!activity) return undefined;
   const { owner, progress, ...omitted } = activity;
   const serialized: Partial<SerializedActivity> = {
     ...omitted,
-    created: activity.created.getTime(),
+    created: activity.created && activity.created.getTime(),
   };
 
   return serialized;
@@ -84,11 +84,11 @@ export const serializeActivity = (
 
 export const deserializeActivity = (
   activity?: Partial<SerializedActivity>
-): Partial<Activity> => {
+): Partial<Activity> | undefined => {
   if (!activity) return undefined;
   const deserialized: Partial<Activity> = {
     ...activity,
-    created: new Date(activity.created),
+    created: (activity.created && new Date(activity.created)) || undefined,
   };
 
   return deserialized;
@@ -96,7 +96,7 @@ export const deserializeActivity = (
 
 export const serializeActivityProgress = (
   progress?: Partial<ActivityProgress>
-): Partial<SerializedActivityProgress> => {
+): Partial<SerializedActivityProgress> | undefined => {
   if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = progress.date.getTime();
@@ -112,7 +112,7 @@ export const serializeActivityProgress = (
 
 export const deserializeActivityProgress = (
   progress?: Partial<SerializedActivityProgress>
-): Partial<ActivityProgress> => {
+): Partial<ActivityProgress> | undefined => {
   if (!progress) return undefined;
   const convertedDates: any = {};
   if (progress.date) convertedDates.date = new Date(progress.date);

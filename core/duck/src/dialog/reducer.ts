@@ -1,5 +1,5 @@
-import * as actions from './actions';
-import { DialogState } from '@lib/models';
+import { DialogActionConstants, DialogActionTypes } from './actions';
+import { DialogState } from '@doday/lib';
 
 export const initialDialogState: DialogState = {
   open: false,
@@ -9,15 +9,15 @@ export const initialDialogState: DialogState = {
 
 export default (
   state = initialDialogState,
-  action?: actions.ActionTypes
+  action: DialogActionTypes
 ): DialogState => {
-  switch (action && action.type) {
-    case actions.ActionConstants.OPEN:
+  switch (action.type) {
+    case DialogActionConstants.OPEN:
       return {
         ...state,
         ...action.payload,
       };
-    case actions.ActionConstants.CLOSE:
+    case DialogActionConstants.CLOSE:
       return initialDialogState;
     default:
       return state;

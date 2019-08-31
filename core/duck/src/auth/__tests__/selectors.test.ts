@@ -1,5 +1,5 @@
 import { myDID, activeTools } from '../selectors';
-import { rootState, hero } from '@root/lib/common-interfaces/fake-data';
+import { rootState, hero } from '@doday/lib';
 
 describe("Test auth's selectors", () => {
   it('myDID selector returns my did', () => {

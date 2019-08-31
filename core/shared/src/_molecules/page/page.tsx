@@ -1,8 +1,8 @@
 import * as React from 'react';
 import * as classnames from 'classnames';
-import { LayoutBlock } from '@shared';
 import { withRouter } from 'react-router';
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
+import { LayoutBlock } from '../../_atoms/layout-block';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -52,7 +52,7 @@ export class PageComponent extends React.Component<PageProps & WithStyles> {
     const cx = classnames({
       [classes.pageContainer]: true,
       [classes.fullWidth]: permanent,
-      [className]: !!className,
+      [className as string]: !!className,
     });
     const scrollContainer = classnames({
       [classes.scroll]: true,

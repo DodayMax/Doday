@@ -1,6 +1,6 @@
 import reducer from '../reducer';
-import { actionCreators } from '../actions';
-import { activity } from '@root/lib/common-interfaces/fake-data';
+import actions from '../actions';
+import { activity } from '@doday/lib';
 
 describe('DodayDetails reducers', () => {
   it('set DodayDetails loading state reducer', () => {
@@ -8,14 +8,14 @@ describe('DodayDetails reducers', () => {
     expect(
       reducer(
         undefined,
-        actionCreators.setDodayDetailsLoadingStateActionCreator(value)
+        actions.setDodayDetailsLoadingStateActionCreator(value)
       ).loading
     ).toBe(value);
   });
 
   it('set selected doday to store', () => {
     expect(
-      reducer(undefined, actionCreators.setSelectedDodayActionCreator(activity))
+      reducer(undefined, actions.setSelectedDodayActionCreator(activity))
         .selectedDoday
     ).toBe(activity);
   });
@@ -33,12 +33,14 @@ describe('DodayDetails reducers', () => {
         loading: false,
         selectedDoday: activity,
       },
-      actionCreators.updateSelectedDodayActionCreator(updates)
+      actions.updateSelectedDodayActionCreator(updates)
     );
-    expect(newState.selectedDoday.progress.completed).toEqual(
+    expect(newState.selectedDoday!.progress!.completed).toEqual(
       updates.progress.completed
     );
-    expect(newState.selectedDoday.progress.date).toEqual(updates.progress.date);
+    expect(newState.selectedDoday!.progress!.date).toEqual(
+      updates.progress.date
+    );
   });
 
   it('clear progress when undefined is passed for updates in store', () => {
@@ -47,9 +49,9 @@ describe('DodayDetails reducers', () => {
         loading: false,
         selectedDoday: activity,
       },
-      actionCreators.updateSelectedDodayActionCreator()
+      actions.updateSelectedDodayActionCreator()
     );
-    expect(newState.selectedDoday.progress).toEqual(undefined);
+    expect(newState.selectedDoday!.progress).toEqual(undefined);
   });
 
   it('clear selected doday from store', () => {
@@ -58,7 +60,7 @@ describe('DodayDetails reducers', () => {
         loading: false,
         selectedDoday: activity,
       },
-      actionCreators.clearSelectedDodayActionCreator()
+      actions.clearSelectedDodayActionCreator()
     );
     expect(newState.selectedDoday).toEqual(undefined);
   });

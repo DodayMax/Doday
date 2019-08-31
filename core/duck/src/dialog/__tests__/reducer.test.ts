@@ -1,6 +1,6 @@
 import reducer, { initialDialogState } from '../reducer';
-import { actionCreators } from '../actions';
-import { DialogState } from '@root/lib/models';
+import actions from '../actions';
+import { DialogState } from '@doday/lib';
 
 describe("test dialog's reducers", () => {
   it('open dialog reducer', () => {
@@ -11,10 +11,7 @@ describe("test dialog's reducers", () => {
       actions: [],
     };
     expect(
-      reducer(
-        initialDialogState,
-        actionCreators.openDialogActionCreator(payload)
-      )
+      reducer(initialDialogState, actions.openDialogActionCreator(payload))
     ).toEqual({
       ...initialDialogState,
       ...payload,
@@ -33,7 +30,7 @@ describe("test dialog's reducers", () => {
         ...initialDialogState,
         ...testState,
       },
-      actionCreators.closeDialogActionCreator()
+      actions.closeDialogActionCreator()
     );
     expect(newState).toEqual(initialDialogState);
   });

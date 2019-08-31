@@ -1,6 +1,10 @@
 import * as React from 'react';
 
-export const Loader = props => (
+interface LoaderProps {
+  color?: string;
+}
+
+export const Loader = (props: LoaderProps) => (
   <svg
     width="40"
     height="30"

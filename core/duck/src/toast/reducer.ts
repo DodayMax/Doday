@@ -1,5 +1,5 @@
-import * as actions from './actions';
-import { ToastState } from '@lib/models';
+import { ToastActionConstants, ToastActionTypes } from './actions';
+import { ToastState } from '@doday/lib';
 
 export const initialToastState: ToastState = {
   open: false,
@@ -10,15 +10,15 @@ export const initialToastState: ToastState = {
 
 export default (
   state = initialToastState,
-  action?: actions.ActionTypes
+  action: ToastActionTypes
 ): ToastState => {
-  switch (action!.type) {
-    case actions.ActionConstants.OPEN:
+  switch (action.type) {
+    case ToastActionConstants.OPEN:
       return {
         ...state,
         ...action.payload,
       };
-    case actions.ActionConstants.CLOSE:
+    case ToastActionConstants.CLOSE:
       return {
         ...state,
         messages: [],

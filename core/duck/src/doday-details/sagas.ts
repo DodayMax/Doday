@@ -1,20 +1,14 @@
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import * as _ from 'lodash';
-import {
-  ActionConstants,
+import actions, {
+  DodayDetailsActionConstants,
   FetchSelectedDodayAction,
-  setSelectedDodayActionCreator,
   FetchSelectedProgressAction,
   RequestForSetUpdatesAction,
-  setUpdatesForSelectedDodayActionCreator,
-  setDirtyStatusActionCreator,
-  clearSelectedDodayActionCreator,
-  clearDodayDetailsDirtyStuffActionCreator,
 } from './actions';
-import { api } from '@root/services';
-import { isDirty } from '@root/lib/utils';
+import api from '@doday/api';
 import { selectedDoday, updatesSelector } from './selectors';
-import { ProgressLike, DodayLike } from '@root/lib/models/entities/common';
+import { isDirty, ProgressLike, DodayLike } from '@doday/lib';
 
 /**
  * Fetch selected published Doday node saga
@@ -25,7 +19,7 @@ export function* fetchSelectedDodayActionSaga(
   action: FetchSelectedDodayAction
 ) {
   const doday = yield call(api.dodays.queries.fetchDodayByDID, action.payload);
-  yield put(setSelectedDodayActionCreator(doday));
+  yield put(actions.setSelectedDodayActionCreator(doday));
 }
 
 /**
@@ -36,12 +30,12 @@ export function* fetchSelectedDodayActionSaga(
 export function* fetchSelectedProgressActionSaga(
   action: FetchSelectedProgressAction
 ) {
-  yield put(clearDodayDetailsDirtyStuffActionCreator());
+  yield put(actions.clearDodayDetailsDirtyStuffActionCreator());
   const doday = yield call(
     api.dodays.queries.fetchDodayWithProgressByDID,
     action.payload
   );
-  yield put(setSelectedDodayActionCreator(doday));
+  yield put(actions.setSelectedDodayActionCreator(doday));
 }
 
 /**
@@ -53,24 +47,26 @@ export function* fetchSelectedProgressActionSaga(
 export function* setUpdatesAndDirtyStatusSaga(
   action: RequestForSetUpdatesAction
 ) {
-  yield put(setUpdatesForSelectedDodayActionCreator(action.payload.progress));
+  yield put(
+    actions.setUpdatesForSelectedDodayActionCreator(action.payload!.progress!)
+  );
   const updates: Partial<ProgressLike> = yield select(updatesSelector);
   const selected: DodayLike = yield select(selectedDoday);
   const dirty = yield call(isDirty, selected, updates);
-  yield put(setDirtyStatusActionCreator(dirty));
+  yield put(actions.setDirtyStatusActionCreator(dirty));
 }
 
 export default [
   takeLatest(
-    ActionConstants.FETCH_SELECTED_DODAY,
+    DodayDetailsActionConstants.FETCH_SELECTED_DODAY,
     fetchSelectedDodayActionSaga
   ),
   takeLatest(
-    ActionConstants.FETCH_SELECTED_PROGRESS,
+    DodayDetailsActionConstants.FETCH_SELECTED_PROGRESS,
     fetchSelectedProgressActionSaga
   ),
   takeLatest(
-    ActionConstants.REQUEST_FOR_SET_UPDATES,
+    DodayDetailsActionConstants.REQUEST_FOR_SET_UPDATES,
     setUpdatesAndDirtyStatusSaga
   ),
 ];

@@ -1,8 +1,5 @@
 import reducer, { initialBuilderStatusState } from '../reducer';
-import {
-  setBuilderLoadingStateActionCreator,
-  clearBuilderActionCreator,
-} from '../actions';
+import actions from '../actions';
 
 describe('builder status state reducer', () => {
   it('set builder loading state reducer', () => {
@@ -10,7 +7,7 @@ describe('builder status state reducer', () => {
     expect(
       reducer(
         initialBuilderStatusState,
-        setBuilderLoadingStateActionCreator(state)
+        actions.setBuilderLoadingStateActionCreator(state)
       ).loading
     ).toBe(true);
   });
@@ -20,6 +17,8 @@ describe('builder status state reducer', () => {
       ...initialBuilderStatusState,
       loading: true,
     };
-    expect(reducer(state, clearBuilderActionCreator()).loading).toBe(undefined);
+    expect(reducer(state, actions.clearBuilderActionCreator()).loading).toBe(
+      undefined
+    );
   });
 });

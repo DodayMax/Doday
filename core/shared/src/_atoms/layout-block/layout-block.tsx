@@ -13,8 +13,10 @@ import {
   paddingLeftClassNames,
   paddingRightClassNames,
   SpacingProps,
-} from '@lib/common-interfaces';
-import { utils, paddings, margins } from '@styles/utils';
+  utils,
+  paddings,
+  margins,
+} from '@doday/lib';
 import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core';
 
 const css = (theme: Theme) =>
@@ -71,7 +73,7 @@ export const LayoutBlock = withStyles(css)(
         [props.classes.insideElementsMargin]: !!props.insideElementsMargin,
         [props.classes.fullHeight]: !!props.fullHeight,
         [props.classes.wrap]: !!props.wrap,
-        [props.className]: !!props.className,
+        [props.className as string]: !!props.className,
       }
     );
     return (

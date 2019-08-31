@@ -1,7 +1,24 @@
-import { Icons } from '@doday/shared';
 import { RouteComponentProps } from 'react-router';
 import { DodayType, Entity } from './models/entities/common';
 import { CellProps } from './common-interfaces';
+
+export type IconNames =
+  | 'ActivityDoType'
+  | 'ActivityReadType'
+  | 'ActivityWatchType'
+  | 'ArrowLeft'
+  | 'Checkbox'
+  | 'InlineLoader'
+  | 'PieChart'
+  | 'Goal'
+  | 'Google'
+  | 'Activities'
+  | 'Silver'
+  | 'Dodayman'
+  | 'Duration'
+  | 'Flag'
+  | 'Score'
+  | 'Pin';
 
 export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
 
@@ -60,7 +77,7 @@ export type ToolConfig = {
   entities: Entity[];
   price: number;
   route: string;
-  icon: Icons.IconNames;
+  icon: IconNames;
 };
 
 export type WithTools = {

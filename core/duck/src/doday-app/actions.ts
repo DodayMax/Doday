@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
-import { DodayAppQueryParams } from '@root/lib/common-interfaces';
+import { DodayAppQueryParams } from '@doday/lib';
 
-export enum ActionConstants {
+export enum DodayAppActionConstants {
   SET_LOADING_STATE = '[doday-app] SET_LOADING_STATE',
   CHANGE_ROUTE = '[doday-app] CHANGE_ROUTE',
   SET_QUERY_PARAMS = '[doday-app] SET_QUERY_PARAMS',
@@ -14,11 +14,11 @@ export enum ActionConstants {
  * @export
  * @returns {SetDodayAppLoadingStateAction}
  */
-export function setDodayAppLoadingStateActionCreator(
+function setDodayAppLoadingStateActionCreator(
   value: boolean
 ): SetDodayAppLoadingStateAction {
   return {
-    type: ActionConstants.SET_LOADING_STATE,
+    type: DodayAppActionConstants.SET_LOADING_STATE,
     payload: value,
   };
 }
@@ -29,11 +29,11 @@ export function setDodayAppLoadingStateActionCreator(
  * @export
  * @returns {ChangeDodayAppRouteAction}
  */
-export function changeDodayAppRouteActionCreator(
+function changeDodayAppRouteActionCreator(
   route: string
 ): ChangeDodayAppRouteAction {
   return {
-    type: ActionConstants.CHANGE_ROUTE,
+    type: DodayAppActionConstants.CHANGE_ROUTE,
     payload: route,
   };
 }
@@ -44,11 +44,11 @@ export function changeDodayAppRouteActionCreator(
  * @export
  * @returns {SetDodayAppQueryParamsAction}
  */
-export function setDodayAppQueryParamsActionCreator(
+function setDodayAppQueryParamsActionCreator(
   params: DodayAppQueryParams
 ): SetDodayAppQueryParamsAction {
   return {
-    type: ActionConstants.SET_QUERY_PARAMS,
+    type: DodayAppActionConstants.SET_QUERY_PARAMS,
     payload: params,
   };
 }
@@ -59,16 +59,16 @@ export function setDodayAppQueryParamsActionCreator(
  * @export
  * @returns {SetDodaysBadgeForTodayAction}
  */
-export function setDodaysBadgeForTodayActionCreator(
+function setDodaysBadgeForTodayActionCreator(
   value: number
 ): SetDodaysBadgeForTodayAction {
   return {
-    type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
+    type: DodayAppActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
     payload: value,
   };
 }
 
-export const actionCreators = {
+export default {
   setDodayAppLoadingStateActionCreator,
   changeDodayAppRouteActionCreator,
   setDodayAppQueryParamsActionCreator,
@@ -76,22 +76,22 @@ export const actionCreators = {
 };
 
 export interface SetDodayAppLoadingStateAction extends AnyAction {
-  type: ActionConstants.SET_LOADING_STATE;
+  type: DodayAppActionConstants.SET_LOADING_STATE;
   payload: boolean;
 }
 
 export interface ChangeDodayAppRouteAction extends AnyAction {
-  type: ActionConstants.CHANGE_ROUTE;
+  type: DodayAppActionConstants.CHANGE_ROUTE;
   payload: string;
 }
 
 export interface SetDodayAppQueryParamsAction extends AnyAction {
-  type: ActionConstants.SET_QUERY_PARAMS;
+  type: DodayAppActionConstants.SET_QUERY_PARAMS;
   payload: DodayAppQueryParams;
 }
 
 export interface SetDodaysBadgeForTodayAction extends AnyAction {
-  type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
+  type: DodayAppActionConstants.SET_DODAYS_BADGE_FOR_TODAY;
   payload: number;
 }
 
@@ -99,7 +99,7 @@ export interface SetDodaysBadgeForTodayAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type DodayAppActionTypes =
   | SetDodayAppLoadingStateAction
   | ChangeDodayAppRouteAction
   | SetDodayAppQueryParamsAction

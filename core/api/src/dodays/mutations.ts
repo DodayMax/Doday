@@ -1,8 +1,8 @@
-import { SerializedResource } from '@root/lib/models/entities/resource';
 import {
   SerializedDodayLike,
+  SerializedResource,
   SerializedProgressLike,
-} from '@root/lib/models/entities/common';
+} from '@doday/lib';
 
 // Dodays mutations
 

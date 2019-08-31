@@ -1,9 +1,10 @@
-import { neo4jResponseDateTimeToJSDate, firstItem } from '@root/lib/utils';
-import { encodeQueryData } from '@root/lib/utils/api-utils';
 import {
+  encodeQueryData,
+  firstItem,
   DodayLike,
   APIResponseProgressBase,
-} from '@root/lib/models/entities/common';
+  neo4jResponseDateTimeToJSDate,
+} from '@doday/lib';
 
 // Dodays
 
@@ -113,10 +114,12 @@ export const fetchDodayWithProgressByDID = (did: string) => {
   });
 };
 
-export const parseAPIResponseDodays = async (res): Promise<DodayLike[]> => {
+export const parseAPIResponseDodays = async (
+  res: any
+): Promise<DodayLike[]> => {
   const json = await res.json();
   console.log(json);
-  const dodays: DodayLike[] = json.map(item => {
+  const dodays: DodayLike[] = json.map((item: any) => {
     const nodes = item._fields[0];
     const dodayNode = nodes.doday && nodes.doday.properties;
     const progressNode = nodes.progress && nodes.progress.properties;

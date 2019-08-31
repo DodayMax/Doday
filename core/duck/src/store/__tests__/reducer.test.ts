@@ -1,7 +1,6 @@
 import reducer, { initialStoreState } from '../reducer';
-import { actionCreators } from '../actions';
-import { activity, doday } from '@root/lib/common-interfaces/fake-data';
-import { DodayLike } from '@root/lib/models/entities/common';
+import actions from '../actions';
+import { DodayLike, activity, doday } from '@doday/lib';
 
 describe("test store's reducers", () => {
   it('set dodays reducer', () => {
@@ -9,7 +8,7 @@ describe("test store's reducers", () => {
     expect(
       reducer(
         initialStoreState,
-        actionCreators.setPublicDodaysForStoreActionCreator(dodays)
+        actions.setPublicDodaysForStoreActionCreator(dodays)
       )
     ).toEqual({
       ...initialStoreState,
@@ -22,7 +21,7 @@ describe("test store's reducers", () => {
     expect(
       reducer(
         initialStoreState,
-        actionCreators.setStoreLoadingStateActionCreator(value)
+        actions.setStoreLoadingStateActionCreator(value)
       )
     ).toEqual({
       ...initialStoreState,
@@ -33,10 +32,7 @@ describe("test store's reducers", () => {
   it('set search term reducer', () => {
     const term = 'Search term';
     expect(
-      reducer(
-        initialStoreState,
-        actionCreators.setSearchTermActionCreator(term)
-      )
+      reducer(initialStoreState, actions.setSearchTermActionCreator(term))
     ).toEqual({
       ...initialStoreState,
       searchTerm: term,
@@ -46,10 +42,7 @@ describe("test store's reducers", () => {
   it('set search flag reducer', () => {
     const flag = true;
     expect(
-      reducer(
-        initialStoreState,
-        actionCreators.setSearchFlagActionCreator(flag)
-      )
+      reducer(initialStoreState, actions.setSearchFlagActionCreator(flag))
     ).toEqual({
       ...initialStoreState,
       searching: flag,
@@ -62,7 +55,7 @@ describe("test store's reducers", () => {
     expect(
       reducer(
         initialStoreState,
-        actionCreators.setPublicDodaysForStoreActionCreator(
+        actions.setPublicDodaysForStoreActionCreator(
           dodays,
           undefined,
           totalCount
@@ -80,7 +73,7 @@ describe("test store's reducers", () => {
     const totalCount = 20;
     const newState = reducer(
       { ...initialStoreState, dodays, totalCount },
-      actionCreators.optimisticRemovePublicDodayActionCreator(doday.did)
+      actions.optimisticRemovePublicDodayActionCreator(doday.did)
     );
     expect(newState.dodays.length).toBe(0);
     expect(newState.totalCount).toBe(19);

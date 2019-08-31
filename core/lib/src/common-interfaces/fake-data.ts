@@ -1,14 +1,13 @@
 import { Hero } from '../models/entities/hero';
-import { RootState } from '../models';
-import { activeToolsForHero } from '../utils';
-import { initialStatusState } from '@root/ducks/doday-app/reducer';
-import { initialDodayDetailsState } from '@root/ducks/doday-details/reducer';
-import { initialBuilderStatusState } from '@root/ducks/builder/reducer';
-import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
-import { initialStoreState } from '@root/ducks/store/reducer';
+// import { activeToolsForHero } from '../utils';
+// import { initialStatusState } from '@root/ducks/doday-app/reducer';
+// import { initialDodayDetailsState } from '@root/ducks/doday-details/reducer';
+// import { initialBuilderStatusState } from '@root/ducks/builder/reducer';
+// import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
+// import { initialStoreState } from '@root/ducks/store/reducer';
 import { Token } from 'react-stripe-checkout';
 import { Resource, SerializedResource } from '../models/entities/resource';
-import { initialDialogState } from '@root/ducks/dialog/reducer';
+// import { initialDialogState } from '@root/ducks/dialog/reducer';
 import {
   SerializedActivity,
   Activity,
@@ -16,6 +15,7 @@ import {
   ActivityProgress,
 } from '../models/entities/activity';
 import { DodayType, DodayLike, ProgressLike } from '../models/entities/common';
+import { RootState } from '../models';
 
 export const hero: Hero = {
   did: 'test did',
@@ -121,26 +121,26 @@ export const serializedResource: SerializedResource = deserializedResource;
 export const rootState: RootState = {
   auth: {
     hero,
-    activeTools: activeToolsForHero(hero),
+    activeTools: [],
   },
   dodayApp: {
-    status: initialStatusState,
+    status: {} as any,
   },
-  dodayDetails: initialDodayDetailsState,
+  dodayDetails: {} as any,
   builder: {
-    status: initialBuilderStatusState,
+    status: {} as any,
     tools: {},
   },
-  heroSettings: initialHeroSettingsState,
+  heroSettings: {} as any,
   tools: {},
-  store: initialStoreState,
+  store: {} as any,
   toast: {
     open: false,
     type: 'success',
     messages: [],
     autoHideDuration: 3000,
   },
-  dialog: initialDialogState,
+  dialog: {} as any,
 };
 
 export const stripeToken: Token = {

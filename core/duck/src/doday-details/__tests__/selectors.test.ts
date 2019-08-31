@@ -1,5 +1,5 @@
 import { selectedDoday, updatesSelector } from '../selectors';
-import { rootState } from '@root/lib/common-interfaces/fake-data';
+import { rootState } from '@doday/lib';
 
 describe('DodayDetails selectors', () => {
   it('Get updates for selected doday', () => {

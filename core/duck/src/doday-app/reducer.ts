@@ -1,5 +1,5 @@
-import * as actions from './actions';
-import { DodayAppStatusState } from '@lib/models';
+import { DodayAppActionConstants, DodayAppActionTypes } from './actions';
+import { DodayAppStatusState } from '@doday/lib';
 
 export const initialStatusState: DodayAppStatusState = {
   loading: false,
@@ -10,25 +10,25 @@ export const initialStatusState: DodayAppStatusState = {
 
 export default (
   state = initialStatusState,
-  action: actions.ActionTypes
+  action: DodayAppActionTypes
 ): DodayAppStatusState => {
   switch (action.type) {
-    case actions.ActionConstants.SET_LOADING_STATE:
+    case DodayAppActionConstants.SET_LOADING_STATE:
       return {
         ...state,
         loading: action.payload,
       };
-    case actions.ActionConstants.CHANGE_ROUTE:
+    case DodayAppActionConstants.CHANGE_ROUTE:
       return {
         ...state,
         route: action.payload,
       };
-    case actions.ActionConstants.SET_QUERY_PARAMS:
+    case DodayAppActionConstants.SET_QUERY_PARAMS:
       return {
         ...state,
         routeParams: action.payload,
       };
-    case actions.ActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
+    case DodayAppActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
       return {
         ...state,
         badge: action.payload,

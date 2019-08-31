@@ -1,8 +1,8 @@
 import { AnyAction } from 'redux';
-import { DodaysQueryParams } from '@root/services/api/dodays/queries';
-import { DodayLike } from '@root/lib/models/entities/common';
+import { DodaysQueryParams } from '@doday/api/dist/src/dodays/queries';
+import { DodayLike } from '@doday/lib';
 
-export enum ActionConstants {
+export enum StoreActionConstants {
   SET_LOADING_STATE = '[store] SET_LOADING_STATE',
   FETCH_DODAYS_WITH_PARAMS = '[store] FETCH_DODAYS_WITH_PARAMS',
   SET_SEARCH_TERM = '[store] SET_SEARCH_TERM',
@@ -18,11 +18,11 @@ export enum ActionConstants {
  * @export
  * @returns {SetStoreLoadingStateAction}
  */
-export function setStoreLoadingStateActionCreator(
+function setStoreLoadingStateActionCreator(
   value: boolean
 ): SetStoreLoadingStateAction {
   return {
-    type: ActionConstants.SET_LOADING_STATE,
+    type: StoreActionConstants.SET_LOADING_STATE,
     payload: value,
   };
 }
@@ -33,9 +33,9 @@ export function setStoreLoadingStateActionCreator(
  * @export
  * @returns {SetSearchTermAction}
  */
-export function setSearchTermActionCreator(term: string): SetSearchTermAction {
+function setSearchTermActionCreator(term: string): SetSearchTermAction {
   return {
-    type: ActionConstants.SET_SEARCH_TERM,
+    type: StoreActionConstants.SET_SEARCH_TERM,
     payload: term,
   };
 }
@@ -47,11 +47,9 @@ export function setSearchTermActionCreator(term: string): SetSearchTermAction {
  * @export
  * @returns {SetSearchFlagAction}
  */
-export function setSearchFlagActionCreator(
-  value: boolean
-): SetSearchFlagAction {
+function setSearchFlagActionCreator(value: boolean): SetSearchFlagAction {
   return {
-    type: ActionConstants.SET_SEARCH_FLAG,
+    type: StoreActionConstants.SET_SEARCH_FLAG,
     payload: value,
   };
 }
@@ -62,11 +60,11 @@ export function setSearchFlagActionCreator(
  * @export
  * @returns {SearchPublicDodaysForStoreAction}
  */
-export function searchPublicDodaysForStoreActionCreator(
+function searchPublicDodaysForStoreActionCreator(
   params: DodaysQueryParams
 ): SearchPublicDodaysForStoreAction {
   return {
-    type: ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+    type: StoreActionConstants.SEARCH_DODAYS_WITH_PARAMS,
     payload: params,
   };
 }
@@ -77,11 +75,11 @@ export function searchPublicDodaysForStoreActionCreator(
  * @export
  * @returns {FetchPublicDodaysForStoreAction}
  */
-export function fetchPublicDodaysForStoreActionCreator(
+function fetchPublicDodaysForStoreActionCreator(
   params: DodaysQueryParams
 ): FetchPublicDodaysForStoreAction {
   return {
-    type: ActionConstants.FETCH_DODAYS_WITH_PARAMS,
+    type: StoreActionConstants.FETCH_DODAYS_WITH_PARAMS,
     payload: params,
   };
 }
@@ -92,13 +90,13 @@ export function fetchPublicDodaysForStoreActionCreator(
  * @export
  * @returns {SetPublicDodaysForStoreAction}
  */
-export function setPublicDodaysForStoreActionCreator(
+function setPublicDodaysForStoreActionCreator(
   dodays: DodayLike[],
   concat?: boolean,
   totalCount?: number
 ): SetPublicDodaysForStoreAction {
   return {
-    type: ActionConstants.SET_DODAYS,
+    type: StoreActionConstants.SET_DODAYS,
     payload: {
       dodays,
       concat,
@@ -113,16 +111,16 @@ export function setPublicDodaysForStoreActionCreator(
  * @export
  * @returns {OptimisticRemovePublicDodayAction}
  */
-export function optimisticRemovePublicDodayActionCreator(
+function optimisticRemovePublicDodayActionCreator(
   did: string
 ): OptimisticRemovePublicDodayAction {
   return {
-    type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
+    type: StoreActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY,
     payload: did,
   };
 }
 
-export const actionCreators = {
+export default {
   setStoreLoadingStateActionCreator,
   setSearchTermActionCreator,
   setSearchFlagActionCreator,
@@ -137,32 +135,32 @@ export const actionCreators = {
  */
 
 export interface SetStoreLoadingStateAction extends AnyAction {
-  type: ActionConstants.SET_LOADING_STATE;
+  type: StoreActionConstants.SET_LOADING_STATE;
   payload: boolean;
 }
 
 export interface SetSearchTermAction extends AnyAction {
-  type: ActionConstants.SET_SEARCH_TERM;
+  type: StoreActionConstants.SET_SEARCH_TERM;
   payload: string;
 }
 
 export interface SetSearchFlagAction extends AnyAction {
-  type: ActionConstants.SET_SEARCH_FLAG;
+  type: StoreActionConstants.SET_SEARCH_FLAG;
   payload: boolean;
 }
 
 export interface SearchPublicDodaysForStoreAction extends AnyAction {
-  type: ActionConstants.SEARCH_DODAYS_WITH_PARAMS;
+  type: StoreActionConstants.SEARCH_DODAYS_WITH_PARAMS;
   payload: DodaysQueryParams;
 }
 
 export interface FetchPublicDodaysForStoreAction extends AnyAction {
-  type: ActionConstants.FETCH_DODAYS_WITH_PARAMS;
+  type: StoreActionConstants.FETCH_DODAYS_WITH_PARAMS;
   payload: DodaysQueryParams;
 }
 
 export interface SetPublicDodaysForStoreAction extends AnyAction {
-  type: ActionConstants.SET_DODAYS;
+  type: StoreActionConstants.SET_DODAYS;
   payload: {
     dodays: DodayLike[];
     concat?: boolean;
@@ -171,7 +169,7 @@ export interface SetPublicDodaysForStoreAction extends AnyAction {
 }
 
 export interface OptimisticRemovePublicDodayAction extends AnyAction {
-  type: ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY;
+  type: StoreActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY;
   payload: string;
 }
 
@@ -179,7 +177,7 @@ export interface OptimisticRemovePublicDodayAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type StoreActionTypes =
   | SetStoreLoadingStateAction
   | SetSearchTermAction
   | SetSearchFlagAction

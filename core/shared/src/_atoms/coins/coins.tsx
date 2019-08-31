@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { LayoutBlock } from '../layout-block';
-import { Icons } from '@shared';
 import {
   Theme,
   createStyles,
@@ -8,7 +7,8 @@ import {
   withStyles,
   WithStyles,
 } from '@material-ui/core';
-import { config } from '@root/styles/config';
+import { Icons } from '../..';
+import { config } from '@doday/lib';
 
 const css = (theme: Theme) =>
   createStyles({

@@ -1,23 +1,21 @@
-import { ActionConstants, actionCreators } from '../actions';
+import actions, { BuilderActionConstants } from '../actions';
 
 describe('builder action creators', () => {
   it('set builder loading state action creator', () => {
     const state = false;
     const expectedActionObject = {
-      type: ActionConstants.SET_BUILDER_LOADING_STATE,
+      type: BuilderActionConstants.SET_BUILDER_LOADING_STATE,
       payload: state,
     };
-    expect(actionCreators.setBuilderLoadingStateActionCreator(state)).toEqual(
+    expect(actions.setBuilderLoadingStateActionCreator(state)).toEqual(
       expectedActionObject
     );
   });
 
   it('clear all data in builder action creator', () => {
     const expectedActionObject = {
-      type: ActionConstants.CLEAR_BUILDER,
+      type: BuilderActionConstants.CLEAR_BUILDER,
     };
-    expect(actionCreators.clearBuilderActionCreator()).toEqual(
-      expectedActionObject
-    );
+    expect(actions.clearBuilderActionCreator()).toEqual(expectedActionObject);
   });
 });

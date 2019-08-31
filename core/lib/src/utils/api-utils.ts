@@ -4,7 +4,7 @@ export const parseMetadataFromUrl = (url: string) => {
   });
 };
 
-export const encodeQueryData = data => {
+export const encodeQueryData = (data: any) => {
   const ret = [];
   for (let d in data)
     ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));

@@ -1,5 +1,5 @@
-import * as actions from './actions';
-import { StoreState } from '@lib/models';
+import { StoreActionConstants, StoreActionTypes } from './actions';
+import { StoreState } from '@doday/lib';
 
 export const initialStoreState: StoreState = {
   dodays: [],
@@ -7,25 +7,25 @@ export const initialStoreState: StoreState = {
 
 export default (
   state = initialStoreState,
-  action?: actions.ActionTypes
+  action: StoreActionTypes
 ): StoreState => {
-  switch (action!.type) {
-    case actions.ActionConstants.SET_LOADING_STATE:
+  switch (action.type) {
+    case StoreActionConstants.SET_LOADING_STATE:
       return {
         ...state,
         loading: action.payload,
       };
-    case actions.ActionConstants.SET_SEARCH_TERM:
+    case StoreActionConstants.SET_SEARCH_TERM:
       return {
         ...state,
         searchTerm: action.payload,
       };
-    case actions.ActionConstants.SET_SEARCH_FLAG:
+    case StoreActionConstants.SET_SEARCH_FLAG:
       return {
         ...state,
         searching: action.payload,
       };
-    case actions.ActionConstants.SET_DODAYS:
+    case StoreActionConstants.SET_DODAYS:
       return {
         ...state,
         dodays: action.payload.concat
@@ -36,11 +36,11 @@ export default (
             ? action.payload.totalCount
             : state.totalCount,
       };
-    case actions.ActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY:
+    case StoreActionConstants.OPTIMISTIC_REMOVE_PUBLIC_DODAY:
       return {
         ...state,
         dodays: state.dodays.filter(doday => doday.did !== action.payload),
-        totalCount: state.totalCount - 1,
+        totalCount: state.totalCount ? state.totalCount - 1 : 0,
       };
     default:
       return state;

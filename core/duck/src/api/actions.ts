@@ -1,12 +1,7 @@
 import { AnyAction } from 'redux';
-import { Resource } from '@root/lib/models/entities/resource';
-import {
-  DodayLike,
-  DodayType,
-  ProgressLike,
-} from '@root/lib/models/entities/common';
+import { Resource, DodayLike, ProgressLike, DodayType } from '@doday/lib';
 
-export enum ActionConstants {
+export enum APIActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
   CREATE_AND_TAKE_DODAY = '[dodays-api] CREATE_AND_TAKE_DODAY',
   TAKE_DODAY = '[dodays-api] TAKE_DODAY',
@@ -21,12 +16,12 @@ export enum ActionConstants {
  * @export
  * @returns {CreateDodayAction}
  */
-export function createDodayActionCreator(payload: {
+function createDodayActionCreator(payload: {
   doday: DodayLike;
   resource: Resource;
 }): CreateDodayAction {
   return {
-    type: ActionConstants.CREATE_DODAY,
+    type: APIActionConstants.CREATE_DODAY,
     payload,
   };
 }
@@ -38,13 +33,13 @@ export function createDodayActionCreator(payload: {
  * @export
  * @returns {CreateAndTakeDodayAction}
  */
-export function createAndTakeDodayActionCreator(payload: {
+function createAndTakeDodayActionCreator(payload: {
   doday: DodayLike;
   progress: ProgressLike;
   resource?: Resource;
 }): CreateAndTakeDodayAction {
   return {
-    type: ActionConstants.CREATE_AND_TAKE_DODAY,
+    type: APIActionConstants.CREATE_AND_TAKE_DODAY,
     payload,
   };
 }
@@ -56,12 +51,12 @@ export function createAndTakeDodayActionCreator(payload: {
  * @export
  * @returns {TakeDodayAction}
  */
-export function takeDodayActionCreator(payload: {
+function takeDodayActionCreator(payload: {
   doday: DodayLike;
   progress: Partial<ProgressLike>;
 }): TakeDodayAction {
   return {
-    type: ActionConstants.TAKE_DODAY,
+    type: APIActionConstants.TAKE_DODAY,
     payload,
   };
 }
@@ -72,7 +67,7 @@ export function takeDodayActionCreator(payload: {
  * @export
  * @returns {UpdateDodayAction}
  */
-export function updateDodayActionCreator(payload: {
+function updateDodayActionCreator(payload: {
   did: string;
   type: DodayType;
   updates: {
@@ -82,7 +77,7 @@ export function updateDodayActionCreator(payload: {
   };
 }): UpdateDodayAction {
   return {
-    type: ActionConstants.UPDATE_DODAY,
+    type: APIActionConstants.UPDATE_DODAY,
     payload,
   };
 }
@@ -93,12 +88,12 @@ export function updateDodayActionCreator(payload: {
  * @export
  * @returns {UntakeDodayAction}
  */
-export function untakeDodayActionCreator(payload: {
+function untakeDodayActionCreator(payload: {
   did: string;
   type: DodayType;
 }): UntakeDodayAction {
   return {
-    type: ActionConstants.UNTAKE_DODAY,
+    type: APIActionConstants.UNTAKE_DODAY,
     payload,
   };
 }
@@ -109,17 +104,17 @@ export function untakeDodayActionCreator(payload: {
  * @export
  * @returns {DeleteDodayAction}
  */
-export function deleteDodayActionCreator(payload: {
+function deleteDodayActionCreator(payload: {
   did: string;
   type: DodayType;
 }): DeleteDodayAction {
   return {
-    type: ActionConstants.DELETE_DODAY,
+    type: APIActionConstants.DELETE_DODAY,
     payload,
   };
 }
 
-export const actionCreators = {
+export default {
   createDodayActionCreator,
   takeDodayActionCreator,
   createAndTakeDodayActionCreator,
@@ -129,7 +124,7 @@ export const actionCreators = {
 };
 
 export interface CreateDodayAction extends AnyAction {
-  type: ActionConstants.CREATE_DODAY;
+  type: APIActionConstants.CREATE_DODAY;
   payload: {
     doday: DodayLike;
     resource?: Resource;
@@ -137,7 +132,7 @@ export interface CreateDodayAction extends AnyAction {
 }
 
 export interface TakeDodayAction extends AnyAction {
-  type: ActionConstants.TAKE_DODAY;
+  type: APIActionConstants.TAKE_DODAY;
   payload: {
     doday: DodayLike;
     progress: Partial<ProgressLike>;
@@ -145,7 +140,7 @@ export interface TakeDodayAction extends AnyAction {
 }
 
 export interface CreateAndTakeDodayAction extends AnyAction {
-  type: ActionConstants.CREATE_AND_TAKE_DODAY;
+  type: APIActionConstants.CREATE_AND_TAKE_DODAY;
   payload: {
     doday: DodayLike;
     progress: ProgressLike;
@@ -154,7 +149,7 @@ export interface CreateAndTakeDodayAction extends AnyAction {
 }
 
 export interface UpdateDodayAction extends AnyAction {
-  type: ActionConstants.UPDATE_DODAY;
+  type: APIActionConstants.UPDATE_DODAY;
   payload: {
     did: string;
     type: DodayType;
@@ -167,7 +162,7 @@ export interface UpdateDodayAction extends AnyAction {
 }
 
 export interface UntakeDodayAction extends AnyAction {
-  type: ActionConstants.UNTAKE_DODAY;
+  type: APIActionConstants.UNTAKE_DODAY;
   payload: {
     did: string;
     type: DodayType;
@@ -175,7 +170,7 @@ export interface UntakeDodayAction extends AnyAction {
 }
 
 export interface DeleteDodayAction extends AnyAction {
-  type: ActionConstants.DELETE_DODAY;
+  type: APIActionConstants.DELETE_DODAY;
   payload: {
     did: string;
     type: DodayType;
@@ -186,7 +181,7 @@ export interface DeleteDodayAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type APIActionTypes =
   | CreateDodayAction
   | CreateAndTakeDodayAction
   | TakeDodayAction

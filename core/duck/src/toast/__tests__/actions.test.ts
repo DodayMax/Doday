@@ -1,8 +1,7 @@
-import { ToastState } from '@root/lib/models';
-import {
+import { ToastState } from '@doday/lib';
+import actions, {
   OpenToastAction,
-  ActionConstants,
-  actionCreators,
+  ToastActionConstants,
   CloseToastAction,
 } from '../actions';
 
@@ -14,20 +13,18 @@ describe('toasts action creators', () => {
       messages: ['Test message'],
     };
     const expectedActionObject: OpenToastAction = {
-      type: ActionConstants.OPEN,
+      type: ToastActionConstants.OPEN,
       payload: options,
     };
-    expect(actionCreators.openToastActionCreator(options)).toEqual(
+    expect(actions.openToastActionCreator(options)).toEqual(
       expectedActionObject
     );
   });
 
   it('close toast', () => {
     const expectedActionObject: CloseToastAction = {
-      type: ActionConstants.CLOSE,
+      type: ToastActionConstants.CLOSE,
     };
-    expect(actionCreators.closeToastActionCreator()).toEqual(
-      expectedActionObject
-    );
+    expect(actions.closeToastActionCreator()).toEqual(expectedActionObject);
   });
 });

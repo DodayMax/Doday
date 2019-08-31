@@ -1,9 +1,6 @@
 import * as moment from 'moment';
-import { Hero } from '../models/entities/hero';
-import { ToolBeacon } from '@root/tools/types';
-import { toolBeacons } from '@root/tools';
-import { config } from '@styles/config';
 import { DodayLike, ProgressLike } from '../models/entities/common';
+import { config } from '../dms';
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
 
@@ -12,7 +9,7 @@ export const youtubeIDFromURL = (url: string) => {
   return splitted.length > 0 ? splitted[1] : undefined;
 };
 
-export const getRandomColor = index => {
+export const getRandomColor = (index: number) => {
   if (index != null && index < standartColorsForGoalsChart.length) {
     return standartColorsForGoalsChart[index];
   } else {
@@ -36,9 +33,12 @@ export const isEmptyObject = (obj: Object) => {
   return result;
 };
 
-export const capitalize = s => s[0].toUpperCase() + s.slice(1);
+export const capitalize = (str: string) => str[0].toUpperCase() + str.slice(1);
 
-export const filterObject = (obj, predicate) => {
+export const filterObject = (
+  obj: object,
+  predicate: (value: any) => boolean
+) => {
   var result = {};
   var key;
 
@@ -51,12 +51,12 @@ export const filterObject = (obj, predicate) => {
   return result;
 };
 
-export const activeToolsForHero = (hero: Hero): ToolBeacon[] => {
-  if (!hero) return;
-  return toolBeacons.filter(tool =>
-    hero.tools.find(item => item === tool.config.sysname)
-  );
-};
+// export const activeToolsForHero = (hero: Hero): ToolBeacon[] | undefined => {
+//   if (!hero) return;
+//   return toolBeacons.filter(tool =>
+//     hero.tools.find(item => item === tool.config.sysname)
+//   );
+// };
 
 export const isDirty = (
   initialObject: DodayLike,

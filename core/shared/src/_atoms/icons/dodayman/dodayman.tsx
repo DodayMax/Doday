@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { IconProps } from '../names';
-import { config } from '@styles/config';
+import { config } from '@doday/lib';
 
 interface DodaymanProps extends IconProps {}
 

@@ -1,5 +1,5 @@
 import { isDrawerCollapsed } from '../selectors';
-import { rootState } from '@root/lib/common-interfaces/fake-data';
+import { rootState } from '@doday/lib';
 
 describe("Test hero-settings's selectors", () => {
   it('isDrawerCollapsed selector returns correct value', () => {

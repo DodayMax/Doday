@@ -1,3 +1,5 @@
-import * as dodays from './dodays-api-actions';
+import actions from './actions';
+import apiSagas from './sagas';
 
-export { dodays };
+export * from './actions';
+export default { actions, sagas: apiSagas };

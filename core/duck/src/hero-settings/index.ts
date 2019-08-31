@@ -1,10 +1,10 @@
 import reducer from './reducer';
 import herosettingsSagas from './sagas';
-import * as actions from './actions';
+import actions from './actions';
 
-export {
+export * from './actions';
+export default {
   actions,
-  herosettingsSagas,
+  sagas: herosettingsSagas,
+  reducer,
 };
-
-export default reducer;

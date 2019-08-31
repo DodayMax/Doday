@@ -1,7 +1,6 @@
 import reducer from './reducer';
 import dodayAppSagas from './sagas';
-import * as actions from './actions';
+import actions from './actions';
 
-export { actions, dodayAppSagas };
-
-export default reducer;
+export * from './actions';
+export default { actions, sagas: dodayAppSagas, reducer };

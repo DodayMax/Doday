@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { Icons } from '@shared';
+import { Icons } from '../../..';
 
 describe('PieChart', () => {
   it('renders correctly without props', () => {

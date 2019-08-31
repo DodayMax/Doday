@@ -1,9 +1,9 @@
 import * as React from 'react';
 import classnames from 'classnames';
 import { withStyles, createStyles } from '@material-ui/core';
-import { capitalize } from '@root/lib/utils';
+import { capitalize } from '@doday/lib';
 
-export const css = theme =>
+export const css = (theme: any) =>
   createStyles({
     /* Styles applied to the root element. */
     root: {
@@ -66,7 +66,7 @@ export interface SvgIconProps extends React.HTMLAttributes<HTMLElement> {
 
 const SvgIconComponent = React.forwardRef(function SvgIcon(
   props: SvgIconProps,
-  ref: React.RefObject<any>
+  ref: React.Ref<SvgIconProps>
 ) {
   const {
     children,

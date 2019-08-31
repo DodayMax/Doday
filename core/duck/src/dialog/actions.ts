@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
-import { DodayDialogProps } from '@root/components/shared';
+// import { DodayDialogProps } from '@doday/shared';
 
-export enum ActionConstants {
+export enum DialogActionConstants {
   OPEN = '[dialog] OPEN',
   CLOSE = '[dialog] CLOSE',
 }
@@ -12,11 +12,9 @@ export enum ActionConstants {
  * @export
  * @returns {OpenDialogAction}
  */
-export function openDialogActionCreator(
-  payload: DodayDialogProps
-): OpenDialogAction {
+function openDialogActionCreator(payload: any): OpenDialogAction {
   return {
-    type: ActionConstants.OPEN,
+    type: DialogActionConstants.OPEN,
     payload,
   };
 }
@@ -27,13 +25,13 @@ export function openDialogActionCreator(
  * @export
  * @returns {CloseDialogAction}
  */
-export function closeDialogActionCreator(): CloseDialogAction {
+function closeDialogActionCreator(): CloseDialogAction {
   return {
-    type: ActionConstants.CLOSE,
+    type: DialogActionConstants.CLOSE,
   };
 }
 
-export const actionCreators = {
+export default {
   openDialogActionCreator,
   closeDialogActionCreator,
 };
@@ -43,16 +41,16 @@ export const actionCreators = {
  */
 
 export interface OpenDialogAction extends AnyAction {
-  type: ActionConstants.OPEN;
-  payload: DodayDialogProps;
+  type: DialogActionConstants.OPEN;
+  payload: any;
 }
 
 export interface CloseDialogAction extends AnyAction {
-  type: ActionConstants.CLOSE;
+  type: DialogActionConstants.CLOSE;
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes = OpenDialogAction | CloseDialogAction;
+export type DialogActionTypes = OpenDialogAction | CloseDialogAction;

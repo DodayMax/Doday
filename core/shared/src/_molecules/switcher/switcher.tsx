@@ -8,9 +8,10 @@ import {
   createStyles,
   WithStyles,
   Chip,
+  Theme,
 } from '@material-ui/core';
 
-const css = theme =>
+const css = (theme: Theme) =>
   createStyles({
     iconButton: {
       padding: 0,
@@ -38,7 +39,7 @@ export class SwitcherComponent extends React.Component<
   SwitcherProps & WithStyles,
   SwitcherState
 > {
-  constructor(props) {
+  constructor(props: SwitcherProps & WithStyles) {
     super(props);
 
     this.state = {

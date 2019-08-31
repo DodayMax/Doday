@@ -49,4 +49,4 @@ export const Progress: React.ComponentType<
       </LayoutBlock>
     );
   }
-);
+) as any;

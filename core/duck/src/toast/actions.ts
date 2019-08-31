@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux';
-import { ToastState } from '@root/lib/models';
+import { ToastState } from '@doday/lib';
 
-export enum ActionConstants {
+export enum ToastActionConstants {
   OPEN = '[toast] OPEN',
   CLOSE = '[toast] CLOSE',
 }
@@ -12,9 +12,9 @@ export enum ActionConstants {
  * @export
  * @returns {OpenToastAction}
  */
-export function openToastActionCreator(options: ToastState): OpenToastAction {
+function openToastActionCreator(options: ToastState): OpenToastAction {
   return {
-    type: ActionConstants.OPEN,
+    type: ToastActionConstants.OPEN,
     payload: options,
   };
 }
@@ -25,13 +25,13 @@ export function openToastActionCreator(options: ToastState): OpenToastAction {
  * @export
  * @returns {CloseToastAction}
  */
-export function closeToastActionCreator(): CloseToastAction {
+function closeToastActionCreator(): CloseToastAction {
   return {
-    type: ActionConstants.CLOSE,
+    type: ToastActionConstants.CLOSE,
   };
 }
 
-export const actionCreators = {
+export default {
   openToastActionCreator,
   closeToastActionCreator,
 };
@@ -41,16 +41,16 @@ export const actionCreators = {
  */
 
 export interface OpenToastAction extends AnyAction {
-  type: ActionConstants.OPEN;
+  type: ToastActionConstants.OPEN;
   payload: ToastState;
 }
 
 export interface CloseToastAction extends AnyAction {
-  type: ActionConstants.CLOSE;
+  type: ToastActionConstants.CLOSE;
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes = OpenToastAction | CloseToastAction;
+export type ToastActionTypes = OpenToastAction | CloseToastAction;

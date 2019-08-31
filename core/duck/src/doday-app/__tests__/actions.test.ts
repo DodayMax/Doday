@@ -1,14 +1,14 @@
-import { ActionConstants, actionCreators } from '../actions';
-import { DodayAppQueryParams } from '@root/lib/common-interfaces';
+import actions, { DodayAppActionConstants } from '../actions';
+import { DodayAppQueryParams } from '@doday/lib';
 
 describe('doday-app action creators', () => {
   it('set loading state action creator', () => {
     const value = true;
     const expectedActionObject = {
-      type: ActionConstants.SET_LOADING_STATE,
+      type: DodayAppActionConstants.SET_LOADING_STATE,
       payload: value,
     };
-    expect(actionCreators.setDodayAppLoadingStateActionCreator(value)).toEqual(
+    expect(actions.setDodayAppLoadingStateActionCreator(value)).toEqual(
       expectedActionObject
     );
   });
@@ -16,10 +16,10 @@ describe('doday-app action creators', () => {
   it('change DodayApp route action creator', () => {
     const path = '/';
     const expectedActionObject = {
-      type: ActionConstants.CHANGE_ROUTE,
+      type: DodayAppActionConstants.CHANGE_ROUTE,
       payload: path,
     };
-    expect(actionCreators.changeDodayAppRouteActionCreator(path)).toEqual(
+    expect(actions.changeDodayAppRouteActionCreator(path)).toEqual(
       expectedActionObject
     );
   });
@@ -29,10 +29,10 @@ describe('doday-app action creators', () => {
       completed: true,
     };
     const expectedActionObject = {
-      type: ActionConstants.SET_QUERY_PARAMS,
+      type: DodayAppActionConstants.SET_QUERY_PARAMS,
       payload: params,
     };
-    expect(actionCreators.setDodayAppQueryParamsActionCreator(params)).toEqual(
+    expect(actions.setDodayAppQueryParamsActionCreator(params)).toEqual(
       expectedActionObject
     );
   });
@@ -40,10 +40,10 @@ describe('doday-app action creators', () => {
   it('set DodayApp badge action creator', () => {
     const value = 5;
     const expectedActionObject = {
-      type: ActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
+      type: DodayAppActionConstants.SET_DODAYS_BADGE_FOR_TODAY,
       payload: value,
     };
-    expect(actionCreators.setDodaysBadgeForTodayActionCreator(value)).toEqual(
+    expect(actions.setDodaysBadgeForTodayActionCreator(value)).toEqual(
       expectedActionObject
     );
   });

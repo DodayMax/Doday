@@ -11,14 +11,10 @@
     "@babel/core": "7.2.2",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
-    "apollo-boost": "^0.3.1",
-    "apollo-client": "^2.5.1",
-    "apollo-link-context": "^1.0.17",
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "cuid": "^2.1.6",
     "fs-extra": "7.0.1",
-    "graphql": "^14.2.0",
     "http-proxy-middleware": "^0.19.1",
     "i18next": "^15.0.8",
     "i18next-browser-languagedetector": "^3.0.1",
@@ -87,11 +83,7 @@
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@services(.*)$": "<rootDir>/src/services$1",
       "^@styles(.*)$": "<rootDir>/src/styles$1",
-      "^@shared(.*)$": "<rootDir>/src/components/shared$1",
-      "^@stores(.*)$": "<rootDir>/src/stores$1",
-      "^@lib(.*)$": "<rootDir>/src/lib$1",
-      "^@lib/utils(.*)$": "<rootDir>/src/lib/utils$1",
-      "^@ducks(.*)$": "<rootDir>/src/ducks$1"
+      "^@stores(.*)$": "<rootDir>/src/stores$1"
     },
     "moduleFileExtensions": [
       "web.js",

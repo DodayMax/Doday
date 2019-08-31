@@ -1,8 +1,7 @@
 import { AnyAction } from 'redux';
-import { Hero } from '@root/lib/models/entities/hero';
-import { ToolBeacon } from '@root/tools/types';
+import { Hero, ToolBeacon } from '@doday/lib';
 
-export enum ActionConstants {
+export enum AuthActionConstants {
   FETCH_HERO = '[auth] FETCH_HERO',
   SET_HERO = '[auth] SET_HERO',
   SET_ACTIVE_TOOL_BEACONS = '[auth] SET_ACTIVE_TOOL_BEACONS',
@@ -14,9 +13,9 @@ export enum ActionConstants {
  * @export
  * @returns {FetchHeroAction}
  */
-export function fetchHeroActionCreator(): FetchHeroAction {
+function fetchHeroActionCreator(): FetchHeroAction {
   return {
-    type: ActionConstants.FETCH_HERO,
+    type: AuthActionConstants.FETCH_HERO,
   };
 }
 
@@ -26,9 +25,9 @@ export function fetchHeroActionCreator(): FetchHeroAction {
  * @export
  * @returns {SetHeroAction}
  */
-export function setHeroActionCreator(hero: Hero): SetHeroAction {
+function setHeroActionCreator(hero: Hero): SetHeroAction {
   return {
-    type: ActionConstants.SET_HERO,
+    type: AuthActionConstants.SET_HERO,
     payload: hero,
   };
 }
@@ -40,16 +39,16 @@ export function setHeroActionCreator(hero: Hero): SetHeroAction {
  * @export
  * @returns {SetActiveToolBeaconsAction}
  */
-export function setActiveToolBeaconsActionCreator(
+function setActiveToolBeaconsActionCreator(
   tools: ToolBeacon[]
 ): SetActiveToolBeaconsAction {
   return {
-    type: ActionConstants.SET_ACTIVE_TOOL_BEACONS,
+    type: AuthActionConstants.SET_ACTIVE_TOOL_BEACONS,
     payload: tools,
   };
 }
 
-export const actionCreators = {
+export default {
   fetchHeroActionCreator,
   setHeroActionCreator,
   setActiveToolBeaconsActionCreator,
@@ -60,16 +59,16 @@ export const actionCreators = {
  */
 
 export interface FetchHeroAction extends AnyAction {
-  type: ActionConstants.FETCH_HERO;
+  type: AuthActionConstants.FETCH_HERO;
 }
 
 export interface SetHeroAction extends AnyAction {
-  type: ActionConstants.SET_HERO;
+  type: AuthActionConstants.SET_HERO;
   payload: Hero;
 }
 
 export interface SetActiveToolBeaconsAction extends AnyAction {
-  type: ActionConstants.SET_ACTIVE_TOOL_BEACONS;
+  type: AuthActionConstants.SET_ACTIVE_TOOL_BEACONS;
   payload: ToolBeacon[];
 }
 
@@ -77,7 +76,7 @@ export interface SetActiveToolBeaconsAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type AuthActionTypes =
   | FetchHeroAction
   | SetHeroAction
   | SetActiveToolBeaconsAction;

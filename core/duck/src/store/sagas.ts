@@ -1,10 +1,8 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { api } from '@root/services';
-import {
+import api from '@doday/api';
+import actions, {
   FetchPublicDodaysForStoreAction,
-  ActionConstants,
-  setPublicDodaysForStoreActionCreator,
-  setStoreLoadingStateActionCreator,
+  StoreActionConstants,
   SearchPublicDodaysForStoreAction,
 } from './actions';
 
@@ -16,7 +14,7 @@ import {
 export function* fetchPublicDodaysForStoreActionSaga(
   action: FetchPublicDodaysForStoreAction
 ) {
-  yield put(setStoreLoadingStateActionCreator(true));
+  yield put(actions.setStoreLoadingStateActionCreator(true));
   const count =
     action.payload.skip != null
       ? undefined
@@ -24,9 +22,13 @@ export function* fetchPublicDodaysForStoreActionSaga(
   const res = yield call(api.dodays.queries.fetchDodays, action.payload);
 
   yield put(
-    setPublicDodaysForStoreActionCreator(res, !!action.payload.skip, count)
+    actions.setPublicDodaysForStoreActionCreator(
+      res,
+      !!action.payload.skip,
+      count
+    )
   );
-  yield put(setStoreLoadingStateActionCreator(false));
+  yield put(actions.setStoreLoadingStateActionCreator(false));
 }
 
 /**
@@ -37,8 +39,8 @@ export function* fetchPublicDodaysForStoreActionSaga(
 export function* searchPublicDodaysForStoreActionSaga(
   action: SearchPublicDodaysForStoreAction
 ) {
-  yield put(setPublicDodaysForStoreActionCreator([]));
-  yield put(setStoreLoadingStateActionCreator(true));
+  yield put(actions.setPublicDodaysForStoreActionCreator([]));
+  yield put(actions.setStoreLoadingStateActionCreator(true));
   const count =
     action.payload.skip != null
       ? undefined
@@ -46,18 +48,22 @@ export function* searchPublicDodaysForStoreActionSaga(
   const res = yield call(api.dodays.queries.searchDodays, action.payload);
 
   yield put(
-    setPublicDodaysForStoreActionCreator(res, !!action.payload.skip, count)
+    actions.setPublicDodaysForStoreActionCreator(
+      res,
+      !!action.payload.skip,
+      count
+    )
   );
-  yield put(setStoreLoadingStateActionCreator(false));
+  yield put(actions.setStoreLoadingStateActionCreator(false));
 }
 
 export default [
   takeLatest(
-    ActionConstants.FETCH_DODAYS_WITH_PARAMS,
+    StoreActionConstants.FETCH_DODAYS_WITH_PARAMS,
     fetchPublicDodaysForStoreActionSaga
   ),
   takeLatest(
-    ActionConstants.SEARCH_DODAYS_WITH_PARAMS,
+    StoreActionConstants.SEARCH_DODAYS_WITH_PARAMS,
     searchPublicDodaysForStoreActionSaga
   ),
 ];

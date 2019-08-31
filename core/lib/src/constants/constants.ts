@@ -1,0 +1,1 @@
+export const DEFAULT_IMAGE_HEIGHT = 112.5;

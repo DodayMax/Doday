@@ -1,21 +1,20 @@
-import {
+import actions, {
   CreateDodayAction,
-  ActionConstants,
-  actionCreators,
   CreateAndTakeDodayAction,
   TakeDodayAction,
   UpdateDodayAction,
   UntakeDodayAction,
   DeleteDodayAction,
+  APIActionConstants,
 } from '../actions';
 import {
+  DodayType,
   deserializedActivity,
   deserializedResource,
   deserialzedActivityProgress,
-  partialProgress,
   doday,
-} from '@root/lib/common-interfaces/fake-data';
-import { DodayType } from '@root/lib/models/entities/common';
+  partialProgress,
+} from '@doday/lib';
 
 describe('test api action creators', () => {
   it('createDodayActionCreator', () => {
@@ -24,10 +23,10 @@ describe('test api action creators', () => {
       resource: deserializedResource,
     };
     const expectedActionObject: CreateDodayAction = {
-      type: ActionConstants.CREATE_DODAY,
+      type: APIActionConstants.CREATE_DODAY,
       payload: newDoday,
     };
-    expect(actionCreators.createDodayActionCreator(newDoday)).toEqual(
+    expect(actions.createDodayActionCreator(newDoday)).toEqual(
       expectedActionObject
     );
   });
@@ -39,10 +38,10 @@ describe('test api action creators', () => {
       resource: deserializedResource,
     };
     const expectedActionObject: CreateAndTakeDodayAction = {
-      type: ActionConstants.CREATE_AND_TAKE_DODAY,
+      type: APIActionConstants.CREATE_AND_TAKE_DODAY,
       payload: newDoday,
     };
-    expect(actionCreators.createAndTakeDodayActionCreator(newDoday)).toEqual(
+    expect(actions.createAndTakeDodayActionCreator(newDoday)).toEqual(
       expectedActionObject
     );
   });
@@ -53,10 +52,10 @@ describe('test api action creators', () => {
       progress: deserialzedActivityProgress,
     };
     const expectedActionObject: TakeDodayAction = {
-      type: ActionConstants.TAKE_DODAY,
+      type: APIActionConstants.TAKE_DODAY,
       payload,
     };
-    expect(actionCreators.takeDodayActionCreator(payload)).toEqual(
+    expect(actions.takeDodayActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });
@@ -70,10 +69,10 @@ describe('test api action creators', () => {
       },
     };
     const expectedActionObject: UpdateDodayAction = {
-      type: ActionConstants.UPDATE_DODAY,
+      type: APIActionConstants.UPDATE_DODAY,
       payload,
     };
-    expect(actionCreators.updateDodayActionCreator(payload)).toEqual(
+    expect(actions.updateDodayActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });
@@ -84,10 +83,10 @@ describe('test api action creators', () => {
       type: DodayType.Activity,
     };
     const expectedActionObject: UntakeDodayAction = {
-      type: ActionConstants.UNTAKE_DODAY,
+      type: APIActionConstants.UNTAKE_DODAY,
       payload,
     };
-    expect(actionCreators.untakeDodayActionCreator(payload)).toEqual(
+    expect(actions.untakeDodayActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });
@@ -98,10 +97,10 @@ describe('test api action creators', () => {
       type: DodayType.Activity,
     };
     const expectedActionObject: DeleteDodayAction = {
-      type: ActionConstants.DELETE_DODAY,
+      type: APIActionConstants.DELETE_DODAY,
       payload,
     };
-    expect(actionCreators.deleteDodayActionCreator(payload)).toEqual(
+    expect(actions.deleteDodayActionCreator(payload)).toEqual(
       expectedActionObject
     );
   });

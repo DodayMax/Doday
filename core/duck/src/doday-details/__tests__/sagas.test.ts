@@ -1,30 +1,23 @@
 import { call, put, select } from 'redux-saga/effects';
-import { api } from '@root/services';
-import { activity } from '@root/lib/common-interfaces/fake-data';
-import {
+import api from '@doday/api';
+import actions, {
   FetchSelectedDodayAction,
-  ActionConstants,
-  setSelectedDodayActionCreator,
+  DodayDetailsActionConstants,
   FetchSelectedProgressAction,
   RequestForSetUpdatesAction,
-  setUpdatesForSelectedDodayActionCreator,
-  setDirtyStatusActionCreator,
-  clearSelectedDodayActionCreator,
-  clearDodayDetailsDirtyStuffActionCreator,
 } from '../actions';
 import {
   fetchSelectedDodayActionSaga,
   fetchSelectedProgressActionSaga,
   setUpdatesAndDirtyStatusSaga,
 } from '../sagas';
-import { isDirty } from '@root/lib/utils';
 import { updatesSelector, selectedDoday } from '../selectors';
-import { ProgressLike } from '@root/lib/models/entities/common';
+import { activity, ProgressLike, isDirty } from '@doday/lib';
 
 describe("Test DodayDetails's sagas", () => {
   it('fetchSelectedDodayActionSaga', () => {
     const action: FetchSelectedDodayAction = {
-      type: ActionConstants.FETCH_SELECTED_DODAY,
+      type: DodayDetailsActionConstants.FETCH_SELECTED_DODAY,
       payload: activity.did,
     };
     const gen = fetchSelectedDodayActionSaga(action);
@@ -32,25 +25,25 @@ describe("Test DodayDetails's sagas", () => {
       call(api.dodays.queries.fetchDodayByDID, action.payload)
     );
     expect(gen.next(activity).value).toEqual(
-      put(setSelectedDodayActionCreator(activity))
+      put(actions.setSelectedDodayActionCreator(activity))
     );
     expect(gen.next().done).toBe(true);
   });
 
   it('fetchSelectedProgressActionSaga', () => {
     const action: FetchSelectedProgressAction = {
-      type: ActionConstants.FETCH_SELECTED_PROGRESS,
+      type: DodayDetailsActionConstants.FETCH_SELECTED_PROGRESS,
       payload: activity.did,
     };
     const gen = fetchSelectedProgressActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(clearDodayDetailsDirtyStuffActionCreator())
+      put(actions.clearDodayDetailsDirtyStuffActionCreator())
     );
     expect(gen.next().value).toEqual(
       call(api.dodays.queries.fetchDodayWithProgressByDID, action.payload)
     );
     expect(gen.next(activity).value).toEqual(
-      put(setSelectedDodayActionCreator(activity))
+      put(actions.setSelectedDodayActionCreator(activity))
     );
     expect(gen.next().done).toBe(true);
   });
@@ -60,21 +53,25 @@ describe("Test DodayDetails's sagas", () => {
       completed: false,
     };
     const action: RequestForSetUpdatesAction = {
-      type: ActionConstants.REQUEST_FOR_SET_UPDATES,
+      type: DodayDetailsActionConstants.REQUEST_FOR_SET_UPDATES,
       payload: {
         progress: updates,
       },
     };
     const gen = setUpdatesAndDirtyStatusSaga(action);
-    const dirty = isDirty(activity, action.payload.progress);
+    const dirty = isDirty(activity, action.payload!.progress!);
     expect(gen.next().value).toEqual(
-      put(setUpdatesForSelectedDodayActionCreator(action.payload.progress))
+      put(
+        actions.setUpdatesForSelectedDodayActionCreator(
+          action.payload!.progress!
+        )
+      )
     );
     expect(gen.next().value).toEqual(select(updatesSelector));
     expect(gen.next(updates).value).toEqual(select(selectedDoday));
     expect(gen.next(activity).value).toEqual(call(isDirty, activity, updates));
     expect(gen.next(dirty).value).toEqual(
-      put(setDirtyStatusActionCreator(dirty))
+      put(actions.setDirtyStatusActionCreator(dirty))
     );
     expect(gen.next().done).toBe(true);
   });

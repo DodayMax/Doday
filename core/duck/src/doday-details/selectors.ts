@@ -1,4 +1,4 @@
-import { RootState } from '@root/lib/models';
+import { RootState } from '@doday/lib';
 
 export const updatesSelector = (state: RootState) => state.dodayDetails.updates;
 export const selectedDoday = (state: RootState) =>

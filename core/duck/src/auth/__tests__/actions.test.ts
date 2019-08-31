@@ -1,37 +1,30 @@
-import { ActionConstants, actionCreators } from '../actions';
-import { hero } from '@root/lib/common-interfaces/fake-data';
-import { toolBeacons } from '@root/tools';
+import actions, { AuthActionConstants } from '../actions';
+import { hero, ToolBeacon } from '@doday/lib';
 
 describe("test auth's ducks", () => {
   describe('auth action creators', () => {
     it('fetch Hero action creator', () => {
       const expectedActionObject = {
-        type: ActionConstants.FETCH_HERO,
+        type: AuthActionConstants.FETCH_HERO,
       };
-      expect(actionCreators.fetchHeroActionCreator()).toEqual(
-        expectedActionObject
-      );
+      expect(actions.fetchHeroActionCreator()).toEqual(expectedActionObject);
     });
     it('set Hero action creator', () => {
       const expectedActionObject = {
-        type: ActionConstants.SET_HERO,
+        type: AuthActionConstants.SET_HERO,
         payload: hero,
       };
-      expect(actionCreators.setHeroActionCreator(hero)).toEqual(
-        expectedActionObject
-      );
+      expect(actions.setHeroActionCreator(hero)).toEqual(expectedActionObject);
     });
     it('set active tools for Hero to the store action creator', () => {
-      const activeTools = toolBeacons.filter(tool =>
-        hero.tools.find(item => item === tool.config.sysname)
-      );
+      const activeTools: ToolBeacon[] = [];
       const expectedActionObject = {
-        type: ActionConstants.SET_ACTIVE_TOOL_BEACONS,
+        type: AuthActionConstants.SET_ACTIVE_TOOL_BEACONS,
         payload: activeTools,
       };
-      expect(
-        actionCreators.setActiveToolBeaconsActionCreator(activeTools)
-      ).toEqual(expectedActionObject);
+      expect(actions.setActiveToolBeaconsActionCreator(activeTools)).toEqual(
+        expectedActionObject
+      );
     });
   });
 });

@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 
-export enum ActionConstants {
+export enum BuilderActionConstants {
   SET_BUILDER_LOADING_STATE = '[builder] SET_BUILDER_LOADING_STATE',
   SET_BUILDER_SUCCESS_FLAG = '[builder] SET_BUILDER_SUCCESS_FLAG',
   CLEAR_BUILDER = '[builder] CLEAR_BUILDER',
@@ -12,11 +12,11 @@ export enum ActionConstants {
  * @export
  * @returns {SetBuilderLoadingStateAction}
  */
-export function setBuilderLoadingStateActionCreator(
+function setBuilderLoadingStateActionCreator(
   state: boolean
 ): SetBuilderLoadingStateAction {
   return {
-    type: ActionConstants.SET_BUILDER_LOADING_STATE,
+    type: BuilderActionConstants.SET_BUILDER_LOADING_STATE,
     payload: state,
   };
 }
@@ -27,13 +27,13 @@ export function setBuilderLoadingStateActionCreator(
  * @export
  * @returns {ClearBuilderAction}
  */
-export function clearBuilderActionCreator(): ClearBuilderAction {
+function clearBuilderActionCreator(): ClearBuilderAction {
   return {
-    type: ActionConstants.CLEAR_BUILDER,
+    type: BuilderActionConstants.CLEAR_BUILDER,
   };
 }
 
-export const actionCreators = {
+export default {
   setBuilderLoadingStateActionCreator,
   clearBuilderActionCreator,
 };
@@ -43,18 +43,18 @@ export const actionCreators = {
  */
 
 export interface SetBuilderLoadingStateAction extends AnyAction {
-  type: ActionConstants.SET_BUILDER_LOADING_STATE;
+  type: BuilderActionConstants.SET_BUILDER_LOADING_STATE;
   payload: boolean;
 }
 
 export interface ClearBuilderAction extends AnyAction {
-  type: ActionConstants.CLEAR_BUILDER;
+  type: BuilderActionConstants.CLEAR_BUILDER;
 }
 
 /**
  * Export all action types for reducers
  */
 
-export type ActionTypes =
+export type BuilderActionTypes =
   | SetBuilderLoadingStateAction
   | ClearBuilderAction;

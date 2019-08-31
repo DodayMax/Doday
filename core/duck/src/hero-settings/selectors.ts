@@ -1,4 +1,4 @@
-import { RootState } from '@lib/models';
+import { RootState } from '@doday/lib';
 
 export const isDrawerCollapsed = (state: RootState) =>
   state.heroSettings.isDrawerCollapsed;

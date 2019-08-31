@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
-import { actionCreators, OpenToastAction } from '@root/ducks/toast/actions';
-import { ToastState } from '@root/lib/models';
+import ducks, { OpenToastAction } from '@doday/duck';
+import { ToastState } from '@doday/lib';
 
 export type WithToast = {
   openToast: (options: ToastState) => OpenToastAction;
 };
 
-export const withToast = WrappedComponent =>
+export const withToast = (WrappedComponent: React.ComponentType<any>) =>
   connect(
     null,
-    { openToast: actionCreators.openToastActionCreator }
+    { openToast: ducks.toast.actions.openToastActionCreator }
   )(WrappedComponent);

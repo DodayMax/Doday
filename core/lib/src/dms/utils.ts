@@ -73,16 +73,16 @@ export const utils = {
       },
     },
   }),
-  paddingTop: value => ({
+  paddingTop: (value: number) => ({
     paddingTop: `${value}px`,
   }),
-  paddingBottom: value => ({
+  paddingBottom: (value: number) => ({
     paddingBottom: `${value}px`,
   }),
-  paddingLeft: value => ({
+  paddingLeft: (value: number) => ({
     paddingLeft: `${value}px`,
   }),
-  paddingRight: value => ({
+  paddingRight: (value: number) => ({
     paddingRight: `${value}px`,
   }),
 };

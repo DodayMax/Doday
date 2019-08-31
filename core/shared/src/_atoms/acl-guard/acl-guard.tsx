@@ -1,6 +1,6 @@
 import * as React from 'react';
+import { RootState } from '@doday/lib';
 import { connect } from 'react-redux';
-import { RootState } from '@root/lib/models';
 
 export interface ACLGuardProps {
   permission?: any;
@@ -18,7 +18,7 @@ export class ACLGuard extends React.Component<
   ACLGuardProps & PropsFromConnect
 > {
   // just mock for now
-  checkPermission = permission => true;
+  checkPermission = (permission: string) => true;
 
   render() {
     const { permission, auth, allowed, forbidden } = this.props;

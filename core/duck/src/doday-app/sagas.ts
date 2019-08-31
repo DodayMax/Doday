@@ -1,6 +1,5 @@
 import { call, takeEvery } from 'redux-saga/effects';
-import { ActionConstants, ChangeDodayAppRouteAction } from './actions';
-import { bake_cookie } from 'sfcookies';
+import { DodayAppActionConstants, ChangeDodayAppRouteAction } from './actions';
 
 /**
  * Toggle drawer saga
@@ -10,9 +9,13 @@ import { bake_cookie } from 'sfcookies';
 export function* changeDodayAppRouteActionSaga(
   action: ChangeDodayAppRouteAction
 ) {
-  yield call(bake_cookie, 'route', action.payload);
+  yield call(console.log, 'route', action.payload);
+  // yield call(bake_cookie, 'route', action.payload);
 }
 
 export default [
-  takeEvery(ActionConstants.CHANGE_ROUTE, changeDodayAppRouteActionSaga),
+  takeEvery(
+    DodayAppActionConstants.CHANGE_ROUTE,
+    changeDodayAppRouteActionSaga
+  ),
 ];

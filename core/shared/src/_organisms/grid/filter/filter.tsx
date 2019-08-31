@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FilterItem, FilterItemComponent } from './filter-item';
-import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { Space } from '@root/lib/common-interfaces';
+import { Space } from '@doday/lib';
 import { WithTranslation } from 'react-i18next';
 import { Divider } from '@material-ui/core';
+import { LayoutBlock } from '../../../_atoms/layout-block';
 
 interface FilterProps {
   items: FilterItem[];

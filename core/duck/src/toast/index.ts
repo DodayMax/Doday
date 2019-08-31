@@ -1,6 +1,5 @@
 import reducer from './reducer';
-import * as actions from './actions';
+import actions from './actions';
 
-export { actions };
-
-export default reducer;
+export * from './actions';
+export default { actions, reducer };

@@ -1,25 +1,22 @@
 import reducer, { initialState } from '../reducer';
-import {
-  setHeroActionCreator,
-  setActiveToolBeaconsActionCreator,
-} from '../actions';
-import { hero } from '@root/lib/common-interfaces/fake-data';
-import { toolBeacons } from '@root/tools';
+import actions from '../actions';
+import { hero, ToolBeacon } from '@doday/lib';
 
 describe("test auth's reducers", () => {
   it('set hero reducer', () => {
-    expect(reducer(initialState, setHeroActionCreator(hero))).toEqual({
+    expect(reducer(initialState, actions.setHeroActionCreator(hero))).toEqual({
       ...initialState,
       hero,
     });
   });
 
   it('set Hero active tools to store reducer', () => {
-    const activeTools = toolBeacons.filter(tool =>
-      hero.tools.find(item => item === tool.config.sysname)
-    );
+    const activeTools: ToolBeacon[] = [];
     expect(
-      reducer(initialState, setActiveToolBeaconsActionCreator(activeTools))
+      reducer(
+        initialState,
+        actions.setActiveToolBeaconsActionCreator(activeTools)
+      )
     ).toEqual({
       ...initialState,
       activeTools,

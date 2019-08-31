@@ -26,7 +26,7 @@ export const Pageflow = (options: PageflowOptions): any => {
       RouteComponentProps<any, any> & PageWrapperProps,
       PageWrapperState
     > {
-      constructor(props) {
+      constructor(props: RouteComponentProps<any, any> & PageWrapperProps) {
         super(props);
 
         this.state = {

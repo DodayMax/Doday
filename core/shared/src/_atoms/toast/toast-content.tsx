@@ -10,9 +10,8 @@ import MuiSnackbarContent, {
 } from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
-import { colors } from '@root/styles/doday-colors';
-import { CloseToastAction } from '@root/ducks/toast/actions';
-import { ToastType } from '@root/lib/common-interfaces';
+import { colors, ToastType } from '@doday/lib';
+import { CloseToastAction } from '@doday/duck';
 
 const variantIcon = {
   success: CheckCircleIcon,
