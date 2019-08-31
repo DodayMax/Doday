@@ -1,7 +1,7 @@
-import { IconNames } from '@root/components/shared/_atoms/icons';
+import { Icons } from '@doday/shared';
 import { RouteComponentProps } from 'react-router';
-import { CellProps } from '@root/lib/common-interfaces';
-import { DodayType, Entity } from '@root/lib/models/entities/common';
+import { DodayType, Entity } from './models/entities/common';
+import { CellProps } from './common-interfaces';
 
 export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
 
@@ -24,14 +24,14 @@ export interface ToolBeacon {
       [K in DodayType]?: {
         public: React.ComponentType<CellProps>;
         progress: React.ComponentType<CellProps>;
-      }
+      };
     };
     builders: { [K in DodayType]?: React.ComponentType<WithTools> };
     details: {
       [K in DodayType]?: {
         public: React.ComponentType;
         progress: React.ComponentType;
-      }
+      };
     };
     overview: React.ComponentType;
   };
@@ -60,7 +60,7 @@ export type ToolConfig = {
   entities: Entity[];
   price: number;
   route: string;
-  icon: IconNames;
+  icon: Icons.IconNames;
 };
 
 export type WithTools = {

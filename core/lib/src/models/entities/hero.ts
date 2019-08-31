@@ -1,4 +1,4 @@
-import { ToolSysname } from '@root/tools/types';
+import { ToolSysname } from '../../types';
 
 export interface Hero {
   did: string;

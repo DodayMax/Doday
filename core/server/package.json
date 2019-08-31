@@ -1,10 +1,9 @@
 {
   "name": "@doday/server",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Backend for Doday app",
   "author": "Ivan Smirnov <v-ivsmir@microsoft.com>",
-  "homepage": "",
-  "license": "ISC",
+  "license": "MIT",
   "main": "dist/server/src/server.js",
   "files": [
     "src"

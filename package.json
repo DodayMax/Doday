@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "core/*",
+    "tools/*"
   ],
   "scripts": {
     "storybook": "start-storybook -p 6006",

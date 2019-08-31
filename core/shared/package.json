@@ -1,0 +1,13 @@
+{
+  "name": "@doday/shared",
+  "version": "0.1.0",
+  "main": "dist/src/index.js",
+  "private": false,
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.9.0"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}
