@@ -103,7 +103,7 @@ interface MasonryProps {
   loadingElement: React.ReactNode;
   onInfiniteLoad?: () => void;
   threshold?: number;
-  scrollAnchor?: HTMLElement | window;
+  scrollAnchor?: HTMLElement | Window;
   scrollOffset?: number;
   getState: () => DodayLike[];
 }
