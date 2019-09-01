@@ -48,7 +48,7 @@ class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
 
     const selectedDodayType = selectedDoday && selectedDoday.type;
 
-    const tool = activeTools.find(
+    const tool = Object.values(activeTools).find(
       tool =>
         !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );

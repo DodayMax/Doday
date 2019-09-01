@@ -121,7 +121,7 @@ export const serializedResource: SerializedResource = deserializedResource;
 export const rootState: RootState = {
   auth: {
     hero,
-    activeTools: [],
+    activeTools: {},
   },
   dodayApp: {
     status: {} as any,

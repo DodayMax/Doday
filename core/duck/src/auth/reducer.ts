@@ -2,20 +2,30 @@ import { AuthActionTypes, AuthActionConstants } from './actions';
 import { AuthState } from '@doday/lib';
 
 export const initialState: AuthState = {
-  activeTools: [],
+  activeTools: {},
 };
 
 export default (state = initialState, action: AuthActionTypes): AuthState => {
-  switch (action.type) {
+  const { type, payload } = action;
+  switch (type) {
     case AuthActionConstants.SET_HERO:
       return {
         ...state,
-        hero: action.payload || false,
+        hero: payload || false,
       };
     case AuthActionConstants.SET_ACTIVE_TOOL_BEACONS:
       return {
         ...state,
-        activeTools: action.payload || [],
+        activeTools: payload || {},
+      };
+    case AuthActionConstants.ADD_ACTIVE_TOOL_BEACON:
+      console.log(payload);
+      return {
+        ...state,
+        activeTools: {
+          ...state.activeTools,
+          [payload.config.sysname]: payload,
+        },
       };
     default:
       return state;

@@ -11,7 +11,7 @@ describe("test auth's reducers", () => {
   });
 
   it('set Hero active tools to store reducer', () => {
-    const activeTools: ToolBeacon[] = [];
+    const activeTools: { [key: string]: ToolBeacon } = {};
     expect(
       reducer(
         initialState,

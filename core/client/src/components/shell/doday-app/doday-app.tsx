@@ -11,18 +11,6 @@ import {
 } from '@doday/lib';
 import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
 
-const styles = (theme: Theme) =>
-  createStyles({
-    container: {
-      minWidth: '28rem',
-      maxWidth: '3rem',
-      display: 'flex',
-      flexDirection: 'column',
-      height: `calc(100vh - 64px)`,
-      borderRight: `1px solid ${theme.palette.divider}`,
-    },
-  });
-
 export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 
 interface PropsFromConnect {
@@ -39,12 +27,11 @@ export class DodayAppComponent extends React.Component<
   DodayAppProps &
     WithTools &
     Partial<PropsFromConnect> &
-    Partial<RouteComponentProps> &
-    WithStyles
+    Partial<RouteComponentProps>
 > {
   componentDidMount() {
     const { activeTools, location } = this.props;
-    activeTools.map(tool => {
+    Object.values(activeTools).map(tool => {
       if (location.pathname.startsWith(tool.config.route)) {
         this.props.changeDodayAppRouteActionCreator(tool.config.route);
       }
@@ -60,7 +47,7 @@ export class DodayAppComponent extends React.Component<
   };
 
   renderCellByDodayType = (item: DodayLike, index) => {
-    this.props.activeTools.map(tool => {
+    Object.values(this.props.activeTools).map(tool => {
       const entity = tool.config.entities.find(
         entity => entity.type === item.type
       );
@@ -74,22 +61,15 @@ export class DodayAppComponent extends React.Component<
   };
 
   private renderDodayApp = () => {
-    const {
-      loading,
-      activeTools,
-      history,
-      location,
-      match,
-      classes,
-    } = this.props;
-    const tool = activeTools.find(
+    const { loading, activeTools, history, location, match } = this.props;
+    const tool = Object.values(activeTools).find(
       tool => tool.config.route === this.props.route
     );
+    console.log(tool);
     if (tool)
       return (
         <tool.components.dodayApp
           loading={loading}
-          className={classes.container}
           history={history}
           location={location}
           match={match}
@@ -148,17 +128,15 @@ export class DodayAppComponent extends React.Component<
   // }
 
   render() {
-    const { classes } = this.props;
-    return (
-      <section className={classes.container}>{this.renderDodayApp()}</section>
-    );
+    return <section>{this.renderDodayApp()}</section>;
   }
 }
 
-const mapState = ({ dodayApp }: RootState) => ({
+const mapState = ({ auth, dodayApp }: RootState) => ({
   loading: dodayApp.status.loading,
   route: dodayApp.status.route,
   routeParams: dodayApp.status.routeParams,
+  activeTools: auth.activeTools,
 });
 
 export default connect(
@@ -169,4 +147,4 @@ export default connect(
     ...ducks.details.actions,
     ...ducks.api.actions,
   }
-)(withStyles(styles)(DodayAppComponent));
+)(DodayAppComponent);

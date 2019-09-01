@@ -45,7 +45,7 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
 
     const selectedDodayType = selectedDoday && selectedDoday.type;
 
-    const tool = activeTools.find(
+    const tool = Object.values(activeTools).find(
       tool =>
         !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );

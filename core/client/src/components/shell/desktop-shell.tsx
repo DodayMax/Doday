@@ -13,6 +13,7 @@ import {
   ThemeType,
   Space,
   capitalize,
+  ToolSysname,
 } from '@doday/lib';
 import ducks, {
   FetchHeroAction,
@@ -21,7 +22,8 @@ import ducks, {
   ToggleThemeAction,
   ChangeDodayAppRouteAction,
   ClearSelectedDodayAction,
-  LoadHeroToolsAction,
+  SetActiveToolBeaconsAction,
+  AddActiveToolBeaconAction,
 } from '@doday/duck';
 import { Landing } from '../landing';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
@@ -41,7 +43,6 @@ import {
   Typography,
   Drawer,
   Divider,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
@@ -50,6 +51,7 @@ import {
   Switch,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '@doday/shared';
+import { loadTool } from '@tools';
 
 import { css } from './css.desktop-shell';
 import { DodayApp } from './doday-app';
@@ -61,13 +63,16 @@ interface PropsFromConnect {
   isDrawerCollapsed: boolean;
   isDodayAppCollapsed: boolean;
   hero: Hero;
-  activeTools: ToolBeacon[];
+  activeTools: { [key: string]: ToolBeacon };
   changeDodayAppRouteActionCreator(route: string): ChangeDodayAppRouteAction;
   clearSelectedDodayActionCreator(): ClearSelectedDodayAction;
   toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
   toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   fetchHeroActionCreator(): FetchHeroAction;
-  loadHeroToolsActionCreator(): LoadHeroToolsAction;
+  setActiveToolBeaconsActionCreator(tools: {
+    [key: string]: ToolBeacon;
+  }): SetActiveToolBeaconsAction;
+  addActiveToolBeaconActionCreator(tool: ToolBeacon): AddActiveToolBeaconAction;
   toggleThemeActionCreator(mode: ThemeType): ToggleThemeAction;
 }
 
@@ -145,7 +150,6 @@ class DesktopShell extends React.Component<
       activeTools,
       toggleDodayAppActionCreator,
       isDodayAppCollapsed,
-      loadHeroToolsActionCreator,
       history,
       location,
       t,
@@ -187,7 +191,8 @@ class DesktopShell extends React.Component<
             </Typography>
             {hero ? (
               <LayoutBlock insideElementsMargin valign="vflexCenter">
-                {activeTools.length ? (
+                {/* {Object.values(activeTools).length &&
+                !Object.values(activeTools)[0].loading ? (
                   <Button
                     variant="contained"
                     color="primary"
@@ -197,15 +202,19 @@ class DesktopShell extends React.Component<
                     )}
                     onClick={() =>
                       history.push(
-                        `/dashboard/builder/${activeTools[0].config.entities[0].name}`
+                        `/dashboard/builder/${
+                          Object.values(activeTools)[0].config.entities[0].name
+                        }`
                       )
                     }
                   >
-                    {`New ${activeTools[0].config.entities[0].name}`}
+                    {`New ${
+                      Object.values(activeTools)[0].config.entities[0].name
+                    }`}
                   </Button>
                 ) : (
                   undefined
-                )}
+                )} */}
                 <Switch
                   onChange={e => {
                     const theme = e.target.checked ? 'dark' : 'light';
@@ -256,17 +265,17 @@ class DesktopShell extends React.Component<
                   <Divider />
                   <LayoutBlock flex="1" direction="column" align="spaceBetween">
                     <LayoutBlock direction="column">
-                      {/* {this.toolsToDrawerMenuItems(toolBeacons).map(
-                        (tool, index) => {
-                          const Icon = Icons[tool.icon];
+                      {Object.values(activeTools).map((tool, index) => {
+                        if (!tool.loading) {
+                          const Icon = Icons[tool.config.icon];
                           return (
-                            <>
+                            <React.Fragment key={index}>
                               <ListItem
                                 button
-                                key={tool.text}
+                                key={index}
                                 onClick={() => {
                                   this.props.changeDodayAppRouteActionCreator(
-                                    tool.route
+                                    tool.config.route
                                   );
                                   this.props.clearSelectedDodayActionCreator();
                                 }}
@@ -275,19 +284,61 @@ class DesktopShell extends React.Component<
                                   <Icon fontSize={'large'} />
                                 </ListItemIcon>
                                 <ListItemText
-                                  primary={tool.text}
+                                  primary={tool.config.sysname}
                                   primaryTypographyProps={{ variant: 'body1' }}
                                 />
                               </ListItem>
                               <Divider />
-                            </>
+                            </React.Fragment>
                           );
                         }
-                      )} */}
+                        return (
+                          <React.Fragment key={index}>
+                            <ListItem
+                              button
+                              onClick={() => {
+                                this.props.changeDodayAppRouteActionCreator(
+                                  tool.config.route
+                                );
+                                this.props.clearSelectedDodayActionCreator();
+                              }}
+                            >
+                              <ListItemIcon>
+                                <Icons.InlineLoader color="#fff" />
+                              </ListItemIcon>
+                            </ListItem>
+                            <Divider />
+                          </React.Fragment>
+                        );
+                      })}
                       <>
                         <ListItem
                           button
-                          onClick={() => loadHeroToolsActionCreator()}
+                          onClick={() => {
+                            // TODO: replace it with Hero tools from DB
+                            const fakeTools = [
+                              {
+                                sysname: 'activities',
+                                title: 'Activities',
+                                price: 0,
+                              },
+                            ];
+                            const loadedTools = [];
+                            fakeTools.map(async tool => {
+                              this.props.addActiveToolBeaconActionCreator({
+                                loading: true,
+                                config: {
+                                  sysname: tool.sysname as ToolSysname,
+                                },
+                              });
+                              loadTool(tool.sysname).then(loadedTool => {
+                                this.props.addActiveToolBeaconActionCreator({
+                                  loading: false,
+                                  ...loadedTool.default,
+                                });
+                              });
+                            });
+                          }}
                         >
                           <ListItemIcon>
                             <AddIcon fontSize={'large'} />
@@ -339,12 +390,14 @@ class DesktopShell extends React.Component<
                   <div className={classes.toolbar} />
 
                   <LayoutBlock>
-                    <section>
+                    <section className={classes.dodayAppContainer}>
                       {!isDodayAppCollapsed && (
                         <Route
                           path="/dashboard"
                           render={props => (
-                            <DodayApp {...props} activeTools={[]} />
+                            <React.Suspense fallback={null}>
+                              <DodayApp {...props} activeTools={{}} />
+                            </React.Suspense>
                           )}
                         />
                       )}
@@ -398,7 +451,10 @@ export default connect(
     toggleDodayAppActionCreator:
       ducks.settings.actions.toggleDodayAppActionCreator,
     fetchHeroActionCreator: ducks.auth.actions.fetchHeroActionCreator,
-    loadHeroToolsActionCreator: ducks.auth.actions.loadHeroToolsActionCreator,
+    setActiveToolBeaconsActionCreator:
+      ducks.auth.actions.setActiveToolBeaconsActionCreator,
+    addActiveToolBeaconActionCreator:
+      ducks.auth.actions.addActiveToolBeaconActionCreator,
     toggleThemeActionCreator: ducks.settings.actions.toggleThemeActionCreator,
   }
 )(withStyles(css, { withTheme: true })(withTranslation('shell')(DesktopShell)));

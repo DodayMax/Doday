@@ -1,5 +1,5 @@
 import actions, { AuthActionConstants } from '../actions';
-import { hero, ToolBeacon, ShopTool } from '@doday/lib';
+import { hero, ToolBeacon } from '@doday/lib';
 
 describe("test auth's ducks", () => {
   describe('auth action creators', () => {
@@ -18,26 +18,8 @@ describe("test auth's ducks", () => {
       expect(actions.setHeroActionCreator(hero)).toEqual(expectedActionObject);
     });
 
-    it('load Hero tools action creator', () => {
-      const tools: ShopTool[] = [
-        {
-          sysname: 'activities',
-          title: 'Activities',
-          price: 0,
-          path: '@tools/activities',
-        },
-      ];
-      const expectedActionObject = {
-        type: AuthActionConstants.LOAD_HERO_TOOLS,
-        payload: tools,
-      };
-      expect(actions.loadHeroToolsActionCreator(tools)).toEqual(
-        expectedActionObject
-      );
-    });
-
     it('set active tools for Hero to the store action creator', () => {
-      const activeTools: ToolBeacon[] = [];
+      const activeTools: { [key: string]: ToolBeacon } = {};
       const expectedActionObject = {
         type: AuthActionConstants.SET_ACTIVE_TOOL_BEACONS,
         payload: activeTools,

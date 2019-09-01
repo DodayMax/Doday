@@ -26,7 +26,7 @@ const css = (theme: Theme) =>
   });
 
 interface DashboardProps {
-  activeTools: ToolBeacon[];
+  activeTools: { [key: string]: ToolBeacon };
   toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   isDodayAppCollapsed: boolean;
 }
@@ -36,13 +36,15 @@ export const Dashboard = withStyles(css)(
     const { activeTools, classes } = props;
     return (
       <LayoutBlock relative flex={'1'} className={classes.mainContentContainer}>
-        {activeTools.map((tool, index) => (
-          <Route
-            key={index}
-            path={tool.config.route}
-            component={tool.components.overview}
-          />
-        ))}
+        {Object.values(activeTools).map((tool, index) =>
+          !tool.loading ? (
+            <Route
+              key={index}
+              path={tool.config.route}
+              component={tool.components.overview}
+            />
+          ) : null
+        )}
         <Route
           path="/dashboard/dodays/:did"
           render={props => (

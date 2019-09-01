@@ -481,7 +481,7 @@ const mapState = (state: RootState) => ({
 export const ActivityProgressDetails = connect(
   mapState,
   {
-    ...ducks.dodays.actions,
+    ...ducks.dodayApp.actions,
     ...ducks.details.actions,
     ...ducks.api.actions,
     ...ducks.dialog.actions,

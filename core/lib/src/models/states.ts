@@ -1,7 +1,7 @@
 import { Hero } from './entities/hero';
 import { DodayAppQueryParams, ToastType } from '../common-interfaces';
 import { DodayLike, ProgressLike } from './entities/common';
-import { ToolsState, ToolsBuilderState, ToolBeacon } from '../types';
+import { ToolsState, ToolsBuilderState, ToolBeacon } from './entities';
 
 export interface RootState {
   auth: AuthState;
@@ -35,7 +35,7 @@ export interface BuilderState {
 
 export interface AuthState {
   hero?: Hero;
-  activeTools: ToolBeacon[];
+  activeTools: { [key: string]: ToolBeacon };
 }
 
 export interface HeroSettingsState {

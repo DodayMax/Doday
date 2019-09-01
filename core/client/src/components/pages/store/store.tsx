@@ -76,7 +76,7 @@ interface PropsFromConnect {
   searchTerm?: string;
   totalCount?: number;
   dodays: DodayLike[];
-  activeTools: ToolBeacon[];
+  activeTools: { [key: string]: ToolBeacon };
   setSearchTermActionCreator(term: string): SetSearchTermAction;
   setSearchFlagActionCreator(value: boolean): SetSearchFlagAction;
   searchPublicDodaysForStoreActionCreator(
@@ -182,16 +182,18 @@ class StoreClassComponent extends React.Component<
                   />
                 </LayoutBlock>
                 <LayoutBlock align="flexCenter" spaceBelow={Space.Medium}>
-                  {activeTools.map(tool =>
-                    tool.config.entities.map(entity => (
-                      <Chip
-                        key={tool.config.sysname}
-                        label={capitalize(entity.name)}
-                        onClick={() => {
-                          console.log(`filter by: ${entity.name}`);
-                        }}
-                      />
-                    ))
+                  {Object.values(activeTools).map(
+                    tool =>
+                      !tool.loading &&
+                      tool.config.entities.map(entity => (
+                        <Chip
+                          key={tool.config.sysname}
+                          label={capitalize(entity.name)}
+                          onClick={() => {
+                            console.log(`filter by: ${entity.name}`);
+                          }}
+                        />
+                      ))
                   )}
                 </LayoutBlock>
               </LayoutBlock>

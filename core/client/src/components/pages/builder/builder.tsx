@@ -24,20 +24,21 @@ export class Builder extends React.Component<
   renderBuilder = () => {
     const { activeTools } = this.props;
 
-    return activeTools.map(tool =>
-      tool.config.entities.map(entity => {
-        const Builder = tool.components.builders[entity.type];
-        return (
-          <Route
-            key={entity.name}
-            path={`/dashboard/builder/${entity.name}`}
-            render={routerProps => (
-              <Builder {...routerProps} activeTools={activeTools} />
-            )}
-          />
-        );
-      })
-    );
+    // return activeTools.map(tool =>
+    //   tool.config.entities.map(entity => {
+    //     const Builder = tool.components.builders[entity.type];
+    //     return (
+    //       <Route
+    //         key={entity.name}
+    //         path={`/dashboard/builder/${entity.name}`}
+    //         render={routerProps => (
+    //           <Builder {...routerProps} activeTools={activeTools} />
+    //         )}
+    //       />
+    //     );
+    //   })
+    // );
+    return null;
   };
 
   render() {

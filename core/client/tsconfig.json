@@ -8,13 +8,15 @@
     "downlevelIteration": true,
     "allowJs": true,
     "jsx": "react",
-    "baseUrl": ".",
+    "baseUrl": "src",
     "experimentalDecorators": true,
     "paths": {
-      "@root/*": ["src/*"],
-      "@services": ["src/services"],
-      "@components": ["src/components"],
-      "@styles/*": ["src/styles/*"]
+      "@root/*": ["*"],
+      "@services": ["services"],
+      "@components": ["components"],
+      "@styles/*": ["styles/*"],
+      "@tools": ["tools"],
+      "@tools/*": ["tools/*"]
     }
   },
   "exclude": [

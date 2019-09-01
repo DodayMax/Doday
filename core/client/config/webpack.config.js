@@ -272,6 +272,8 @@ module.exports = function(webpackEnv) {
         '@services': '@root/services',
         '@styles': '@root/styles',
         '@styles/*': '@root/styles/*',
+        '@tools': '@root/tools',
+        '@tools/*': '@root/tools/*',
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding

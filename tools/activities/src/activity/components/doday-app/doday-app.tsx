@@ -94,7 +94,7 @@ export class ActivityDodayAppComponentClass extends React.Component<
       {
         name: 'inprogress',
         action: () => {
-          this.props.changeDodayAppRouteActionCreator!(config.route);
+          this.props.changeDodayAppRouteActionCreator!(config.route!);
           this.props.setDodayAppQueryParamsActionCreator!({});
         },
         active: () => {
