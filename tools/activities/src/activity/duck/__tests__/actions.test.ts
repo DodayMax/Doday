@@ -7,7 +7,7 @@ import {
   ClearParsedUrlMetadataAction,
   PinActivityAction,
 } from '../actions';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
+import { DodaysWithProgressQueryParams } from '@doday/api';
 import {
   SetActivitiesAction,
   FetchActivitiesAction,
@@ -17,10 +17,11 @@ import {
 import {
   activity,
   deserializedResource,
-} from '@root/lib/common-interfaces/fake-data';
-import { Resource } from '@root/lib/models/entities/resource';
-import { DodayType } from '@root/lib/models/entities/common';
-import { Activity, ActivityType } from '@root/lib/models/entities/activity';
+  Resource,
+  DodayType,
+  Activity,
+  ActivityType,
+} from '@doday/lib';
 
 describe('Activity tool action creators tests', () => {
   it('fetch activities', () => {

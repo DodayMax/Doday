@@ -1,7 +1,10 @@
-import { activityToolBeacon } from './activity';
+import * as duck from './activity/duck';
+import { components } from './activity/components';
+import { config } from './activity/config';
+import { ToolBeacon } from '@doday/lib';
 
-export const toolBeacons = [activityToolBeacon];
-
-export default {
-  activityToolBeacon,
+export const activityToolBeacon: ToolBeacon = {
+  config,
+  components,
+  duck,
 };

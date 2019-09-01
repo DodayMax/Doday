@@ -2,33 +2,42 @@ import * as React from 'react';
 import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import Slider, { Handle } from 'rc-slider';
+import { WithTranslation, withTranslation } from 'react-i18next';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   LayoutBlock,
   Icons,
   Switcher,
   SwitcherItem,
   CustomDatePicker,
-} from '@shared';
-import { Space } from '@root/lib/common-interfaces';
-import { detectURL, durationToLabel } from '@root/lib/utils';
-import { ParsedUrlView, BuilderProps } from '@root/components/pages/builder';
-import { Resource } from '@root/lib/models/entities/resource';
-import * as activitiesBuilderActions from '../../duck';
-import * as dodaysApiActions from '@ducks/api/dodays-api-actions';
-import { RootState } from '@root/lib/models';
+  ParsedUrlView,
+} from '@doday/shared';
 import {
+  config,
+  WithTools,
+  RootState,
+  Space,
+  detectURL,
+  durationToLabel,
+  Resource,
+  DodayLike,
+  ProgressLike,
+  DodayType,
+  ActivityType,
+  Activity,
+  ActivityProgress,
+} from '@doday/lib';
+import * as activitiesBuilderActions from '../../duck';
+import ducks, {
   CreateDodayAction,
   CreateAndTakeDodayAction,
-} from '@root/ducks/api/dodays-api-actions/actions';
-import { WithTools } from '@root/tools/types';
+} from '@doday/duck';
 import {
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,
   SetActivityTypeAction,
   PinActivityAction,
 } from '../../duck/actions';
-import { WithTranslation, withTranslation } from 'react-i18next';
-import ScheduleIcon from '@material-ui/icons/Schedule';
 import {
   createStyles,
   Typography,
@@ -46,18 +55,7 @@ import {
   WithTheme,
 } from '@material-ui/core';
 import { TooltipProps } from '@material-ui/core/Tooltip';
-import { config } from '@root/styles/config';
 import { RouteComponentProps } from 'react-router';
-import {
-  DodayLike,
-  ProgressLike,
-  DodayType,
-} from '@root/lib/models/entities/common';
-import {
-  ActivityType,
-  Activity,
-  ActivityProgress,
-} from '@root/lib/models/entities/activity';
 import { ActivityBuilderState } from '../../duck/reducer';
 
 const css = (theme: Theme) =>
@@ -85,7 +83,7 @@ const css = (theme: Theme) =>
     },
   });
 
-interface ActivityBuilderProps extends BuilderProps {}
+interface ActivityBuilderProps {}
 
 interface PropsFromConnect {
   loading: boolean;
@@ -146,7 +144,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     };
   }
 
-  shouldComponentUpdate(nextProps): boolean {
+  shouldComponentUpdate(nextProps: Props): boolean {
     if (this.props.isUrlParsing && !nextProps.isUrlParsing) {
       const parsedTags =
         nextProps.parsedMetadata && nextProps.parsedMetadata.keywords;
@@ -163,20 +161,13 @@ export class ActivityBuilderComponentClass extends React.Component<
     return true;
   }
 
-  promiseOptions = inputValue =>
-    new Promise(resolve => {
-      setTimeout(() => {
-        resolve([]);
-      }, 1000);
-    });
-
   onChangeInput = async (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = String(e.target.value);
     const matches = detectURL(value);
 
     if (matches) {
       // parse meta of the link on server
-      matches.map(url => this.props.parseUrlMetadataActionCreator(url));
+      matches.map(url => this.props.parseUrlMetadataActionCreator!(url));
     }
 
     this.setState({
@@ -184,7 +175,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     });
   };
 
-  handleChangeDate = date => {
+  handleChangeDate = (date: Date) => {
     this.setState({
       date,
     });
@@ -200,13 +191,13 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     const activity: Activity = {
       did: cuid(),
-      activityType,
+      activityType: activityType!,
       type: DodayType.Activity,
       duration: this.state.estimateTime,
       name: this.state.dodayName || parsedMetadata.title,
       tags: this.state.selectedTags || [],
       public: this.state.isPublic,
-      ownerDID,
+      ownerDID: ownerDID!,
       created: new Date(),
     };
 
@@ -220,19 +211,19 @@ export class ActivityBuilderComponentClass extends React.Component<
 
     if (this.state.isPublic) {
       /** Just create Activity(Doday) node */
-      this.props.createDodayActionCreator({ doday: activity, resource });
+      this.props.createDodayActionCreator!({ doday: activity, resource });
     } else {
       /** Create Activity(Doday) node and Progress node */
-      this.props.createAndTakeDodayActionCreator({
+      this.props.createAndTakeDodayActionCreator!({
         doday: activity,
         progress,
         resource,
       });
     }
-    this.props.history.push('/dashboard');
+    this.props.history!.push('/dashboard');
   };
 
-  handleEstimateTimeChange = props => {
+  handleEstimateTimeChange = (props: any) => {
     const { value, dragging, index, ...restProps } = props;
     const hours = Math.floor(value / 60);
     const minutes = value % 60;
@@ -281,7 +272,7 @@ export class ActivityBuilderComponentClass extends React.Component<
           ) : (
             <Switcher
               items={this.activitTypesSwitcherItems}
-              onChange={item => setActivityTypeActionCreator(item)}
+              onChange={item => setActivityTypeActionCreator!(item)}
               render={type => activityIconByType(type, 30, config.colors.grey8)}
             />
           )}
@@ -310,7 +301,7 @@ export class ActivityBuilderComponentClass extends React.Component<
               // TODO: replace only removed parsed link from text
               dodayName: '',
             });
-            clearParsedUrlMetadataActionCreator();
+            clearParsedUrlMetadataActionCreator!();
           }}
           loading={isUrlParsing}
           parsedMetadata={parsedMetadata}
@@ -346,7 +337,7 @@ export class ActivityBuilderComponentClass extends React.Component<
           >
             {
               <IconButton
-                onClick={() => this.props.pinActivityActionCreator(!pinned)}
+                onClick={() => this.props.pinActivityActionCreator!(!pinned)}
               >
                 {pinned ? <Icons.Pin color="primary" /> : <Icons.Pin />}
               </IconButton>
@@ -506,20 +497,25 @@ export const activityIconByType = (
 
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
-  activityType: (state.builder.tools.activities as ActivityBuilderState)
-    .activityType,
-  pinned: (state.builder.tools.activities as ActivityBuilderState).pinned,
-  isUrlParsing: (state.builder.tools.activities as ActivityBuilderState)
-    .isUrlParsing,
-  parsedMetadata: (state.builder.tools.activities as ActivityBuilderState)
-    .parsedMetadata,
+  activityType:
+    state.builder.tools &&
+    (state.builder.tools.activities as ActivityBuilderState).activityType,
+  pinned:
+    state.builder.tools &&
+    (state.builder.tools.activities as ActivityBuilderState).pinned,
+  isUrlParsing:
+    state.builder.tools &&
+    (state.builder.tools.activities as ActivityBuilderState).isUrlParsing,
+  parsedMetadata:
+    state.builder.tools &&
+    (state.builder.tools.activities as ActivityBuilderState).parsedMetadata,
   loading: state.builder.status.loading,
 });
 
 export const ActivityBuilder = connect(
   mapState,
   {
-    ...dodaysApiActions.actions.actionCreators,
+    ...ducks.dodayApp.actions,
     ...activitiesBuilderActions.actions.actionCreators,
   }
 )(

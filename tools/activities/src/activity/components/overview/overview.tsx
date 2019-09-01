@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Page, PageHeader } from '@root/components/shared';
+import { Entity } from '@doday/lib';
+import { Page, PageHeader } from '@doday/shared';
 import { config } from '../../config';
 import { RouteComponentProps } from 'react-router';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -10,12 +11,12 @@ export class ActivityOverviewComponentClass extends React.Component<
 > {
   private get actions() {
     const { history, t } = this.props;
-    return config.entities.map((entity, index) => (
+    return config.entities.map((entity: Entity, index: number) => (
       <Button
         variant="contained"
         color="primary"
         key={index}
-        onClick={() => history.push(`/dashboard/builder/${entity.name}`)}
+        onClick={() => history!.push(`/dashboard/builder/${entity.name}`)}
       >
         {t('overview.actions.create')}
       </Button>

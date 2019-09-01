@@ -1,8 +1,13 @@
-import * as builderActions from '@ducks/builder/actions';
+import { BuilderActionConstants } from '@doday/duck';
 import * as actions from './actions';
-import { BaseToolState, BaseToolBuilderState } from '@root/tools/types';
-import { ActivityType, Activity } from '@root/lib/models/entities/activity';
-import { DodayType } from '@root/lib/models/entities/common';
+import {
+  ActivityType,
+  Activity,
+  DodayType,
+  BaseToolState,
+  BaseToolBuilderState,
+  Resource,
+} from '@doday/lib';
 
 export const initialActivityBuilderState: ActivityBuilderState = {
   activityType: 'do',
@@ -13,7 +18,7 @@ export const initialActivityToolState: ActivityToolState = {
 
 export const mainReducer = (
   state = initialActivityToolState,
-  action?: actions.ActionTypes
+  action: actions.ActionTypes
 ): ActivityToolState => {
   switch (action.type) {
     case actions.ActionConstants.SET_ACTIVITIES:
@@ -44,12 +49,13 @@ export const mainReducer = (
           updatedindex = index;
           return true;
         }
+        return false;
       });
       const withoutUpdated = state.dodays.filter(
         doday => doday.did !== action.payload.did
       );
       withoutUpdated.splice(updatedindex, 0, {
-        ...updated,
+        ...(updated as Activity),
         progress:
           action.payload.updates && action.payload.updates.progress
             ? {
@@ -60,7 +66,7 @@ export const mainReducer = (
         resource:
           action.payload.updates && action.payload.updates.resource
             ? {
-                ...updated.resource,
+                ...(updated!.resource as Resource),
                 ...action.payload.updates.resource,
               }
             : undefined,
@@ -91,11 +97,12 @@ export const mainReducer = (
           untakenindex = index;
           return true;
         }
+        return false;
       });
       const withoutUntaken = state.dodays.filter(
         doday => doday.did !== action.payload
       );
-      const { progress, ...untaken } = untakenDoday;
+      const { progress, ...untaken } = untakenDoday!;
       withoutUntaken.splice(untakenindex, 0, untaken);
       return {
         dodays: withoutUntaken,
@@ -116,7 +123,7 @@ export const mainReducer = (
 
 export const builderReducer = (
   state = initialActivityBuilderState,
-  action?: actions.ActionTypes
+  action: actions.ActionTypes
 ): ActivityBuilderState => {
   switch (action.type) {
     case actions.ActionConstants.SET_ACTIVITY_TYPE:
@@ -146,7 +153,7 @@ export const builderReducer = (
         isUrlParsing: false,
         parsedMetadata: undefined,
       };
-    case builderActions.ActionConstants.CLEAR_BUILDER:
+    case BuilderActionConstants.CLEAR_BUILDER:
       return initialActivityBuilderState;
     default:
       return state;

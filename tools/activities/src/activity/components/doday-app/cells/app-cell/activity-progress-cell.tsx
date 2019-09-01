@@ -1,11 +1,14 @@
 import * as React from 'react';
 import * as moment from 'moment';
 import * as classnames from 'classnames';
-import { CellProps, Space } from '@lib/common-interfaces';
-import { Checkbox, Icons } from '@shared';
-import { LayoutBlock } from '@root/components/shared/_atoms/layout-block';
-import { durationToLabel, durationToMinutes } from '@root/lib/utils';
-import { Progress } from '@root/components/shared/_atoms/progress/progress';
+import {
+  CellProps,
+  Space,
+  Activity,
+  durationToLabel,
+  durationToMinutes,
+} from '@doday/lib';
+import { Checkbox, Icons, LayoutBlock, Progress } from '@doday/shared';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import {
   ListItem,
@@ -17,7 +20,6 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.cell';
-import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityProgressCellProps {
   onComplete?: () => void;
@@ -35,7 +37,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
 
       const cx = classnames({
         [classes.scrollContainer]: true,
-        [classes.pinned]: doday.progress.pinned,
+        [classes.pinned]: doday.progress!.pinned,
       });
 
       return (
@@ -83,7 +85,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
           </LayoutBlock>
           <LayoutBlock absolute bottom="0" right="2.6rem">
             <Typography className={classes.timeLabel} variant="caption">
-              {durationToLabel(activity.duration, {
+              {durationToLabel(activity.duration!, {
                 hour: t('shell:time.h'),
                 minute: t('shell:time.m'),
               })}
@@ -92,7 +94,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
           <LayoutBlock absolute top="0" bottom="0" right="17px">
             <Progress
               vertical
-              progress={durationToMinutes(activity.duration)}
+              progress={durationToMinutes(activity.duration!)}
               total={8 * 60}
             />
           </LayoutBlock>
@@ -105,7 +107,7 @@ export const ActivityProgressCell = withTranslation(['shell', 'activities'])(
             bottom="0"
             className={cx}
           >
-            {doday.progress.pinned && <Icons.Pin width={1.6} height={1.6} />}
+            {doday.progress!.pinned && <Icons.Pin width={1.6} height={1.6} />}
           </LayoutBlock>
         </ListItem>
       );

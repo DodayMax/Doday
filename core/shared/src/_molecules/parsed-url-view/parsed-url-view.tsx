@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { LayoutBlock, Icons } from '@doday/shared';
 import { Space } from '@doday/lib';
 import { css } from './css.parsed-url-view';
 import {
@@ -11,6 +10,8 @@ import {
   WithTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import { LayoutBlock } from '../../_atoms/layout-block';
+import { Icons } from '../..';
 
 interface ParsedUrlViewProps {
   loading?: boolean;

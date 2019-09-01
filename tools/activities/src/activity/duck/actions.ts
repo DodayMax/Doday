@@ -1,9 +1,13 @@
 import { AnyAction } from 'redux';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
-import { ClearBuilderAction } from '@root/ducks/builder/actions';
-import { Resource } from '@root/lib/models/entities/resource';
-import { Activity, ActivityType } from '@root/lib/models/entities/activity';
-import { DodayLike, ProgressLike } from '@root/lib/models/entities/common';
+import { DodaysWithProgressQueryParams } from '@doday/api';
+import { ClearBuilderAction } from '@doday/duck';
+import {
+  Resource,
+  Activity,
+  ActivityType,
+  DodayLike,
+  ProgressLike,
+} from '@doday/lib';
 
 export enum ActionConstants {
   FETCH_ACTIVITIES = '[activities] FETCH_ACTIVITIES',
@@ -33,7 +37,7 @@ export function fetchActivitiesActionCreator(
 ): FetchActivitiesAction {
   return {
     type: ActionConstants.FETCH_ACTIVITIES,
-    payload: params,
+    payload: params!,
   };
 }
 

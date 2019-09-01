@@ -1,5 +1,4 @@
-import { ToolConfig } from '../types';
-import { ActivityEntity } from '@root/lib/models/entities/activity';
+import { ActivityEntity, ToolConfig } from '@doday/lib';
 
 export const config: ToolConfig = {
   sysname: 'activities',

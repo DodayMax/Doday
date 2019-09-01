@@ -8,11 +8,9 @@ import {
   FetchActivitiesAction,
   setActivitiesActionCreator,
 } from './actions';
-import { detectActivityType } from '@root/lib/utils/regexp';
-import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
-import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
-import { api } from '@root/services';
+import { detectActivityType, parseMetadataFromUrl } from '@doday/lib';
+import ducks from '@doday/duck';
+import api, { DodaysWithProgressQueryParams } from '@doday/api';
 
 /**
  * Fetch Activities(Dodays) nodes with query params
@@ -20,7 +18,7 @@ import { api } from '@root/services';
  * @param {FetchActivitiesAction} action
  */
 export function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
-  yield put(setDodayAppLoadingStateActionCreator(true));
+  yield put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(true));
   const params: DodaysWithProgressQueryParams = action.payload;
   const activities = yield call(api.dodays.queries.fetchDodays, params);
   const activitiesWithProgress = yield call(
@@ -30,7 +28,7 @@ export function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
   yield put(
     setActivitiesActionCreator(activities.concat(activitiesWithProgress))
   );
-  yield put(setDodayAppLoadingStateActionCreator(false));
+  yield put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(false));
 }
 
 /**

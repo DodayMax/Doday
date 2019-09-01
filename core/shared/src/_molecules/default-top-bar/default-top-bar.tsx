@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { LayoutBlock } from '@doday/shared';
-import { TypographySize } from '@doday/lib';
 import {
   createStyles,
   Theme,
@@ -8,6 +6,7 @@ import {
   WithStyles,
   Typography,
 } from '@material-ui/core';
+import { LayoutBlock } from '../../_atoms/layout-block';
 
 const css = (theme: Theme) =>
   createStyles({

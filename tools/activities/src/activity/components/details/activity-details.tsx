@@ -3,35 +3,35 @@ import * as PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as cuid from 'cuid';
 import * as _ from 'lodash';
-import { Space } from '@root/lib/common-interfaces';
-import { Page, PageHeader } from '@shared/_molecules/page';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { RootState } from '@root/lib/models';
-import { CustomDatePicker, Icons } from '@shared';
-import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
-import { actions as dodaysActions } from '@ducks/doday-app';
-import { actions as dodayDetailsActions } from '@ducks/doday-details';
 import {
+  Space,
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
-} from '@root/lib/utils';
-import { Resource } from '@root/lib/models/entities/resource';
-import { LayoutBlock } from '@shared/_atoms/layout-block';
+  Resource,
+  ProgressLike,
+  DodayType,
+  Activity,
+  RootState,
+} from '@doday/lib';
 import {
+  Page,
+  PageHeader,
+  Pageflow,
+  PageWrapperChildContext,
+  LayoutBlock,
+  CustomDatePicker,
+  Icons,
+} from '@doday/shared';
+import ducks, {
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
   RequestForSetUpdatesAction,
   ClearDodayDetailsDirtyStuffAction,
-} from '@root/ducks/doday-details/actions';
-import {
-  Pageflow,
-  PageWrapperChildContext,
-} from '@root/components/shared/_decorators/pageflow';
-import {
   TakeDodayAction,
   UntakeDodayAction,
-} from '@root/ducks/api/dodays-api-actions/actions';
+} from '@doday/duck';
 import { activityIconByType } from '../builders/activity-builder';
 import { WithTranslation, withTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
@@ -47,8 +47,6 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.details';
-import { ProgressLike, DodayType } from '@root/lib/models/entities/common';
-import { Activity } from '@root/lib/models/entities/activity';
 import Media from 'react-media';
 
 interface ActivityDetailsProps {}
@@ -96,13 +94,13 @@ export class ActivityDetailsComponentClass extends React.Component<
   public context!: PageWrapperChildContext;
 
   componentWillUnmount() {
-    this.props.clearSelectedDodayActionCreator();
-    this.props.clearDodayDetailsDirtyStuffActionCreator();
+    this.props.clearSelectedDodayActionCreator!();
+    this.props.clearDodayDetailsDirtyStuffActionCreator!();
   }
 
-  getYouTubeLink = (resource: Resource) => {
+  getYouTubeLink = (resource?: Resource) => {
     if (resource && resource.provider === 'YouTube') {
-      const youtubeID = youtubeIDFromURL(resource.url);
+      const youtubeID = youtubeIDFromURL(resource.url || '');
       if (youtubeID) {
         return `https://www.youtube.com/embed/${youtubeID}`;
       }
@@ -112,16 +110,23 @@ export class ActivityDetailsComponentClass extends React.Component<
   isOwner = () => {
     const { selectedDoday, myDID } = this.props;
     return (
-      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID
+      selectedDoday &&
+      selectedDoday.owner!.did &&
+      myDID &&
+      selectedDoday.owner!.did === myDID
     );
   };
 
   status = () => {
     const { selectedDoday, classes } = this.props;
     const markers = [
-      activityIconByType(selectedDoday.activityType, 30, undefined, 'right'),
+      activityIconByType(selectedDoday!.activityType, 30, undefined, 'right'),
     ];
-    if (selectedDoday.resource && selectedDoday.resource.icon) {
+    if (
+      selectedDoday &&
+      selectedDoday.resource &&
+      selectedDoday.resource.icon
+    ) {
       markers.push(
         <img
           key={cuid()}
@@ -135,11 +140,11 @@ export class ActivityDetailsComponentClass extends React.Component<
 
   renderTakeDodayBlock = () => {
     const { selectedDoday, updates, loading, theme, t } = this.props;
-    if (selectedDoday.progress) {
+    if (selectedDoday && selectedDoday.progress) {
       return <>{t('activities:details.status.alreadyTaken')}</>;
     }
 
-    const dateIsLocked =
+    const dateIsLocked: boolean | undefined =
       updates && updates.dateIsLocked != null
         ? updates.dateIsLocked
         : selectedDoday &&
@@ -153,7 +158,7 @@ export class ActivityDetailsComponentClass extends React.Component<
             withLocker
             isLocked={dateIsLocked}
             onLocked={() => {
-              this.props.requestForSetUpdatesActionCreator({
+              this.props.requestForSetUpdatesActionCreator!({
                 dateIsLocked: !dateIsLocked,
               });
             }}
@@ -169,8 +174,8 @@ export class ActivityDetailsComponentClass extends React.Component<
             }
             tooltip={t('activities:builder.lockDateTooltip')}
             onChange={date => {
-              this.props.requestForSetUpdatesActionCreator({
-                date,
+              this.props.requestForSetUpdatesActionCreator!({
+                date: date || undefined,
               });
             }}
           />
@@ -184,8 +189,8 @@ export class ActivityDetailsComponentClass extends React.Component<
                     color="primary"
                     variant="outlined"
                     onClick={() => {
-                      this.props.takeDodayActionCreator({
-                        doday: selectedDoday,
+                      this.props.takeDodayActionCreator!({
+                        doday: selectedDoday!,
                         progress: {
                           date: new Date(),
                           dateIsLocked: false,
@@ -197,7 +202,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                       if (this.context.requestClose)
                         this.context.requestClose();
                       setTimeout(() => {
-                        this.props.history.push('/dashboard');
+                        this.props.history!.push('/dashboard');
                       }, 200);
                     }}
                   >
@@ -210,8 +215,8 @@ export class ActivityDetailsComponentClass extends React.Component<
               color="primary"
               variant="contained"
               onClick={() => {
-                this.props.takeDodayActionCreator({
-                  doday: selectedDoday,
+                this.props.takeDodayActionCreator!({
+                  doday: selectedDoday!,
                   progress: {
                     date: (updates && updates.date) || new Date(),
                     dateIsLocked: (updates && updates.dateIsLocked) || false,
@@ -221,7 +226,7 @@ export class ActivityDetailsComponentClass extends React.Component<
                 });
                 if (this.context.requestClose) this.context.requestClose();
                 setTimeout(() => {
-                  this.props.history.push('/dashboard');
+                  this.props.history!.push('/dashboard');
                 }, 200);
               }}
             >
@@ -248,14 +253,14 @@ export class ActivityDetailsComponentClass extends React.Component<
           <PageHeader withClose status={selectedDoday && this.status()}>
             {loading ? (
               <Icons.InlineLoader color={theme.palette.action.active} />
-            ) : selectedDoday.progress ? (
+            ) : selectedDoday!.progress ? (
               <Button
                 key={1}
                 variant="outlined"
                 onClick={() => {
-                  this.props.untakeDodayActionCreator({
-                    did: selectedDoday.did,
-                    type: selectedDoday.type,
+                  this.props.untakeDodayActionCreator!({
+                    did: selectedDoday!.did,
+                    type: selectedDoday!.type,
                   });
                 }}
               >
@@ -378,9 +383,9 @@ const mapState = (state: RootState) => ({
 export const ActivityDetails = connect(
   mapState,
   {
-    ...dodaysActions,
-    ...dodayDetailsActions,
-    ...dodaysApiActions,
+    ...ducks.api.actions,
+    ...ducks.details.actions,
+    ...ducks.dodayApp.actions,
   }
 )(
   withStyles(css)(

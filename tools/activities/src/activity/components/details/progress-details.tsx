@@ -3,36 +3,43 @@ import * as cuid from 'cuid';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
 import * as moment from 'moment';
-import { Space } from '@root/lib/common-interfaces';
-import { Page, PageHeader, PageHeaderAction } from '@shared/_molecules/page';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { RootState, DialogState } from '@root/lib/models';
-import { Icons, CustomDatePicker, withDialog, WithDialog } from '@shared';
-import { actions as dodaysApiActions } from '@ducks/api/dodays-api-actions';
-import { actions as dodaysActions } from '@ducks/doday-app';
-import { actions as dodayDetailsActions } from '@ducks/doday-details';
-import { actions as dialogActions } from '@ducks/dialog';
 import {
+  Space,
+  RootState,
+  DialogState,
   youtubeIDFromURL,
   durationToLabel,
   durationToMinutes,
-} from '@root/lib/utils';
-import { LayoutBlock } from '@shared/_atoms/layout-block';
+  Resource,
+  DodayLike,
+  ProgressLike,
+  DodayType,
+  Activity,
+} from '@doday/lib';
 import {
+  Page,
+  PageHeader,
+  PageHeaderAction,
+  Icons,
+  CustomDatePicker,
+  WithDialog,
+  LayoutBlock,
+  Pageflow,
+} from '@doday/shared';
+import { RouteComponentProps, withRouter } from 'react-router';
+import ducks, {
+  UpdateDodayAction,
+  DeleteDodayAction,
+  UntakeDodayAction,
   FetchSelectedDodayAction,
   ClearSelectedDodayAction,
   RequestForSetUpdatesAction,
   ClearDodayDetailsDirtyStuffAction,
-} from '@root/ducks/doday-details/actions';
-import { Pageflow } from '@root/components/shared/_decorators/pageflow';
-import {
-  UpdateDodayAction,
-  DeleteDodayAction,
-  UntakeDodayAction,
-} from '@root/ducks/api/dodays-api-actions/actions';
+  OpenDialogAction,
+  CloseDialogAction,
+} from '@doday/duck';
 import { activityIconByType } from '../builders/activity-builder';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import { Resource } from '@root/lib/models/entities/resource';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
@@ -47,16 +54,6 @@ import {
 } from '@material-ui/core';
 
 import { css } from './css.details';
-import {
-  OpenDialogAction,
-  CloseDialogAction,
-} from '@root/ducks/dialog/actions';
-import {
-  DodayLike,
-  ProgressLike,
-  DodayType,
-} from '@root/lib/models/entities/common';
-import { Activity } from '@root/lib/models/entities/activity';
 
 interface ActivityProgressDetailsProps {}
 
@@ -107,13 +104,13 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsState
 > {
   componentWillUnmount() {
-    this.props.clearSelectedDodayActionCreator();
-    this.props.clearDodayDetailsDirtyStuffActionCreator();
+    this.props.clearSelectedDodayActionCreator!();
+    this.props.clearDodayDetailsDirtyStuffActionCreator!();
   }
 
-  getYouTubeLink = (resource: Resource) => {
+  getYouTubeLink = (resource?: Resource) => {
     if (resource && resource.provider === 'YouTube') {
-      const youtubeID = youtubeIDFromURL(resource.url);
+      const youtubeID = youtubeIDFromURL(resource!.url);
       if (youtubeID) {
         return `https://www.youtube.com/embed/${youtubeID}`;
       }
@@ -123,7 +120,10 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   isOwner = () => {
     const { selectedDoday, myDID } = this.props;
     return (
-      selectedDoday.owner.did && myDID && selectedDoday.owner.did === myDID
+      selectedDoday &&
+      selectedDoday.owner!.did &&
+      myDID &&
+      selectedDoday.owner!.did === myDID
     );
   };
 
@@ -133,15 +133,15 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
     const actions: PageHeaderAction[] = [];
 
     // Add untake action for public dodays
-    if (selectedDoday.public) {
+    if (selectedDoday && selectedDoday.public) {
       actions.push({
         title: t('activities:details.actions.untake'),
         action: () => {
-          this.props.untakeDodayActionCreator({
-            did: selectedDoday.did,
-            type: selectedDoday.type,
+          this.props.untakeDodayActionCreator!({
+            did: selectedDoday!.did,
+            type: selectedDoday!.type,
           });
-          history.push('/dashboard');
+          history!.push('/dashboard');
         },
       });
     }
@@ -151,25 +151,25 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
       actions.push({
         title: t('activities:details.actions.delete'),
         action: () => {
-          this.props.openDialogActionCreator({
+          this.props.openDialogActionCreator!({
             open: true,
             title: 'Are you sure want to delete this doday?',
             actions: [
               <Button
                 onClick={() => {
-                  this.props.closeDialogActionCreator();
+                  this.props.closeDialogActionCreator!();
                 }}
               >
                 No
               </Button>,
               <Button
                 onClick={() => {
-                  this.props.closeDialogActionCreator();
-                  this.props.deleteDodayActionCreator({
-                    did: selectedDoday.did,
-                    type: selectedDoday.type,
+                  this.props.closeDialogActionCreator!();
+                  this.props.deleteDodayActionCreator!({
+                    did: selectedDoday!.did,
+                    type: selectedDoday!.type,
                   });
-                  history.push('/dashboard');
+                  history!.push('/dashboard');
                 }}
               >
                 Yes
@@ -187,20 +187,24 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   status = () => {
     const { selectedDoday, classes, t } = this.props;
     const markers = [
-      activityIconByType(selectedDoday.activityType, 30, undefined, 'right'),
+      activityIconByType(selectedDoday!.activityType, 30, undefined, 'right'),
     ];
-    if (selectedDoday.progress && selectedDoday.progress.completed) {
+    if (selectedDoday!.progress && selectedDoday!.progress.completed) {
       markers.push(
         <Typography
           key={cuid()}
           variant="caption"
           className={classes.completed}
         >{`${t('activities:details.status.completed')}: ${moment(
-          selectedDoday.progress.completedAt
+          selectedDoday!.progress.completedAt
         ).format('ll')}`}</Typography>
       );
     }
-    if (selectedDoday.resource && selectedDoday.resource.icon) {
+    if (
+      selectedDoday &&
+      selectedDoday.resource &&
+      selectedDoday.resource.icon
+    ) {
       markers.push(
         <img
           onError={ev => {
@@ -208,7 +212,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
           }}
           key={cuid()}
           className={classes.resourceStatusIcon}
-          src={selectedDoday.resource.icon}
+          src={selectedDoday!.resource.icon}
         />
       );
     }
@@ -251,9 +255,9 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                 variant="contained"
                 disabled={!dirty}
                 onClick={() => {
-                  this.props.updateDodayActionCreator({
-                    did: selectedDoday.did,
-                    type: selectedDoday.type,
+                  this.props.updateDodayActionCreator!({
+                    did: selectedDoday!.did,
+                    type: selectedDoday!.type,
                     updates: {
                       progress: updates,
                     },
@@ -286,7 +290,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                       withLocker
                       isLocked={dateIsLocked}
                       onLocked={() => {
-                        this.props.requestForSetUpdatesActionCreator({
+                        this.props.requestForSetUpdatesActionCreator!({
                           dateIsLocked: !dateIsLocked,
                         });
                       }}
@@ -301,12 +305,14 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                       }
                       tooltip={t('activities:builder.lockDateTooltip')}
                       onChange={date => {
-                        const dateDirty =
-                          moment(date).format('ll') !==
-                          moment(selectedDoday.progress.date).format('ll');
-                        this.props.requestForSetUpdatesActionCreator({
-                          date: dateDirty ? date : undefined,
-                        });
+                        if (date) {
+                          const dateDirty =
+                            moment(date).format('ll') !==
+                            moment(selectedDoday!.progress!.date).format('ll');
+                          this.props.requestForSetUpdatesActionCreator!({
+                            date: dateDirty ? date : undefined,
+                          });
+                        }
                       }}
                     />
                     <Tooltip
@@ -320,7 +326,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                       {
                         <IconButton
                           onClick={() =>
-                            this.props.requestForSetUpdatesActionCreator({
+                            this.props.requestForSetUpdatesActionCreator!({
                               pinned: !isPinned,
                             })
                           }
@@ -340,12 +346,12 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
             <LayoutBlock spaceAbove={Space.XSmall} valign="vflexCenter">
               <IconButton
                 onClick={() => {
-                  this.props.updateDodayActionCreator({
+                  this.props.updateDodayActionCreator!({
                     did: selectedDoday.did,
                     type: selectedDoday.type,
                     updates: {
                       progress: {
-                        completed: !selectedDoday.progress.completed,
+                        completed: !selectedDoday!.progress!.completed,
                         completedAt: new Date(),
                       },
                     },
@@ -475,10 +481,10 @@ const mapState = (state: RootState) => ({
 export const ActivityProgressDetails = connect(
   mapState,
   {
-    ...dodaysActions.actionCreators,
-    ...dodayDetailsActions.actionCreators,
-    ...dodaysApiActions.actionCreators,
-    ...dialogActions.actionCreators,
+    ...ducks.dodays.actions,
+    ...ducks.details.actions,
+    ...ducks.api.actions,
+    ...ducks.dialog.actions,
   }
 )(
   withStyles(css)(

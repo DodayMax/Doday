@@ -4,7 +4,33 @@
   "main": "dist/src/index.js",
   "private": false,
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.9.0",
+    "@doday/lib": "0.1.0",
+    "@doday/shared": "0.1.0",
+    "@doday/duck": "0.1.0",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "cuid": "^2.1.6",
+    "lodash": "^4.17.15",
+    "react-redux": "^6.0.1",
+    "prop-types": "^15.7.2",
+    "react-i18next": "^10.6.0",
+    "react-router-dom": "^5.0.0",
+    "react-media": "^1.9.2",
+    "moment": "^2.24.0"
+  },
+  "devDependencies": {
+    "@types/cuid": "^1.3.0",
+    "@types/i18next": "^12.1.0",
+    "@types/lodash": "^4.14.138",
+    "@types/moment": "^2.13.0",
+    "@types/prop-types": "^15.7.1",
+    "@types/react-redux": "^7.0.6",
+    "@types/react-router-dom": "^4.3.1",
+    "@types/react-dom": "16.8.3",
+    "@types/react-i18next": "^8.1.0"
+  },
   "scripts": {
     "build": "tsc"
   }

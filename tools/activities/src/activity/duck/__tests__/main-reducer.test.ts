@@ -1,11 +1,6 @@
 import { mainReducer, initialActivityToolState } from '../reducer';
 import { actionCreators, optimisticUpdatesActionCreators } from '../actions';
-import {
-  activity,
-  doday,
-  progress,
-} from '@root/lib/common-interfaces/fake-data';
-import { Activity } from '@root/lib/models/entities/activity';
+import { Activity, activity, doday, progress } from '@doday/lib';
 
 describe("test activity's main reducer", () => {
   it('set fetched activities reducer', () => {
@@ -54,7 +49,7 @@ describe("test activity's main reducer", () => {
         payload
       )
     );
-    expect(newState.dodays[0].progress.completed).toBe(true);
+    expect(newState.dodays[0].progress!.completed).toBe(true);
   });
 
   it('dont update doday optimistically if there are no dodays in state', () => {
@@ -99,7 +94,6 @@ describe("test activity's main reducer", () => {
   });
 
   it('take doday optimistically if there are no dodays', () => {
-    const activities: Activity[] = [];
     const payload = {
       doday,
       progress,

@@ -3,8 +3,6 @@ import {
   serializedActivity,
   deserialzedActivityProgress,
   serializedActivityProgress,
-} from '@root/lib/common-interfaces/fake-data';
-import {
   serializeActivity,
   deserializeActivity,
   serializeActivityProgress,
@@ -12,8 +10,7 @@ import {
   deserializeActivityProgress,
   SerializedActivityProgress,
   isEntity,
-} from '@root/lib/models/entities/activity';
-import { DodayType } from '@root/lib/models/entities/common';
+} from '@doday/lib';
 
 describe('Test activities serialize helper functions', () => {
   it('serialize activity', () => {
@@ -50,10 +47,10 @@ describe('Test activities serialize helper functions', () => {
       completedAt: new Date(),
     };
     const serialized = serializeActivityProgress(partialProgress);
-    expect(serialized.hasOwnProperty('completed')).toBe(true);
-    expect(serialized.hasOwnProperty('completedAt')).toBe(true);
-    expect(serialized.hasOwnProperty('date')).toBe(false);
-    expect(serialized.hasOwnProperty('tookAt')).toBe(false);
+    expect(serialized!.hasOwnProperty('completed')).toBe(true);
+    expect(serialized!.hasOwnProperty('completedAt')).toBe(true);
+    expect(serialized!.hasOwnProperty('date')).toBe(false);
+    expect(serialized!.hasOwnProperty('tookAt')).toBe(false);
   });
 
   it('deserialize activity progress', () => {
@@ -71,9 +68,9 @@ describe('Test activities serialize helper functions', () => {
       date: Date.now(),
     };
     const deserialized = deserializeActivityProgress(partialProgress);
-    expect(deserialized.hasOwnProperty('date')).toBe(true);
-    expect(deserialized.hasOwnProperty('tookAt')).toBe(false);
-    expect(deserialized.hasOwnProperty('completedAt')).toBe(false);
+    expect(deserialized!.hasOwnProperty('date')).toBe(true);
+    expect(deserialized!.hasOwnProperty('tookAt')).toBe(false);
+    expect(deserialized!.hasOwnProperty('completedAt')).toBe(false);
   });
 
   it('isEntity returns correct value', () => {

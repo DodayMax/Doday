@@ -7,7 +7,7 @@ import {
   UntakeDodayOptimisticUpdateAction,
   DeleteDodayOptimisticUpdateAction,
 } from '../actions';
-import { doday, progress } from '@root/lib/common-interfaces/fake-data';
+import { doday, progress } from '@doday/lib';
 
 describe('Activities optimistic sideeffects', () => {
   it('create doday optimistic update', () => {
@@ -46,7 +46,7 @@ describe('Activities optimistic sideeffects', () => {
 
   it('take doday optimistic update', () => {
     const payload = {
-      did: doday.did,
+      doday,
       progress: progress,
     };
     const expectedActionObject: TakeDodayOptimisticUpdateAction = {

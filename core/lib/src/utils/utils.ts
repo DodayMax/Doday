@@ -4,7 +4,8 @@ import { config } from '../dms';
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
 
-export const youtubeIDFromURL = (url: string) => {
+export const youtubeIDFromURL = (url?: string) => {
+  if (!url) return;
   const splitted = url.split('v=');
   return splitted.length > 0 ? splitted[1] : undefined;
 };

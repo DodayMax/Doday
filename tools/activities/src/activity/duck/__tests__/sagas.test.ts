@@ -5,22 +5,21 @@ import {
   FetchActivitiesAction,
   ParseUrlMetadataAction,
 } from '../actions';
-import { api } from '@root/services';
-import { DodaysWithProgressQueryParams } from '@root/services/api/dodays/queries';
+import api, { DodaysWithProgressQueryParams } from '@doday/api';
 import {
   fetchActivitiesActionSaga,
   parseUrlMetadataActionSaga,
 } from '../sagas';
-import { setDodayAppLoadingStateActionCreator } from '@root/ducks/doday-app/actions';
+import ducks from '@doday/duck';
 import {
   activity,
   doday,
   deserializedResource,
-} from '@root/lib/common-interfaces/fake-data';
-import { detectActivityType } from '@root/lib/utils';
-import { parseMetadataFromUrl } from '@root/lib/utils/api-utils';
-import { Activity } from '@root/lib/models/entities/activity';
-import { DodayType } from '@root/lib/models/entities/common';
+  detectActivityType,
+  parseMetadataFromUrl,
+  Activity,
+  DodayType,
+} from '@doday/lib';
 
 describe('Test Activities sagas', () => {
   it('fetchActivitiesActionSaga', () => {
@@ -35,7 +34,7 @@ describe('Test Activities sagas', () => {
     };
     const gen = fetchActivitiesActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(true))
+      put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(
       call(api.dodays.queries.fetchDodays, action.payload)
@@ -51,7 +50,7 @@ describe('Test Activities sagas', () => {
       )
     );
     expect(gen.next().value).toEqual(
-      put(setDodayAppLoadingStateActionCreator(false))
+      put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
@@ -89,7 +88,6 @@ describe('Test Activities sagas', () => {
   it('parseUrlMetadataActionSaga with bad url', () => {
     const url = 'https://...';
     const metadata = undefined;
-    const activityType = detectActivityType(metadata);
     const action: ParseUrlMetadataAction = {
       type: ActionConstants.PARSE_URL,
       payload: url,

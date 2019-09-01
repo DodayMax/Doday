@@ -1,6 +1,5 @@
 import { Theme, createStyles } from '@material-ui/core';
-import { config } from '@root/styles/config';
-import { utils } from '@root/styles/utils';
+import { config, utils } from '@doday/lib';
 
 export const css = (theme: Theme) =>
   createStyles({
