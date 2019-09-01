@@ -5,7 +5,7 @@ import {
 import { HeroSettingsState } from '@doday/lib';
 
 export const initialHeroSettingsState: HeroSettingsState = {
-  isDrawerCollapsed: false,
+  isDrawerCollapsed: true,
   isDodayAppCollapsed: false,
   theme: 'dark',
 };

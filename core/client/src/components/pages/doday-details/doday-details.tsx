@@ -50,7 +50,7 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
         !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );
     if (tool) {
-      const Component = tool.components.details[selectedDodayType].public;
+      const Component = tool.views.details[selectedDodayType].public;
       return <Component />;
     }
 

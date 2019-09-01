@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as cuid from 'cuid';
+import * as _ from 'lodash';
 import ducks, { ChangeDodayAppRouteAction } from '@doday/duck';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -9,7 +9,9 @@ import {
   WithTools,
   DodayLike,
 } from '@doday/lib';
-import { createStyles, withStyles, WithStyles, Theme } from '@material-ui/core';
+import { DynamicModuleLoader } from 'redux-dynamic-modules';
+import { withTranslation, WithTranslation } from 'react-i18next';
+import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
 
 export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -23,11 +25,23 @@ interface PropsFromConnect {
   ) => ChangeDodayAppRouteAction;
 }
 
+const css = (theme: Theme) =>
+  createStyles({
+    dodayAppContainer: {
+      display: 'flex',
+      flexDirection: 'column',
+      height: `calc(100vh - 64px)`,
+      borderRight: `1px solid ${theme.palette.divider}`,
+    },
+  });
+
 export class DodayAppComponent extends React.Component<
   DodayAppProps &
     WithTools &
+    WithStyles &
     Partial<PropsFromConnect> &
-    Partial<RouteComponentProps>
+    Partial<RouteComponentProps> &
+    WithTranslation
 > {
   componentDidMount() {
     const { activeTools, location } = this.props;
@@ -52,29 +66,37 @@ export class DodayAppComponent extends React.Component<
         entity => entity.type === item.type
       );
       if (entity != undefined) {
-        const Tag = tool.components.cells[entity.type].progress;
+        const Tag = tool.views.cells[entity.type].progress;
         return (
-          <Tag doday={item} key={cuid()} onClick={this.handleDodayCellClick} />
+          <Tag
+            doday={item}
+            key={_.uniqueId('tag-')}
+            onClick={this.handleDodayCellClick}
+          />
         );
       }
     });
   };
 
   private renderDodayApp = () => {
-    const { loading, activeTools, history, location, match } = this.props;
+    const { loading, activeTools, history, location, match, t } = this.props;
     const tool = Object.values(activeTools).find(
       tool => tool.config.route === this.props.route
     );
-    console.log(tool);
-    if (tool)
+    if (tool && tool.loaded) {
+      const Component = tool.views.dodayApp as any;
       return (
-        <tool.components.dodayApp
-          loading={loading}
-          history={history}
-          location={location}
-          match={match}
-        />
+        <DynamicModuleLoader modules={[tool.modules.main()]}>
+          <Component
+            loading={loading}
+            history={history}
+            location={location}
+            match={match}
+            t={t}
+          />
+        </DynamicModuleLoader>
       );
+    }
     return undefined;
   };
 
@@ -128,14 +150,19 @@ export class DodayAppComponent extends React.Component<
   // }
 
   render() {
-    return <section>{this.renderDodayApp()}</section>;
+    const { classes } = this.props;
+    return (
+      <section className={classes.dodayAppContainer}>
+        {this.renderDodayApp()}
+      </section>
+    );
   }
 }
 
 const mapState = ({ auth, dodayApp }: RootState) => ({
-  loading: dodayApp.status.loading,
-  route: dodayApp.status.route,
-  routeParams: dodayApp.status.routeParams,
+  loading: dodayApp.loading,
+  route: dodayApp.route,
+  routeParams: dodayApp.routeParams,
   activeTools: auth.activeTools,
 });
 
@@ -147,4 +174,4 @@ export default connect(
     ...ducks.details.actions,
     ...ducks.api.actions,
   }
-)(DodayAppComponent);
+)(withTranslation('activities')(withStyles(css)(DodayAppComponent)));

@@ -41,7 +41,7 @@ export const Dashboard = withStyles(css)(
             <Route
               key={index}
               path={tool.config.route}
-              component={tool.components.overview}
+              component={tool.views.overview}
             />
           ) : null
         )}

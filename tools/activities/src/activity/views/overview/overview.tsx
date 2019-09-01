@@ -11,7 +11,7 @@ export class ActivityOverviewComponentClass extends React.Component<
 > {
   private get actions() {
     const { history, t } = this.props;
-    return config.entities.map((entity: Entity, index: number) => (
+    return config.entities!.map((entity: Entity, index: number) => (
       <Button
         variant="contained"
         color="primary"

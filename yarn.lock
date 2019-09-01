@@ -1080,6 +1080,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.5.5":
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.5.5.tgz#74fba56d35efbeca444091c7850ccd494fd2f132"
+  integrity sha512-28QvEGyQyNkB0/m2B4FU7IEZGK2NUrcMtT6BZEFALTguLk+AUT6ofsHtPk5QyjAdUkpMJ+/Em+quwz4HOt30AQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.2.2", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -14478,10 +14485,45 @@ redent@^2.0.0:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
 
-redux-devtools-extension@^2.13.8:
+redux-devtools-extension@^2.13.7, redux-devtools-extension@^2.13.8:
   version "2.13.8"
   resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.8.tgz#37b982688626e5e4993ff87220c9bbb7cd2d96e1"
   integrity sha512-8qlpooP2QqPtZHQZRhx3x3OP5skEV1py/zUdMY28WNAocbafxdG2tRD1MWE7sp8obGMNYuLWanhhQ7EQvT1FBg==
+
+redux-dynamic-middlewares@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/redux-dynamic-middlewares/-/redux-dynamic-middlewares-1.0.0.tgz#a4c5859a6018a1d7fab3bdd4989f51095c806d15"
+  integrity sha512-smX1eY17dH90FVtXL6JPW01on1ptP4SOlkDYON5Lka52RNcZfgWM6hvtoZKA3O+dZL2/ytbS+tHo2gdKln5iHw==
+
+redux-dynamic-modules-core@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/redux-dynamic-modules-core/-/redux-dynamic-modules-core-5.0.2.tgz#dcc5797277bbeb3e4fa40308fbea34be880c9d86"
+  integrity sha512-gwybDFWlTRlbOtZJPqoIq3QHPo+UpeApa7A3qM7RTPXWbOAJHg5sjVW38jbDS2Wae/xCaxl0uE/unS2a7WfEBw==
+  dependencies:
+    redux-devtools-extension "^2.13.7"
+    redux-dynamic-middlewares "^1.0.0"
+
+redux-dynamic-modules-react@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/redux-dynamic-modules-react/-/redux-dynamic-modules-react-5.0.2.tgz#d515cce55d38828af7abd66635e2a62514851055"
+  integrity sha512-VN3xfiZFx9T6wbd/iIgRWBkImzHIO1RWrLO704gMR5ReWiNwSDgz79chi2scueVwiDyiCPelJWeSTg00EDusOg==
+  dependencies:
+    redux-devtools-extension "^2.13.7"
+    redux-dynamic-middlewares "^1.0.0"
+    redux-dynamic-modules-core "^5.0.2"
+
+redux-dynamic-modules-saga@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/redux-dynamic-modules-saga/-/redux-dynamic-modules-saga-5.0.2.tgz#6eaa5bd3018c7599ba98a1d2c62d6bf0c5b62f94"
+  integrity sha512-TIGnS5xLir0neUP5NpsWqfc0OXUM3k4xI4COI+o2j0ugfUpvbMRVakhvk9yP0iypsJgPvYvg8c0apwiPBDi/Qg==
+
+redux-dynamic-modules@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/redux-dynamic-modules/-/redux-dynamic-modules-5.0.2.tgz#3fbe9e9c7f56e6467624e1b3e181df7e90776224"
+  integrity sha512-WBrlGs34Jgoiz8kXpIne/XMU3ZiLe+TLsJ0fTwar/oN2AQps1NUIrmErl4uRIsC8+jNbZ6nYGZkAr3e1kPCY8A==
+  dependencies:
+    redux-dynamic-modules-core "^5.0.2"
+    redux-dynamic-modules-react "^5.0.2"
 
 redux-saga@*, redux-saga@^1.0.2:
   version "1.0.2"
@@ -14489,6 +14531,19 @@ redux-saga@*, redux-saga@^1.0.2:
   integrity sha512-dHV256by3eF2AnBPx1l3HqazQFkErZ82HDXgh4jSRpT72OrX31wyg8DA1q8+0HvENRfJAyhT/4qT5yH/vVqFfw==
   dependencies:
     "@redux-saga/core" "^1.0.2"
+
+redux-subspace-saga@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux-subspace-saga/-/redux-subspace-saga-4.0.0.tgz#9cb495683e71620bb5212f997482e3cbca28f96d"
+  integrity sha512-0mq2MxpBT+B7iTtQOG+caTNpm+F5JW4scdNy1LQfPdJFw0WNueKq5RzLiwmYYKX6XNuQ/Z3ihS3oJvcVp5Xz+A==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    redux-subspace "^4.0.0"
+
+redux-subspace@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/redux-subspace/-/redux-subspace-4.0.0.tgz#8c668274d47488aaf72b803b2696dcc5b09b7d78"
+  integrity sha512-0SmYzhKiZl0Tco5w8rjRhoqgCULdVgN+fhDFpfue3+6Iov4nTzT1bx+ujQLpztIBB52B6XGercM4Kh4kkorKgg==
 
 "redux@>=0.10 <5", redux@^4.0.0:
   version "4.0.1"

@@ -77,9 +77,5 @@ export const css = (theme: Theme) =>
     dodayAppContainer: {
       minWidth: '28rem',
       maxWidth: '3rem',
-      display: 'flex',
-      flexDirection: 'column',
-      height: `calc(100vh - 64px)`,
-      borderRight: `1px solid ${theme.palette.divider}`,
     },
   });

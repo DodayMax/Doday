@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, all } from 'redux-saga/effects';
 import {
   ActionConstants,
   ParseUrlMetadataAction,
@@ -47,7 +47,14 @@ export function* parseUrlMetadataActionSaga(action: ParseUrlMetadataAction) {
   yield put(setUrlParsingProgressActionCreator(false));
 }
 
-export default [
-  takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataActionSaga),
-  takeLatest(ActionConstants.FETCH_ACTIVITIES, fetchActivitiesActionSaga),
-];
+export function* mainSagas() {
+  yield all([
+    takeLatest(ActionConstants.FETCH_ACTIVITIES, fetchActivitiesActionSaga),
+  ]);
+}
+
+export function* builderSagas() {
+  yield all([
+    takeLatest(ActionConstants.PARSE_URL, parseUrlMetadataActionSaga),
+  ]);
+}

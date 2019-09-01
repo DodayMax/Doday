@@ -160,7 +160,7 @@ class PageHeaderComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  route: state.dodayApp.status.route,
+  route: state.dodayApp.route,
 });
 
 export const PageHeader = connect(mapState)(

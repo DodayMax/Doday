@@ -48,7 +48,10 @@
     "react-stripe-checkout": "^2.6.3",
     "react-transition-group": "^4.0.0",
     "react-virtualized": "^9.21.1",
+    "redux-dynamic-modules": "^5.0.2",
+    "redux-dynamic-modules-saga": "^5.0.2",
     "redux-saga": "^1.0.2",
+    "redux-subspace-saga": "^4.0.0",
     "resolve": "1.10.0",
     "sfcookies": "^1.0.2"
   },

@@ -124,7 +124,10 @@ export const rootState: RootState = {
     activeTools: {},
   },
   dodayApp: {
-    status: {} as any,
+    loading: false,
+    route: '',
+    routeParams: {},
+    badge: 0,
   },
   dodayDetails: {} as any,
   builder: {
@@ -132,7 +135,7 @@ export const rootState: RootState = {
     tools: {},
   },
   heroSettings: {} as any,
-  tools: {},
+  activities: {},
   store: {} as any,
   toast: {
     open: false,

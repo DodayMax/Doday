@@ -8,7 +8,6 @@ export interface ShopTool {
   title: string;
   description?: string;
   price: number;
-  path: string;
 }
 
 export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
@@ -23,8 +22,9 @@ export type ToolsState = { [K in ToolSysname]?: BaseToolState };
 /** ToolBeacon export interface */
 export interface ToolBeacon {
   loading?: boolean;
+  loaded?: boolean;
   config?: ToolConfig;
-  components?: {
+  views?: {
     dodayApp: React.ComponentType<
       React.HTMLAttributes<HTMLElement> &
         RouteComponentProps & { loading: boolean }
@@ -45,29 +45,25 @@ export interface ToolBeacon {
     overview: React.ComponentType;
   };
   api?: any;
-  duck?: {
-    actions: {
-      actionCreators: any;
-      optimisticUpdatesActionCreators: {
-        createDodayOptimisticUpdateActionCreator: any;
-        updateDodayOptimisticUpdateActionCreator: any;
-        takeDodayOptimisticUpdateActionCreator: any;
-        untakeDodayOptimisticUpdateActionCreator: any;
-        deleteDodayOptimisticUpdateActionCreator: any;
-      };
+  actions?: {
+    actionCreators: any;
+    optimisticUpdatesActionCreators: {
+      createDodayOptimisticUpdateActionCreator: any;
+      updateDodayOptimisticUpdateActionCreator: any;
+      takeDodayOptimisticUpdateActionCreator: any;
+      untakeDodayOptimisticUpdateActionCreator: any;
+      deleteDodayOptimisticUpdateActionCreator: any;
     };
-    sagas: any;
-    reducers: {
-      mainReducer: any;
-      builderReducer: any;
-    };
+  };
+  modules?: {
+    main: any;
+    builder: any;
   };
 }
 
 export type ToolConfig = {
   sysname: ToolSysname;
   entities?: Entity[];
-  price?: number;
   route?: string;
   icon?: IconNames;
 };

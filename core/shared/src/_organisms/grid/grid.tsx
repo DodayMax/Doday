@@ -44,6 +44,9 @@ const css = (theme: Theme) =>
       padding: '0',
       overflowY: 'scroll',
       boxSizing: 'border-box',
+      '& > ul': {
+        padding: '0 !important',
+      },
     },
   });
 

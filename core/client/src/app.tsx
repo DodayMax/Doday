@@ -11,7 +11,7 @@ import {
 import i18next from 'i18next';
 import Media from 'react-media';
 import { Shell, DesktopShell } from '@components';
-import { RootState, ThemeType, colors } from '@doday/lib';
+import { ThemeType, colors } from '@doday/lib';
 import { Toast, DodayDialog } from './containers';
 
 interface AppProps {}
@@ -30,7 +30,7 @@ export class AppComponent extends React.Component<
   AppProps & Partial<PropsFromConnect> & TranslationProps & WithTheme
 > {
   private get theme() {
-    const { theme, themeType } = this.props;
+    const { theme, themeType = 'dark' } = this.props;
     const themeConfig = createMuiTheme({
       palette: {
         type: themeType,
@@ -138,8 +138,4 @@ export class AppComponent extends React.Component<
   }
 }
 
-const mapState = (state: RootState) => ({
-  themeType: state.heroSettings.theme,
-});
-
-export const App = connect(mapState)(withTheme()(AppComponent));
+export const App = withTheme()(AppComponent);

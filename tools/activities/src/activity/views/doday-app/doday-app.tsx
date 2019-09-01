@@ -23,11 +23,11 @@ import ducks, {
 import { Grid, DefaultTopBar } from '@doday/shared';
 import { config } from '../../config';
 import { FetchActivitiesAction } from '../../duck/actions';
-import { WithTranslation, withTranslation } from 'react-i18next';
 import { ActivityToolState } from '../../duck/reducer';
 
 export interface ActivityDodayAppProps {
   loading: boolean;
+  t?: any;
 }
 
 interface PropsFromConnect {
@@ -55,12 +55,11 @@ interface PropsFromConnect {
   ) => SetDodayAppQueryParamsAction;
 }
 
-export class ActivityDodayAppComponentClass extends React.Component<
-  ActivityDodayAppProps &
-    Partial<PropsFromConnect> &
-    RouteComponentProps &
-    WithTranslation
-> {
+type Props = ActivityDodayAppProps &
+  Partial<PropsFromConnect> &
+  RouteComponentProps;
+
+export class ActivityDodayAppComponentClass extends React.Component<Props> {
   componentDidMount() {
     this.props.fetchActivitiesActionCreator!({
       dodaytype: DodayType.Activity,
@@ -194,12 +193,9 @@ export class ActivityDodayAppComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  route: state.dodayApp.status.route,
-  routeParams: state.dodayApp.status.routeParams,
-  dodays:
-    state.tools &&
-    state.tools.activities &&
-    (state.tools.activities as ActivityToolState).dodays,
+  route: state.dodayApp.route,
+  routeParams: state.dodayApp.routeParams,
+  dodays: state.activities && (state.activities as ActivityToolState).dodays,
   myDID: state.auth.hero && state.auth.hero.did,
 });
 
@@ -210,4 +206,4 @@ export const ActivityDodayApp = connect(
     ...ducks.api.actions,
     ...ducks.dodayApp.actions,
   }
-)(withTranslation('activities')(ActivityDodayAppComponentClass));
+)(ActivityDodayAppComponentClass);

@@ -1,7 +1,7 @@
 import { DodayAppActionConstants, DodayAppActionTypes } from './actions';
-import { DodayAppStatusState } from '@doday/lib';
+import { DodayAppState } from '@doday/lib';
 
-export const initialStatusState: DodayAppStatusState = {
+export const initialStatusState: DodayAppState = {
   loading: false,
   route: '',
   routeParams: {},
@@ -11,7 +11,7 @@ export const initialStatusState: DodayAppStatusState = {
 export default (
   state = initialStatusState,
   action: DodayAppActionTypes
-): DodayAppStatusState => {
+): DodayAppState => {
   switch (action.type) {
     case DodayAppActionConstants.SET_LOADING_STATE:
       return {

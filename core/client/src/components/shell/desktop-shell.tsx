@@ -89,8 +89,8 @@ class DesktopShell extends React.Component<
     WithTranslation,
   DesktopShellState
 > {
-  constructor(props) {
-    super(props);
+  constructor(props, context) {
+    super(props, context);
 
     // Keep in state for forceCollapsing
     this.state = {
@@ -323,7 +323,6 @@ class DesktopShell extends React.Component<
                                 price: 0,
                               },
                             ];
-                            const loadedTools = [];
                             fakeTools.map(async tool => {
                               this.props.addActiveToolBeaconActionCreator({
                                 loading: true,
@@ -334,6 +333,7 @@ class DesktopShell extends React.Component<
                               loadTool(tool.sysname).then(loadedTool => {
                                 this.props.addActiveToolBeaconActionCreator({
                                   loading: false,
+                                  loaded: true,
                                   ...loadedTool.default,
                                 });
                               });
@@ -437,7 +437,7 @@ const mapState = (state: RootState) => ({
   isDodayAppCollapsed: state.heroSettings.isDodayAppCollapsed,
   hero: state.auth.hero,
   activeTools: state.auth.activeTools,
-  dodayAppRoute: state.dodayApp.status.route,
+  dodayAppRoute: state.dodayApp.route,
 });
 
 export default connect(

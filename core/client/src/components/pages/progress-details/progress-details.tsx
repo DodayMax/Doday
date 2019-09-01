@@ -53,7 +53,7 @@ class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
         !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );
     if (tool) {
-      const Component = tool.components.details[selectedDodayType].progress;
+      const Component = tool.views.details[selectedDodayType].progress;
       return <Component />;
     }
 
