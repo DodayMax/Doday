@@ -6,7 +6,7 @@ import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
 export interface RootState {
   auth: AuthState;
   dodayApp: DodayAppState;
-  dodayDetails: DodayDetailsState;
+  details: DodayDetailsState;
   builder: BuilderState;
   heroSettings: HeroSettingsState;
   store: StoreState;

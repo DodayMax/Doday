@@ -129,7 +129,7 @@ export const rootState: RootState = {
     routeParams: {},
     badge: 0,
   },
-  dodayDetails: {} as any,
+  details: {} as any,
   builder: {
     status: {} as any,
     tools: {},

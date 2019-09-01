@@ -6,21 +6,42 @@ import { ActivityCell } from './doday-app/cells/app-cell/activity-cell';
 import { ActivityProgressCell } from './doday-app/cells/app-cell/activity-progress-cell';
 import { ActivityOverview } from './overview/overview';
 import { DodayType } from '@doday/lib';
+import {
+  getActivitiesMainModule,
+  getActivitiesBuilderModule,
+} from '../modules';
 
 export const components: any = {
-  dodayApp: ActivityDodayApp,
-  cells: {
-    [DodayType.Activity]: {
-      public: ActivityCell,
-      progress: ActivityProgressCell,
+  app: {
+    component: ActivityDodayApp,
+    dependencies: [getActivitiesMainModule()],
+    cells: {
+      [DodayType.Activity]: {
+        public: ActivityCell,
+        progress: ActivityProgressCell,
+      },
     },
   },
-  builders: { [DodayType.Activity]: ActivityBuilder },
-  details: {
+  builder: {
     [DodayType.Activity]: {
-      public: ActivityDetails,
-      progress: ActivityProgressDetails,
+      component: ActivityBuilder,
+      dependencies: [getActivitiesBuilderModule()],
     },
   },
-  overview: ActivityOverview,
+  detail: {
+    [DodayType.Activity]: {
+      public: {
+        component: ActivityDetails,
+        dependencies: [],
+      },
+      progress: {
+        component: ActivityProgressDetails,
+        dependencies: [],
+      },
+    },
+  },
+  overview: {
+    component: ActivityOverview,
+    dependencies: [],
+  },
 };

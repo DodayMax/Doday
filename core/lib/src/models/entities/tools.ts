@@ -1,7 +1,6 @@
-import { RouteComponentProps } from 'react-router';
 import { DodayType, Entity } from './common';
-import { CellProps } from '../../common-interfaces';
 import { IconNames } from '../../types';
+import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 
 export interface ShopTool {
   sysname: string;
@@ -25,24 +24,21 @@ export interface ToolBeacon {
   loaded?: boolean;
   config?: ToolConfig;
   views?: {
-    dodayApp: React.ComponentType<
-      React.HTMLAttributes<HTMLElement> &
-        RouteComponentProps & { loading: boolean }
-    >;
+    dodayApp: ToolView;
     cells: {
       [K in DodayType]?: {
-        public: React.ComponentType<CellProps>;
-        progress: React.ComponentType<CellProps>;
+        public: ToolView;
+        progress: ToolView;
       };
     };
-    builders: { [K in DodayType]?: React.ComponentType<WithTools> };
-    details: {
+    builder: { [K in DodayType]?: ToolView };
+    detail: {
       [K in DodayType]?: {
-        public: React.ComponentType;
-        progress: React.ComponentType;
+        public: ToolView;
+        progress: ToolView;
       };
     };
-    overview: React.ComponentType;
+    overview: ToolView;
   };
   api?: any;
   actions?: {
@@ -71,3 +67,35 @@ export type ToolConfig = {
 export type WithTools = {
   activeTools: { [key: string]: ToolBeacon };
 };
+
+export interface ToolView {
+  component: React.ComponentType<any>;
+  dependencies: IModule<any>[];
+}
+
+export interface IModule<State> {
+  /**
+   * Id of the module
+   */
+  id: string;
+  /**
+   * Reducers for the module
+   */
+  reducerMap?: ReducersMapObject<State, AnyAction>;
+  /**
+   * Middlewares to add to the store
+   */
+  middlewares?: Middleware[];
+  /**
+   * These actions are dispatched immediately after adding the module in the store
+   */
+  initialActions?: AnyAction[];
+  /**
+   * These actions are dispatched immediatly before removing the module from the store
+   */
+  finalActions?: AnyAction[];
+  /**
+   * Specifies if the module is retained forever in the store
+   */
+  retained?: boolean;
+}

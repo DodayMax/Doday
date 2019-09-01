@@ -8,6 +8,7 @@ export const getRootModule = () => ({
   reducerMap: {
     auth: ducks.auth.reducer,
     dodayApp: ducks.dodayApp.reducer,
+    details: ducks.details.reducer,
     heroSettings: ducks.settings.reducer,
     store: ducks.store.reducer,
     toast: ducks.toast.reducer,
@@ -20,6 +21,7 @@ function* rootSaga() {
   yield all([
     ...ducks.auth.sagas,
     ...ducks.settings.sagas,
+    ...ducks.details.sagas,
     ...ducks.dodayApp.sagas,
     ...ducks.api.sagas,
     ...ducks.store.sagas,

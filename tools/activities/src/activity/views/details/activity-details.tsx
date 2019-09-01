@@ -33,7 +33,6 @@ import ducks, {
   UntakeDodayAction,
 } from '@doday/duck';
 import { activityIconByType } from '../builders/activity-builder';
-import { WithTranslation, withTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
@@ -49,7 +48,9 @@ import {
 import { css } from './css.details';
 import Media from 'react-media';
 
-interface ActivityDetailsProps {}
+interface ActivityDetailsProps {
+  t?: any;
+}
 
 interface ActivityDetailsState {}
 
@@ -77,7 +78,6 @@ interface PropsFromConnect {
 type Props = ActivityDetailsProps &
   Partial<PropsFromConnect> &
   Partial<RouteComponentProps<any>> &
-  WithTranslation &
   WithStyles &
   WithTheme;
 
@@ -374,10 +374,10 @@ export class ActivityDetailsComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  loading: state.dodayDetails.loading,
+  loading: state.details.loading,
   myDID: state.auth.hero && state.auth.hero.did,
-  updates: state.dodayDetails.updates,
-  selectedDoday: state.dodayDetails.selectedDoday,
+  updates: state.details.updates,
+  selectedDoday: state.details.selectedDoday,
 });
 
 export const ActivityDetails = connect(
@@ -387,10 +387,4 @@ export const ActivityDetails = connect(
     ...ducks.details.actions,
     ...ducks.dodayApp.actions,
   }
-)(
-  withStyles(css)(
-    withTranslation(['shell', 'activities'])(
-      withTheme()(ActivityDetailsComponentClass)
-    )
-  )
-);
+)(withStyles(css)(withTheme()(ActivityDetailsComponentClass)));

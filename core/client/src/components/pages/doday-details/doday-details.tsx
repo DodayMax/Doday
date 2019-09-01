@@ -4,11 +4,14 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import ducks, { FetchSelectedDodayAction } from '@doday/duck';
 import { PageWrapperChildContext } from '@doday/shared';
-import { RootState, WithTools, DodayLike } from '@doday/lib';
+import { RootState, WithTools, DodayLike, ToolBeacon } from '@doday/lib';
+import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 interface DodayDetailsProps {}
 
 interface PropsFromConnect {
+  activeTools: { [key: string]: ToolBeacon };
   selectedDoday: DodayLike;
   fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
 }
@@ -17,6 +20,7 @@ interface DodayDetailsState {}
 
 type Props = DodayDetailsProps &
   WithTools &
+  WithTranslation &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
@@ -41,25 +45,38 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
   }
 
   render() {
-    const { selectedDoday, activeTools } = this.props;
+    const { selectedDoday, activeTools, t } = this.props;
 
-    const selectedDodayType = selectedDoday && selectedDoday.type;
-
-    const tool = Object.values(activeTools).find(
-      tool =>
-        !!tool.config.entities.find(entity => entity.type === selectedDodayType)
-    );
-    if (tool) {
-      const Component = tool.views.details[selectedDodayType].public;
-      return <Component />;
+    if (!selectedDoday) {
+      return 'Loading...';
     }
 
-    return null;
+    const selectedDodayType = selectedDoday && selectedDoday.type;
+    const tool =
+      activeTools &&
+      Object.values(activeTools).find(
+        tool =>
+          tool.config.entities &&
+          !!tool.config.entities.find(
+            entity => entity.type === selectedDodayType
+          )
+      );
+
+    return (
+      <ToolWrapper
+        tool={tool}
+        place="detail"
+        dodayType={selectedDodayType}
+        isProgress={false}
+        t={t}
+      />
+    );
   }
 }
 
 const mapState = (state: RootState) => ({
-  selectedDoday: state.dodayDetails.selectedDoday,
+  activeTools: state.auth.activeTools,
+  selectedDoday: state.details.selectedDoday,
 });
 
 export default connect(
@@ -68,4 +85,4 @@ export default connect(
     fetchSelectedDodayActionCreator:
       ducks.details.actions.fetchSelectedDodayActionCreator,
   }
-)(DodayDetails);
+)(withTranslation(['activities', 'shell'])(DodayDetails));

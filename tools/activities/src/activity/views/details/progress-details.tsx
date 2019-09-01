@@ -39,7 +39,6 @@ import ducks, {
   CloseDialogAction,
 } from '@doday/duck';
 import { activityIconByType } from '../builders/activity-builder';
-import { withTranslation, WithTranslation } from 'react-i18next';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {
@@ -55,7 +54,9 @@ import {
 
 import { css } from './css.details';
 
-interface ActivityProgressDetailsProps {}
+interface ActivityProgressDetailsProps {
+  t?: any;
+}
 
 interface ActivityProgressDetailsState {}
 
@@ -98,7 +99,6 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
     Partial<RouteComponentProps<any>> &
-    WithTranslation &
     WithStyles &
     WithDialog,
   ActivityProgressDetailsState
@@ -471,11 +471,11 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  dirty: state.dodayDetails.dirty,
-  updates: state.dodayDetails.updates,
-  loading: state.dodayDetails.loading,
+  dirty: state.details.dirty,
+  updates: state.details.updates,
+  loading: state.details.loading,
   myDID: state.auth.hero && state.auth.hero.did,
-  selectedDoday: state.dodayDetails.selectedDoday,
+  selectedDoday: state.details.selectedDoday,
 });
 
 export const ActivityProgressDetails = connect(
@@ -486,10 +486,4 @@ export const ActivityProgressDetails = connect(
     ...ducks.api.actions,
     ...ducks.dialog.actions,
   }
-)(
-  withStyles(css)(
-    withTranslation(['shell', 'activities'])(
-      ActivityProgressDetailsComponentClass
-    )
-  )
-);
+)(withStyles(css)(ActivityProgressDetailsComponentClass));

@@ -12,6 +12,7 @@ import {
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
+import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
 
 export interface DodayAppProps extends React.HTMLAttributes<HTMLElement> {}
 
@@ -66,7 +67,7 @@ export class DodayAppComponent extends React.Component<
         entity => entity.type === item.type
       );
       if (entity != undefined) {
-        const Tag = tool.views.cells[entity.type].progress;
+        const Tag = tool.views.cells[entity.type].progress.component;
         return (
           <Tag
             doday={item}
@@ -83,21 +84,17 @@ export class DodayAppComponent extends React.Component<
     const tool = Object.values(activeTools).find(
       tool => tool.config.route === this.props.route
     );
-    if (tool && tool.loaded) {
-      const Component = tool.views.dodayApp as any;
-      return (
-        <DynamicModuleLoader modules={[tool.modules.main()]}>
-          <Component
-            loading={loading}
-            history={history}
-            location={location}
-            match={match}
-            t={t}
-          />
-        </DynamicModuleLoader>
-      );
-    }
-    return undefined;
+    return (
+      <ToolWrapper
+        tool={tool}
+        place="app"
+        loading={loading}
+        history={history}
+        location={location}
+        match={match}
+        t={t}
+      />
+    );
   };
 
   // renderContent() {

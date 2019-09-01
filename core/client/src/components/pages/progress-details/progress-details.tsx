@@ -5,6 +5,8 @@ import * as PropTypes from 'prop-types';
 import ducks, { FetchSelectedProgressAction } from '@doday/duck';
 import { Pageflow, PageWrapperChildContext } from '@doday/shared';
 import { RootState, WithTools, DodayLike } from '@doday/lib';
+import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
+import { withTranslation, WithTranslation } from 'react-i18next';
 
 interface ProgressDetailsProps {}
 
@@ -19,6 +21,7 @@ interface ProgressDetailsState {}
 
 type Props = ProgressDetailsProps &
   WithTools &
+  WithTranslation &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
@@ -44,25 +47,29 @@ class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
   }
 
   render() {
-    const { selectedDoday, activeTools } = this.props;
+    const { selectedDoday, activeTools, t } = this.props;
 
     const selectedDodayType = selectedDoday && selectedDoday.type;
 
     const tool = Object.values(activeTools).find(
       tool =>
+        tool.config.entities &&
         !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );
-    if (tool) {
-      const Component = tool.views.details[selectedDodayType].progress;
-      return <Component />;
-    }
-
-    return undefined;
+    return (
+      <ToolWrapper
+        tool={tool}
+        place="detail"
+        dodayType={selectedDodayType}
+        isProgress={true}
+        t={t}
+      />
+    );
   }
 }
 
 const mapState = (state: RootState) => ({
-  selectedDoday: state.dodayDetails.selectedDoday,
+  selectedDoday: state.details.selectedDoday,
 });
 
 export default connect(
@@ -71,4 +78,4 @@ export default connect(
     fetchSelectedProgressActionCreator:
       ducks.details.actions.fetchSelectedProgressActionCreator,
   }
-)(ProgressDetails);
+)(withTranslation(['activities', 'shell'])(ProgressDetails));

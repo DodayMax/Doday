@@ -37,19 +37,17 @@ export const Dashboard = withStyles(css)(
     return (
       <LayoutBlock relative flex={'1'} className={classes.mainContentContainer}>
         {Object.values(activeTools).map((tool, index) =>
-          !tool.loading ? (
+          tool.loaded ? (
             <Route
               key={index}
               path={tool.config.route}
-              component={tool.views.overview}
+              component={tool.views.overview.component}
             />
           ) : null
         )}
         <Route
           path="/dashboard/dodays/:did"
-          render={props => (
-            <DodayDetails {...props} activeTools={activeTools} />
-          )}
+          render={props => <DodayDetails {...props} />}
         />
         <Route
           path="/dashboard/progress/:did"
