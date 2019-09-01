@@ -21,12 +21,14 @@ import ducks, {
   ToggleThemeAction,
   ChangeDodayAppRouteAction,
   ClearSelectedDodayAction,
+  LoadHeroToolsAction,
 } from '@doday/duck';
 import { Landing } from '../landing';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import FaceIcon from '@material-ui/icons/Face';
 import AppsIcon from '@material-ui/icons/Apps';
+import AddIcon from '@material-ui/icons/Add';
 import BugReportIcon from '@material-ui/icons/BugReport';
 
 import {
@@ -65,6 +67,7 @@ interface PropsFromConnect {
   toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
   toggleDodayAppActionCreator: () => ToggleDodayAppAction;
   fetchHeroActionCreator(): FetchHeroAction;
+  loadHeroToolsActionCreator(): LoadHeroToolsAction;
   toggleThemeActionCreator(mode: ThemeType): ToggleThemeAction;
 }
 
@@ -142,6 +145,7 @@ class DesktopShell extends React.Component<
       activeTools,
       toggleDodayAppActionCreator,
       isDodayAppCollapsed,
+      loadHeroToolsActionCreator,
       history,
       location,
       t,
@@ -280,6 +284,17 @@ class DesktopShell extends React.Component<
                           );
                         }
                       )} */}
+                      <>
+                        <ListItem
+                          button
+                          onClick={() => loadHeroToolsActionCreator()}
+                        >
+                          <ListItemIcon>
+                            <AddIcon fontSize={'large'} />
+                          </ListItemIcon>
+                        </ListItem>
+                        <Divider />
+                      </>
                     </LayoutBlock>
                     <LayoutBlock direction="column">
                       <Divider />
@@ -383,6 +398,7 @@ export default connect(
     toggleDodayAppActionCreator:
       ducks.settings.actions.toggleDodayAppActionCreator,
     fetchHeroActionCreator: ducks.auth.actions.fetchHeroActionCreator,
+    loadHeroToolsActionCreator: ducks.auth.actions.loadHeroToolsActionCreator,
     toggleThemeActionCreator: ducks.settings.actions.toggleThemeActionCreator,
   }
 )(withStyles(css, { withTheme: true })(withTranslation('shell')(DesktopShell)));
