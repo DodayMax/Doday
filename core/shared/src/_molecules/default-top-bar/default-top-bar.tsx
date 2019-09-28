@@ -11,12 +11,12 @@ import { LayoutBlock } from '../../_atoms/layout-block';
 const css = (theme: Theme) =>
   createStyles({
     container: {
-      height: `${theme.spacing.unit * 8}px`,
+      height: `${theme.spacing(8)}px`,
       color: theme.palette.text.primary,
       display: 'flex',
       justifyContent: 'spaceBetween',
       alignItems: 'center',
-      padding: `0 ${theme.spacing.unit}px`,
+      padding: `0 ${theme.spacing(1)}px`,
       flexShrink: 0,
       borderBottom: `1px solid ${theme.palette.divider}`,
     },

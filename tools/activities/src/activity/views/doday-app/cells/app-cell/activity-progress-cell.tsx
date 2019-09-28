@@ -21,7 +21,7 @@ import {
 
 import { css } from './css.cell';
 
-interface ActivityProgressCellProps {
+export interface ActivityProgressCellProps {
   onComplete?: () => void;
 }
 

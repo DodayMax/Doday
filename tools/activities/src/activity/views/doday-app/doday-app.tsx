@@ -30,7 +30,7 @@ export interface ActivityDodayAppProps {
   t?: any;
 }
 
-interface PropsFromConnect {
+export interface PropsFromConnect {
   myDID: string;
   route: string;
   routeParams: DodayAppQueryParams;

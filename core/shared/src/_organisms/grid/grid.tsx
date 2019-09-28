@@ -34,9 +34,9 @@ interface GridState {
 const css = (theme: Theme) =>
   createStyles({
     search: {
-      height: `${theme.spacing.unit * 5}px`,
+      height: `${theme.spacing(5)}px`,
       fontSize: 16,
-      padding: `0 ${theme.spacing.unit * 2}px`,
+      padding: `0 ${theme.spacing(2)}px`,
       flex: '0 0 auto',
     },
     listConainer: {
@@ -133,4 +133,4 @@ export class GridComponentClass extends React.Component<Props, GridState> {
   }
 }
 
-export const Grid = withStyles(css)(withTheme()(GridComponentClass));
+export const Grid = withStyles(css)(withTheme(GridComponentClass));

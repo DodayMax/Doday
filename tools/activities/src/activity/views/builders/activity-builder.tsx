@@ -61,7 +61,7 @@ import { ActivityBuilderState } from '../../duck/reducer';
 const css = (theme: Theme) =>
   createStyles({
     margin: {
-      margin: `0 ${theme.spacing.unit}px`,
+      margin: `0 ${theme.spacing(1)}px`,
     },
     dodayname: {
       fontSize: '2.6rem',
@@ -83,9 +83,9 @@ const css = (theme: Theme) =>
     },
   });
 
-interface ActivityBuilderProps {}
+export interface ActivityBuilderProps {}
 
-interface PropsFromConnect {
+export interface PropsFromConnect {
   loading: boolean;
   isUrlParsing: boolean;
   parsedMetadata?: any;
@@ -107,7 +107,7 @@ interface PropsFromConnect {
   clearParsedUrlMetadataActionCreator: () => ClearParsedUrlMetadataAction;
 }
 
-interface ActivityBuilderLocalState {
+export interface ActivityBuilderLocalState {
   dodayName: string;
   tagInputValue: string;
   selectedTags: string[];
@@ -287,11 +287,6 @@ export class ActivityBuilderComponentClass extends React.Component<
           InputProps={{
             classes: {
               input: classes.dodayname,
-            },
-          }}
-          InputLabelProps={{
-            FormLabelClasses: {
-              root: classes.label,
             },
           }}
         />
@@ -520,6 +515,6 @@ export const ActivityBuilder = connect(
   }
 )(
   withTranslation('activities')(
-    withStyles(css)(withTheme()(ActivityBuilderComponentClass))
+    withStyles(css)(withTheme(ActivityBuilderComponentClass))
   )
 );

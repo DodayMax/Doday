@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 import {
   MuiThemeProvider,
@@ -72,7 +71,6 @@ export class AppComponent extends React.Component<
         },
       },
       typography: {
-        useNextVariants: true,
         htmlFontSize: 10,
         fontFamily: [
           'Avenir',
@@ -138,4 +136,4 @@ export class AppComponent extends React.Component<
   }
 }
 
-export const App = withTheme()(AppComponent);
+export const App = withTheme(AppComponent);

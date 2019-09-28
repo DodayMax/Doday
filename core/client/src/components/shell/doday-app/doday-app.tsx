@@ -8,8 +8,9 @@ import {
   RootState,
   WithTools,
   DodayLike,
+  LayoutSpot,
+  NodeType,
 } from '@doday/lib';
-import { DynamicModuleLoader } from 'redux-dynamic-modules';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { createStyles, Theme, withStyles, WithStyles } from '@material-ui/core';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
@@ -67,9 +68,13 @@ export class DodayAppComponent extends React.Component<
         entity => entity.type === item.type
       );
       if (entity != undefined) {
-        const Tag = tool.views.cells[entity.type].progress.component;
+        const Tag = tool.getView(
+          LayoutSpot.cell,
+          entity.type,
+          NodeType.progress
+        );
         return (
-          <Tag
+          <Tag.component
             doday={item}
             key={_.uniqueId('tag-')}
             onClick={this.handleDodayCellClick}
@@ -87,7 +92,7 @@ export class DodayAppComponent extends React.Component<
     return (
       <ToolWrapper
         tool={tool}
-        place="app"
+        place={LayoutSpot.sidebar}
         loading={loading}
         history={history}
         location={location}

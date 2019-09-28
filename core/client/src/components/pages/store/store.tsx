@@ -174,11 +174,6 @@ class StoreClassComponent extends React.Component<
                         input: classes.searchInput,
                       },
                     }}
-                    InputLabelProps={{
-                      FormLabelClasses: {
-                        root: classes.searchLabel,
-                      },
-                    }}
                   />
                 </LayoutBlock>
                 <LayoutBlock align="flexCenter" spaceBelow={Space.Medium}>
@@ -239,4 +234,4 @@ const mapState = (state: RootState) => ({
 export const Store = connect(
   mapState,
   { ...ducks.store.actions }
-)(withStyles(css)(withTheme()(StoreClassComponent)));
+)(withStyles(css)(withTheme(StoreClassComponent)));

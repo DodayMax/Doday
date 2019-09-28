@@ -191,7 +191,7 @@ class DesktopShell extends React.Component<
             </Typography>
             {hero ? (
               <LayoutBlock insideElementsMargin valign="vflexCenter">
-                {/* {Object.values(activeTools).length &&
+                {Object.values(activeTools).length &&
                 !Object.values(activeTools)[0].loading ? (
                   <Button
                     variant="contained"
@@ -214,7 +214,7 @@ class DesktopShell extends React.Component<
                   </Button>
                 ) : (
                   undefined
-                )} */}
+                )}
                 <Switch
                   onChange={e => {
                     const theme = e.target.checked ? 'dark' : 'light';
@@ -235,7 +235,7 @@ class DesktopShell extends React.Component<
               </LayoutBlock>
             ) : (
               <LayoutBlock>
-                <IconButton href="/auth/google">
+                <IconButton href="/auth/google" data-test-id="google-button">
                   <Icons.Google />
                 </IconButton>
               </LayoutBlock>

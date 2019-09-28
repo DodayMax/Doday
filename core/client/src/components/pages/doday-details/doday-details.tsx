@@ -4,7 +4,13 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import ducks, { FetchSelectedDodayAction } from '@doday/duck';
 import { PageWrapperChildContext } from '@doday/shared';
-import { RootState, WithTools, DodayLike, ToolBeacon } from '@doday/lib';
+import {
+  RootState,
+  WithTools,
+  DodayLike,
+  ToolBeacon,
+  LayoutSpot,
+} from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
@@ -65,7 +71,7 @@ class DodayDetails extends React.Component<Props, DodayDetailsState> {
     return (
       <ToolWrapper
         tool={tool}
-        place="detail"
+        place={LayoutSpot.details}
         dodayType={selectedDodayType}
         isProgress={false}
         t={t}

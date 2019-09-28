@@ -30,10 +30,16 @@ interface ProgressProps {
 export const Progress: React.ComponentType<
   ProgressProps & Partial<WithStyles>
 > = withStyles(css)(
-  ({ vertical = false, start = 0, progress, total, classes }) => {
+  ({
+    vertical = false,
+    start = 0,
+    progress,
+    total,
+    classes,
+  }: ProgressProps & Partial<WithStyles>) => {
     const currentProgress = (progress / (total - start)) * 100;
     const cx = classnames({
-      [classes['vertical']]: vertical,
+      [classes!['vertical']]: vertical,
     });
     const progressStyles = {
       width: vertical ? '.4rem' : `${currentProgress}%`,
@@ -45,7 +51,7 @@ export const Progress: React.ComponentType<
         valign={vertical ? 'vflexEnd' : 'vflexCenter'}
         className={cx}
       >
-        <div className={classes['progress']} style={progressStyles} />
+        <div className={classes!['progress']} style={progressStyles} />
       </LayoutBlock>
     );
   }

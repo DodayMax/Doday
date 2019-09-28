@@ -39,7 +39,7 @@ const css = (theme: Theme) =>
     },
     iconVariant: {
       opacity: 0.9,
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
     },
     message: {
       display: 'flex',

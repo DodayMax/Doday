@@ -4,7 +4,7 @@ import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import ducks, { FetchSelectedProgressAction } from '@doday/duck';
 import { Pageflow, PageWrapperChildContext } from '@doday/shared';
-import { RootState, WithTools, DodayLike } from '@doday/lib';
+import { RootState, WithTools, DodayLike, LayoutSpot } from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
 import { withTranslation, WithTranslation } from 'react-i18next';
 
@@ -59,7 +59,7 @@ class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
     return (
       <ToolWrapper
         tool={tool}
-        place="detail"
+        place={LayoutSpot.details}
         dodayType={selectedDodayType}
         isProgress={true}
         t={t}

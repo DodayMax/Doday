@@ -1,18 +1,29 @@
 import * as React from 'react';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
-import { ToolBeacon, DodayType, ToolView } from '@doday/lib';
+import {
+  ToolBeacon,
+  DodayType,
+  ToolView,
+  LayoutSpot,
+  NodeType,
+} from '@doday/lib';
 import { LayoutBlock, Icons } from '@doday/shared';
-
-export type Place = 'app' | 'builder' | 'detail' | 'overview';
+import { WithTranslation } from 'react-i18next';
+import { RouteComponentProps } from 'react-router';
 
 interface ToolWrapperProps {
   tool: ToolBeacon;
-  place: Place;
+  place: LayoutSpot;
   dodayType?: DodayType;
   isProgress?: boolean;
+  loading?: boolean;
 }
 
-export const ToolWrapper = (props: ToolWrapperProps & any) => {
+export const ToolWrapper = (
+  props: ToolWrapperProps &
+    Partial<RouteComponentProps> &
+    Partial<WithTranslation>
+) => {
   const { tool, place, dodayType, isProgress, ...pathrough } = props;
   if (!tool) {
     return null;
@@ -25,16 +36,13 @@ export const ToolWrapper = (props: ToolWrapperProps & any) => {
     );
   }
   let toolView: ToolView;
-  if (dodayType != null) {
-    if (isProgress) {
-      toolView = tool.views[place][dodayType]['progress'] as any;
-    } else {
-      toolView = tool.views[place][dodayType]['public'] as any;
-    }
+  if (isProgress) {
+    toolView = tool.getView(place, dodayType, NodeType.progress);
   } else {
-    toolView = tool.views[place] as any;
+    toolView = tool.getView(place, dodayType);
   }
   const Component = toolView.component;
+
   return (
     <DynamicModuleLoader modules={[...toolView.dependencies]}>
       <Component {...pathrough} />

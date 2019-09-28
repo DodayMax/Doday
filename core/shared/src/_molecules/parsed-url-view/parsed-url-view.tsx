@@ -20,7 +20,7 @@ interface ParsedUrlViewProps {
 }
 
 export const ParsedUrlView = withStyles(css)(
-  withTheme()((props: ParsedUrlViewProps & WithStyles & WithTheme) => {
+  withTheme((props: ParsedUrlViewProps & WithStyles & WithTheme) => {
     const { loading, parsedMetadata, onClose, classes } = props;
     return (
       <>

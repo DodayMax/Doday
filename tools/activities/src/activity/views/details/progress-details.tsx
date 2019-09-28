@@ -54,13 +54,13 @@ import {
 
 import { css } from './css.details';
 
-interface ActivityProgressDetailsProps {
+export interface ActivityProgressDetailsProps {
   t?: any;
 }
 
 interface ActivityProgressDetailsState {}
 
-interface PropsFromConnect {
+export interface PropsFromConnect {
   dirty: boolean;
   updates: Partial<ProgressLike>;
   loading: boolean;

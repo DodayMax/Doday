@@ -5,7 +5,7 @@ import { ToggleDodayAppAction } from '@doday/duck';
 import { Profile } from '../profile';
 import { DodayDetails } from '../doday-details';
 import { ProgressDetails } from '../progress-details';
-import { ToolBeacon } from '@doday/lib';
+import { ToolBeacon, LayoutSpot, DodayType, NodeType } from '@doday/lib';
 import { Store } from '../store';
 import { LayoutBlock } from '@doday/shared';
 import { WithStyles, Theme, createStyles, withStyles } from '@material-ui/core';
@@ -36,15 +36,23 @@ export const Dashboard = withStyles(css)(
     const { activeTools, classes } = props;
     return (
       <LayoutBlock relative flex={'1'} className={classes.mainContentContainer}>
-        {Object.values(activeTools).map((tool, index) =>
-          tool.loaded ? (
-            <Route
-              key={index}
-              path={tool.config.route}
-              component={tool.views.overview.component}
-            />
-          ) : null
-        )}
+        {Object.values(activeTools).map((tool, index) => {
+          if (tool.loaded) {
+            const Overview = tool.getView(
+              LayoutSpot.overview,
+              DodayType.Activity
+            );
+            if (Overview) {
+              return (
+                <Route
+                  key={index}
+                  path={tool.config.route}
+                  component={Overview.component}
+                />
+              );
+            }
+          }
+        })}
         <Route
           path="/dashboard/dodays/:did"
           render={props => <DodayDetails {...props} />}

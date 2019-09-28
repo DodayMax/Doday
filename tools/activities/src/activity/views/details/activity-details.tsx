@@ -48,13 +48,13 @@ import {
 import { css } from './css.details';
 import Media from 'react-media';
 
-interface ActivityDetailsProps {
+export interface ActivityDetailsProps {
   t?: any;
 }
 
 interface ActivityDetailsState {}
 
-interface PropsFromConnect {
+export interface PropsFromConnect {
   loading: boolean;
   updates?: Partial<ProgressLike>;
   myDID?: string;
@@ -387,4 +387,4 @@ export const ActivityDetails = connect(
     ...ducks.details.actions,
     ...ducks.dodayApp.actions,
   }
-)(withStyles(css)(withTheme()(ActivityDetailsComponentClass)));
+)(withStyles(css)(withTheme(ActivityDetailsComponentClass)));

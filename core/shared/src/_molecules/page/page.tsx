@@ -11,7 +11,7 @@ const css = (theme: Theme) =>
       margin: '0 auto',
       position: 'relative',
       color: theme.palette.action.active,
-      marginBottom: `${theme.spacing.unit * 3}px`,
+      marginBottom: `${theme.spacing(3)}px`,
     },
     scroll: {
       width: '100%',

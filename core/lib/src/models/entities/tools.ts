@@ -1,6 +1,8 @@
 import { DodayType, Entity } from './common';
 import { IconNames } from '../../types';
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
+import { LayoutSpot, NodeType } from '../../common-interfaces';
+import { RootState } from '../states';
 
 export interface ShopTool {
   sysname: string;
@@ -23,23 +25,11 @@ export interface ToolBeacon {
   loading?: boolean;
   loaded?: boolean;
   config?: ToolConfig;
-  views?: {
-    dodayApp: ToolView;
-    cells: {
-      [K in DodayType]?: {
-        public: ToolView;
-        progress: ToolView;
-      };
-    };
-    builder: { [K in DodayType]?: ToolView };
-    detail: {
-      [K in DodayType]?: {
-        public: ToolView;
-        progress: ToolView;
-      };
-    };
-    overview: ToolView;
-  };
+  getView?: (
+    spot: LayoutSpot,
+    entity: DodayType,
+    node?: NodeType
+  ) => ToolView | undefined;
   api?: any;
   actions?: {
     actionCreators: any;
@@ -55,6 +45,12 @@ export interface ToolBeacon {
     main: any;
     builder: any;
   };
+  translations?: {
+    [lang: string]: {
+      [key: string]: string;
+    };
+  };
+  stateSelector?: (state: RootState) => any;
 }
 
 export type ToolConfig = {

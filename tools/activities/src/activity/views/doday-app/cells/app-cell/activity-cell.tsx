@@ -19,7 +19,7 @@ import {
 
 import { css } from './css.cell';
 
-interface ActivityCellProps {}
+export interface ActivityCellProps {}
 
 type Props = ActivityCellProps & CellProps & WithTranslation & WithStyles;
 

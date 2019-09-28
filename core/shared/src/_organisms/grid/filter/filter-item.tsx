@@ -17,7 +17,7 @@ const css = (theme: Theme) =>
     },
     margin: {
       '&:not(first-item):not(last-item)': {
-        margin: `0 ${theme.spacing.unit}px`,
+        margin: `0 ${theme.spacing(1)}px`,
       },
     },
   });
