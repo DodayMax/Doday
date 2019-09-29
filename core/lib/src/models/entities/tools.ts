@@ -24,7 +24,7 @@ export type ToolsState = { [K in ToolSysname]?: BaseToolState };
 export interface ToolBeacon {
   loading?: boolean;
   loaded?: boolean;
-  config?: ToolConfig;
+  config: ToolConfig;
   getView?: (
     spot: LayoutSpot,
     entity: DodayType,
@@ -61,7 +61,7 @@ export type ToolConfig = {
 };
 
 export type WithTools = {
-  activeTools: { [key: string]: ToolBeacon };
+  activeTools?: { [key: string]: ToolBeacon };
 };
 
 export interface ToolView {

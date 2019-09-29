@@ -34,7 +34,7 @@ describe('Test Activities sagas', () => {
     };
     const gen = fetchActivitiesActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(true))
+      put(ducks.sidebar.actions.setSidebarLoadingStateActionCreator(true))
     );
     expect(gen.next().value).toEqual(
       call(api.dodays.queries.fetchDodays, action.payload)
@@ -50,7 +50,7 @@ describe('Test Activities sagas', () => {
       )
     );
     expect(gen.next().value).toEqual(
-      put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(false))
+      put(ducks.sidebar.actions.setSidebarLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });

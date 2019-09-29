@@ -26,13 +26,13 @@ import {
   SerializedActivityProgress,
 } from '@doday/lib';
 import storeActions from '../store/actions';
-import dodayAppActions from '../doday-app/actions';
+import sidebarActions from '../sidebar/actions';
 import builderActions from '../builder/actions';
 import toastActions from '../toast/actions';
 import dodayDetailsActions from '../doday-details/actions';
-import { activeTools } from '../auth/selectors';
+import { activeToolsSelector } from '../auth/selectors';
 import { searchTerm, publicDodays } from '../store/selectors';
-import { selectedDoday } from '../doday-details/selectors';
+import { selectedDodaySelector } from '../doday-details/selectors';
 
 /**
  * Create Doday node and relations to Hero
@@ -40,8 +40,8 @@ import { selectedDoday } from '../doday-details/selectors';
  * @param {CreateDodayAction} action
  */
 export function* createDodayActionSaga(action: CreateDodayAction) {
-  yield put(dodayAppActions.setDodayAppLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
+  yield put(sidebarActions.setSidebarLoadingStateActionCreator(true));
+  const tools = yield select(activeToolsSelector);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
   let serialized:
     | {
@@ -54,15 +54,17 @@ export function* createDodayActionSaga(action: CreateDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.doday.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(
+        entity => entity.type === action.payload.doday.type
+      );
     if (entity) {
       /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
       sideEffects.push(
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
               {
                 doday: action.payload.doday,
                 resource: action.payload.resource,
@@ -87,7 +89,7 @@ export function* createDodayActionSaga(action: CreateDodayAction) {
       messages: ['Your new Activity created!'],
     })
   );
-  yield put(dodayAppActions.setDodayAppLoadingStateActionCreator(false));
+  yield put(sidebarActions.setSidebarLoadingStateActionCreator(false));
 }
 
 /**
@@ -98,8 +100,8 @@ export function* createDodayActionSaga(action: CreateDodayAction) {
 export function* createAndTakeDodayActionSaga(
   action: CreateAndTakeDodayAction
 ) {
-  yield put(dodayAppActions.setDodayAppLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
+  yield put(sidebarActions.setSidebarLoadingStateActionCreator(true));
+  const tools = yield select(activeToolsSelector);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
   let serialized:
     | {
@@ -113,15 +115,17 @@ export function* createAndTakeDodayActionSaga(
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.doday.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(
+        entity => entity.type === action.payload.doday.type
+      );
     if (entity) {
       sideEffects.push(
         /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
               {
                 doday: action.payload.doday,
                 progress: action.payload.progress,
@@ -150,7 +154,7 @@ export function* createAndTakeDodayActionSaga(
       messages: ['Your new Activity created!'],
     })
   );
-  yield put(dodayAppActions.setDodayAppLoadingStateActionCreator(false));
+  yield put(sidebarActions.setSidebarLoadingStateActionCreator(false));
 }
 
 /**
@@ -160,7 +164,7 @@ export function* createAndTakeDodayActionSaga(
  */
 export function* takeDodayActionSaga(action: TakeDodayAction) {
   yield put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
+  const tools = yield select(activeToolsSelector);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
   let serialized: SerializedProgressLike | undefined;
   /**
@@ -168,14 +172,16 @@ export function* takeDodayActionSaga(action: TakeDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.doday.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(
+        entity => entity.type === action.payload.doday.type
+      );
     if (entity) {
       sideEffects.push(
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
               {
                 doday: action.payload.doday,
                 progress: action.payload.progress,
@@ -222,21 +228,21 @@ export function* takeDodayActionSaga(action: TakeDodayAction) {
  */
 export function* deleteDodayActionSaga(action: DeleteDodayAction) {
   yield put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
+  const tools = yield select(activeToolsSelector);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
   /**
    * Collect all sideeffects from active tools
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(entity => entity.type === action.payload.type);
     if (entity) {
       sideEffects.push(
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
               action.payload.did
             )
         )
@@ -263,7 +269,7 @@ export function* deleteDodayActionSaga(action: DeleteDodayAction) {
  */
 export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
   yield put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
+  const tools = yield select(activeToolsSelector);
   const term = yield select(searchTerm);
   const dodays = yield select(publicDodays);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
@@ -272,14 +278,14 @@ export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(entity => entity.type === action.payload.type);
     if (entity) {
       sideEffects.push(
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
               action.payload.did
             )
         )
@@ -324,8 +330,8 @@ export function* unTakeDodayActionSaga(action: UntakeDodayAction) {
  */
 export function* updateDodayActionSaga(action: UpdateDodayAction) {
   yield put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true));
-  const tools = yield select(activeTools);
-  const selected = yield select(selectedDoday);
+  const tools = yield select(activeToolsSelector);
+  const selected = yield select(selectedDodaySelector);
   const sideEffects: SimpleEffect<'PUT', PutEffectDescriptor<any>>[] = [];
   let serialized:
     | {
@@ -339,15 +345,15 @@ export function* updateDodayActionSaga(action: UpdateDodayAction) {
    * related to this action
    */
   tools.map((tool: ToolBeacon) => {
-    const entity = tool.config.entities.find(
-      entity => entity.type === action.payload.type
-    );
+    const entity =
+      tool.config.entities &&
+      tool.config.entities.find(entity => entity.type === action.payload.type);
     if (entity) {
       sideEffects.push(
         /** Deserialize payload to update doday in store (in app we use deserialized dodays) */
         put(
-          tool.duck &&
-            tool.duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+          tool.actions &&
+            tool.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
               {
                 did: action.payload.did,
                 updates: {

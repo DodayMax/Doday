@@ -1,11 +1,11 @@
 import { Hero } from './entities/hero';
-import { DodayAppQueryParams, ToastType } from '../common-interfaces';
+import { SidebarQueryParams, ToastType } from '../common-interfaces';
 import { DodayLike, ProgressLike } from './entities/common';
 import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
 
 export interface RootState {
   auth: AuthState;
-  dodayApp: DodayAppState;
+  sidebar: SidebarState;
   details: DodayDetailsState;
   builder: BuilderState;
   heroSettings: HeroSettingsState;
@@ -15,10 +15,10 @@ export interface RootState {
   dialog: DialogState;
 }
 
-export type DodayAppState = {
+export type SidebarState = {
   loading: boolean;
   route: string;
-  routeParams: DodayAppQueryParams;
+  routeParams: SidebarQueryParams;
   badge: number;
 };
 
@@ -36,7 +36,8 @@ export interface AuthState {
 
 export interface HeroSettingsState {
   isDrawerCollapsed: boolean;
-  isDodayAppCollapsed: boolean;
+  isSidebarCollapsed: boolean;
+  sidebarWidth: number;
   theme: 'light' | 'dark';
 }
 

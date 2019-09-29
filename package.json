@@ -12,7 +12,10 @@
     "build:api": "yarn workspace @doday/api run build",
     "build:lib": "yarn workspace @doday/lib run build",
     "build:shared": "yarn workspace @doday/shared run build",
-    "build:activities": "yarn workspace @doday/activities run build"
+    "build:duck": "yarn workspace @doday/duck run build",
+    "build:activities": "yarn workspace @doday/activities run build",
+    "build:server": "yarn workspace @doday/server run build",
+    "build:all": "yarn build:api & yarn build:lib & yarn build:duck & build:activities & yarn build:shared & yarn build:server"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

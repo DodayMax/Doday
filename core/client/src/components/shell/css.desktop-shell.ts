@@ -1,4 +1,5 @@
 import { Theme, createStyles } from '@material-ui/core';
+import { spacing } from '@material-ui/system';
 
 const drawerWidth = 240;
 
@@ -17,7 +18,12 @@ export const css = (theme: Theme) =>
     },
     topBar: {
       justifyContent: 'space-between',
-      padding: `0 ${theme.spacing(2)}px`,
+    },
+    speedDial: {
+      position: 'absolute',
+      right: theme.spacing(4),
+      bottom: theme.spacing(4),
+      zIndex: 101,
     },
     appBarShift: {
       marginLeft: drawerWidth,
@@ -64,7 +70,6 @@ export const css = (theme: Theme) =>
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'flexEnd',
-      padding: '0 8px',
       ...theme.mixins.toolbar,
     },
     content: {
@@ -74,7 +79,7 @@ export const css = (theme: Theme) =>
       overflow: 'hidden',
       flexDirection: 'column',
     },
-    dodayAppContainer: {
+    sidebarContainer: {
       minWidth: '28rem',
       maxWidth: '3rem',
     },

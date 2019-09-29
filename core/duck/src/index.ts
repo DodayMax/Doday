@@ -1,5 +1,5 @@
 //reducers and sagas
-import dodayApp from './doday-app';
+import sidebar from './sidebar';
 import details from './doday-details';
 import builder from './builder';
 import auth from './auth';
@@ -13,14 +13,16 @@ export * from './api';
 export * from './auth';
 export * from './builder';
 export * from './dialog';
-export * from './doday-app';
+export * from './sidebar';
 export * from './doday-details';
 export * from './hero-settings';
 export * from './store';
 export * from './toast';
 
+export * from './all-selectors';
+
 const ducks: any = {
-  dodayApp,
+  sidebar,
   details,
   builder,
   auth,

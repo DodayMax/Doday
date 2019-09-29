@@ -40,6 +40,7 @@ interface PageHeaderProps extends Partial<RouteComponentProps> {
   actions?: PageHeaderAction[];
   withClose?: boolean;
   onClose?: () => void;
+  children?: React.ReactNode;
 }
 
 interface PropsFromConnect {
@@ -160,7 +161,7 @@ class PageHeaderComponentClass extends React.Component<
 }
 
 const mapState = (state: RootState) => ({
-  route: state.dodayApp.route,
+  route: state.sidebar.route,
 });
 
 export const PageHeader = connect(mapState)(

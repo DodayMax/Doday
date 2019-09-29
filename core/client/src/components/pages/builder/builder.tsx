@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
 import ducks, { ClearBuilderAction } from '@doday/duck';
-import { Page, PageHeader, Pageflow } from '@doday/shared';
+import { Page, PageHeader, pageflow } from '@doday/shared';
 
 import { WithTools } from '@doday/lib';
 
@@ -13,7 +13,6 @@ interface PropsFromConnect {
   clearBuilderActionCreator: () => ClearBuilderAction;
 }
 
-@Pageflow({ path: '/dashboard/builder' })
 export class Builder extends React.Component<
   BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
 > {
@@ -50,9 +49,11 @@ export class Builder extends React.Component<
   }
 }
 
-export default withRouter(
-  connect(
-    undefined,
-    { ...ducks.builder.actions }
-  )(Builder)
+export default pageflow()(
+  withRouter(
+    connect(
+      undefined,
+      { ...ducks.builder.actions }
+    )(Builder)
+  )
 );

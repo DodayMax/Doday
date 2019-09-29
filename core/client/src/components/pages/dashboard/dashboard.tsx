@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { Builder } from '@components';
-import { ToggleDodayAppAction } from '@doday/duck';
+import { ToggleSidebarAction } from '@doday/duck';
 import { Profile } from '../profile';
-import { DodayDetails } from '../doday-details';
+import { DodayDetails } from '../doday-details/doday-details';
 import { ProgressDetails } from '../progress-details';
 import { ToolBeacon, LayoutSpot, DodayType, NodeType } from '@doday/lib';
 import { Store } from '../store';
@@ -27,15 +27,15 @@ const css = (theme: Theme) =>
 
 interface DashboardProps {
   activeTools: { [key: string]: ToolBeacon };
-  toggleDodayAppActionCreator: () => ToggleDodayAppAction;
-  isDodayAppCollapsed: boolean;
+  toggleSidebarActionCreator: () => ToggleSidebarAction;
+  isSidebarCollapsed: boolean;
 }
 
 export const Dashboard = withStyles(css)(
   (props: DashboardProps & WithStyles) => {
     const { activeTools, classes } = props;
     return (
-      <LayoutBlock relative flex={'1'} className={classes.mainContentContainer}>
+      <>
         {Object.values(activeTools).map((tool, index) => {
           if (tool.loaded) {
             const Overview = tool.getView(
@@ -55,7 +55,7 @@ export const Dashboard = withStyles(css)(
         })}
         <Route
           path="/dashboard/dodays/:did"
-          render={props => <DodayDetails {...props} />}
+          render={props => <DodayDetails />}
         />
         <Route
           path="/dashboard/progress/:did"
@@ -69,7 +69,7 @@ export const Dashboard = withStyles(css)(
         />
         <Route path="/dashboard/profile" component={Profile} />
         <Route path="/dashboard" component={Store} />
-      </LayoutBlock>
+      </>
     );
   }
 );

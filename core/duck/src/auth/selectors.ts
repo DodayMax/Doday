@@ -1,6 +1,6 @@
 import { RootState } from '@doday/lib';
 
-export const myDID = (state: RootState) =>
+export const myDIDSelector = (state: RootState) =>
   state.auth.hero && state.auth.hero.did;
 
-export const activeTools = (state: RootState) => state.auth.activeTools;
+export const activeToolsSelector = (state: RootState) => state.auth.activeTools;

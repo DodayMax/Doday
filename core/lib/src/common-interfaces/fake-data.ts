@@ -123,7 +123,7 @@ export const rootState: RootState = {
     hero,
     activeTools: {},
   },
-  dodayApp: {
+  sidebar: {
     loading: false,
     route: '',
     routeParams: {},

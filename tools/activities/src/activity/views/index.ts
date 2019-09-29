@@ -1,9 +1,9 @@
-import { ActivityDodayApp } from './doday-app/doday-app';
+import { ActivitySidebar } from './sidebar/sidebar';
 import { ActivityBuilder } from './builders/activity-builder';
 import { ActivityDetails } from './details/activity-details';
 import { ActivityProgressDetails } from './details/progress-details';
-import { ActivityCell } from './doday-app/cells/app-cell/activity-cell';
-import { ActivityProgressCell } from './doday-app/cells/app-cell/activity-progress-cell';
+import { ActivityCell } from './sidebar/cells/app-cell/activity-cell';
+import { ActivityProgressCell } from './sidebar/cells/app-cell/activity-progress-cell';
 import { ActivityOverview } from './overview/overview';
 import { DodayType, LayoutSpot, NodeType, ToolView } from '@doday/lib';
 import {
@@ -21,7 +21,7 @@ export const getView = (
       return;
     case LayoutSpot.sidebar:
       return {
-        component: ActivityDodayApp,
+        component: ActivitySidebar,
         dependencies: [getActivitiesMainModule()],
       };
     case LayoutSpot.cell:

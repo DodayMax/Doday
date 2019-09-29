@@ -1,7 +1,7 @@
-import { DodayAppActionConstants, DodayAppActionTypes } from './actions';
-import { DodayAppState } from '@doday/lib';
+import { SidebarActionConstants, SidebarActionTypes } from './actions';
+import { SidebarState } from '@doday/lib';
 
-export const initialStatusState: DodayAppState = {
+export const initialStatusState: SidebarState = {
   loading: false,
   route: '',
   routeParams: {},
@@ -10,25 +10,25 @@ export const initialStatusState: DodayAppState = {
 
 export default (
   state = initialStatusState,
-  action: DodayAppActionTypes
-): DodayAppState => {
+  action: SidebarActionTypes
+): SidebarState => {
   switch (action.type) {
-    case DodayAppActionConstants.SET_LOADING_STATE:
+    case SidebarActionConstants.SET_LOADING_STATE:
       return {
         ...state,
         loading: action.payload,
       };
-    case DodayAppActionConstants.CHANGE_ROUTE:
+    case SidebarActionConstants.CHANGE_ROUTE:
       return {
         ...state,
         route: action.payload,
       };
-    case DodayAppActionConstants.SET_QUERY_PARAMS:
+    case SidebarActionConstants.SET_QUERY_PARAMS:
       return {
         ...state,
         routeParams: action.payload,
       };
-    case DodayAppActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
+    case SidebarActionConstants.SET_DODAYS_BADGE_FOR_TODAY:
       return {
         ...state,
         badge: action.payload,

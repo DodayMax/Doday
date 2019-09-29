@@ -1,4 +1,7 @@
-import { RootState } from '@doday/lib';
+import { RootState, ProgressLike } from '@doday/lib';
 
-export const updatesSelector = (state: RootState) => state.details.updates;
-export const selectedDoday = (state: RootState) => state.details.selectedDoday;
+export const updatesSelector = (
+  state: RootState
+): Partial<ProgressLike> | undefined => state.details.updates;
+export const selectedDodaySelector = (state: RootState) =>
+  state.details.selectedDoday;

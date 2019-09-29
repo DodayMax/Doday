@@ -1,4 +1,4 @@
-import { selectedDoday, updatesSelector } from '../selectors';
+import { selectedDodaySelector, updatesSelector } from '../selectors';
 import { rootState } from '@doday/lib';
 
 describe('DodayDetails selectors', () => {
@@ -7,6 +7,8 @@ describe('DodayDetails selectors', () => {
   });
 
   it('Get selected doday', () => {
-    expect(selectedDoday(rootState)).toEqual(rootState.details.selectedDoday);
+    expect(selectedDodaySelector(rootState)).toEqual(
+      rootState.details.selectedDoday
+    );
   });
 });

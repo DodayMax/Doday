@@ -24,7 +24,7 @@ import {
   CustomDatePicker,
   WithDialog,
   LayoutBlock,
-  Pageflow,
+  pageflow,
 } from '@doday/shared';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ducks, {
@@ -94,7 +94,6 @@ export interface PropsFromConnect {
 }
 
 @(withRouter as any)
-@Pageflow({ path: '/dashboard/progress/:did' })
 export class ActivityProgressDetailsComponentClass extends React.Component<
   ActivityProgressDetailsProps &
     Partial<PropsFromConnect> &
@@ -478,12 +477,14 @@ const mapState = (state: RootState) => ({
   selectedDoday: state.details.selectedDoday,
 });
 
-export const ActivityProgressDetails = connect(
-  mapState,
-  {
-    ...ducks.dodayApp.actions,
-    ...ducks.details.actions,
-    ...ducks.api.actions,
-    ...ducks.dialog.actions,
-  }
-)(withStyles(css)(ActivityProgressDetailsComponentClass));
+export const ActivityProgressDetails = pageflow()(
+  connect(
+    mapState,
+    {
+      ...ducks.sidebar.actions,
+      ...ducks.details.actions,
+      ...ducks.api.actions,
+      ...ducks.dialog.actions,
+    }
+  )(withStyles(css)(ActivityProgressDetailsComponentClass))
+);

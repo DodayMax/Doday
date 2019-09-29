@@ -7,6 +7,7 @@ export * from './pie-chart/pie-chart';
 export * from './goal/goal';
 export * from './google/google';
 export * from './activities/activities';
+export * from './activity/activity';
 export * from './silver/silver';
 export * from './dodayman/dodayman';
 export * from './duration/duration';

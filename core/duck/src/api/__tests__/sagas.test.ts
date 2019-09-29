@@ -31,13 +31,13 @@ import {
   ActivityProgress,
 } from '@doday/lib';
 import storeActions from '../../store/actions';
-import dodayAppActions from '../../doday-app/actions';
+import sidebarActions from '../../sidebar/actions';
 import builderActions from '../../builder/actions';
 import toastActions from '../../toast/actions';
 import dodayDetailsActions from '../../doday-details/actions';
-import { activeTools } from '../../auth/selectors';
+import { activeToolsSelector } from '../../auth/selectors';
 import { searchTerm, publicDodays } from '../../store/selectors';
-import { selectedDoday } from '../../doday-details/selectors';
+import { selectedDodaySelector } from '../../doday-details/selectors';
 
 describe('Test api sagas', () => {
   it('createDodayActionSaga with valid entity', () => {
@@ -50,8 +50,9 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+        activeTool[0] &&
+          activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
             {
               doday: action.payload.doday,
               resource: action.payload.resource,
@@ -62,19 +63,20 @@ describe('Test api sagas', () => {
     const serialized = {
       doday:
         activeTool[0].config &&
-        (activeTool[0].config.entities[0].serialize!(
-          action.payload.doday
-        ) as SerializedDodayLike),
+        (activeTool[0].config.entities &&
+          (activeTool[0].config.entities[0].serialize!(
+            action.payload.doday
+          ) as SerializedDodayLike)),
       resource: action.payload.resource,
     };
     const gen = createDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(dodayAppActions.setDodayAppLoadingStateActionCreator(true))
+      put(sidebarActions.setSidebarLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
-      call(api.dodays.mutations.createDodayMutation, serialized)
+      call(api.dodays.mutations.createDodayMutation, serialized as any)
     );
     expect(gen.next().value).toEqual(
       put(builderActions.clearBuilderActionCreator())
@@ -88,7 +90,7 @@ describe('Test api sagas', () => {
       )
     );
     expect(gen.next().value).toEqual(
-      put(dodayAppActions.setDodayAppLoadingStateActionCreator(false))
+      put(sidebarActions.setSidebarLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
@@ -105,8 +107,8 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.createDodayOptimisticUpdateActionCreator(
             {
               doday: action.payload.doday,
               progress: action.payload.progress,
@@ -116,22 +118,26 @@ describe('Test api sagas', () => {
       ),
     ];
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize!(
-        action.payload.doday
-      ) as SerializedDodayLike,
-      progress: activeTool[0].config.entities[0].serializeProgress!(
-        action.payload.progress
-      ) as SerializedProgressLike,
+      doday:
+        activeTool[0].config.entities &&
+        (activeTool[0].config.entities[0].serialize!(
+          action.payload.doday
+        ) as SerializedDodayLike),
+      progress:
+        activeTool[0].config.entities &&
+        (activeTool[0].config.entities[0].serializeProgress!(
+          action.payload.progress
+        ) as SerializedProgressLike),
       resource: action.payload.resource,
     };
     const gen = createAndTakeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
-      put(dodayAppActions.setDodayAppLoadingStateActionCreator(true))
+      put(sidebarActions.setSidebarLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
-      call(api.dodays.mutations.createAndTakeDodayMutation, serialized)
+      call(api.dodays.mutations.createAndTakeDodayMutation, serialized as any)
     );
     expect(gen.next().value).toEqual(
       put(builderActions.clearBuilderActionCreator())
@@ -145,7 +151,7 @@ describe('Test api sagas', () => {
       )
     );
     expect(gen.next().value).toEqual(
-      put(dodayAppActions.setDodayAppLoadingStateActionCreator(false))
+      put(sidebarActions.setSidebarLoadingStateActionCreator(false))
     );
     expect(gen.next().done).toBe(true);
   });
@@ -161,8 +167,8 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.takeDodayOptimisticUpdateActionCreator(
             {
               doday,
               progress: action.payload.progress,
@@ -175,14 +181,16 @@ describe('Test api sagas', () => {
         )
       ),
     ];
-    const serialized = activeTool[0].config.entities[0].serializeProgress!(
-      action.payload.progress
-    );
+    const serialized =
+      activeTool[0].config.entities &&
+      activeTool[0].config.entities[0].serializeProgress!(
+        action.payload.progress
+      );
     const gen = takeDodayActionSaga(action);
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
     expect(gen.next(activeTool).value).toEqual(
       put(dodayDetailsActions.updateSelectedDodayActionCreator(undefined))
     );
@@ -220,8 +228,8 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.deleteDodayOptimisticUpdateActionCreator(
             action.payload.did
           )
       ),
@@ -230,7 +238,7 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
     expect(gen.next(activeTool).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.deleteDodayMutation, action.payload.did)
@@ -263,8 +271,8 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
             action.payload.did
           )
       ),
@@ -273,8 +281,8 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
-    expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
+    expect(gen.next(activeTool).value).toEqual(select(selectedDodaySelector));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(term).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
@@ -320,8 +328,8 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
             action.payload.did
           )
       ),
@@ -330,8 +338,8 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
-    expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
+    expect(gen.next(activeTool).value).toEqual(select(selectedDodaySelector));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(term).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
@@ -376,8 +384,8 @@ describe('Test api sagas', () => {
     const dodays = [doday];
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.untakeDodayOptimisticUpdateActionCreator(
             action.payload.did
           )
       ),
@@ -386,8 +394,8 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
-    expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
+    expect(gen.next(activeTool).value).toEqual(select(selectedDodaySelector));
     expect(gen.next(selected).value).toEqual(select(searchTerm));
     expect(gen.next(undefined).value).toEqual(select(publicDodays));
     expect(gen.next(dodays).value).toEqual(
@@ -432,16 +440,20 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize!(action.payload.updates
-        .doday as Partial<Activity>),
-      progress: activeTool[0].config.entities[0].serializeProgress!(action
-        .payload.updates.progress as Partial<ActivityProgress>),
+      doday:
+        activeTool[0].config.entities &&
+        activeTool[0].config.entities[0].serialize!(action.payload.updates
+          .doday as Partial<Activity>),
+      progress:
+        activeTool[0].config.entities &&
+        activeTool[0].config.entities[0].serializeProgress!(action.payload
+          .updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
             {
               did: action.payload.did,
               updates: {
@@ -461,8 +473,8 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
-    expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
+    expect(gen.next(activeTool).value).toEqual(select(selectedDodaySelector));
     expect(gen.next(selected).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.updateDodayMutation, {
@@ -493,16 +505,20 @@ describe('Test api sagas', () => {
     const activeTool = rootState.auth.activeTools;
     const selected = deserializedActivity;
     const serialized = {
-      doday: activeTool[0].config.entities[0].serialize!(action.payload.updates
-        .doday as Partial<Activity>),
-      progress: activeTool[0].config.entities[0].serializeProgress!(action
-        .payload.updates.progress as Partial<ActivityProgress>),
+      doday:
+        activeTool[0].config.entities &&
+        activeTool[0].config.entities[0].serialize!(action.payload.updates
+          .doday as Partial<Activity>),
+      progress:
+        activeTool[0].config.entities &&
+        activeTool[0].config.entities[0].serializeProgress!(action.payload
+          .updates.progress as Partial<ActivityProgress>),
       resource: action.payload.updates.resource,
     };
     const sideEffects = [
       put(
-        activeTool[0].duck &&
-          activeTool[0].duck.actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
+        activeTool[0].actions &&
+          activeTool[0].actions.optimisticUpdatesActionCreators.updateDodayOptimisticUpdateActionCreator(
             {
               did: action.payload.did,
               updates: {
@@ -517,8 +533,8 @@ describe('Test api sagas', () => {
     expect(gen.next().value).toEqual(
       put(dodayDetailsActions.setDodayDetailsLoadingStateActionCreator(true))
     );
-    expect(gen.next().value).toEqual(select(activeTools));
-    expect(gen.next(activeTool).value).toEqual(select(selectedDoday));
+    expect(gen.next().value).toEqual(select(activeToolsSelector));
+    expect(gen.next(activeTool).value).toEqual(select(selectedDodaySelector));
     expect(gen.next(selected).value).toEqual(all(sideEffects));
     expect(gen.next().value).toEqual(
       call(api.dodays.mutations.updateDodayMutation, {

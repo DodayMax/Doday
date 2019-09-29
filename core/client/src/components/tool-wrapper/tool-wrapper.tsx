@@ -25,6 +25,7 @@ export const ToolWrapper = (
     Partial<WithTranslation>
 ) => {
   const { tool, place, dodayType, isProgress, ...pathrough } = props;
+  console.log(tool);
   if (!tool) {
     return null;
   }

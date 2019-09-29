@@ -510,7 +510,7 @@ const mapState = (state: RootState) => ({
 export const ActivityBuilder = connect(
   mapState,
   {
-    ...ducks.dodayApp.actions,
+    ...ducks.sidebar.actions,
     ...activitiesBuilderActions.actions.actionCreators,
   }
 )(

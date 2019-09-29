@@ -2,7 +2,8 @@ import { AnyAction } from 'redux';
 
 export enum HeroSettingsActionConstants {
   TOGGLE_DRAWER = '[heroSettings] TOGGLE_DRAWER',
-  TOGGLE_DODAY_APP = '[heroSettings] TOGGLE_DODAY_APP',
+  TOGGLE_SIDEBAR = '[heroSettings] TOGGLE_SIDEBAR',
+  SET_SIDEBAR_WIDTH = '[heroSettings] SET_SIDEBAR_WIDTH',
   TOGGLE_THEME = '[heroSettings] TOGGLE_THEME',
 }
 
@@ -20,14 +21,27 @@ function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
 }
 
 /**
- * Toggle Doday app
+ * Toggle sidebar
  *
  * @export
- * @returns {ToggleDodayAppAction}
+ * @returns {ToggleSidebarAction}
  */
-function toggleDodayAppActionCreator(): ToggleDodayAppAction {
+function toggleSidebarActionCreator(): ToggleSidebarAction {
   return {
-    type: HeroSettingsActionConstants.TOGGLE_DODAY_APP,
+    type: HeroSettingsActionConstants.TOGGLE_SIDEBAR,
+  };
+}
+
+/**
+ * Set sidebar width
+ *
+ * @export
+ * @returns {SetSidebarWidthAction}
+ */
+function toggleSidebarWidthActionCreator(value: number): SetSidebarWidthAction {
+  return {
+    type: HeroSettingsActionConstants.SET_SIDEBAR_WIDTH,
+    payload: value <= 320 ? value : 320,
   };
 }
 
@@ -46,7 +60,8 @@ function toggleThemeActionCreator(mode: 'dark' | 'light'): ToggleThemeAction {
 
 export default {
   toggleDrawerActionCreator,
-  toggleDodayAppActionCreator,
+  toggleSidebarActionCreator,
+  toggleSidebarWidthActionCreator,
   toggleThemeActionCreator,
 };
 
@@ -59,8 +74,13 @@ export interface ToggleDrawerAction extends AnyAction {
   payload?: boolean;
 }
 
-export interface ToggleDodayAppAction extends AnyAction {
-  type: HeroSettingsActionConstants.TOGGLE_DODAY_APP;
+export interface ToggleSidebarAction extends AnyAction {
+  type: HeroSettingsActionConstants.TOGGLE_SIDEBAR;
+}
+
+export interface SetSidebarWidthAction extends AnyAction {
+  type: HeroSettingsActionConstants.SET_SIDEBAR_WIDTH;
+  payload: number;
 }
 
 export interface ToggleThemeAction extends AnyAction {
@@ -72,4 +92,8 @@ export interface ToggleThemeAction extends AnyAction {
  * Export all action types for reducers
  */
 
-export type HeroSettingsActionTypes = ToggleDrawerAction | ToggleThemeAction;
+export type HeroSettingsActionTypes =
+  | ToggleDrawerAction
+  | ToggleSidebarAction
+  | SetSidebarWidthAction
+  | ToggleThemeAction;

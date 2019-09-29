@@ -7,7 +7,7 @@ import actions, {
   RequestForSetUpdatesAction,
 } from './actions';
 import api from '@doday/api';
-import { selectedDoday, updatesSelector } from './selectors';
+import { selectedDodaySelector, updatesSelector } from './selectors';
 import { isDirty, ProgressLike, DodayLike } from '@doday/lib';
 
 /**
@@ -51,7 +51,7 @@ export function* setUpdatesAndDirtyStatusSaga(
     actions.setUpdatesForSelectedDodayActionCreator(action.payload!.progress!)
   );
   const updates: Partial<ProgressLike> = yield select(updatesSelector);
-  const selected: DodayLike = yield select(selectedDoday);
+  const selected: DodayLike = yield select(selectedDodaySelector);
   const dirty = yield call(isDirty, selected, updates);
   yield put(actions.setDirtyStatusActionCreator(dirty));
 }

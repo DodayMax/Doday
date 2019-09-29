@@ -7,7 +7,7 @@ import { ActivityCell } from './cells/app-cell/activity-cell';
 import {
   Resource,
   RootState,
-  DodayAppQueryParams,
+  SidebarQueryParams,
   DodayLike,
   ProgressLike,
   Activity,
@@ -16,8 +16,8 @@ import {
 import { DodaysQueryParams } from '@doday/api';
 import { actions } from '../../duck';
 import ducks, {
-  ChangeDodayAppRouteAction,
-  SetDodayAppQueryParamsAction,
+  ChangeSidebarRouteAction,
+  SetSidebarQueryParamsAction,
   UpdateDodayAction,
 } from '@doday/duck';
 import { Grid, DefaultTopBar } from '@doday/shared';
@@ -25,15 +25,15 @@ import { config } from '../../config';
 import { FetchActivitiesAction } from '../../duck/actions';
 import { ActivityToolState } from '../../duck/reducer';
 
-export interface ActivityDodayAppProps {
+export interface ActivitySidebarProps {
   loading: boolean;
-  t?: any;
+  t: any;
 }
 
 export interface PropsFromConnect {
   myDID: string;
   route: string;
-  routeParams: DodayAppQueryParams;
+  routeParams: SidebarQueryParams;
   dodays: Activity[];
   fetchActivitiesActionCreator: (
     params: DodaysQueryParams
@@ -47,19 +47,17 @@ export interface PropsFromConnect {
       resource?: Partial<Resource>;
     };
   }): UpdateDodayAction;
-  changeDodayAppRouteActionCreator: (
-    route: string
-  ) => ChangeDodayAppRouteAction;
-  setDodayAppQueryParamsActionCreator: (
-    params: DodayAppQueryParams
-  ) => SetDodayAppQueryParamsAction;
+  changeSidebarRouteActionCreator: (route: string) => ChangeSidebarRouteAction;
+  setSidebarQueryParamsActionCreator: (
+    params: SidebarQueryParams
+  ) => SetSidebarQueryParamsAction;
 }
 
-type Props = ActivityDodayAppProps &
+type Props = ActivitySidebarProps &
   Partial<PropsFromConnect> &
   RouteComponentProps;
 
-export class ActivityDodayAppComponentClass extends React.Component<Props> {
+export class ActivitySidebarComponentClass extends React.Component<Props> {
   componentDidMount() {
     this.props.fetchActivitiesActionCreator!({
       dodaytype: DodayType.Activity,
@@ -93,8 +91,8 @@ export class ActivityDodayAppComponentClass extends React.Component<Props> {
       {
         name: 'inprogress',
         action: () => {
-          this.props.changeDodayAppRouteActionCreator!(config.route!);
-          this.props.setDodayAppQueryParamsActionCreator!({});
+          this.props.changeSidebarRouteActionCreator!(config.route!);
+          this.props.setSidebarQueryParamsActionCreator!({});
         },
         active: () => {
           const { routeParams } = this.props;
@@ -104,7 +102,7 @@ export class ActivityDodayAppComponentClass extends React.Component<Props> {
       {
         name: 'completed',
         action: () => {
-          this.props.setDodayAppQueryParamsActionCreator!({
+          this.props.setSidebarQueryParamsActionCreator!({
             completed: true,
           });
         },
@@ -116,7 +114,7 @@ export class ActivityDodayAppComponentClass extends React.Component<Props> {
       {
         name: 'published',
         action: () => {
-          this.props.setDodayAppQueryParamsActionCreator!({
+          this.props.setSidebarQueryParamsActionCreator!({
             published: true,
           });
         },
@@ -193,17 +191,17 @@ export class ActivityDodayAppComponentClass extends React.Component<Props> {
 }
 
 const mapState = (state: RootState) => ({
-  route: state.dodayApp.route,
-  routeParams: state.dodayApp.routeParams,
+  route: state.sidebar.route,
+  routeParams: state.sidebar.routeParams,
   dodays: state.activities && (state.activities as ActivityToolState).dodays,
   myDID: state.auth.hero && state.auth.hero.did,
 });
 
-export const ActivityDodayApp = connect(
+export const ActivitySidebar = connect(
   mapState,
   {
     ...actions,
     ...ducks.api.actions,
-    ...ducks.dodayApp.actions,
+    ...ducks.sidebar.actions,
   }
-)(ActivityDodayAppComponentClass);
+)(ActivitySidebarComponentClass);

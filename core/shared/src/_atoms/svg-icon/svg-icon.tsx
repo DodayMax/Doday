@@ -50,7 +50,7 @@ export const css = (theme: any) =>
     },
   });
 
-export interface SvgIconProps extends React.HTMLAttributes<HTMLElement> {
+export interface SvgIconProps {
   classes?: any;
   className?: string;
   width?: number;
@@ -62,6 +62,7 @@ export interface SvgIconProps extends React.HTMLAttributes<HTMLElement> {
   shapeRendering?: string;
   titleAccess?: string;
   viewBox?: string;
+  children?: React.ReactNode;
 }
 
 const SvgIconComponent = React.forwardRef(function SvgIcon(

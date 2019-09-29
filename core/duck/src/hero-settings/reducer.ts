@@ -6,7 +6,8 @@ import { HeroSettingsState } from '@doday/lib';
 
 export const initialHeroSettingsState: HeroSettingsState = {
   isDrawerCollapsed: true,
-  isDodayAppCollapsed: false,
+  isSidebarCollapsed: false,
+  sidebarWidth: 280,
   theme: 'dark',
 };
 
@@ -14,13 +15,18 @@ export default (
   state = initialHeroSettingsState,
   action: HeroSettingsActionTypes
 ): HeroSettingsState => {
-  switch (action.type) {
+  switch (action!.type) {
     case HeroSettingsActionConstants.TOGGLE_DRAWER:
       const value =
-        action!.payload != null ? action!.payload : !state.isDrawerCollapsed;
+        action!.payload != null ? action.payload : !state.isDrawerCollapsed;
       return {
         ...state,
         isDrawerCollapsed: value,
+      };
+    case HeroSettingsActionConstants.SET_SIDEBAR_WIDTH:
+      return {
+        ...state,
+        sidebarWidth: action.payload,
       };
     case HeroSettingsActionConstants.TOGGLE_THEME:
       const theme = action.payload != null ? action.payload : 'dark';

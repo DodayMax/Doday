@@ -1,79 +1,48 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import * as ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import { CSSTransition } from 'react-transition-group';
 import { RouteComponentProps } from 'react-router';
-
-interface PageWrapperProps {}
-
-interface PageWrapperState {
-  visible: boolean;
-}
 
 export interface PageflowOptions {
   path: string;
 }
 
 export interface PageWrapperChildContext {
-  requestClose?(): void;
+  requestClose?(callback?: () => void): void;
 }
 
-export const Pageflow = (options: PageflowOptions): any => {
-  const pageflow = (options: PageflowOptions) => (
-    WrappedComponent: React.ComponentType<any>
-  ): any => {
-    const { path } = options;
-    return class PageWrapper extends React.PureComponent<
-      RouteComponentProps<any, any> & PageWrapperProps,
-      PageWrapperState
-    > {
-      constructor(props: RouteComponentProps<any, any> & PageWrapperProps) {
-        super(props);
+export const PageflowContext = React.createContext(null as any);
 
-        this.state = {
-          visible: true,
-        };
-      }
-      public static childContextTypes: React.ValidationMap<any> = {
-        requestClose: PropTypes.func,
-      };
+export const pageflow = (options?: PageflowOptions) => (
+  WrappedComponent: React.ComponentType<any>
+): any => {
+  return (props: React.HTMLAttributes<any> & RouteComponentProps<any, any>) => {
+    const [visible, updateVisible] = React.useState(false);
 
-      private requestClose = () => {
-        this.setState({
-          visible: false,
-        });
-      };
+    React.useEffect(() => {
+      setTimeout(() => updateVisible(true), 300);
+    }, []);
 
-      public getChildContext(): PageWrapperChildContext {
-        return {
-          requestClose: this.requestClose,
-        };
-      }
-
-      public render() {
-        return (
-          <ReactCSSTransitionGroup
-            component={React.Fragment}
-            transitionAppear={true}
-            transitionAppearTimeout={600}
-            transitionEnterTimeout={600}
-            transitionLeaveTimeout={200}
-            transitionName={
-              this.props.match && this.props.match.path.startsWith(path)
-                ? 'loadComponent'
-                : 'leaveComponent'
-            }
-          >
-            {this.state.visible
-              ? React.createElement(
-                  WrappedComponent,
-                  Object.assign({}, this.props, this.props.children)
-                )
-              : null}
-          </ReactCSSTransitionGroup>
-        );
-      }
+    const requestClose = (callback: () => void) => {
+      updateVisible(false);
+      setTimeout(() => {
+        if (callback) callback();
+      }, 300);
     };
-  };
 
-  return pageflow(options);
+    return (
+      <PageflowContext.Provider value={requestClose}>
+        <CSSTransition
+          in={visible}
+          timeout={300}
+          classNames="pageflow"
+          unmountOnExit
+        >
+          {React.createElement(
+            WrappedComponent,
+            Object.assign({}, props, props.children)
+          )}
+        </CSSTransition>
+      </PageflowContext.Provider>
+    );
+  };
 };

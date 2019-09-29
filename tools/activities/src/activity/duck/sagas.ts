@@ -18,7 +18,7 @@ import api, { DodaysWithProgressQueryParams } from '@doday/api';
  * @param {FetchActivitiesAction} action
  */
 export function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
-  yield put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(true));
+  yield put(ducks.sidebar.actions.setSidebarLoadingStateActionCreator(true));
   const params: DodaysWithProgressQueryParams = action.payload;
   const activities = yield call(api.dodays.queries.fetchDodays, params);
   const activitiesWithProgress = yield call(
@@ -28,7 +28,7 @@ export function* fetchActivitiesActionSaga(action: FetchActivitiesAction) {
   yield put(
     setActivitiesActionCreator(activities.concat(activitiesWithProgress))
   );
-  yield put(ducks.dodayApp.actions.setDodayAppLoadingStateActionCreator(false));
+  yield put(ducks.sidebar.actions.setSidebarLoadingStateActionCreator(false));
 }
 
 /**

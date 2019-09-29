@@ -1,4 +1,5 @@
 export type IconNames =
+  | 'Activity'
   | 'ActivityDoType'
   | 'ActivityReadType'
   | 'ActivityWatchType'

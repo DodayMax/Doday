@@ -7,7 +7,7 @@ export const getRootModule = () => ({
   id: 'root',
   reducerMap: {
     auth: ducks.auth.reducer,
-    dodayApp: ducks.dodayApp.reducer,
+    sidebar: ducks.sidebar.reducer,
     details: ducks.details.reducer,
     heroSettings: ducks.settings.reducer,
     store: ducks.store.reducer,
@@ -22,7 +22,7 @@ function* rootSaga() {
     ...ducks.auth.sagas,
     ...ducks.settings.sagas,
     ...ducks.details.sagas,
-    ...ducks.dodayApp.sagas,
+    ...ducks.sidebar.sagas,
     ...ducks.api.sagas,
     ...ducks.store.sagas,
   ]);
@@ -37,7 +37,7 @@ const store = createStore(
 );
 
 // const route = read_cookie('route');
-// store.dispatch(ducks.dodayApp.actions.changeDodayAppRouteActionCreator(route));
+// store.dispatch(ducks.sidebar.actions.changeSidebarRouteActionCreator(route));
 
 // /**
 //  * set stored values

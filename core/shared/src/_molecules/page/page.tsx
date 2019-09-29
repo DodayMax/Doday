@@ -36,13 +36,14 @@ const css = (theme: Theme) =>
     },
   });
 
-interface PageProps extends React.HTMLAttributes<HTMLElement> {
+interface PageProps {
   header?: React.ReactElement<any>;
   /**
    * Static pages don't stacked on top of another page
    * (use when you need page without close btn)
    **/
   permanent?: boolean;
+  className?: string;
 }
 
 @(withRouter as any)

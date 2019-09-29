@@ -11,7 +11,7 @@ import {
   fetchSelectedProgressActionSaga,
   setUpdatesAndDirtyStatusSaga,
 } from '../sagas';
-import { updatesSelector, selectedDoday } from '../selectors';
+import { updatesSelector, selectedDodaySelector } from '../selectors';
 import { activity, ProgressLike, isDirty } from '@doday/lib';
 
 describe("Test DodayDetails's sagas", () => {
@@ -68,9 +68,11 @@ describe("Test DodayDetails's sagas", () => {
       )
     );
     expect(gen.next().value).toEqual(select(updatesSelector));
-    expect(gen.next(updates).value).toEqual(select(selectedDoday));
+    expect(gen.next(updates as any).value).toEqual(
+      select(selectedDodaySelector)
+    );
     expect(gen.next(activity).value).toEqual(call(isDirty, activity, updates));
-    expect(gen.next(dirty).value).toEqual(
+    expect(gen.next(dirty as any).value).toEqual(
       put(actions.setDirtyStatusActionCreator(dirty))
     );
     expect(gen.next().done).toBe(true);

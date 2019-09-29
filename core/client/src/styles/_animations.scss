@@ -1,36 +1,18 @@
 // Animations
 
-.loadComponent-appear {
+.pageflow-enter {
   opacity: 0;
   transform: translateX(200px);
 }
-.loadComponent-appear.loadComponent-appear-active {
+.pageflow-enter.pageflow-enter-active {
   opacity: 1;
   transform: translateX(0px);
   transition: all 200ms ease-out;
 }
-.loadComponent-enter {
-  opacity: 0;
-}
-.loadComponent-enter.loadComponent-enter-active {
-  opacity: 1;
-  transition: all 200ms ease-out;
-}
-.loadComponent-leave {
+.pageflow-exit {
   opacity: 1;
 }
-.loadComponent-leave.loadComponent-leave-active {
-  opacity: 0;
-  transform: translateY(200px);
-  transition: all 100ms ease-out;
-}
-
-.leaveComponent-leave {
-  opacity: 1;
-  transform: translateY(0px);
-}
-
-.leaveComponent-leave.leaveComponent-leave-active {
+.pageflow-exit.pageflow-exit-active {
   opacity: 0;
   transform: translateY(200px);
   transition: all 100ms ease-out;

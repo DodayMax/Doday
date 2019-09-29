@@ -11,25 +11,23 @@ import {
   ToolBeacon,
   DrawerMenuItem,
   ThemeType,
-  Space,
   capitalize,
   ToolSysname,
+  Entity,
 } from '@doday/lib';
 import ducks, {
   FetchHeroAction,
   ToggleDrawerAction,
-  ToggleDodayAppAction,
+  ToggleSidebarAction,
   ToggleThemeAction,
-  ChangeDodayAppRouteAction,
   ClearSelectedDodayAction,
   SetActiveToolBeaconsAction,
   AddActiveToolBeaconAction,
+  ChangeSidebarRouteAction,
 } from '@doday/duck';
 import { Landing } from '../landing';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
-import FaceIcon from '@material-ui/icons/Face';
-import AppsIcon from '@material-ui/icons/Apps';
 import AddIcon from '@material-ui/icons/Add';
 import BugReportIcon from '@material-ui/icons/BugReport';
 
@@ -37,37 +35,33 @@ import {
   WithStyles,
   WithTheme,
   CssBaseline,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Typography,
   Drawer,
   Divider,
   ListItem,
   ListItemIcon,
   ListItemText,
-  withStyles,
-  Button,
-  Switch,
+  Fab,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '@doday/shared';
 import { loadTool } from '@tools';
 
 import { css } from './css.desktop-shell';
-import { DodayApp } from './doday-app';
+import { withStyles } from '@material-ui/styles';
+import { TopBar } from './top-bar/top-bar';
+import { Sidebar } from './sidebar/sidebar';
 
 interface DesktopShellProps extends RouteComponentProps {}
 
 interface PropsFromConnect {
-  dodayAppRoute: string;
+  sidebarRoute: string;
   isDrawerCollapsed: boolean;
-  isDodayAppCollapsed: boolean;
+  isSidebarCollapsed: boolean;
   hero: Hero;
   activeTools: { [key: string]: ToolBeacon };
-  changeDodayAppRouteActionCreator(route: string): ChangeDodayAppRouteAction;
+  changeSidebarRouteActionCreator(route: string): ChangeSidebarRouteAction;
   clearSelectedDodayActionCreator(): ClearSelectedDodayAction;
   toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
-  toggleDodayAppActionCreator: () => ToggleDodayAppAction;
+  toggleSidebarActionCreator: () => ToggleSidebarAction;
   fetchHeroActionCreator(): FetchHeroAction;
   setActiveToolBeaconsActionCreator(tools: {
     [key: string]: ToolBeacon;
@@ -79,6 +73,7 @@ interface PropsFromConnect {
 interface DesktopShellState {
   resizeTaskId?: NodeJS.Timeout;
   isDrawerCollapsed: boolean;
+  speedDialOpen: boolean;
 }
 
 class DesktopShell extends React.Component<
@@ -95,6 +90,7 @@ class DesktopShell extends React.Component<
     // Keep in state for forceCollapsing
     this.state = {
       isDrawerCollapsed: props.isDrawerCollapsed,
+      speedDialOpen: false,
     };
   }
 
@@ -143,105 +139,60 @@ class DesktopShell extends React.Component<
     });
   }
 
+  handleSpeedDialOpen = () => {
+    this.setState({
+      speedDialOpen: true,
+    });
+  };
+
+  handleSpeedDialClose = () => {
+    this.setState({
+      speedDialOpen: false,
+    });
+  };
+
+  mapToolsToSelect = (tools: ToolBeacon[]) => {
+    const allEntities = [];
+    tools.forEach(tool => {
+      tool.config.entities.forEach(entity => {
+        allEntities.push(entity);
+      });
+    });
+    return allEntities.map((entity: Entity) => {
+      const icon = Icons[capitalize(entity.name)];
+      return {
+        icon,
+        label: entity.name,
+        value: entity.name,
+      };
+    });
+  };
+
   render() {
     const {
       classes,
       hero,
       activeTools,
-      toggleDodayAppActionCreator,
-      isDodayAppCollapsed,
+      toggleSidebarActionCreator,
+      isSidebarCollapsed,
       history,
       location,
       t,
     } = this.props;
 
+    const tools = Object.values(activeTools);
+    let mappedTools:
+      | { label: string; value: string; icon: JSX.Element }[]
+      | undefined;
+    if (tools.length && tools.every(tool => tool.loaded)) {
+      mappedTools = this.mapToolsToSelect(tools);
+    }
+
     return (
       <div className={classes.root}>
         <Route exact path="/" render={() => <Redirect to="/welcome" />} />
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classnames(classes.appBar, {
-            [classes.appBarShift]: !this.props.isDrawerCollapsed,
-          })}
-        >
-          <Toolbar
-            className={classes.topBar}
-            disableGutters={this.props.isDrawerCollapsed}
-          >
-            <LayoutBlock valign="vflexCenter" insideElementsMargin>
-              <LayoutBlock spaceLeft={Space.Small} spaceRight={Space.Medium}>
-                <IconButton onClick={() => this.props.history.push('/welcome')}>
-                  <Icons.Checkbox />
-                </IconButton>
-              </LayoutBlock>
-              {hero && (
-                <IconButton
-                  onClick={() => {
-                    history.push('/dashboard');
-                    this.props.clearSelectedDodayActionCreator();
-                  }}
-                >
-                  <AppsIcon fontSize="large" className={classes.white} />
-                </IconButton>
-              )}
-            </LayoutBlock>
-            <Typography variant="subtitle2" noWrap className={classes.white}>
-              Welcome to the Doday app!
-            </Typography>
-            {hero ? (
-              <LayoutBlock insideElementsMargin valign="vflexCenter">
-                {Object.values(activeTools).length &&
-                !Object.values(activeTools)[0].loading ? (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    size="small"
-                    disabled={location.pathname.startsWith(
-                      '/dashboard/builder'
-                    )}
-                    onClick={() =>
-                      history.push(
-                        `/dashboard/builder/${
-                          Object.values(activeTools)[0].config.entities[0].name
-                        }`
-                      )
-                    }
-                  >
-                    {`New ${
-                      Object.values(activeTools)[0].config.entities[0].name
-                    }`}
-                  </Button>
-                ) : (
-                  undefined
-                )}
-                <Switch
-                  onChange={e => {
-                    const theme = e.target.checked ? 'dark' : 'light';
-                    this.props.toggleThemeActionCreator(theme);
-                  }}
-                  defaultChecked
-                  value="checkedF"
-                  color="default"
-                />
-                <div>
-                  <IconButton
-                    onClick={this.handleProfileOpen}
-                    className={classes.white}
-                  >
-                    <FaceIcon />
-                  </IconButton>
-                </div>
-              </LayoutBlock>
-            ) : (
-              <LayoutBlock>
-                <IconButton href="/auth/google" data-test-id="google-button">
-                  <Icons.Google />
-                </IconButton>
-              </LayoutBlock>
-            )}
-          </Toolbar>
-        </AppBar>
+        <TopBar hero={hero} isDrawerCollapsed={this.props.isDrawerCollapsed} />
         {hero && (
           <Route
             path="/dashboard"
@@ -274,7 +225,7 @@ class DesktopShell extends React.Component<
                                 button
                                 key={index}
                                 onClick={() => {
-                                  this.props.changeDodayAppRouteActionCreator(
+                                  this.props.changeSidebarRouteActionCreator(
                                     tool.config.route
                                   );
                                   this.props.clearSelectedDodayActionCreator();
@@ -297,7 +248,7 @@ class DesktopShell extends React.Component<
                             <ListItem
                               button
                               onClick={() => {
-                                this.props.changeDodayAppRouteActionCreator(
+                                this.props.changeSidebarRouteActionCreator(
                                   tool.config.route
                                 );
                                 this.props.clearSelectedDodayActionCreator();
@@ -390,13 +341,13 @@ class DesktopShell extends React.Component<
                   <div className={classes.toolbar} />
 
                   <LayoutBlock>
-                    <section className={classes.dodayAppContainer}>
-                      {!isDodayAppCollapsed && (
+                    <section className={classes.sidebarContainer}>
+                      {!isSidebarCollapsed && (
                         <Route
                           path="/dashboard"
                           render={props => (
                             <React.Suspense fallback={null}>
-                              <DodayApp {...props} activeTools={{}} />
+                              <Sidebar />
                             </React.Suspense>
                           )}
                         />
@@ -404,13 +355,29 @@ class DesktopShell extends React.Component<
                     </section>
 
                     <React.Suspense fallback={null}>
-                      <Dashboard
-                        activeTools={activeTools}
-                        toggleDodayAppActionCreator={
-                          toggleDodayAppActionCreator
-                        }
-                        isDodayAppCollapsed={isDodayAppCollapsed}
-                      />
+                      <LayoutBlock
+                        relative
+                        flex={'1'}
+                        className={classes.mainContentContainer}
+                      >
+                        <Dashboard
+                          activeTools={activeTools}
+                          toggleSidebarActionCreator={
+                            toggleSidebarActionCreator
+                          }
+                          isSidebarCollapsed={isSidebarCollapsed}
+                        />
+                        <Fab
+                          color="primary"
+                          aria-label="Create doday"
+                          className={classes.speedDial}
+                          onClick={() => {
+                            // history.push(`/dashboard/builder/${tool.label}`)
+                          }}
+                        >
+                          <AddIcon />
+                        </Fab>
+                      </LayoutBlock>
                     </React.Suspense>
                   </LayoutBlock>
                 </main>
@@ -434,22 +401,22 @@ class DesktopShell extends React.Component<
 
 const mapState = (state: RootState) => ({
   isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
-  isDodayAppCollapsed: state.heroSettings.isDodayAppCollapsed,
+  isSidebarCollapsed: state.heroSettings.isSidebarCollapsed,
   hero: state.auth.hero,
   activeTools: state.auth.activeTools,
-  dodayAppRoute: state.dodayApp.route,
+  sidebarRoute: state.sidebar.route,
 });
 
 export default connect(
   mapState,
   {
-    changeDodayAppRouteActionCreator:
-      ducks.dodayApp.actions.changeDodayAppRouteActionCreator,
+    changeSidebarRouteActionCreator:
+      ducks.sidebar.actions.changeSidebarRouteActionCreator,
     clearSelectedDodayActionCreator:
       ducks.details.actions.clearSelectedDodayActionCreator,
     toggleDrawerActionCreator: ducks.settings.actions.toggleDrawerActionCreator,
-    toggleDodayAppActionCreator:
-      ducks.settings.actions.toggleDodayAppActionCreator,
+    toggleSidebarActionCreator:
+      ducks.settings.actions.toggleSidebarActionCreator,
     fetchHeroActionCreator: ducks.auth.actions.fetchHeroActionCreator,
     setActiveToolBeaconsActionCreator:
       ducks.auth.actions.setActiveToolBeaconsActionCreator,

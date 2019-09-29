@@ -18,7 +18,7 @@ import {
 import {
   Page,
   PageHeader,
-  Pageflow,
+  pageflow,
   PageWrapperChildContext,
   LayoutBlock,
   CustomDatePicker,
@@ -82,7 +82,6 @@ type Props = ActivityDetailsProps &
   WithTheme;
 
 @(withRouter as any)
-@Pageflow({ path: '/dashboard/dodays/:did' })
 export class ActivityDetailsComponentClass extends React.Component<
   Props,
   ActivityDetailsState
@@ -380,11 +379,13 @@ const mapState = (state: RootState) => ({
   selectedDoday: state.details.selectedDoday,
 });
 
-export const ActivityDetails = connect(
-  mapState,
-  {
-    ...ducks.api.actions,
-    ...ducks.details.actions,
-    ...ducks.dodayApp.actions,
-  }
-)(withStyles(css)(withTheme(ActivityDetailsComponentClass)));
+export const ActivityDetails = pageflow()(
+  connect(
+    mapState,
+    {
+      ...ducks.api.actions,
+      ...ducks.details.actions,
+      ...ducks.sidebar.actions,
+    }
+  )(withStyles(css)(withTheme(ActivityDetailsComponentClass)))
+);

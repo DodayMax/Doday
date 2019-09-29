@@ -1,94 +1,43 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router';
-import * as PropTypes from 'prop-types';
-import ducks, { FetchSelectedDodayAction } from '@doday/duck';
-import { PageWrapperChildContext } from '@doday/shared';
-import {
-  RootState,
-  WithTools,
-  DodayLike,
-  ToolBeacon,
-  LayoutSpot,
-} from '@doday/lib';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RouteComponentProps, StaticContext } from 'react-router';
+import ducks, { activeToolsSelector, selectedDodaySelector } from '@doday/duck';
+import { LayoutSpot, useRouter } from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
-import { withTranslation, WithTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
-interface DodayDetailsProps {}
+export const DodayDetails = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const router: RouteComponentProps<any, StaticContext, any> = useRouter();
+  const activeTools = useSelector(activeToolsSelector);
+  const selectedDoday = useSelector(selectedDodaySelector);
 
-interface PropsFromConnect {
-  activeTools: { [key: string]: ToolBeacon };
-  selectedDoday: DodayLike;
-  fetchSelectedDodayActionCreator: (did: string) => FetchSelectedDodayAction;
-}
+  useEffect(() => {
+    const did = router.match.params.did;
+    dispatch(ducks.details.actions.fetchSelectedDodayActionCreator(did));
+  }, []);
 
-interface DodayDetailsState {}
-
-type Props = DodayDetailsProps &
-  WithTools &
-  WithTranslation &
-  Partial<PropsFromConnect> &
-  RouteComponentProps<any>;
-
-@(withRouter as any)
-class DodayDetails extends React.Component<Props, DodayDetailsState> {
-  public static contextTypes = {
-    requestClose: PropTypes.func,
-  };
-
-  public context!: PageWrapperChildContext;
-
-  componentDidMount() {
-    const did = this.props.match.params.did;
-    this.props.fetchSelectedDodayActionCreator(did);
+  if (!selectedDoday) {
+    return <>Loading...</>;
   }
 
-  componentDidUpdate(prevProps) {
-    const did = this.props.match.params.did;
-    if (prevProps.match.params.did !== did) {
-      this.props.fetchSelectedDodayActionCreator(did);
-    }
-  }
-
-  render() {
-    const { selectedDoday, activeTools, t } = this.props;
-
-    if (!selectedDoday) {
-      return 'Loading...';
-    }
-
-    const selectedDodayType = selectedDoday && selectedDoday.type;
-    const tool =
-      activeTools &&
-      Object.values(activeTools).find(
-        tool =>
-          tool.config.entities &&
-          !!tool.config.entities.find(
-            entity => entity.type === selectedDodayType
-          )
-      );
-
-    return (
-      <ToolWrapper
-        tool={tool}
-        place={LayoutSpot.details}
-        dodayType={selectedDodayType}
-        isProgress={false}
-        t={t}
-      />
+  const selectedDodayType = selectedDoday && selectedDoday.type;
+  const tool =
+    activeTools &&
+    Object.values(activeTools).find(
+      tool =>
+        tool.config.entities &&
+        !!tool.config.entities.find(entity => entity.type === selectedDodayType)
     );
-  }
-}
 
-const mapState = (state: RootState) => ({
-  activeTools: state.auth.activeTools,
-  selectedDoday: state.details.selectedDoday,
-});
-
-export default connect(
-  mapState,
-  {
-    fetchSelectedDodayActionCreator:
-      ducks.details.actions.fetchSelectedDodayActionCreator,
-  }
-)(withTranslation(['activities', 'shell'])(DodayDetails));
+  return (
+    <ToolWrapper
+      tool={tool}
+      place={LayoutSpot.details}
+      dodayType={selectedDodayType}
+      isProgress={false}
+      t={t}
+    />
+  );
+};

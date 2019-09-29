@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
 import ducks, { FetchSelectedProgressAction } from '@doday/duck';
-import { Pageflow, PageWrapperChildContext } from '@doday/shared';
+import { pageflow, PageWrapperChildContext } from '@doday/shared';
 import { RootState, WithTools, DodayLike, LayoutSpot } from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
 import { withTranslation, WithTranslation } from 'react-i18next';
@@ -25,7 +25,6 @@ type Props = ProgressDetailsProps &
   Partial<PropsFromConnect> &
   RouteComponentProps<any>;
 
-@Pageflow({ path: '/dashboard/progress/:did' })
 @(withRouter as any)
 class ProgressDetails extends React.Component<Props, ProgressDetailsState> {
   public static contextTypes = {
@@ -72,10 +71,12 @@ const mapState = (state: RootState) => ({
   selectedDoday: state.details.selectedDoday,
 });
 
-export default connect(
-  mapState,
-  {
-    fetchSelectedProgressActionCreator:
-      ducks.details.actions.fetchSelectedProgressActionCreator,
-  }
-)(withTranslation(['activities', 'shell'])(ProgressDetails));
+export default pageflow()(
+  connect(
+    mapState,
+    {
+      fetchSelectedProgressActionCreator:
+        ducks.details.actions.fetchSelectedProgressActionCreator,
+    }
+  )(withTranslation(['activities', 'shell'])(ProgressDetails))
+);

@@ -15,7 +15,7 @@ export type CellProps = {
   onClick?: (route: string, doday: DodayLike) => void;
 };
 
-export type DodayAppQueryParams = {
+export type SidebarQueryParams = {
   completed?: boolean;
   published?: boolean;
 };

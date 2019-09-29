@@ -20,9 +20,9 @@ describe('hero settings action creators', () => {
 
   it('toggle doday app action creator', () => {
     const expectedActionObject = {
-      type: HeroSettingsActionConstants.TOGGLE_DODAY_APP,
+      type: HeroSettingsActionConstants.TOGGLE_SIDEBAR,
     };
-    expect(actions.toggleDodayAppActionCreator()).toEqual(expectedActionObject);
+    expect(actions.toggleSidebarActionCreator()).toEqual(expectedActionObject);
   });
 
   it('toggle theme action creator', () => {
