@@ -4,7 +4,6 @@ import * as cuid from 'cuid';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Dashboard } from '@components';
 import {
   RootState,
   Hero,
@@ -41,9 +40,11 @@ import {
   ListItemIcon,
   ListItemText,
   Fab,
+  Zoom,
 } from '@material-ui/core';
 import { Icons, LayoutBlock } from '@doday/shared';
 import { loadTool } from '@tools';
+import { NavigationStack } from '@components';
 
 import { css } from './css.desktop-shell';
 import { withStyles } from '@material-ui/styles';
@@ -190,12 +191,11 @@ class DesktopShell extends React.Component<
 
     return (
       <div className={classes.root}>
-        <Route exact path="/" render={() => <Redirect to="/welcome" />} />
         <CssBaseline />
         <TopBar hero={hero} isDrawerCollapsed={this.props.isDrawerCollapsed} />
         {hero && (
           <Route
-            path="/dashboard"
+            path="/"
             render={() => (
               <>
                 <Drawer
@@ -342,16 +342,7 @@ class DesktopShell extends React.Component<
 
                   <LayoutBlock>
                     <section className={classes.sidebarContainer}>
-                      {!isSidebarCollapsed && (
-                        <Route
-                          path="/dashboard"
-                          render={props => (
-                            <React.Suspense fallback={null}>
-                              <Sidebar />
-                            </React.Suspense>
-                          )}
-                        />
-                      )}
+                      {!isSidebarCollapsed && <Sidebar />}
                     </section>
 
                     <React.Suspense fallback={null}>
@@ -360,23 +351,7 @@ class DesktopShell extends React.Component<
                         flex={'1'}
                         className={classes.mainContentContainer}
                       >
-                        <Dashboard
-                          activeTools={activeTools}
-                          toggleSidebarActionCreator={
-                            toggleSidebarActionCreator
-                          }
-                          isSidebarCollapsed={isSidebarCollapsed}
-                        />
-                        <Fab
-                          color="primary"
-                          aria-label="Create doday"
-                          className={classes.speedDial}
-                          onClick={() => {
-                            // history.push(`/dashboard/builder/${tool.label}`)
-                          }}
-                        >
-                          <AddIcon />
-                        </Fab>
+                        <NavigationStack />
                       </LayoutBlock>
                     </React.Suspense>
                   </LayoutBlock>
@@ -394,6 +369,18 @@ class DesktopShell extends React.Component<
             </LayoutBlock>
           )}
         />
+        <Zoom in={!!mappedTools && !!mappedTools.length}>
+          <Fab
+            color="primary"
+            aria-label="Create doday"
+            className={classes.speedDial}
+            onClick={() => {
+              // history.push(`/dashboard/builder/${tool.label}`);
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        </Zoom>
       </div>
     );
   }

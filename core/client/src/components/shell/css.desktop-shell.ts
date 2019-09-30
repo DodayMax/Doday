@@ -8,6 +8,9 @@ export const css = (theme: Theme) =>
     root: {
       display: 'flex',
     },
+    mainContentContainer: {
+      height: 'calc(100vh - 64px)',
+    },
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {

@@ -10,6 +10,7 @@ import {
 import { LayoutBlock, Icons } from '@doday/shared';
 import { WithTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
+import store from '@root/store';
 
 interface ToolWrapperProps {
   tool: ToolBeacon;
@@ -25,7 +26,6 @@ export const ToolWrapper = (
     Partial<WithTranslation>
 ) => {
   const { tool, place, dodayType, isProgress, ...pathrough } = props;
-  console.log(tool);
   if (!tool) {
     return null;
   }
@@ -45,7 +45,10 @@ export const ToolWrapper = (
   const Component = toolView.component;
 
   return (
-    <DynamicModuleLoader modules={[...toolView.dependencies]}>
+    <DynamicModuleLoader
+      modules={[...toolView.dependencies]}
+      createStore={() => store}
+    >
       <Component {...pathrough} />
     </DynamicModuleLoader>
   );

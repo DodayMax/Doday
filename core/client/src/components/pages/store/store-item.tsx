@@ -11,9 +11,10 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { withRouter, RouteComponentProps } from 'react-router';
 import { LayoutBlock, Icons } from '@doday/shared';
 import { Space, DodayLike } from '@doday/lib';
+import { useDispatch } from 'react-redux';
+import { pushRouteActionCreator } from '@doday/duck';
 const DEFAULT_IMAGE_HEIGHT = 112.5;
 
 const css = (theme: Theme) =>
@@ -34,17 +35,16 @@ interface MasonryItemProps extends DodayLike {
   style: { [key: string]: string };
 }
 
-@(withRouter as any)
-export class MasonryItemComponent extends React.PureComponent<
-  MasonryItemProps & WithStyles & Partial<RouteComponentProps>
-> {
-  render() {
-    const { did, name, resource, rate, style, classes } = this.props;
+export const MasonryItem = withStyles(css)(
+  (props: MasonryItemProps & WithStyles) => {
+    const dispatch = useDispatch();
+    const { did, name, resource, rate, style, classes } = props;
     const imageHeight = resource && resource.imageHeight;
+
     return (
       <Grid item key={did} style={style}>
         <Card
-          onClick={() => this.props.history.push(`/dashboard/dodays/${did}`)}
+          onClick={() => dispatch(pushRouteActionCreator(`/dodays/${did}`))}
         >
           <CardActionArea>
             {resource && resource.image && (
@@ -87,6 +87,4 @@ export class MasonryItemComponent extends React.PureComponent<
       </Grid>
     );
   }
-}
-
-export const MasonryItem = withStyles(css)(MasonryItemComponent);
+);

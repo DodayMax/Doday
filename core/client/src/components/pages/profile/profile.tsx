@@ -5,8 +5,9 @@ import { Typography } from '@material-ui/core';
 export const Profile = pageflow()(() => {
   return (
     <Page
+      permanent
       header={
-        <PageHeader withClose>
+        <PageHeader>
           <a href="/api/logout">Logout</a>
         </PageHeader>
       }

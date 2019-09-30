@@ -119,6 +119,15 @@ export const deserializedResource: Resource = {
 export const serializedResource: SerializedResource = deserializedResource;
 
 export const rootState: RootState = {
+  router: {
+    location: {
+      pathname: 'Pathname',
+      search: 'Search',
+      state: '',
+      hash: '',
+    },
+    action: 'POP',
+  },
   auth: {
     hero,
     activeTools: {},
@@ -144,6 +153,10 @@ export const rootState: RootState = {
     autoHideDuration: 3000,
   },
   dialog: {} as any,
+  navStack: {
+    base: '/',
+    stack: [],
+  },
 };
 
 export const stripeToken: Token = {

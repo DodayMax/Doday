@@ -16,6 +16,8 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.top-bar';
 import { Hero } from '@doday/lib';
+import { useDispatch } from 'react-redux';
+import { pushRouteActionCreator } from '@doday/duck';
 const logo = require('@root/assets/png/app-icon.png');
 
 export interface TopBarProps {
@@ -24,9 +26,12 @@ export interface TopBarProps {
 }
 
 export const TopBar = withStyles(css)((props: TopBarProps & WithStyles) => {
+  const dispatch = useDispatch();
   const { hero, isDrawerCollapsed, classes } = props;
 
-  const handleBaseUrlChange = () => {};
+  const handleBaseUrlChange = (e, value) => {
+    dispatch(pushRouteActionCreator(value));
+  };
 
   return (
     <AppBar
@@ -52,12 +57,12 @@ export const TopBar = withStyles(css)((props: TopBarProps & WithStyles) => {
                   aria-label="text alignment"
                 >
                   <Tooltip title="Store" placement="bottom">
-                    <ToggleButton value="left" aria-label="left aligned">
+                    <ToggleButton value="/store" aria-label="left aligned">
                       <AppsIcon className={classes.white} />
                     </ToggleButton>
                   </Tooltip>
                   <Tooltip title="Profile" placement="bottom">
-                    <ToggleButton value="center" aria-label="centered">
+                    <ToggleButton value="/profile" aria-label="centered">
                       <FaceIcon />
                     </ToggleButton>
                   </Tooltip>

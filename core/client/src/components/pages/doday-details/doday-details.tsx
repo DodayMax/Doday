@@ -18,10 +18,6 @@ export const DodayDetails = () => {
     dispatch(ducks.details.actions.fetchSelectedDodayActionCreator(did));
   }, []);
 
-  if (!selectedDoday) {
-    return <>Loading...</>;
-  }
-
   const selectedDodayType = selectedDoday && selectedDoday.type;
   const tool =
     activeTools &&

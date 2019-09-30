@@ -1,10 +1,9 @@
 import * as React from 'react';
 import * as cuid from 'cuid';
-import * as PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router';
-import { RootState, config } from '@doday/lib';
-import { PageWrapperChildContext } from '../../_decorators/pageflow';
+import { useDispatch } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { config } from '@doday/lib';
+import { PageflowContext } from '../../_decorators/pageflow';
 import CloseIcon from '@material-ui/icons/Close';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import {
@@ -17,6 +16,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { LayoutBlock } from '../../_atoms/layout-block';
+import { popFromStackActionCreator } from '@doday/duck';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -43,47 +43,20 @@ interface PageHeaderProps extends Partial<RouteComponentProps> {
   children?: React.ReactNode;
 }
 
-interface PropsFromConnect {
-  route: string;
-}
-
-interface PageHeaderState {
-  anchor?: HTMLElement;
-}
-
 const ITEM_HEIGHT = 48;
 
-@(withRouter as any)
-class PageHeaderComponentClass extends React.Component<
-  PageHeaderProps & Partial<PropsFromConnect> & WithStyles,
-  PageHeaderState
-> {
-  constructor(props: PageHeaderProps & Partial<PropsFromConnect> & WithStyles) {
-    super(props);
+export const PageHeader = withStyles(css)(
+  (props: PageHeaderProps & WithStyles) => {
+    const dispatch = useDispatch();
+    const [anchor, updateAnchor] = React.useState();
+    const requestClose = React.useContext(PageflowContext);
 
-    this.state = {};
-  }
+    const handleOpen = (event: React.MouseEvent<any>) =>
+      updateAnchor(event.currentTarget);
 
-  public static contextTypes = {
-    requestClose: PropTypes.func,
-  };
+    const handleClose = () => updateAnchor(undefined);
 
-  public context!: PageWrapperChildContext;
-
-  private handleOpen = (event: React.MouseEvent<any>) =>
-    this.setState({ anchor: event.currentTarget });
-
-  private handleClose = () => this.setState({ anchor: undefined });
-
-  render() {
-    const {
-      status,
-      actions,
-      onClose,
-      children,
-      withClose,
-      classes,
-    } = this.props;
+    const { status, actions, onClose, children, withClose, classes } = props;
 
     return (
       <LayoutBlock className={classes.headerContainer}>
@@ -107,15 +80,15 @@ class PageHeaderComponentClass extends React.Component<
                 aria-label="More"
                 aria-owns={open ? 'long-menu' : undefined}
                 aria-haspopup="true"
-                onClick={this.handleOpen}
+                onClick={handleOpen}
               >
                 <MoreVertIcon />
               </IconButton>
               <Menu
                 id="long-menu"
-                anchorEl={this.state.anchor}
-                open={!!this.state.anchor}
-                onClose={this.handleClose}
+                anchorEl={anchor}
+                open={!!anchor}
+                onClose={handleClose}
                 PaperProps={{
                   style: {
                     maxHeight: ITEM_HEIGHT * 4.5,
@@ -127,7 +100,7 @@ class PageHeaderComponentClass extends React.Component<
                   <MenuItem
                     key={cuid()}
                     onClick={() => {
-                      this.handleClose();
+                      handleClose();
                       item.action();
                     }}
                     className={item.className}
@@ -141,9 +114,9 @@ class PageHeaderComponentClass extends React.Component<
           {withClose && (
             <IconButton
               onClick={() => {
-                if (this.context.requestClose) this.context.requestClose();
+                if (requestClose) requestClose();
                 setTimeout(() => {
-                  this.props.history && this.props.history.push('/dashboard');
+                  dispatch(popFromStackActionCreator());
                   if (onClose) {
                     onClose();
                   }
@@ -158,12 +131,4 @@ class PageHeaderComponentClass extends React.Component<
       </LayoutBlock>
     );
   }
-}
-
-const mapState = (state: RootState) => ({
-  route: state.sidebar.route,
-});
-
-export const PageHeader = connect(mapState)(
-  withStyles(css)(PageHeaderComponentClass)
 );

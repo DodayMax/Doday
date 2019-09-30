@@ -19,7 +19,6 @@ export default (state = initialState, action: AuthActionTypes): AuthState => {
         activeTools: payload || {},
       };
     case AuthActionConstants.ADD_ACTIVE_TOOL_BEACON:
-      console.log(payload);
       return {
         ...state,
         activeTools: {

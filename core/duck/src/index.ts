@@ -8,6 +8,7 @@ import api from './api';
 import store from './store';
 import toast from './toast';
 import dialog from './dialog';
+import navStack from './navigation-stack';
 
 export * from './api';
 export * from './auth';
@@ -18,6 +19,7 @@ export * from './doday-details';
 export * from './hero-settings';
 export * from './store';
 export * from './toast';
+export * from './navigation-stack';
 
 export * from './all-selectors';
 
@@ -31,6 +33,7 @@ const ducks: any = {
   store,
   toast,
   dialog,
+  navStack,
 };
 
 export default ducks;

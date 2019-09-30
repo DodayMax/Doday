@@ -119,7 +119,6 @@ export const parseAPIResponseDodays = async (
   res: any
 ): Promise<DodayLike[]> => {
   const json = await res.json();
-  console.log(json);
   const dodays: DodayLike[] = json.map((item: any) => {
     const nodes = item._fields[0];
     const dodayNode = nodes.doday && nodes.doday.properties;

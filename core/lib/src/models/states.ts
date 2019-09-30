@@ -1,9 +1,11 @@
+import { RouterState } from 'connected-react-router';
 import { Hero } from './entities/hero';
 import { SidebarQueryParams, ToastType } from '../common-interfaces';
 import { DodayLike, ProgressLike } from './entities/common';
 import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
 
 export interface RootState {
+  router: RouterState;
   auth: AuthState;
   sidebar: SidebarState;
   details: DodayDetailsState;
@@ -13,6 +15,7 @@ export interface RootState {
   activities: BaseToolState;
   toast: ToastState;
   dialog: DialogState;
+  navStack: NavStackState;
 }
 
 export type SidebarState = {
@@ -68,4 +71,9 @@ export interface DialogState {
   title: string;
   message?: string;
   actions: React.ReactNode[];
+}
+
+export interface NavStackState {
+  base: string;
+  stack: string[];
 }
