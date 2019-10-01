@@ -1,5 +1,5 @@
 {
-  "name": "@doday/duck",
+  "name": "@doday/ducks",
   "version": "0.1.0",
   "main": "dist/src/index.js",
   "private": false,

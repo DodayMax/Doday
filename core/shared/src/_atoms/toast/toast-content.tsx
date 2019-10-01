@@ -11,7 +11,7 @@ import MuiSnackbarContent, {
 import WarningIcon from '@material-ui/icons/Warning';
 import { Theme, createStyles, withStyles, WithStyles } from '@material-ui/core';
 import { colors, ToastType } from '@doday/lib';
-import { CloseToastAction } from '@doday/duck';
+import { CloseToastAction } from '@doday/ducks';
 
 const variantIcon = {
   success: CheckCircleIcon,

@@ -14,7 +14,7 @@ export enum SidebarActionConstants {
  * @export
  * @returns {SetSidebarLoadingStateAction}
  */
-function setSidebarLoadingStateActionCreator(
+export function setSidebarLoadingStateActionCreator(
   value: boolean
 ): SetSidebarLoadingStateAction {
   return {
@@ -29,7 +29,7 @@ function setSidebarLoadingStateActionCreator(
  * @export
  * @returns {ChangeSidebarRouteAction}
  */
-function changeSidebarRouteActionCreator(
+export function changeSidebarRouteActionCreator(
   route: string
 ): ChangeSidebarRouteAction {
   return {
@@ -44,7 +44,7 @@ function changeSidebarRouteActionCreator(
  * @export
  * @returns {SetSidebarQueryParamsAction}
  */
-function setSidebarQueryParamsActionCreator(
+export function setSidebarQueryParamsActionCreator(
   params: SidebarQueryParams
 ): SetSidebarQueryParamsAction {
   return {
@@ -59,7 +59,7 @@ function setSidebarQueryParamsActionCreator(
  * @export
  * @returns {SetDodaysBadgeForTodayAction}
  */
-function setDodaysBadgeForTodayActionCreator(
+export function setDodaysBadgeForTodayActionCreator(
   value: number
 ): SetDodaysBadgeForTodayAction {
   return {

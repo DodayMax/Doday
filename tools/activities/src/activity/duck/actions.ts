@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { DodaysWithProgressQueryParams } from '@doday/api';
-import { ClearBuilderAction } from '@doday/duck';
+import { ClearBuilderAction } from '@doday/ducks';
 import {
   Resource,
   Activity,

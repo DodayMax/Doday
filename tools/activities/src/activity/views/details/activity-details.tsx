@@ -31,7 +31,7 @@ import ducks, {
   ClearDodayDetailsDirtyStuffAction,
   TakeDodayAction,
   UntakeDodayAction,
-} from '@doday/duck';
+} from '@doday/ducks';
 import { activityIconByType } from '../builders/activity-builder';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import HourGlassEmptyIcon from '@material-ui/icons/HourglassEmpty';

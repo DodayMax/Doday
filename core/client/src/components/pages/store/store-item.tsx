@@ -14,7 +14,7 @@ import {
 import { LayoutBlock, Icons } from '@doday/shared';
 import { Space, DodayLike } from '@doday/lib';
 import { useDispatch } from 'react-redux';
-import { pushRouteActionCreator } from '@doday/duck';
+import { pushRouteActionCreator } from '@doday/ducks';
 const DEFAULT_IMAGE_HEIGHT = 112.5;
 
 const css = (theme: Theme) =>

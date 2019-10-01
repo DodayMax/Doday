@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { DodayDialogComponent } from '@doday/shared';
 import { RootState } from '@doday/lib';
-import ducks from '@doday/duck';
+import ducks from '@doday/ducks';
 
 const mapState = (rootState: RootState) => ({
   ...rootState.dialog,

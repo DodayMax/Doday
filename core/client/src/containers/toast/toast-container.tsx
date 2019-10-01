@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { Snackbar } from '@doday/shared';
 import { RootState } from '@doday/lib';
-import actions from '@doday/duck';
+import actions from '@doday/ducks';
 
 const mapState = (rootState: RootState) => ({
   ...rootState.toast,

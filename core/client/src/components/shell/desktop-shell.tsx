@@ -3,27 +3,27 @@ import * as classnames from 'classnames';
 import * as cuid from 'cuid';
 import { withTranslation, WithTranslation } from 'react-i18next';
 import { RouteComponentProps, Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import {
   RootState,
   Hero,
   ToolBeacon,
-  DrawerMenuItem,
   ThemeType,
   capitalize,
   ToolSysname,
   Entity,
+  DrawerMenuItem,
+  createRoute,
 } from '@doday/lib';
 import ducks, {
-  FetchHeroAction,
-  ToggleDrawerAction,
-  ToggleSidebarAction,
-  ToggleThemeAction,
-  ClearSelectedDodayAction,
-  SetActiveToolBeaconsAction,
-  AddActiveToolBeaconAction,
-  ChangeSidebarRouteAction,
-} from '@doday/duck';
+  activeToolsSelector,
+  pushRouteActionCreator,
+  changeSidebarRouteActionCreator,
+  clearSelectedDodayActionCreator,
+  addActiveToolBeaconActionCreator,
+  fetchHeroActionCreator,
+  toggleDrawerActionCreator,
+} from '@doday/ducks';
 import { Landing } from '../landing';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -59,140 +59,62 @@ interface PropsFromConnect {
   isSidebarCollapsed: boolean;
   hero: Hero;
   activeTools: { [key: string]: ToolBeacon };
-  changeSidebarRouteActionCreator(route: string): ChangeSidebarRouteAction;
-  clearSelectedDodayActionCreator(): ClearSelectedDodayAction;
-  toggleDrawerActionCreator: (value?: boolean) => ToggleDrawerAction;
-  toggleSidebarActionCreator: () => ToggleSidebarAction;
-  fetchHeroActionCreator(): FetchHeroAction;
-  setActiveToolBeaconsActionCreator(tools: {
-    [key: string]: ToolBeacon;
-  }): SetActiveToolBeaconsAction;
-  addActiveToolBeaconActionCreator(tool: ToolBeacon): AddActiveToolBeaconAction;
-  toggleThemeActionCreator(mode: ThemeType): ToggleThemeAction;
 }
 
-interface DesktopShellState {
-  resizeTaskId?: NodeJS.Timeout;
-  isDrawerCollapsed: boolean;
-  speedDialOpen: boolean;
-}
+type Props = DesktopShellProps & WithStyles & WithTheme & WithTranslation;
 
-class DesktopShell extends React.Component<
-  DesktopShellProps &
-    PropsFromConnect &
-    WithStyles &
-    WithTheme &
-    WithTranslation,
-  DesktopShellState
-> {
-  constructor(props, context) {
-    super(props, context);
+export const DesktopShell = withStyles(css, { withTheme: true })(
+  withTranslation('shell')((props: Props) => {
+    const dispatch = useDispatch();
+    const [resizeTaskId, updateResizeTask] = React.useState();
+    const settings = useSelector((state: RootState) => state.heroSettings);
+    const activeTools = useSelector(activeToolsSelector);
+    const hero = useSelector((state: RootState) => state.auth.hero);
+    const sidebarRoute = useSelector((state: RootState) => state.sidebar.route);
 
-    // Keep in state for forceCollapsing
-    this.state = {
-      isDrawerCollapsed: props.isDrawerCollapsed,
-      speedDialOpen: false,
-    };
-  }
-
-  componentDidMount() {
-    this.props.fetchHeroActionCreator();
-    const taskID = this.state.resizeTaskId;
-    const documentWidth = document.documentElement.scrollWidth;
-    if (documentWidth <= 1100) {
-      this.props.toggleDrawerActionCreator(true);
-    }
-
-    window.addEventListener('resize', evt => {
-      if (taskID != undefined) {
-        clearTimeout(taskID);
+    React.useEffect(() => {
+      dispatch(fetchHeroActionCreator());
+      const taskID = resizeTaskId;
+      const documentWidth = document.documentElement.scrollWidth;
+      if (documentWidth <= 1100) {
+        dispatch(toggleDrawerActionCreator(true));
       }
 
-      this.setState({
-        resizeTaskId: setTimeout(() => {
+      window.addEventListener('resize', evt => {
+        if (taskID != undefined) {
+          clearTimeout(taskID);
+        }
+
+        setTimeout(() => {
           const documentWidth = document.documentElement.scrollWidth;
-          if (!this.props.isDrawerCollapsed) {
-            this.setState({
-              resizeTaskId: undefined,
-            });
-            this.props.toggleDrawerActionCreator(documentWidth <= 1100);
+          if (!settings.isDrawerCollapsed) {
+            updateResizeTask(undefined);
+            dispatch(toggleDrawerActionCreator(documentWidth <= 1100));
           }
-        }, 100),
+        }, 100);
       });
-    });
-  }
+    }, []);
 
-  toggleMenu() {
-    this.props.toggleDrawerActionCreator();
-  }
+    const toggleMenu = () => {
+      dispatch(toggleDrawerActionCreator());
+    };
 
-  handleProfileOpen = () => {
-    this.props.history.push('/dashboard/profile');
-  };
-
-  toolsToDrawerMenuItems(tools: ToolBeacon[]): DrawerMenuItem[] {
-    return tools.map((tool: ToolBeacon) => {
-      return {
-        text: capitalize(tool.config.sysname),
-        route: tool.config.route,
-        icon: tool.config.icon,
-      };
-    });
-  }
-
-  handleSpeedDialOpen = () => {
-    this.setState({
-      speedDialOpen: true,
-    });
-  };
-
-  handleSpeedDialClose = () => {
-    this.setState({
-      speedDialOpen: false,
-    });
-  };
-
-  mapToolsToSelect = (tools: ToolBeacon[]) => {
-    const allEntities = [];
-    tools.forEach(tool => {
-      tool.config.entities.forEach(entity => {
-        allEntities.push(entity);
+    const toolsToDrawerMenuItems = (tools: ToolBeacon[]): DrawerMenuItem[] => {
+      return tools.map((tool: ToolBeacon) => {
+        return {
+          text: capitalize(tool.config.sysname),
+          route: tool.config.route,
+          icon: tool.config.icon,
+        };
       });
-    });
-    return allEntities.map((entity: Entity) => {
-      const icon = Icons[capitalize(entity.name)];
-      return {
-        icon,
-        label: entity.name,
-        value: entity.name,
-      };
-    });
-  };
+    };
 
-  render() {
-    const {
-      classes,
-      hero,
-      activeTools,
-      toggleSidebarActionCreator,
-      isSidebarCollapsed,
-      history,
-      location,
-      t,
-    } = this.props;
-
-    const tools = Object.values(activeTools);
-    let mappedTools:
-      | { label: string; value: string; icon: JSX.Element }[]
-      | undefined;
-    if (tools.length && tools.every(tool => tool.loaded)) {
-      mappedTools = this.mapToolsToSelect(tools);
-    }
+    const { classes } = props;
 
     return (
       <div className={classes.root}>
         <CssBaseline />
-        <TopBar hero={hero} isDrawerCollapsed={this.props.isDrawerCollapsed} />
+        <TopBar hero={hero} isDrawerCollapsed={settings.isDrawerCollapsed} />
         {hero && (
           <Route
             path="/"
@@ -201,16 +123,16 @@ class DesktopShell extends React.Component<
                 <Drawer
                   variant="permanent"
                   className={classnames(classes.drawer, {
-                    [classes.drawerOpen]: !this.props.isDrawerCollapsed,
-                    [classes.drawerClose]: this.props.isDrawerCollapsed,
+                    [classes.drawerOpen]: !settings.isDrawerCollapsed,
+                    [classes.drawerClose]: settings.isDrawerCollapsed,
                   })}
                   classes={{
                     paper: classnames({
-                      [classes.drawerOpen]: !this.props.isDrawerCollapsed,
-                      [classes.drawerClose]: this.props.isDrawerCollapsed,
+                      [classes.drawerOpen]: !settings.isDrawerCollapsed,
+                      [classes.drawerClose]: settings.isDrawerCollapsed,
                     }),
                   }}
-                  open={!this.props.isDrawerCollapsed}
+                  open={!settings.isDrawerCollapsed}
                 >
                   <div className={classes.toolbar} />
                   <Divider />
@@ -225,10 +147,12 @@ class DesktopShell extends React.Component<
                                 button
                                 key={index}
                                 onClick={() => {
-                                  this.props.changeSidebarRouteActionCreator(
-                                    tool.config.route
+                                  dispatch(
+                                    changeSidebarRouteActionCreator(
+                                      tool.config.route
+                                    )
                                   );
-                                  this.props.clearSelectedDodayActionCreator();
+                                  dispatch(clearSelectedDodayActionCreator());
                                 }}
                               >
                                 <ListItemIcon>
@@ -248,10 +172,12 @@ class DesktopShell extends React.Component<
                             <ListItem
                               button
                               onClick={() => {
-                                this.props.changeSidebarRouteActionCreator(
-                                  tool.config.route
+                                dispatch(
+                                  changeSidebarRouteActionCreator(
+                                    tool.config.route
+                                  )
                                 );
-                                this.props.clearSelectedDodayActionCreator();
+                                dispatch(clearSelectedDodayActionCreator());
                               }}
                             >
                               <ListItemIcon>
@@ -275,18 +201,22 @@ class DesktopShell extends React.Component<
                               },
                             ];
                             fakeTools.map(async tool => {
-                              this.props.addActiveToolBeaconActionCreator({
-                                loading: true,
-                                config: {
-                                  sysname: tool.sysname as ToolSysname,
-                                },
-                              });
+                              dispatch(
+                                addActiveToolBeaconActionCreator({
+                                  loading: true,
+                                  config: {
+                                    sysname: tool.sysname as ToolSysname,
+                                  },
+                                })
+                              );
                               loadTool(tool.sysname).then(loadedTool => {
-                                this.props.addActiveToolBeaconActionCreator({
-                                  loading: false,
-                                  loaded: true,
-                                  ...loadedTool.default,
-                                });
+                                dispatch(
+                                  addActiveToolBeaconActionCreator({
+                                    loading: false,
+                                    loaded: true,
+                                    ...loadedTool.default,
+                                  })
+                                );
                               });
                             });
                           }}
@@ -314,10 +244,10 @@ class DesktopShell extends React.Component<
                       <ListItem
                         button
                         key={cuid()}
-                        onClick={this.toggleMenu.bind(this)}
+                        onClick={toggleMenu.bind(this)}
                       >
                         <ListItemIcon>
-                          {this.props.isDrawerCollapsed ? (
+                          {settings.isDrawerCollapsed ? (
                             <KeyboardArrowRightIcon
                               color="action"
                               fontSize="large"
@@ -342,7 +272,7 @@ class DesktopShell extends React.Component<
 
                   <LayoutBlock>
                     <section className={classes.sidebarContainer}>
-                      {!isSidebarCollapsed && <Sidebar />}
+                      {!settings.isSidebarCollapsed && <Sidebar />}
                     </section>
 
                     <React.Suspense fallback={null}>
@@ -369,13 +299,25 @@ class DesktopShell extends React.Component<
             </LayoutBlock>
           )}
         />
-        <Zoom in={!!mappedTools && !!mappedTools.length}>
+        <Zoom
+          in={
+            !!Object.values(activeTools) && !!Object.values(activeTools).length
+          }
+        >
           <Fab
             color="primary"
             aria-label="Create doday"
             className={classes.speedDial}
             onClick={() => {
-              // history.push(`/dashboard/builder/${tool.label}`);
+              if (Object.values(activeTools).length === 1) {
+                dispatch(
+                  pushRouteActionCreator(
+                    createRoute().builder(
+                      Object.values(activeTools)[0].config.sysname
+                    )
+                  )
+                );
+              }
             }}
           >
             <AddIcon />
@@ -383,32 +325,5 @@ class DesktopShell extends React.Component<
         </Zoom>
       </div>
     );
-  }
-}
-
-const mapState = (state: RootState) => ({
-  isDrawerCollapsed: state.heroSettings.isDrawerCollapsed,
-  isSidebarCollapsed: state.heroSettings.isSidebarCollapsed,
-  hero: state.auth.hero,
-  activeTools: state.auth.activeTools,
-  sidebarRoute: state.sidebar.route,
-});
-
-export default connect(
-  mapState,
-  {
-    changeSidebarRouteActionCreator:
-      ducks.sidebar.actions.changeSidebarRouteActionCreator,
-    clearSelectedDodayActionCreator:
-      ducks.details.actions.clearSelectedDodayActionCreator,
-    toggleDrawerActionCreator: ducks.settings.actions.toggleDrawerActionCreator,
-    toggleSidebarActionCreator:
-      ducks.settings.actions.toggleSidebarActionCreator,
-    fetchHeroActionCreator: ducks.auth.actions.fetchHeroActionCreator,
-    setActiveToolBeaconsActionCreator:
-      ducks.auth.actions.setActiveToolBeaconsActionCreator,
-    addActiveToolBeaconActionCreator:
-      ducks.auth.actions.addActiveToolBeaconActionCreator,
-    toggleThemeActionCreator: ducks.settings.actions.toggleThemeActionCreator,
-  }
-)(withStyles(css, { withTheme: true })(withTranslation('shell')(DesktopShell)));
+  })
+);

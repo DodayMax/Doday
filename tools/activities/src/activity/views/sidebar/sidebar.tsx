@@ -19,7 +19,7 @@ import ducks, {
   ChangeSidebarRouteAction,
   SetSidebarQueryParamsAction,
   UpdateDodayAction,
-} from '@doday/duck';
+} from '@doday/ducks';
 import { Grid, DefaultTopBar } from '@doday/shared';
 import { config } from '../../config';
 import { FetchActivitiesAction } from '../../duck/actions';

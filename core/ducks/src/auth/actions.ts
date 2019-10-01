@@ -14,7 +14,7 @@ export enum AuthActionConstants {
  * @export
  * @returns {FetchHeroAction}
  */
-function fetchHeroActionCreator(): FetchHeroAction {
+export function fetchHeroActionCreator(): FetchHeroAction {
   return {
     type: AuthActionConstants.FETCH_HERO,
   };
@@ -26,7 +26,7 @@ function fetchHeroActionCreator(): FetchHeroAction {
  * @export
  * @returns {SetHeroAction}
  */
-function setHeroActionCreator(hero: Hero): SetHeroAction {
+export function setHeroActionCreator(hero: Hero): SetHeroAction {
   return {
     type: AuthActionConstants.SET_HERO,
     payload: hero,
@@ -40,7 +40,7 @@ function setHeroActionCreator(hero: Hero): SetHeroAction {
  * @export
  * @returns {SetActiveToolBeaconsAction}
  */
-function setActiveToolBeaconsActionCreator(tools: {
+export function setActiveToolBeaconsActionCreator(tools: {
   [key: string]: ToolBeacon;
 }): SetActiveToolBeaconsAction {
   return {
@@ -55,7 +55,7 @@ function setActiveToolBeaconsActionCreator(tools: {
  * @export
  * @returns {AddActiveToolBeaconAction}
  */
-function addActiveToolBeaconActionCreator(
+export function addActiveToolBeaconActionCreator(
   tool: ToolBeacon
 ): AddActiveToolBeaconAction {
   return {

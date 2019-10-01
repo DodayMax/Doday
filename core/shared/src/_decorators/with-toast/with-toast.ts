@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import ducks, { OpenToastAction } from '@doday/duck';
+import ducks, { OpenToastAction } from '@doday/ducks';
 import { ToastState } from '@doday/lib';
 
 export type WithToast = {

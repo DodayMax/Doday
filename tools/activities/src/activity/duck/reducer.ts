@@ -1,4 +1,4 @@
-import { BuilderActionConstants } from '@doday/duck';
+import { BuilderActionConstants } from '@doday/ducks';
 import * as actions from './actions';
 import {
   ActivityType,

@@ -13,7 +13,7 @@ export enum HeroSettingsActionConstants {
  * @export
  * @returns {ToggleDrawerAction}
  */
-function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
+export function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
   return {
     type: HeroSettingsActionConstants.TOGGLE_DRAWER,
     payload: value,
@@ -26,7 +26,7 @@ function toggleDrawerActionCreator(value?: boolean): ToggleDrawerAction {
  * @export
  * @returns {ToggleSidebarAction}
  */
-function toggleSidebarActionCreator(): ToggleSidebarAction {
+export function toggleSidebarActionCreator(): ToggleSidebarAction {
   return {
     type: HeroSettingsActionConstants.TOGGLE_SIDEBAR,
   };
@@ -38,7 +38,9 @@ function toggleSidebarActionCreator(): ToggleSidebarAction {
  * @export
  * @returns {SetSidebarWidthAction}
  */
-function toggleSidebarWidthActionCreator(value: number): SetSidebarWidthAction {
+export function toggleSidebarWidthActionCreator(
+  value: number
+): SetSidebarWidthAction {
   return {
     type: HeroSettingsActionConstants.SET_SIDEBAR_WIDTH,
     payload: value <= 320 ? value : 320,
@@ -51,7 +53,9 @@ function toggleSidebarWidthActionCreator(value: number): SetSidebarWidthAction {
  * @export
  * @returns {ToggleThemeAction}
  */
-function toggleThemeActionCreator(mode: 'dark' | 'light'): ToggleThemeAction {
+export function toggleThemeActionCreator(
+  mode: 'dark' | 'light'
+): ToggleThemeAction {
   return {
     type: HeroSettingsActionConstants.TOGGLE_THEME,
     payload: mode,

@@ -12,7 +12,7 @@ export enum BuilderActionConstants {
  * @export
  * @returns {SetBuilderLoadingStateAction}
  */
-function setBuilderLoadingStateActionCreator(
+export function setBuilderLoadingStateActionCreator(
   state: boolean
 ): SetBuilderLoadingStateAction {
   return {
@@ -27,7 +27,7 @@ function setBuilderLoadingStateActionCreator(
  * @export
  * @returns {ClearBuilderAction}
  */
-function clearBuilderActionCreator(): ClearBuilderAction {
+export function clearBuilderActionCreator(): ClearBuilderAction {
   return {
     type: BuilderActionConstants.CLEAR_BUILDER,
   };

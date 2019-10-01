@@ -16,7 +16,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { LayoutBlock } from '../../_atoms/layout-block';
-import { popFromStackActionCreator } from '@doday/duck';
+import { popFromStackActionCreator } from '@doday/ducks';
 
 const css = (theme: Theme) =>
   createStyles({

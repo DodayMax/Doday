@@ -17,7 +17,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import { css } from './css.top-bar';
 import { Hero } from '@doday/lib';
 import { useDispatch } from 'react-redux';
-import { pushRouteActionCreator } from '@doday/duck';
+import { pushRouteActionCreator } from '@doday/ducks';
 const logo = require('@root/assets/png/app-icon.png');
 
 export interface TopBarProps {

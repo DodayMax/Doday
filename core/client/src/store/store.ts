@@ -3,7 +3,7 @@ import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { all } from 'redux-saga/effects';
-import ducks from '@doday/duck';
+import ducks from '@doday/ducks';
 
 export const history = createBrowserHistory();
 

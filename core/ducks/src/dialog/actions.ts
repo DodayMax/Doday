@@ -12,7 +12,7 @@ export enum DialogActionConstants {
  * @export
  * @returns {OpenDialogAction}
  */
-function openDialogActionCreator(payload: any): OpenDialogAction {
+export function openDialogActionCreator(payload: any): OpenDialogAction {
   return {
     type: DialogActionConstants.OPEN,
     payload,
@@ -25,7 +25,7 @@ function openDialogActionCreator(payload: any): OpenDialogAction {
  * @export
  * @returns {CloseDialogAction}
  */
-function closeDialogActionCreator(): CloseDialogAction {
+export function closeDialogActionCreator(): CloseDialogAction {
   return {
     type: DialogActionConstants.CLOSE,
   };

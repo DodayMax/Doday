@@ -9,7 +9,7 @@ import {
   setActivitiesActionCreator,
 } from './actions';
 import { detectActivityType, parseMetadataFromUrl } from '@doday/lib';
-import ducks from '@doday/duck';
+import ducks from '@doday/ducks';
 import api, { DodaysWithProgressQueryParams } from '@doday/api';
 
 /**

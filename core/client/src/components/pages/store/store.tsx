@@ -7,7 +7,7 @@ import ducks, {
   SearchPublicDodaysForStoreAction,
   SetSearchFlagAction,
   SetSearchTermAction,
-} from '@doday/duck';
+} from '@doday/ducks';
 import { Page, LayoutBlock, Icons, Masonry } from '@doday/shared';
 import {
   Space,

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { withRouter, RouteComponentProps } from 'react-router';
 import * as PropTypes from 'prop-types';
-import ducks, { FetchSelectedProgressAction } from '@doday/duck';
+import ducks, { FetchSelectedProgressAction } from '@doday/ducks';
 import { pageflow, PageWrapperChildContext } from '@doday/shared';
 import { RootState, WithTools, DodayLike, LayoutSpot } from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';

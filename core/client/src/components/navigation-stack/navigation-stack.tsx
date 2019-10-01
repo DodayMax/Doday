@@ -1,7 +1,6 @@
 import React from 'react';
-import { Route } from 'react-router';
 import { useSelector } from 'react-redux';
-import { navStackSelector } from '@doday/duck';
+import { navStackSelector } from '@doday/ducks';
 import { Builder } from '@root/components';
 import { Store } from '../pages/store';
 import { Profile } from '../pages/profile';

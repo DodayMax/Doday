@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps, Route } from 'react-router-dom';
-import ducks, { ClearBuilderAction } from '@doday/duck';
-import { Page, PageHeader, pageflow } from '@doday/shared';
+import { withRouter, RouteComponentProps } from 'react-router-dom';
+import ducks, { ClearBuilderAction } from '@doday/ducks';
+import { Page, PageHeader, pageflow, AnimationType } from '@doday/shared';
 
 import { WithTools } from '@doday/lib';
 
@@ -49,7 +49,7 @@ export class Builder extends React.Component<
   }
 }
 
-export default pageflow()(
+export default pageflow({ animation: AnimationType.UP })(
   withRouter(
     connect(
       undefined,

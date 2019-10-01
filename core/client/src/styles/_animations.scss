@@ -1,18 +1,54 @@
 // Animations
 
-.pageflow-enter {
+.animation-from-right-enter {
   opacity: 0;
   transform: translateX(200px);
 }
-.pageflow-enter.pageflow-enter-active {
+.animation-from-right-enter.animation-from-right-enter-active {
   opacity: 1;
   transform: translateX(0px);
   transition: all 200ms ease-out;
 }
-.pageflow-exit {
+.animation-from-right-exit {
   opacity: 1;
 }
-.pageflow-exit.pageflow-exit-active {
+.animation-from-right-exit.animation-from-right-exit-active {
+  opacity: 0;
+  transform: translateY(200px);
+  transition: all 100ms ease-out;
+}
+
+.animation-from-bottom-enter {
+  opacity: 0;
+  transform: translateY(300px);
+}
+.animation-from-bottom-enter.animation-from-bottom-enter-active {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: all 200ms ease-out;
+}
+.animation-from-bottom-exit {
+  opacity: 1;
+}
+.animation-from-bottom-exit.animation-from-bottom-exit-active {
+  opacity: 0;
+  transform: translateY(200px);
+  transition: all 100ms ease-out;
+}
+
+.animation-from-left-enter {
+  opacity: 0;
+  transform: translateX(-300px);
+}
+.animation-from-left-enter.animation-from-left-enter-active {
+  opacity: 1;
+  transform: translateX(0px);
+  transition: all 200ms ease-out;
+}
+.animation-from-left-exit {
+  opacity: 1;
+}
+.animation-from-left-exit.animation-from-left-exit-active {
   opacity: 0;
   transform: translateY(200px);
   transition: all 100ms ease-out;

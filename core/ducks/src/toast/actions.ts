@@ -12,7 +12,7 @@ export enum ToastActionConstants {
  * @export
  * @returns {OpenToastAction}
  */
-function openToastActionCreator(options: ToastState): OpenToastAction {
+export function openToastActionCreator(options: ToastState): OpenToastAction {
   return {
     type: ToastActionConstants.OPEN,
     payload: options,
@@ -25,7 +25,7 @@ function openToastActionCreator(options: ToastState): OpenToastAction {
  * @export
  * @returns {CloseToastAction}
  */
-function closeToastActionCreator(): CloseToastAction {
+export function closeToastActionCreator(): CloseToastAction {
   return {
     type: ToastActionConstants.CLOSE,
   };

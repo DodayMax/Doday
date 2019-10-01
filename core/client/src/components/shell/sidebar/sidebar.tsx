@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import * as _ from 'lodash';
-import ducks, { activeToolsSelector, sidebarStateSelector } from '@doday/duck';
+import ducks, { activeToolsSelector, sidebarStateSelector } from '@doday/ducks';
 import { ToolBeacon, LayoutSpot, useRouter } from '@doday/lib';
 import { createStyles, Theme } from '@material-ui/core';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';

@@ -31,7 +31,7 @@ import * as activitiesBuilderActions from '../../duck';
 import ducks, {
   CreateDodayAction,
   CreateAndTakeDodayAction,
-} from '@doday/duck';
+} from '@doday/ducks';
 import {
   ParseUrlMetadataAction,
   ClearParsedUrlMetadataAction,

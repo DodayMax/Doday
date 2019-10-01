@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import i18next from 'i18next';
 import * as cuid from 'cuid';
-import ducks, { ToggleDrawerAction } from '@doday/duck';
+import ducks, { ToggleDrawerAction } from '@doday/ducks';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import FaceIcon from '@material-ui/icons/Face';

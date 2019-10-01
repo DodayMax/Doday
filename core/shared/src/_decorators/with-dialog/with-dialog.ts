@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { DialogState } from '@doday/lib';
-import ducks, { OpenDialogAction, CloseDialogAction } from '@doday/duck';
+import ducks, { OpenDialogAction, CloseDialogAction } from '@doday/ducks';
 
 export type WithDialog = {
   openDialog: (options: DialogState) => OpenDialogAction;

@@ -18,7 +18,7 @@ export enum StoreActionConstants {
  * @export
  * @returns {SetStoreLoadingStateAction}
  */
-function setStoreLoadingStateActionCreator(
+export function setStoreLoadingStateActionCreator(
   value: boolean
 ): SetStoreLoadingStateAction {
   return {
@@ -33,7 +33,7 @@ function setStoreLoadingStateActionCreator(
  * @export
  * @returns {SetSearchTermAction}
  */
-function setSearchTermActionCreator(term: string): SetSearchTermAction {
+export function setSearchTermActionCreator(term: string): SetSearchTermAction {
   return {
     type: StoreActionConstants.SET_SEARCH_TERM,
     payload: term,
@@ -47,7 +47,9 @@ function setSearchTermActionCreator(term: string): SetSearchTermAction {
  * @export
  * @returns {SetSearchFlagAction}
  */
-function setSearchFlagActionCreator(value: boolean): SetSearchFlagAction {
+export function setSearchFlagActionCreator(
+  value: boolean
+): SetSearchFlagAction {
   return {
     type: StoreActionConstants.SET_SEARCH_FLAG,
     payload: value,
@@ -60,7 +62,7 @@ function setSearchFlagActionCreator(value: boolean): SetSearchFlagAction {
  * @export
  * @returns {SearchPublicDodaysForStoreAction}
  */
-function searchPublicDodaysForStoreActionCreator(
+export function searchPublicDodaysForStoreActionCreator(
   params: DodaysQueryParams
 ): SearchPublicDodaysForStoreAction {
   return {
@@ -75,7 +77,7 @@ function searchPublicDodaysForStoreActionCreator(
  * @export
  * @returns {FetchPublicDodaysForStoreAction}
  */
-function fetchPublicDodaysForStoreActionCreator(
+export function fetchPublicDodaysForStoreActionCreator(
   params: DodaysQueryParams
 ): FetchPublicDodaysForStoreAction {
   return {
@@ -90,7 +92,7 @@ function fetchPublicDodaysForStoreActionCreator(
  * @export
  * @returns {SetPublicDodaysForStoreAction}
  */
-function setPublicDodaysForStoreActionCreator(
+export function setPublicDodaysForStoreActionCreator(
   dodays: DodayLike[],
   concat?: boolean,
   totalCount?: number
@@ -111,7 +113,7 @@ function setPublicDodaysForStoreActionCreator(
  * @export
  * @returns {OptimisticRemovePublicDodayAction}
  */
-function optimisticRemovePublicDodayActionCreator(
+export function optimisticRemovePublicDodayActionCreator(
   did: string
 ): OptimisticRemovePublicDodayAction {
   return {

@@ -10,7 +10,7 @@ import {
   fetchActivitiesActionSaga,
   parseUrlMetadataActionSaga,
 } from '../sagas';
-import ducks from '@doday/duck';
+import ducks from '@doday/ducks';
 import {
   activity,
   doday,

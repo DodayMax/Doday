@@ -20,7 +20,7 @@ export enum DodayDetailsActionConstants {
  * @export
  * @returns {SetDodayDetailsLoadingStateAction}
  */
-function setDodayDetailsLoadingStateActionCreator(
+export function setDodayDetailsLoadingStateActionCreator(
   state: boolean
 ): SetDodayDetailsLoadingStateAction {
   return {
@@ -35,7 +35,7 @@ function setDodayDetailsLoadingStateActionCreator(
  * @export
  * @returns {FetchSelectedDodayAction}
  */
-function fetchSelectedDodayActionCreator(
+export function fetchSelectedDodayActionCreator(
   did: string
 ): FetchSelectedDodayAction {
   return {
@@ -50,7 +50,7 @@ function fetchSelectedDodayActionCreator(
  * @export
  * @returns {FetchSelectedProgressAction}
  */
-function fetchSelectedProgressActionCreator(
+export function fetchSelectedProgressActionCreator(
   did: string
 ): FetchSelectedProgressAction {
   return {
@@ -65,7 +65,7 @@ function fetchSelectedProgressActionCreator(
  * @export
  * @returns {SetSelectedDodayAction}
  */
-function setSelectedDodayActionCreator(
+export function setSelectedDodayActionCreator(
   progress: DodayLike
 ): SetSelectedDodayAction {
   return {
@@ -81,7 +81,7 @@ function setSelectedDodayActionCreator(
  * @export
  * @returns {UpdateSelectedDodayAction}
  */
-function updateSelectedDodayActionCreator(payload?: {
+export function updateSelectedDodayActionCreator(payload?: {
   doday?: Partial<DodayLike>;
   progress?: Partial<ProgressLike>;
   resource?: Resource;
@@ -98,7 +98,7 @@ function updateSelectedDodayActionCreator(payload?: {
  * @export
  * @returns {ClearSelectedDodayAction}
  */
-function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
+export function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
   return {
     type: DodayDetailsActionConstants.CLEAR_SELECTED_DODAY,
   };
@@ -111,7 +111,9 @@ function clearSelectedDodayActionCreator(): ClearSelectedDodayAction {
  * @export
  * @returns {SetDirtyStatusAction}
  */
-function setDirtyStatusActionCreator(status: boolean): SetDirtyStatusAction {
+export function setDirtyStatusActionCreator(
+  status: boolean
+): SetDirtyStatusAction {
   return {
     type: DodayDetailsActionConstants.SET_DIRTY_STATUS,
     payload: status,
@@ -126,7 +128,7 @@ function setDirtyStatusActionCreator(status: boolean): SetDirtyStatusAction {
  * @export
  * @returns {RequestForSetUpdatesAction}
  */
-function requestForSetUpdatesActionCreator(
+export function requestForSetUpdatesActionCreator(
   progress?: Partial<ProgressLike>
 ): RequestForSetUpdatesAction {
   return {
@@ -143,7 +145,7 @@ function requestForSetUpdatesActionCreator(
  * @export
  * @returns {SetUpdatesForSelectedDodayAction}
  */
-function setUpdatesForSelectedDodayActionCreator(
+export function setUpdatesForSelectedDodayActionCreator(
   updates: Partial<ProgressLike>
 ): SetUpdatesForSelectedDodayAction {
   return {
@@ -158,7 +160,7 @@ function setUpdatesForSelectedDodayActionCreator(
  * @export
  * @returns {ClearDodayDetailsDirtyStuffAction}
  */
-function clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction {
+export function clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction {
   return {
     type: DodayDetailsActionConstants.CLEAR_DIRTY_STUFF,
   };

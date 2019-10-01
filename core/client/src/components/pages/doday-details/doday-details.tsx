@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RouteComponentProps, StaticContext } from 'react-router';
-import ducks, { activeToolsSelector, selectedDodaySelector } from '@doday/duck';
+import ducks, {
+  activeToolsSelector,
+  selectedDodaySelector,
+} from '@doday/ducks';
 import { LayoutSpot, useRouter } from '@doday/lib';
 import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
 import { useTranslation } from 'react-i18next';

@@ -2,8 +2,14 @@ import * as React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { RouteComponentProps } from 'react-router';
 
+export enum AnimationType {
+  UP = 'UP',
+  RIGHT = 'RIGHT',
+  LEFT = 'LEFT',
+}
+
 export interface PageflowOptions {
-  path: string;
+  animation?: AnimationType;
 }
 
 export interface PageWrapperChildContext {
@@ -29,12 +35,23 @@ export const pageflow = (options?: PageflowOptions) => (
       }, 300);
     };
 
+    const getAnimationClass = () => {
+      switch (options && options.animation) {
+        case AnimationType.UP:
+          return 'animation-from-bottom';
+        case AnimationType.LEFT:
+          return 'animation-from-left';
+        default:
+          return 'animation-from-right';
+      }
+    };
+
     return (
       <PageflowContext.Provider value={requestClose}>
         <CSSTransition
           in={visible}
           timeout={300}
-          classNames="pageflow"
+          classNames={getAnimationClass()}
           unmountOnExit
         >
           {React.createElement(

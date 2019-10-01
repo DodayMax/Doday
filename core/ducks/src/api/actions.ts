@@ -16,7 +16,7 @@ export enum APIActionConstants {
  * @export
  * @returns {CreateDodayAction}
  */
-function createDodayActionCreator(payload: {
+export function createDodayActionCreator(payload: {
   doday: DodayLike;
   resource: Resource;
 }): CreateDodayAction {
@@ -33,7 +33,7 @@ function createDodayActionCreator(payload: {
  * @export
  * @returns {CreateAndTakeDodayAction}
  */
-function createAndTakeDodayActionCreator(payload: {
+export function createAndTakeDodayActionCreator(payload: {
   doday: DodayLike;
   progress: ProgressLike;
   resource?: Resource;
@@ -51,7 +51,7 @@ function createAndTakeDodayActionCreator(payload: {
  * @export
  * @returns {TakeDodayAction}
  */
-function takeDodayActionCreator(payload: {
+export function takeDodayActionCreator(payload: {
   doday: DodayLike;
   progress: Partial<ProgressLike>;
 }): TakeDodayAction {
@@ -67,7 +67,7 @@ function takeDodayActionCreator(payload: {
  * @export
  * @returns {UpdateDodayAction}
  */
-function updateDodayActionCreator(payload: {
+export function updateDodayActionCreator(payload: {
   did: string;
   type: DodayType;
   updates: {
@@ -88,7 +88,7 @@ function updateDodayActionCreator(payload: {
  * @export
  * @returns {UntakeDodayAction}
  */
-function untakeDodayActionCreator(payload: {
+export function untakeDodayActionCreator(payload: {
   did: string;
   type: DodayType;
 }): UntakeDodayAction {
@@ -104,7 +104,7 @@ function untakeDodayActionCreator(payload: {
  * @export
  * @returns {DeleteDodayAction}
  */
-function deleteDodayActionCreator(payload: {
+export function deleteDodayActionCreator(payload: {
   did: string;
   type: DodayType;
 }): DeleteDodayAction {
