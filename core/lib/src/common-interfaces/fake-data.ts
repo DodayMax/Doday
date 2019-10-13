@@ -129,6 +129,8 @@ export const rootState: RootState = {
     action: 'POP',
   },
   auth: {
+    status: {},
+    isAuthenticated: false,
     hero,
     activeTools: {},
   },

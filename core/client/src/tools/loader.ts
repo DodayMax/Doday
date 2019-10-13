@@ -1,4 +1,4 @@
-import { i18n } from '@root/services';
+import { i18n } from '@services';
 
 export const loadTool = async (path: string) => {
   /** Load Tool module */

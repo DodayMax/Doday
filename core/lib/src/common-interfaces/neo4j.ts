@@ -1,3 +1,22 @@
+import { DodayType } from '../models';
+
+export interface Neo4jRecord {
+  keys: string[];
+  length: number;
+  _fields: Neo4jNode;
+}
+
+export interface Neo4jNode {
+  identity: Neo4jInteger;
+  labels: DodayType[];
+  properties: { [key: string]: string };
+}
+
+export interface Neo4jInteger {
+  low: number;
+  high: number;
+}
+
 export interface Neo4jDate {
   year: number;
   month: number;

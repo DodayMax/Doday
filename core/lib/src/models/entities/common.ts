@@ -37,7 +37,8 @@ export interface Entity {
  * Union types for abstract from particular entities
  */
 export enum DodayType {
-  Activity,
+  Activity = 'Activity',
+  Hero = 'Hero',
 }
 export type DodayLike = Activity;
 export type SerializedDodayLike = SerializedActivity;
@@ -63,7 +64,7 @@ export interface DodayBase {
 
 export interface SerializedDodayBase {
   did: string;
-  type: number;
+  type: DodayType;
   public: boolean;
   ownerDID: string;
   created?: number;

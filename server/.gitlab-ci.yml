@@ -1,0 +1,73 @@
+image: google/cloud-sdk:alpine
+
+before_script:
+  - chmod +x ./.gitlab-env.sh
+  - ./.gitlab-env.sh
+
+# stages:
+#   - test
+#   - build
+#   - deploy
+
+# test:
+#   stage: test
+#   script: echo "Running tests"
+
+# build:
+#   stage: build
+#   script: echo "Building the app"
+
+deploy_production:
+  stage: deploy
+  environment:
+    name: Production
+    url: https://do-day.appspot.com
+  only:
+    - master
+  script:
+    - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+    - gcloud --quiet --project $PROJECT_ID app deploy app.yaml dispatch.yaml
+
+deploy_development:
+  stage: deploy
+  environment:
+    name: Development
+    url: https://development-api-dot-do-day.appspot.com
+  only:
+    - development
+  script:
+    - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+    - gcloud --quiet --project $PROJECT_ID app deploy development-app.yaml
+
+deploy_staging:
+  stage: deploy
+  environment:
+    name: Staging
+    url: https://staging-api-dot-do-day.appspot.com
+  only:
+    - staging
+  script:
+    - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+    - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+    - gcloud --quiet --project $PROJECT_ID app deploy staging-app.yaml
+
+# deploy_review:
+#   stage: deploy
+#   environment:
+#     name: review/$CI_COMMIT_REF_NAME
+#     url: https://$CI_ENVIRONMENT_SLUG-dot-do-day.appspot.com
+#   only:
+#     - branches
+#   except:
+#     - master
+#     - development
+#     - staging
+#   script:
+#     - echo $SERVICE_ACCOUNT > /tmp/$CI_PIPELINE_ID.json
+#     - gcloud auth activate-service-account --key-file /tmp/$CI_PIPELINE_ID.json
+#     - gcloud --quiet --project $PROJECT_ID app deploy
+
+after_script:
+  - rm /tmp/$CI_PIPELINE_ID.json

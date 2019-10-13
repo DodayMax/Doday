@@ -58,7 +58,7 @@
 
 import * as React from 'react';
 import classNames from 'classnames';
-import throttle from 'lodash.throttle';
+import { throttle } from 'lodash';
 import { DodayLike } from '@doday/lib';
 
 const DEFAULT_IMAGE_HEIGHT = 112.5;

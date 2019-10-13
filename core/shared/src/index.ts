@@ -1,6 +1,5 @@
 import { Grid } from './_organisms/grid/grid';
 
-export * from './_atoms/acl-guard';
 export * from './_atoms/loader';
 export * from './_atoms/coins';
 export * from './_atoms/checkbox';

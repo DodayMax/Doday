@@ -3,19 +3,26 @@
   "private": true,
   "workspaces": [
     "core/*",
-    "tools/*"
+    "tools/*",
+    "server"
   ],
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "dev": "concurrently \"npm run start --prefix core/client\" \"npm run watch --prefix core/server\"",
-    "build:api": "yarn workspace @doday/api run build",
-    "build:lib": "yarn workspace @doday/lib run build",
-    "build:shared": "yarn workspace @doday/shared run build",
-    "build:ducks": "yarn workspace @doday/ducks run build",
-    "build:activities": "yarn workspace @doday/activities run build",
+    "dev": "concurrently \"yarn workspace @doday/client run start\" \"yarn workspace @doday/server run start:dev\"",
+    "build:api": "yarn workspace @doday/api run clean && yarn workspace @doday/api run build",
+    "build:lib": "yarn workspace @doday/lib run clean && yarn workspace @doday/lib run build",
+    "build:shared": "yarn workspace @doday/shared run clean && yarn workspace @doday/shared run build",
+    "build:ducks": "yarn workspace @doday/ducks run clean && yarn workspace @doday/ducks run build",
+    "build:activities": "yarn workspace @doday/activities run clean && yarn workspace @doday/activities run build",
+    "clean:api": "yarn workspace @doday/api run clean",
+    "clean:lib": "yarn workspace @doday/lib run clean",
+    "clean:shared": "yarn workspace @doday/shared run clean",
+    "clean:ducks": "yarn workspace @doday/ducks run clean",
+    "clean:activities": "yarn workspace @doday/activities run clean",
     "build:server": "yarn workspace @doday/server run build",
-    "build:all": "yarn build:api & yarn build:lib & yarn build:duck & build:activities & yarn build:shared & yarn build:server"
+    "clean:all": "yarn clean:api && yarn clean:lib && yarn clean:ducks && yarn clean:activities && yarn clean:shared",
+    "build:all": "yarn build:lib && yarn build:api && yarn build:ducks && yarn build:shared && yarn build:activities"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
@@ -48,7 +55,7 @@
     "jest-resolve": "24.8.0",
     "jest-watch-typeahead": "^0.2.1",
     "lerna": "^3.13.0",
-    "typescript": "3.4.1"
+    "typescript": "3.6.3"
   },
   "dependencies": {},
   "babel": {

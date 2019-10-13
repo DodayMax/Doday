@@ -1,59 +1,50 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { withRouter, RouteComponentProps } from 'react-router-dom';
-import ducks, { ClearBuilderAction } from '@doday/ducks';
+import { useDispatch, useSelector } from 'react-redux';
+import { Route } from 'react-router-dom';
+import { clearBuilderActionCreator, activeToolsSelector } from '@doday/ducks';
 import { Page, PageHeader, pageflow, AnimationType } from '@doday/shared';
 
-import { WithTools } from '@doday/lib';
+import { WithTools, LayoutSpot } from '@doday/lib';
+import { ToolWrapper } from '@root/components/tool-wrapper/tool-wrapper';
+import { useTranslation } from 'react-i18next';
 
 export interface BuilderProps {}
 
-interface PropsFromConnect {
-  success?: boolean;
-  clearBuilderActionCreator: () => ClearBuilderAction;
-}
+export const Builder = pageflow({ animation: AnimationType.UP })(
+  (props: BuilderProps & WithTools) => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+    const activeTools = useSelector(activeToolsSelector);
+    const onRequestClose = () => {
+      dispatch(clearBuilderActionCreator());
+    };
 
-export class Builder extends React.Component<
-  BuilderProps & WithTools & Partial<PropsFromConnect> & RouteComponentProps
-> {
-  onRequestClose = () => {
-    this.props.clearBuilderActionCreator();
-  };
+    const renderBuilder = () => {
+      return Object.values(activeTools).map(tool =>
+        tool.config.entities.map(entity => {
+          return (
+            <Route
+              key={entity.name}
+              path={`/builder/${entity.name}`}
+              render={routerProps => (
+                <ToolWrapper
+                  tool={tool}
+                  place={LayoutSpot.builder}
+                  dodayType={entity.type}
+                  isProgress={false}
+                  t={t}
+                />
+              )}
+            />
+          );
+        })
+      );
+    };
 
-  renderBuilder = () => {
-    const { activeTools } = this.props;
-
-    // return activeTools.map(tool =>
-    //   tool.config.entities.map(entity => {
-    //     const Builder = tool.components.builders[entity.type];
-    //     return (
-    //       <Route
-    //         key={entity.name}
-    //         path={`/dashboard/builder/${entity.name}`}
-    //         render={routerProps => (
-    //           <Builder {...routerProps} activeTools={activeTools} />
-    //         )}
-    //       />
-    //     );
-    //   })
-    // );
-    return null;
-  };
-
-  render() {
     return (
-      <Page header={<PageHeader withClose onClose={this.onRequestClose} />}>
-        {this.renderBuilder()}
+      <Page header={<PageHeader withClose onClose={onRequestClose} />}>
+        {renderBuilder()}
       </Page>
     );
   }
-}
-
-export default pageflow({ animation: AnimationType.UP })(
-  withRouter(
-    connect(
-      undefined,
-      { ...ducks.builder.actions }
-    )(Builder)
-  )
 );

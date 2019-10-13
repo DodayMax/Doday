@@ -15,9 +15,13 @@ import FaceIcon from '@material-ui/icons/Face';
 import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.top-bar';
-import { Hero } from '@doday/lib';
+import { Hero, auth } from '@doday/lib';
 import { useDispatch } from 'react-redux';
-import { pushRouteActionCreator } from '@doday/ducks';
+import {
+  pushRouteActionCreator,
+  signInWithGoogleActionCreator,
+} from '@doday/ducks';
+import { ACLGuard } from '@root/components/acl-guard/acl-guard';
 const logo = require('@root/assets/png/app-icon.png');
 
 export interface TopBarProps {
@@ -31,6 +35,10 @@ export const TopBar = withStyles(css)((props: TopBarProps & WithStyles) => {
 
   const handleBaseUrlChange = (e, value) => {
     dispatch(pushRouteActionCreator(value));
+  };
+
+  const handleSignInWithGoogle = () => {
+    dispatch(signInWithGoogleActionCreator());
   };
 
   return (
@@ -48,36 +56,41 @@ export const TopBar = withStyles(css)((props: TopBarProps & WithStyles) => {
             </IconButton>
           </LayoutBlock>
           <LayoutBlock styles={{ width: '280px' }}></LayoutBlock>
-          <Hidden condition={!hero}>
-            <LayoutBlock flex="1" align="flexCenter" valign="vflexCenter">
-              <LayoutBlock>
-                <ToggleButtonGroup
-                  exclusive
-                  onChange={handleBaseUrlChange}
-                  aria-label="text alignment"
-                >
-                  <Tooltip title="Store" placement="bottom">
-                    <ToggleButton value="/store" aria-label="left aligned">
-                      <AppsIcon className={classes.white} />
-                    </ToggleButton>
-                  </Tooltip>
-                  <Tooltip title="Profile" placement="bottom">
-                    <ToggleButton value="/profile" aria-label="centered">
-                      <FaceIcon />
-                    </ToggleButton>
-                  </Tooltip>
-                </ToggleButtonGroup>
+          <ACLGuard
+            allowed={
+              <LayoutBlock flex="1" align="flexCenter" valign="vflexCenter">
+                <LayoutBlock>
+                  <ToggleButtonGroup
+                    exclusive
+                    onChange={handleBaseUrlChange}
+                    aria-label="text alignment"
+                  >
+                    <Tooltip title="Store" placement="bottom">
+                      <ToggleButton value="/store" aria-label="left aligned">
+                        <AppsIcon className={classes.white} />
+                      </ToggleButton>
+                    </Tooltip>
+                    <Tooltip title="Profile" placement="bottom">
+                      <ToggleButton value="/profile" aria-label="centered">
+                        <FaceIcon />
+                      </ToggleButton>
+                    </Tooltip>
+                  </ToggleButtonGroup>
+                </LayoutBlock>
               </LayoutBlock>
-            </LayoutBlock>
-          </Hidden>
+            }
+            forbidden={
+              <LayoutBlock>
+                <IconButton
+                  onClick={handleSignInWithGoogle}
+                  data-test-id="google-button"
+                >
+                  <Icons.Google />
+                </IconButton>
+              </LayoutBlock>
+            }
+          />
         </LayoutBlock>
-        <Hidden condition={!!hero}>
-          <LayoutBlock>
-            <IconButton href="/auth/google" data-test-id="google-button">
-              <Icons.Google />
-            </IconButton>
-          </LayoutBlock>
-        </Hidden>
       </Toolbar>
     </AppBar>
   );

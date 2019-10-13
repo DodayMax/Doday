@@ -101,9 +101,9 @@ class StoreClassComponent extends React.Component<
   }
 
   componentDidMount() {
-    this.props.fetchPublicDodaysForStoreActionCreator({
-      limit: ITEMS_PER_PAGE,
-    });
+    // this.props.fetchPublicDodaysForStoreActionCreator({
+    //   limit: ITEMS_PER_PAGE,
+    // });
   }
 
   loadMore = () => {
@@ -196,7 +196,7 @@ class StoreClassComponent extends React.Component<
             items={dodays}
             layoutClassName={classes.layout}
             containerClassName={classes.container}
-            itemComponent={MasonryItem}
+            itemComponent={MasonryItem as any}
             alignCenter={true}
             loadingElement={
               <LayoutBlock

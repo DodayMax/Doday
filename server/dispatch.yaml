@@ -1,0 +1,7 @@
+dispatch:
+  - url: "do-day.appspot.com/*"
+    service: default
+  - url: "development-api-dot-do-day.appspot.com/*"
+    service: development-api
+  - url: "staging-api-dot-do-day.appspot.com/*"
+    service: staging-api

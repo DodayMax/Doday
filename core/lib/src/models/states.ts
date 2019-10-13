@@ -1,6 +1,6 @@
 import { RouterState } from 'connected-react-router';
 import { Hero } from './entities/hero';
-import { SidebarQueryParams, ToastType } from '../common-interfaces';
+import { SidebarQueryParams, ToastType, Status } from '../common-interfaces';
 import { DodayLike, ProgressLike } from './entities/common';
 import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
 
@@ -33,6 +33,8 @@ export interface BuilderState {
 }
 
 export interface AuthState {
+  status: Status;
+  isAuthenticated?: boolean;
   hero?: Hero;
   activeTools: { [key: string]: ToolBeacon };
 }

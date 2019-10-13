@@ -172,7 +172,7 @@ export class ActivityDetailsComponentClass extends React.Component<
               new Date()
             }
             tooltip={t('activities:builder.lockDateTooltip')}
-            onChange={date => {
+            onChange={(date: Date | null) => {
               this.props.requestForSetUpdatesActionCreator!({
                 date: date || undefined,
               });

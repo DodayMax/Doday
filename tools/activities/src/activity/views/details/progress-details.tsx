@@ -303,7 +303,7 @@ export class ActivityProgressDetailsComponentClass extends React.Component<
                           selectedDoday.progress.date)
                       }
                       tooltip={t('activities:builder.lockDateTooltip')}
-                      onChange={date => {
+                      onChange={(date: Date | null) => {
                         if (date) {
                           const dateDirty =
                             moment(date).format('ll') !==

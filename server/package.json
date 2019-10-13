@@ -1,0 +1,79 @@
+{
+  "name": "@doday/server",
+  "version": "0.1.0",
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "build": "rimraf dist && tsc -p tsconfig.build.json",
+    "gcp-build": "npm run build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node -r dotenv/config dist/main.js\"",
+    "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/main.js\"",
+    "start": "node dist/main.js",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "hook:email": "hook-email @whale.digital",
+    "compodoc": "npx compodoc -p tsconfig.json",
+    "version": "auto-changelog -p && npm run compodoc"
+  },
+  "dependencies": {
+    "@doday/lib": "0.1.0",
+    "@nestjs/common": "^6.0.0",
+    "@nestjs/core": "^6.0.0",
+    "@nestjs/platform-express": "^6.0.0",
+    "@nestjs/swagger": "^3.1.0",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.10.0",
+    "firebase-admin": "^8.5.0",
+    "husky": "^3.0.5",
+    "module-alias": "^2.2.1",
+    "neo4j-driver": "^1.7.6",
+    "reflect-metadata": "^0.1.12",
+    "rimraf": "^2.6.2",
+    "rxjs": "^6.3.3",
+    "swagger-ui-express": "^4.1.0"
+  },
+  "devDependencies": {
+    "@compodoc/compodoc": "^1.1.10",
+    "@nestjs/testing": "^6.0.0",
+    "@types/express": "4.16.1",
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.4",
+    "@types/supertest": "2.0.7",
+    "auto-changelog": "^1.16.1",
+    "dotenv": "^8.1.0",
+    "firebase-mock": "^2.2.10",
+    "hook-email": "^1.0.2",
+    "jest": "24.7.1",
+    "prettier": "1.17.0",
+    "supertest": "4.0.2",
+    "ts-jest": "24.0.2",
+    "ts-node": "8.1.0",
+    "tsc-watch": "2.2.1",
+    "tsconfig-paths": "3.8.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "_moduleAliases": {
+    "@modules": "./dist/modules",
+    "@middlewares": "./dist/middlewares",
+    "@interfaces": "./dist/interfaces"
+  }
+}

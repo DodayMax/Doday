@@ -9,6 +9,7 @@
     "allowJs": true,
     "jsx": "react",
     "baseUrl": "src",
+    "moduleResolution": "node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "paths": {

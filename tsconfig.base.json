@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "esnext",
-    "target": "es5",
+    "module": "commonjs",
+    "target": "es2017",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "jsx": "react",
@@ -13,5 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "declaration": true
-  }
+  },
+  "exclude": ["node_modules", "dist"]
 }

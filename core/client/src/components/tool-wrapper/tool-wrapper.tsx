@@ -26,6 +26,7 @@ export const ToolWrapper = (
     Partial<WithTranslation>
 ) => {
   const { tool, place, dodayType, isProgress, ...pathrough } = props;
+  console.log(tool);
   if (!tool) {
     return null;
   }
@@ -43,6 +44,8 @@ export const ToolWrapper = (
     toolView = tool.getView(place, dodayType);
   }
   const Component = toolView.component;
+
+  console.log(Component);
 
   return (
     <DynamicModuleLoader

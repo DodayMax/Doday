@@ -272,8 +272,12 @@ export class ActivityBuilderComponentClass extends React.Component<
           ) : (
             <Switcher
               items={this.activitTypesSwitcherItems}
-              onChange={item => setActivityTypeActionCreator!(item)}
-              render={type => activityIconByType(type, 30, config.colors.grey8)}
+              onChange={(item: ActivityType) =>
+                setActivityTypeActionCreator!(item)
+              }
+              render={(type: ActivityType) =>
+                activityIconByType(type, 30, config.colors.grey8)
+              }
             />
           )}
         </LayoutBlock>
@@ -493,18 +497,13 @@ export const activityIconByType = (
 const mapState = (state: RootState) => ({
   ownerDID: state.auth.hero && state.auth.hero.did,
   activityType:
-    state.builder.tools &&
-    (state.builder.tools.activities as ActivityBuilderState).activityType,
-  pinned:
-    state.builder.tools &&
-    (state.builder.tools.activities as ActivityBuilderState).pinned,
+    state.activities && (state.activities as ActivityBuilderState).activityType,
+  pinned: state.activities && (state.activities as ActivityBuilderState).pinned,
   isUrlParsing:
-    state.builder.tools &&
-    (state.builder.tools.activities as ActivityBuilderState).isUrlParsing,
+    state.activities && (state.activities as ActivityBuilderState).isUrlParsing,
   parsedMetadata:
-    state.builder.tools &&
-    (state.builder.tools.activities as ActivityBuilderState).parsedMetadata,
-  loading: state.builder.status.loading,
+    state.activities &&
+    (state.activities as ActivityBuilderState).parsedMetadata,
 });
 
 export const ActivityBuilder = connect(
