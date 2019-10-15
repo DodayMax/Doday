@@ -7,7 +7,7 @@ To create new Entity you need follow these steps:
 
 ```
 export const ActivityEntity: Entity = {
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'activity',
   serialize: serializeActivity,
   deserialize: deserializeActivity,
@@ -25,7 +25,7 @@ interface Activity extends DodayBase {}
 
 2. Second, you need to add new `Entity` to common union types (`./common.ts`) to make development process easier:
 
-- `DodayType`
+- `NodeType`
 - `DodayLike`
 - `SerializedDodayLike`
 - `ProgressLike`

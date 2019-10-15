@@ -53,7 +53,7 @@ export const fetchDodays = (params?: DodaysQueryParams) => {
       Accept: 'application/json',
     },
   }).then(async (res: Response) => {
-    return await parseAPIResponseDodays(res);
+    return await res;
   });
 };
 

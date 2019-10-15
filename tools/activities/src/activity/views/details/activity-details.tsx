@@ -11,7 +11,7 @@ import {
   durationToMinutes,
   Resource,
   ProgressLike,
-  DodayType,
+  NodeType,
   Activity,
   RootState,
 } from '@doday/lib';
@@ -69,7 +69,7 @@ export interface PropsFromConnect {
   }): TakeDodayAction;
   untakeDodayActionCreator(payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
   }): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
   clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction;

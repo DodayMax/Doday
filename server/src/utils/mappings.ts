@@ -1,8 +1,10 @@
 import { auth } from 'firebase-admin';
-import { Neo4jRecord, Neo4jNode } from '@doday/lib';
-import { Hero } from '../modules/hero/hero.model';
+import { Neo4jRecord, Neo4jNode, Doday } from '@doday/lib';
+import { HeroModel } from '../modules/hero/hero.model';
 
-export const mapHeroFromToken = (user: auth.DecodedIdToken): Hero => {
+export const mapHeroFromToken = (
+  user: auth.DecodedIdToken
+): Partial<HeroModel> => {
   return {
     did: user.user_id,
     name: user.name,
@@ -11,12 +13,12 @@ export const mapHeroFromToken = (user: auth.DecodedIdToken): Hero => {
   };
 };
 
-export const parseNeo4jRecords = (records: Neo4jRecord[]) => {
+export const parseNeo4jRecords = (records: Neo4jRecord[]): Doday[] => {
   if (!records.length) return [];
   return records.map(record => {
     const node: Neo4jNode = record._fields[0];
     return {
-      type: node.labels,
+      labels: node.labels,
       ...node.properties,
     };
   });

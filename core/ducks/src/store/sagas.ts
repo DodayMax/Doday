@@ -59,7 +59,7 @@ export function* searchPublicDodaysForStoreActionSaga(
 
 export default [
   takeLatest(
-    StoreActionConstants.FETCH_DODAYS_WITH_PARAMS,
+    StoreActionConstants.FETCH_DODAYS,
     fetchPublicDodaysForStoreActionSaga
   ),
   takeLatest(

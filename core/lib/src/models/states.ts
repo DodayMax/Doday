@@ -1,8 +1,8 @@
 import { RouterState } from 'connected-react-router';
-import { Hero } from './entities/hero';
 import { SidebarQueryParams, ToastType, Status } from '../common-interfaces';
 import { DodayLike, ProgressLike } from './entities/common';
 import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
+import { Hero } from './nodes';
 
 export interface RootState {
   router: RouterState;

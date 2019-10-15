@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { Resource, DodayLike, ProgressLike, DodayType } from '@doday/lib';
+import { Resource, DodayLike, ProgressLike, NodeType } from '@doday/lib';
 
 export enum APIActionConstants {
   CREATE_DODAY = '[dodays-api] CREATE_DODAY',
@@ -69,7 +69,7 @@ export function takeDodayActionCreator(payload: {
  */
 export function updateDodayActionCreator(payload: {
   did: string;
-  type: DodayType;
+  type: NodeType;
   updates: {
     doday?: Partial<DodayLike>;
     progress?: Partial<ProgressLike>;
@@ -90,7 +90,7 @@ export function updateDodayActionCreator(payload: {
  */
 export function untakeDodayActionCreator(payload: {
   did: string;
-  type: DodayType;
+  type: NodeType;
 }): UntakeDodayAction {
   return {
     type: APIActionConstants.UNTAKE_DODAY,
@@ -106,7 +106,7 @@ export function untakeDodayActionCreator(payload: {
  */
 export function deleteDodayActionCreator(payload: {
   did: string;
-  type: DodayType;
+  type: NodeType;
 }): DeleteDodayAction {
   return {
     type: APIActionConstants.DELETE_DODAY,
@@ -152,7 +152,7 @@ export interface UpdateDodayAction extends AnyAction {
   type: APIActionConstants.UPDATE_DODAY;
   payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
     updates: {
       doday?: Partial<DodayLike>;
       progress?: Partial<ProgressLike>;
@@ -165,7 +165,7 @@ export interface UntakeDodayAction extends AnyAction {
   type: APIActionConstants.UNTAKE_DODAY;
   payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
   };
 }
 
@@ -173,7 +173,7 @@ export interface DeleteDodayAction extends AnyAction {
   type: APIActionConstants.DELETE_DODAY;
   payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
   };
 }
 

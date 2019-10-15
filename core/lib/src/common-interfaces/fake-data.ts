@@ -1,4 +1,3 @@
-import { Hero } from '../models/entities/hero';
 // import { activeToolsForHero } from '../utils';
 // import { initialStatusState } from '@root/ducks/doday-app/reducer';
 // import { initialDodayDetailsState } from '@root/ducks/doday-details/reducer';
@@ -14,20 +13,21 @@ import {
   SerializedActivityProgress,
   ActivityProgress,
 } from '../models/entities/activity';
-import { DodayType, DodayLike, ProgressLike } from '../models/entities/common';
-import { RootState } from '../models';
+import { DodayLike, ProgressLike } from '../models/entities/common';
+import { RootState, NodeType, Hero } from '../models';
 
 export const hero: Hero = {
   did: 'test did',
-  displayName: 'Tester',
-  tools: ['activities', 'schedule'],
-  created: new Date('2019-02-15'),
+  labels: [NodeType.Hero],
+  name: 'Tester',
+  public: true,
+  createdAt: new Date().toISOString(),
 };
 
 export const serializedActivity: SerializedActivity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
@@ -38,7 +38,7 @@ export const serializedActivity: SerializedActivity = {
 export const deserializedActivity: Activity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
@@ -66,16 +66,10 @@ export const partialProgress: Partial<ActivityProgress> = {
 export const activity: Activity = {
   did: 'test did',
   activityType: 'do',
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,
-  owner: {
-    did: 'did',
-    displayName: 'Test name',
-    tools: [],
-    created: new Date('2019-02-15'),
-  },
   ownerDID: 'did',
   created: new Date('2019-02-15'),
   progress: {
@@ -90,7 +84,7 @@ export const activity: Activity = {
 export const doday: DodayLike = {
   did: 'test did',
   activityType: 'do',
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'name',
   duration: 'P60M',
   public: false,

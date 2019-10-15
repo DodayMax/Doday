@@ -24,7 +24,7 @@ import {
   deserializedResource,
   SerializedProgressLike,
   doday,
-  DodayType,
+  NodeType,
   partialProgress,
   rootState,
   Activity,
@@ -222,7 +222,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.DELETE_DODAY,
       payload: {
         did: deserializedActivity.did,
-        type: DodayType.Activity,
+        type: NodeType.Activity,
       },
     };
     const activeTool = rootState.auth.activeTools;
@@ -262,7 +262,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: deserializedActivity.did,
-        type: DodayType.Activity,
+        type: NodeType.Activity,
       },
     };
     const activeTool = rootState.auth.activeTools;
@@ -319,7 +319,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: 'did',
-        type: DodayType.Activity,
+        type: NodeType.Activity,
       },
     };
     const activeTool = rootState.auth.activeTools;
@@ -376,7 +376,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.UNTAKE_DODAY,
       payload: {
         did: 'did',
-        type: DodayType.Activity,
+        type: NodeType.Activity,
       },
     };
     const activeTool = rootState.auth.activeTools;
@@ -431,7 +431,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.UPDATE_DODAY,
       payload: {
         did: deserializedActivity.did,
-        type: DodayType.Activity,
+        type: NodeType.Activity,
         updates: {
           progress: partialProgress,
         },
@@ -496,7 +496,7 @@ describe('Test api sagas', () => {
       type: APIActionConstants.UPDATE_DODAY,
       payload: {
         did: 'some did',
-        type: DodayType.Activity,
+        type: NodeType.Activity,
         updates: {
           progress: partialProgress,
         },

@@ -18,7 +18,7 @@ import {
   detectActivityType,
   parseMetadataFromUrl,
   Activity,
-  DodayType,
+  NodeType,
 } from '@doday/lib';
 
 describe('Test Activities sagas', () => {
@@ -26,7 +26,7 @@ describe('Test Activities sagas', () => {
     const activities: Activity[] = [doday];
     const activitiesWithProgress: Activity[] = [activity];
     const params: DodaysWithProgressQueryParams = {
-      dodaytype: DodayType.Activity,
+      dodaytype: NodeType.Activity,
     };
     const action: FetchActivitiesAction = {
       type: ActionConstants.FETCH_ACTIVITIES,

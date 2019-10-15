@@ -18,7 +18,7 @@ import {
   activity,
   deserializedResource,
   Resource,
-  DodayType,
+  NodeType,
   Activity,
   ActivityType,
 } from '@doday/lib';
@@ -26,7 +26,7 @@ import {
 describe('Activity tool action creators tests', () => {
   it('fetch activities', () => {
     const params: DodaysWithProgressQueryParams = {
-      dodaytype: DodayType.Activity,
+      dodaytype: NodeType.Activity,
     };
     const expectedActionObject: FetchActivitiesAction = {
       type: ActionConstants.FETCH_ACTIVITIES,

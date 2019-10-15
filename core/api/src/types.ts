@@ -1,8 +1,8 @@
-import { DodayType } from '@doday/lib';
+import { NodeType } from '@doday/lib';
 
 export type DodaysQueryParams = {
-  /** filter by DodayType */
-  dodaytype?: DodayType;
+  /** filter by NodeType */
+  type?: NodeType;
   /** filter by Hero created doday */
   createdBy?: string;
   /** Skip some amount of results - paging */
@@ -14,8 +14,8 @@ export type DodaysQueryParams = {
 };
 
 export type DodaysWithProgressQueryParams = {
-  /** filter by DodayType */
-  dodaytype?: DodayType;
+  /** filter by NodeType */
+  type?: NodeType;
   /** fetch dodays <= endOf(exactDate) */
   exactDate?: number;
   /** fetch dodays for whole day (>= startOf(date) AND <= endOf(date)) */

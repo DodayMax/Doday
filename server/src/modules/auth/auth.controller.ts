@@ -12,7 +12,7 @@ import { ApiUseTags, ApiOkResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthSigninDto, AuthSigninResponseDto } from './dto/auth-signin.dto';
 import { HeroService } from '../hero/hero.service';
-import { Hero } from '@modules/hero/hero.model';
+import { HeroModel } from '@modules/hero/hero.model';
 import { RequestWithUser } from '@interfaces/request.interface';
 
 @ApiUseTags('auth')
@@ -35,7 +35,7 @@ export class AuthController {
       }
       // Find Hero from neo4j
       let hero = await this.heroService.findById(user.user_id);
-      if (!hero.length) {
+      if (!hero) {
         // If Hero doesn't exist yet create new one
         hero = await this.heroService.create(user);
       }
@@ -47,7 +47,7 @@ export class AuthController {
   }
 
   @Get('me')
-  async me(@Req() req: RequestWithUser): Promise<Hero> {
+  async me(@Req() req: RequestWithUser): Promise<HeroModel> {
     try {
       const did = req.user.uid;
       if (did) {

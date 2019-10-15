@@ -13,7 +13,7 @@ import {
   Resource,
   DodayLike,
   ProgressLike,
-  DodayType,
+  NodeType,
   Activity,
 } from '@doday/lib';
 import {
@@ -74,7 +74,7 @@ export interface PropsFromConnect {
   closeDialogActionCreator: () => CloseDialogAction;
   updateDodayActionCreator(payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
     updates: {
       doday?: Partial<DodayLike>;
       progress?: Partial<ProgressLike>;
@@ -83,11 +83,11 @@ export interface PropsFromConnect {
   }): UpdateDodayAction;
   deleteDodayActionCreator(payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
   }): DeleteDodayAction;
   untakeDodayActionCreator(payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
   }): UntakeDodayAction;
   clearSelectedDodayActionCreator: () => ClearSelectedDodayAction;
   clearDodayDetailsDirtyStuffActionCreator(): ClearDodayDetailsDirtyStuffAction;

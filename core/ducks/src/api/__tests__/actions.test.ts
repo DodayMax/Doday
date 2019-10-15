@@ -8,7 +8,7 @@ import actions, {
   APIActionConstants,
 } from '../actions';
 import {
-  DodayType,
+  NodeType,
   deserializedActivity,
   deserializedResource,
   deserialzedActivityProgress,
@@ -63,7 +63,7 @@ describe('test api action creators', () => {
   it('updateDodayActionCreator update progress', () => {
     const payload = {
       did: 'string',
-      type: DodayType.Activity,
+      type: NodeType.Activity,
       updates: {
         progress: partialProgress,
       },
@@ -80,7 +80,7 @@ describe('test api action creators', () => {
   it('untakeDodayActionCreator', () => {
     const payload = {
       did: 'string',
-      type: DodayType.Activity,
+      type: NodeType.Activity,
     };
     const expectedActionObject: UntakeDodayAction = {
       type: APIActionConstants.UNTAKE_DODAY,
@@ -94,7 +94,7 @@ describe('test api action creators', () => {
   it('deleteDodayActionCreator', () => {
     const payload = {
       did: 'string',
-      type: DodayType.Activity,
+      type: NodeType.Activity,
     };
     const expectedActionObject: DeleteDodayAction = {
       type: APIActionConstants.DELETE_DODAY,

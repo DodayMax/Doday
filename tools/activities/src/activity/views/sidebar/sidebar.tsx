@@ -11,7 +11,7 @@ import {
   DodayLike,
   ProgressLike,
   Activity,
-  DodayType,
+  NodeType,
 } from '@doday/lib';
 import { DodaysQueryParams } from '@doday/api';
 import { actions } from '../../duck';
@@ -40,7 +40,7 @@ export interface PropsFromConnect {
   ) => FetchActivitiesAction;
   updateDodayActionCreator(payload: {
     did: string;
-    type: DodayType;
+    type: NodeType;
     updates: {
       doday?: Partial<DodayLike>;
       progress?: Partial<ProgressLike>;
@@ -60,7 +60,7 @@ type Props = ActivitySidebarProps &
 export class ActivitySidebarComponentClass extends React.Component<Props> {
   componentDidMount() {
     this.props.fetchActivitiesActionCreator!({
-      dodaytype: DodayType.Activity,
+      dodaytype: NodeType.Activity,
     });
   }
 

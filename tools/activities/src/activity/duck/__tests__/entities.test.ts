@@ -10,7 +10,7 @@ import {
   deserializeActivityProgress,
   SerializedActivityProgress,
   isEntity,
-  DodayType,
+  NodeType,
 } from '@doday/lib';
 
 describe('Test activities serialize helper functions', () => {
@@ -76,7 +76,7 @@ describe('Test activities serialize helper functions', () => {
 
   it('isEntity returns correct value', () => {
     expect(isEntity(deserializedActivity)).toBe(true);
-    deserializedActivity.type = DodayType.Hero;
+    deserializedActivity.type = NodeType.Hero;
     expect(isEntity(deserializedActivity)).toBe(false);
   });
 });

@@ -1,4 +1,4 @@
-import { DodayType } from '../models';
+import { NodeType, Doday } from '../models';
 
 export interface Neo4jRecord {
   keys: string[];
@@ -8,8 +8,8 @@ export interface Neo4jRecord {
 
 export interface Neo4jNode {
   identity: Neo4jInteger;
-  labels: DodayType[];
-  properties: { [key: string]: string };
+  labels: NodeType[];
+  properties: Doday & { [key: string]: string };
 }
 
 export interface Neo4jInteger {

@@ -1,4 +1,4 @@
-import { Hero, APIResponseHero } from './hero';
+import { APIResponseHero } from './hero';
 import {
   Activity,
   SerializedActivity,
@@ -6,12 +6,13 @@ import {
   SerializedActivityProgress,
 } from './activity';
 import { Neo4jResponseDateTime } from '../../common-interfaces';
+import { NodeType } from '../nodes';
 
 /**
  * Entity object for using it in Tools
  */
 export interface Entity {
-  type: DodayType;
+  type: NodeType;
   name: string;
   /**
    * Since you may want to serialize or deserialize only a
@@ -33,13 +34,6 @@ export interface Entity {
   isEntity: (doday: DodayLike) => boolean;
 }
 
-/**
- * Union types for abstract from particular entities
- */
-export enum DodayType {
-  Activity = 'Activity',
-  Hero = 'Hero',
-}
 export type DodayLike = Activity;
 export type SerializedDodayLike = SerializedActivity;
 export type ProgressLike = ActivityProgress;
@@ -51,20 +45,18 @@ export interface DodayBase {
   /** Doday inner ID */
   did: string;
   /** Doday type */
-  type: DodayType;
+  type: NodeType;
   /** Public or private doday */
   public: boolean;
   /** Owner DID for graphQL queries */
   ownerDID: string;
   /** Datetime when doday was created */
   created: Date;
-  /** [:CREATE] relation */
-  owner?: Hero;
 }
 
 export interface SerializedDodayBase {
   did: string;
-  type: DodayType;
+  type: NodeType;
   public: boolean;
   ownerDID: string;
   created?: number;

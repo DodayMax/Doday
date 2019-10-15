@@ -4,10 +4,10 @@ import {
   ProgressBase,
   SerializedProgressBase,
   DodayLike,
-  DodayType,
   Entity,
 } from './common';
 import { Resource } from './resource';
+import { NodeType } from '../nodes';
 
 /**
  * Main entity type used for operating in App
@@ -73,7 +73,7 @@ export const serializeActivity = (
   activity?: Partial<Activity>
 ): Partial<SerializedActivity> | undefined => {
   if (!activity) return undefined;
-  const { owner, progress, ...omitted } = activity;
+  const { progress, ...omitted } = activity;
   const serialized: Partial<SerializedActivity> = {
     ...omitted,
     created: activity.created && activity.created.getTime(),
@@ -127,14 +127,14 @@ export const deserializeActivityProgress = (
 };
 
 export function isEntity(doday: DodayLike): doday is Activity {
-  return doday.type === DodayType.Activity;
+  return doday.type === NodeType.Activity;
 }
 
 /**
  * Finally, you need to export Entity object
  */
 export const ActivityEntity: Entity = {
-  type: DodayType.Activity,
+  type: NodeType.Activity,
   name: 'activity',
   serialize: serializeActivity,
   deserialize: deserializeActivity,

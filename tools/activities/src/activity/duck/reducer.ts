@@ -3,7 +3,7 @@ import * as actions from './actions';
 import {
   ActivityType,
   Activity,
-  DodayType,
+  NodeType,
   BaseToolState,
   BaseToolBuilderState,
   Resource,
@@ -27,7 +27,7 @@ export const mainReducer = (
         dodays: action.payload,
       };
     case actions.ActionConstants.CREATE_DODAY_OPTIMISTIC_UPDATE:
-      if (action.payload.doday.type === DodayType.Activity) {
+      if (action.payload.doday.type === NodeType.Activity) {
         return {
           ...state,
           dodays: [

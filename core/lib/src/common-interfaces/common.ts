@@ -17,7 +17,6 @@ export enum LayoutSpot {
   overview = 'page.overview',
 }
 
-export enum NodeType {
-  doday = 'doday',
-  progress = 'progress',
+export interface Buyable {
+  price: number;
 }

@@ -5,7 +5,7 @@ import { ActivityProgressDetails } from './details/progress-details';
 import { ActivityCell } from './sidebar/cells/app-cell/activity-cell';
 import { ActivityProgressCell } from './sidebar/cells/app-cell/activity-progress-cell';
 import { ActivityOverview } from './overview/overview';
-import { DodayType, LayoutSpot, NodeType, ToolView } from '@doday/lib';
+import { NodeType, LayoutSpot, NodeType, ToolView } from '@doday/lib';
 import {
   getActivitiesMainModule,
   getActivitiesBuilderModule,
@@ -13,7 +13,7 @@ import {
 
 export const getView = (
   spot: LayoutSpot,
-  entity: DodayType,
+  entity: NodeType,
   node?: NodeType
 ): ToolView | undefined => {
   switch (spot) {
@@ -26,7 +26,7 @@ export const getView = (
       };
     case LayoutSpot.cell:
       switch (entity) {
-        case DodayType.Activity:
+        case NodeType.Activity:
           switch (node) {
             case NodeType.progress:
               return {
@@ -42,7 +42,7 @@ export const getView = (
       }
     case LayoutSpot.builder:
       switch (entity) {
-        case DodayType.Activity:
+        case NodeType.Activity:
           return {
             component: ActivityBuilder,
             dependencies: [getActivitiesBuilderModule()],
@@ -52,7 +52,7 @@ export const getView = (
       }
     case LayoutSpot.details:
       switch (entity) {
-        case DodayType.Activity:
+        case NodeType.Activity:
           switch (node) {
             case NodeType.progress:
               return {

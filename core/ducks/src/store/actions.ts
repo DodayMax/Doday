@@ -4,7 +4,7 @@ import { DodayLike } from '@doday/lib';
 
 export enum StoreActionConstants {
   SET_LOADING_STATE = '[store] SET_LOADING_STATE',
-  FETCH_DODAYS_WITH_PARAMS = '[store] FETCH_DODAYS_WITH_PARAMS',
+  FETCH_DODAYS = '[store] FETCH_DODAYS',
   SET_SEARCH_TERM = '[store] SET_SEARCH_TERM',
   SET_SEARCH_FLAG = '[store] SET_SEARCH_FLAG',
   SEARCH_DODAYS_WITH_PARAMS = '[store] SEARCH_DODAYS_WITH_PARAMS',
@@ -81,7 +81,7 @@ export function fetchPublicDodaysForStoreActionCreator(
   params: DodaysQueryParams
 ): FetchPublicDodaysForStoreAction {
   return {
-    type: StoreActionConstants.FETCH_DODAYS_WITH_PARAMS,
+    type: StoreActionConstants.FETCH_DODAYS,
     payload: params,
   };
 }
@@ -157,7 +157,7 @@ export interface SearchPublicDodaysForStoreAction extends AnyAction {
 }
 
 export interface FetchPublicDodaysForStoreAction extends AnyAction {
-  type: StoreActionConstants.FETCH_DODAYS_WITH_PARAMS;
+  type: StoreActionConstants.FETCH_DODAYS;
   payload: DodaysQueryParams;
 }
 

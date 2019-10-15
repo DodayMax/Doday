@@ -1,7 +1,7 @@
 import { v1 as neo4j } from 'neo4j-driver';
-import { Hero } from '../modules/hero/hero.model';
+import { HeroModel } from '../modules/hero/hero.model';
 
-export const createHero = (tx: neo4j.Transaction, props: Hero) => {
+export const createHero = (tx: neo4j.Transaction, props: HeroModel) => {
   return tx.run(
     `MERGE (h: Hero {
       did: {did},

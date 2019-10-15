@@ -22,7 +22,7 @@ import {
   Resource,
   DodayLike,
   ProgressLike,
-  DodayType,
+  NodeType,
   ActivityType,
   Activity,
   ActivityProgress,
@@ -192,7 +192,7 @@ export class ActivityBuilderComponentClass extends React.Component<
     const activity: Activity = {
       did: cuid(),
       activityType: activityType!,
-      type: DodayType.Activity,
+      type: NodeType.Activity,
       duration: this.state.estimateTime,
       name: this.state.dodayName || parsedMetadata.title,
       tags: this.state.selectedTags || [],

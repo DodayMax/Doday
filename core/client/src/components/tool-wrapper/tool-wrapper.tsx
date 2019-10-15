@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
-import {
-  ToolBeacon,
-  DodayType,
-  ToolView,
-  LayoutSpot,
-  NodeType,
-} from '@doday/lib';
+import { ToolBeacon, NodeType, ToolView, LayoutSpot } from '@doday/lib';
 import { LayoutBlock, Icons } from '@doday/shared';
 import { WithTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
@@ -15,7 +9,7 @@ import store from '@root/store';
 interface ToolWrapperProps {
   tool: ToolBeacon;
   place: LayoutSpot;
-  dodayType?: DodayType;
+  dodayType?: NodeType;
   isProgress?: boolean;
   loading?: boolean;
 }
@@ -39,7 +33,7 @@ export const ToolWrapper = (
   }
   let toolView: ToolView;
   if (isProgress) {
-    toolView = tool.getView(place, dodayType, NodeType.progress);
+    toolView = tool.getView(place, dodayType, NodeType.Progress);
   } else {
     toolView = tool.getView(place, dodayType);
   }

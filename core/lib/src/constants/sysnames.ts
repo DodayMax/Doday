@@ -1,5 +1,5 @@
 export const sysnames = {
-  DodayType: {
+  NodeType: {
     todo: 'todo',
     watch: 'watch',
     read: 'read',

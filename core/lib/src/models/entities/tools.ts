@@ -1,8 +1,9 @@
-import { DodayType, Entity } from './common';
+import { Entity } from './common';
 import { IconNames } from '../../types';
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
-import { LayoutSpot, NodeType } from '../../common-interfaces';
+import { LayoutSpot } from '../../common-interfaces';
 import { RootState } from '../states';
+import { NodeType } from '../nodes';
 
 export interface ShopTool {
   sysname: string;
@@ -27,7 +28,7 @@ export interface ToolBeacon {
   config: ToolConfig;
   getView?: (
     spot: LayoutSpot,
-    entity: DodayType,
+    entity: NodeType,
     node?: NodeType
   ) => ToolView | undefined;
   api?: any;
