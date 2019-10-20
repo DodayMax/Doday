@@ -1,5 +1,5 @@
-import { DodayLike } from '../models/entities/common';
 import { IconNames } from '../types';
+import { Doday } from '../models';
 
 export type DrawerMenuItem = {
   text: string;
@@ -10,9 +10,9 @@ export type DrawerMenuItem = {
 };
 
 export type CellProps = {
-  doday: DodayLike;
+  doday: Doday;
   active?: boolean;
-  onClick?: (route: string, doday: DodayLike) => void;
+  onClick?: (route: string, doday: Doday) => void;
 };
 
 export type SidebarQueryParams = {

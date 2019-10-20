@@ -1,9 +1,13 @@
-import { Entity } from './common';
-import { IconNames } from '../../types';
+import { IconNames } from '../types';
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
-import { LayoutSpot } from '../../common-interfaces';
-import { RootState } from '../states';
-import { NodeType } from '../nodes';
+import { LayoutSpot } from '../common-interfaces';
+import { RootState } from '../models/states';
+import { NodeLabel } from '../models/nodes';
+
+/**
+ * Type of Activity
+ */
+export type ActivityType = 'do' | 'read' | 'watch';
 
 export interface ShopTool {
   sysname: string;
@@ -28,8 +32,8 @@ export interface ToolBeacon {
   config: ToolConfig;
   getView?: (
     spot: LayoutSpot,
-    entity: NodeType,
-    node?: NodeType
+    entity: NodeLabel,
+    node?: NodeLabel
   ) => ToolView | undefined;
   api?: any;
   actions?: {
@@ -56,7 +60,7 @@ export interface ToolBeacon {
 
 export type ToolConfig = {
   sysname: ToolSysname;
-  entities?: Entity[];
+  entities?: NodeLabel[];
   route?: string;
   icon?: IconNames;
 };

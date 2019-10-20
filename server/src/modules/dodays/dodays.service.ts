@@ -1,8 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DBService } from '../db/db.service';
-import { parseNeo4jRecords } from '../../utils';
+import { parseNeo4jNodeRecord } from '../../utils';
 import { DodaysQueryParamsDto } from './dto/dodays-query-params';
-import { find } from '../../transactions/dodays';
+import { find, totalCount } from '../../queries/dodays';
 
 @Injectable()
 export class DodaysService {
@@ -15,19 +15,23 @@ export class DodaysService {
       parsedParams.labels = params.labels.split(', ').join(' :');
       console.log(parsedParams);
     }
+    const tx = session.beginTransaction();
     try {
-      return session
-        .readTransaction(tx => find(tx, parsedParams))
-        .then(result => {
-          session.close();
-          console.log(result);
-          return {
-            items: parseNeo4jRecords(result.records as any),
-          };
-        });
+      const dodays = await tx.run(find(parsedParams));
+      const countResponse = await tx.run(totalCount(parsedParams));
+      const parsed = dodays.records.map(record =>
+        parseNeo4jNodeRecord(record as any)
+      );
+      tx.commit();
+      return {
+        items: parsed,
+        count: countResponse.records[0].get('count'),
+      };
     } catch (error) {
-      session.close();
+      tx.rollback();
       return error.message;
+    } finally {
+      session.close();
     }
   }
 }

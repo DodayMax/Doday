@@ -23,3 +23,11 @@ export const parseNeo4jRecords = (records: Neo4jRecord[]): Doday[] => {
     };
   });
 };
+
+export const parseNeo4jNodeRecord = (record: Neo4jRecord): Doday => {
+  const node: Neo4jNode = record._fields[0];
+  return {
+    labels: node.labels,
+    ...node.properties,
+  };
+};

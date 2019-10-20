@@ -9,7 +9,7 @@ import { NodeType, LayoutSpot, NodeType, ToolView } from '@doday/lib';
 import {
   getActivitiesMainModule,
   getActivitiesBuilderModule,
-} from '../modules';
+} from '../dynamic-modules';
 
 export const getView = (
   spot: LayoutSpot,

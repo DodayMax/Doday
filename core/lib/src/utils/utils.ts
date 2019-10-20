@@ -1,5 +1,3 @@
-import * as moment from 'moment';
-import { DodayLike, ProgressLike } from '../models/entities/common';
 import { config } from '../dms';
 
 export const firstItem = (arr: any[]) => arr && arr.length && arr[0];
@@ -59,27 +57,27 @@ export const filterObject = (
 //   );
 // };
 
-export const isDirty = (
-  initialObject: DodayLike,
-  updates: Partial<ProgressLike>
-): boolean => {
-  if (isEmptyObject(updates)) return false;
-  if (
-    (updates.pinned != null &&
-      updates.pinned !==
-        (initialObject.progress && !!initialObject.progress.pinned)) ||
-    (updates.dateIsLocked != null &&
-      updates.dateIsLocked !==
-        (initialObject.progress && !!initialObject.progress.dateIsLocked)) ||
-    (updates.date != null &&
-      moment(updates.date).format('ll') !==
-        (initialObject.progress &&
-          moment(initialObject.progress.date).format('ll')))
-  ) {
-    return true;
-  }
-  return false;
-};
+// export const isDirty = (
+//   initialObject: Doday,
+//   updates: Partial<Progress>
+// ): boolean => {
+//   if (isEmptyObject(updates)) return false;
+//   if (
+//     (updates.pinned != null &&
+//       updates.pinned !==
+//         (initialObject.progress && !!initialObject.progress.pinned)) ||
+//     (updates.dateIsLocked != null &&
+//       updates.dateIsLocked !==
+//         (initialObject.progress && !!initialObject.progress.dateIsLocked)) ||
+//     (updates.date != null &&
+//       moment(updates.date).format('ll') !==
+//         (initialObject.progress &&
+//           moment(initialObject.progress.date).format('ll')))
+//   ) {
+//     return true;
+//   }
+//   return false;
+// };
 
 const standartColorsForGoalsChart = [
   config.colors.yellow,

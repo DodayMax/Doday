@@ -1,7 +1,7 @@
 import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { DBService } from '../db/db.service';
 import { HeroModel } from './hero.model';
-import { findHeroById, createHero } from '../../transactions/heroes';
+import { findHeroById, createHero } from '../../queries/heroes';
 import { auth } from 'firebase-admin';
 import { mapHeroFromToken, parseNeo4jRecords } from '../../utils';
 import { firstItem } from '@doday/lib';

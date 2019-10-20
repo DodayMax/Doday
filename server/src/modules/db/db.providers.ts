@@ -13,6 +13,10 @@ export const dbProviders = [
   {
     provide: 'NEO4J',
     useFactory: () =>
-      neo4j.driver('bolt://localhost:7687', neo4j.auth.basic('neo4j', 'doday')),
+      neo4j.driver(
+        'bolt://localhost:7687',
+        neo4j.auth.basic('neo4j', 'doday'),
+        { disableLosslessIntegers: true }
+      ),
   },
 ];

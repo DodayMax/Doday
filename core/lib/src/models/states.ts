@@ -1,8 +1,13 @@
 import { RouterState } from 'connected-react-router';
-import { SidebarQueryParams, ToastType, Status } from '../common-interfaces';
-import { DodayLike, ProgressLike } from './entities/common';
-import { ToolsBuilderState, ToolBeacon, BaseToolState } from './entities';
-import { Hero } from './nodes';
+import {
+  SidebarQueryParams,
+  ToastType,
+  Status,
+  ToolsBuilderState,
+  ToolBeacon,
+  BaseToolState,
+} from '../common-interfaces';
+import { Hero, Doday, Progress } from '../models/nodes';
 
 export interface RootState {
   router: RouterState;
@@ -51,14 +56,14 @@ export interface StoreState {
   searching?: boolean;
   searchTerm?: string;
   totalCount?: number;
-  dodays: DodayLike[];
+  dodays: Doday[];
 }
 
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
-  updates?: Partial<ProgressLike>;
-  selectedDoday?: DodayLike;
+  updates?: Partial<Progress>;
+  selectedDoday?: Doday;
 }
 
 export interface ToastState {

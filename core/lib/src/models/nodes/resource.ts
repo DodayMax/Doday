@@ -1,5 +1,6 @@
-export interface Resource {
-  did: string;
+import { Doday, DeserializedDoday } from './doday';
+
+export class Resource extends Doday {
   /** A user displayable description for the page. */
   description?: string;
   /** A URL which contains an icon for the page. */
@@ -18,10 +19,17 @@ export interface Resource {
   url?: string;
   /** Image height */
   imageHeight?: number;
+  static serialize(node: DeserializedResource): Resource {
+    const serialized = Doday.serialize(node);
+    return serialized;
+  }
+  static deserialize(node: Resource): DeserializedResource {
+    const deserialized = Doday.deserialize(node);
+    return deserialized;
+  }
 }
 
-export interface SerializedResource {
-  did: string;
+export class DeserializedResource extends DeserializedDoday {
   description?: string;
   icon?: string;
   image?: string;

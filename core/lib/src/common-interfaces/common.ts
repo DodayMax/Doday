@@ -17,6 +17,16 @@ export enum LayoutSpot {
   overview = 'page.overview',
 }
 
-export interface Buyable {
-  price: number;
+export class Buyable {
+  price!: number;
+  static serialize(extension: Buyable): DeserializedBuyable {
+    return extension;
+  }
+  static deserialize(extension: DeserializedBuyable): Buyable {
+    return extension;
+  }
+}
+
+export class DeserializedBuyable {
+  price!: number;
 }

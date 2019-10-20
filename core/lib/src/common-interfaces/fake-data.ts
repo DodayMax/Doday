@@ -5,112 +5,16 @@
 // import { initialHeroSettingsState } from '@root/ducks/hero-settings/reducer';
 // import { initialStoreState } from '@root/ducks/store/reducer';
 import { Token } from 'react-stripe-checkout';
-import { Resource, SerializedResource } from '../models/entities/resource';
 // import { initialDialogState } from '@root/ducks/dialog/reducer';
-import {
-  SerializedActivity,
-  Activity,
-  SerializedActivityProgress,
-  ActivityProgress,
-} from '../models/entities/activity';
-import { DodayLike, ProgressLike } from '../models/entities/common';
-import { RootState, NodeType, Hero } from '../models';
+import { RootState, NodeLabel, Hero } from '../models';
 
 export const hero: Hero = {
   did: 'test did',
-  labels: [NodeType.Hero],
+  labels: [NodeLabel.Hero],
   name: 'Tester',
   public: true,
   createdAt: new Date().toISOString(),
 };
-
-export const serializedActivity: SerializedActivity = {
-  did: 'test did',
-  activityType: 'do',
-  type: NodeType.Activity,
-  name: 'name',
-  duration: 'P60M',
-  public: false,
-  ownerDID: 'did',
-  created: new Date('2019-02-15').getTime(),
-};
-
-export const deserializedActivity: Activity = {
-  did: 'test did',
-  activityType: 'do',
-  type: NodeType.Activity,
-  name: 'name',
-  duration: 'P60M',
-  public: false,
-  ownerDID: 'did',
-  created: new Date('2019-02-15'),
-};
-
-export const serializedActivityProgress: SerializedActivityProgress = {
-  date: new Date('2019-02-15').getTime(),
-  tookAt: new Date('2019-02-15').getTime(),
-  completedAt: new Date('2019-02-15').getTime(),
-};
-
-export const deserialzedActivityProgress: ActivityProgress = {
-  date: new Date('2019-02-15'),
-  tookAt: new Date('2019-02-15'),
-  completedAt: new Date('2019-02-15'),
-};
-
-export const partialProgress: Partial<ActivityProgress> = {
-  date: new Date('2019-02-15'),
-  dateIsLocked: true,
-};
-
-export const activity: Activity = {
-  did: 'test did',
-  activityType: 'do',
-  type: NodeType.Activity,
-  name: 'name',
-  duration: 'P60M',
-  public: false,
-  ownerDID: 'did',
-  created: new Date('2019-02-15'),
-  progress: {
-    date: new Date('2019-02-15'),
-    completed: false,
-    dateIsLocked: false,
-    pinned: false,
-    ownerDID: 'test hero did',
-  },
-};
-
-export const doday: DodayLike = {
-  did: 'test did',
-  activityType: 'do',
-  type: NodeType.Activity,
-  name: 'name',
-  duration: 'P60M',
-  public: false,
-  ownerDID: 'did',
-  created: new Date('2019-02-15'),
-};
-
-export const progress: ProgressLike = {
-  date: new Date('2019-02-15'),
-  completed: false,
-  ownerDID: 'test hero did',
-};
-
-export const deserializedResource: Resource = {
-  did: 'did',
-  description: 'string',
-  icon: 'string',
-  image: 'string',
-  keywords: ['string'],
-  provider: 'string',
-  title: 'string',
-  type: 'string',
-  url: 'string',
-};
-
-export const serializedResource: SerializedResource = deserializedResource;
 
 export const rootState: RootState = {
   router: {
