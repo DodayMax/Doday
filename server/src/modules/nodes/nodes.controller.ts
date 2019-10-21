@@ -1,12 +1,12 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ApiUseTags, ApiImplicitQuery } from '@nestjs/swagger';
-import { DodaysService } from './dodays.service';
-import { Doday } from '@doday/lib';
+import { NodesService } from './nodes.service';
+import { Node } from '@doday/lib';
 
-@ApiUseTags('dodays')
-@Controller('dodays')
-export class DodaysController {
-  constructor(private readonly dodaysService: DodaysService) {}
+@ApiUseTags('nodes')
+@Controller('nodes')
+export class NodesController {
+  constructor(private readonly nodesService: NodesService) {}
 
   @Get()
   @ApiImplicitQuery({ name: 'name', required: false })
@@ -19,17 +19,17 @@ export class DodaysController {
     @Query('skip') skip?: string,
     @Query('limit') limit?: string
   ): Promise<{
-    items: Doday[];
+    items: Node[];
     count: number;
   }> {
     try {
-      const dodays = await this.dodaysService.find({
+      const nodes = await this.nodesService.find({
         name,
         labels,
         skip,
         limit,
       });
-      return dodays;
+      return nodes;
     } catch (error) {
       return error.message;
     }

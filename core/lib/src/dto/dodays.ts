@@ -1,4 +1,4 @@
-export class DodayQueryParams {
+export class NodeQueryParams {
   name?: string;
   labels?: string;
   skip?: string;

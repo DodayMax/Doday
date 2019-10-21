@@ -1,8 +1,8 @@
-import { ActivityEntity, ToolConfig } from '@doday/lib';
+import { ToolConfig, NodeLabel } from '@doday/lib';
 
 export const config: ToolConfig = {
   sysname: 'activities',
-  entities: [ActivityEntity],
+  entities: [NodeLabel.Activity],
   route: '/activities',
   icon: 'Activities',
 };

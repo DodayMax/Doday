@@ -1,6 +1,6 @@
-import { Doday, DeserializedDoday } from './doday';
+import { Node, DeserializedNode } from './node';
 
-export class Resource extends Doday {
+export class Resource extends Node {
   /** A user displayable description for the page. */
   description?: string;
   /** A URL which contains an icon for the page. */
@@ -20,16 +20,16 @@ export class Resource extends Doday {
   /** Image height */
   imageHeight?: number;
   static serialize(node: DeserializedResource): Resource {
-    const serialized = Doday.serialize(node);
+    const serialized = Node.serialize(node);
     return serialized;
   }
   static deserialize(node: Resource): DeserializedResource {
-    const deserialized = Doday.deserialize(node);
+    const deserialized = Node.deserialize(node);
     return deserialized;
   }
 }
 
-export class DeserializedResource extends DeserializedDoday {
+export class DeserializedResource extends DeserializedNode {
   description?: string;
   icon?: string;
   image?: string;

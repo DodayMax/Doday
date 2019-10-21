@@ -1,53 +1,17 @@
-import { NodeLabel } from './types';
-import { Hero } from './hero';
-import { Progress } from './progress';
-import { Resource } from './resource';
-import { Tool } from './tool';
+import { Node, DeserializedNode } from './node';
 
 /**
- * Basic abstract class for all types of nodes
+ * Type of node that represents an activity in the app
  */
-export class Doday {
-  did!: string;
-  labels!: NodeLabel[];
-  public!: boolean;
-  createdAt!: string;
-  updatedAt?: string;
+export class Doday extends Node {
   static serialize(node: DeserializedDoday): Doday {
-    return {
-      ...node,
-      createdAt: node.createdAt.toISOString(),
-      updatedAt: node.updatedAt ? node.updatedAt.toISOString() : undefined,
-    };
+    const serialized = Node.serialize(node);
+    return serialized;
   }
   static deserialize(node: Doday): DeserializedDoday {
-    return {
-      ...node,
-      createdAt: new Date(node.createdAt),
-      updatedAt: node.updatedAt ? new Date(node.updatedAt) : undefined,
-    };
-  }
-  static isHero(node: Doday): node is Hero {
-    return node.labels.includes(NodeLabel.Hero);
-  }
-  static isProgress(node: Doday): node is Progress {
-    return node.labels.includes(NodeLabel.Progress);
-  }
-  static isResource(node: Doday): node is Resource {
-    return node.labels.includes(NodeLabel.Resource);
-  }
-  static isTool(node: Doday): node is Tool {
-    return node.labels.includes(NodeLabel.Tool);
+    const deserialized = Node.deserialize(node);
+    return deserialized;
   }
 }
 
-/**
- * Deserialized Doday node
- */
-export class DeserializedDoday {
-  did!: string;
-  labels!: NodeLabel[];
-  public!: boolean;
-  createdAt!: Date;
-  updatedAt?: Date;
-}
+export class DeserializedDoday extends DeserializedNode {}

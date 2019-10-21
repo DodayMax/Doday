@@ -1,5 +1,5 @@
 import { auth } from 'firebase-admin';
-import { Neo4jRecord, Neo4jNode, Doday } from '@doday/lib';
+import { Neo4jRecord, Neo4jNode, Node } from '@doday/lib';
 import { HeroModel } from '../modules/hero/hero.model';
 
 export const mapHeroFromToken = (
@@ -13,7 +13,7 @@ export const mapHeroFromToken = (
   };
 };
 
-export const parseNeo4jRecords = (records: Neo4jRecord[]): Doday[] => {
+export const parseNeo4jRecords = (records: Neo4jRecord[]): Node[] => {
   if (!records.length) return [];
   return records.map(record => {
     const node: Neo4jNode = record._fields[0];
@@ -24,7 +24,7 @@ export const parseNeo4jRecords = (records: Neo4jRecord[]): Doday[] => {
   });
 };
 
-export const parseNeo4jNodeRecord = (record: Neo4jRecord): Doday => {
+export const parseNeo4jNodeRecord = (record: Neo4jRecord): Node => {
   const node: Neo4jNode = record._fields[0];
   return {
     labels: node.labels,

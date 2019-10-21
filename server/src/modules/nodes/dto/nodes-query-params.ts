@@ -1,8 +1,8 @@
-import { DodayQueryParams } from '@doday/lib';
+import { NodeQueryParams } from '@doday/lib';
 import { ApiModelProperty } from '@nestjs/swagger';
 import { IsNotEmpty, MinLength, MaxLength } from 'class-validator';
 
-export class DodaysQueryParamsDto extends DodayQueryParams {
+export class NodesQueryParamsDto extends NodeQueryParams {
   @ApiModelProperty({ example: 'React course' })
   @IsNotEmpty()
   @MinLength(3, {

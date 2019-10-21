@@ -1,13 +1,13 @@
-import { DodaysQueryParamsDto } from '@modules/dodays/dto/dodays-query-params';
+import { NodesQueryParamsDto } from '@modules/nodes/dto/nodes-query-params';
 
-export const find = (params: DodaysQueryParamsDto) => {
+export const find = (params: NodesQueryParamsDto) => {
   return `
         MATCH (n:${params.labels || 'Doday'})
         RETURN n, count(n)
       `;
 };
 
-export const totalCount = (params: DodaysQueryParamsDto) => {
+export const totalCount = (params: NodesQueryParamsDto) => {
   return `
         MATCH (n:${params.labels || 'Doday'})
         RETURN count(n) as count

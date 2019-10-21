@@ -2,10 +2,10 @@
  * Types of the available nodes
  */
 export enum NodeLabel {
+  Node = 'Node',
   Doday = 'Doday',
   Progress = 'Progress',
-  Activity = 'Activity',
-  Tool = 'Tool',
+  Module = 'Module',
   Hero = 'Hero',
   Resource = 'Resource',
 }

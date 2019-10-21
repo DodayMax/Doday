@@ -5,16 +5,13 @@ import { ActivityProgressDetails } from './details/progress-details';
 import { ActivityCell } from './sidebar/cells/app-cell/activity-cell';
 import { ActivityProgressCell } from './sidebar/cells/app-cell/activity-progress-cell';
 import { ActivityOverview } from './overview/overview';
-import { NodeType, LayoutSpot, NodeType, ToolView } from '@doday/lib';
-import {
-  getActivitiesMainModule,
-  getActivitiesBuilderModule,
-} from '../dynamic-modules';
+import { LayoutSpot, NodeLabel, ToolView } from '@doday/lib';
+import { getActivitiesMainModule, getActivitiesBuilderModule } from '../duck';
 
 export const getView = (
   spot: LayoutSpot,
-  entity: NodeType,
-  node?: NodeType
+  entity: NodeLabel,
+  node?: NodeLabel
 ): ToolView | undefined => {
   switch (spot) {
     case LayoutSpot.drawer:
@@ -26,9 +23,9 @@ export const getView = (
       };
     case LayoutSpot.cell:
       switch (entity) {
-        case NodeType.Activity:
+        case NodeLabel.Activity:
           switch (node) {
-            case NodeType.progress:
+            case NodeLabel.Progress:
               return {
                 component: ActivityProgressCell,
                 dependencies: [],
@@ -42,7 +39,7 @@ export const getView = (
       }
     case LayoutSpot.builder:
       switch (entity) {
-        case NodeType.Activity:
+        case NodeLabel.Activity:
           return {
             component: ActivityBuilder,
             dependencies: [getActivitiesBuilderModule()],
@@ -52,9 +49,9 @@ export const getView = (
       }
     case LayoutSpot.details:
       switch (entity) {
-        case NodeType.Activity:
+        case NodeLabel.Activity:
           switch (node) {
-            case NodeType.progress:
+            case NodeLabel.Progress:
               return {
                 component: ActivityProgressDetails,
                 dependencies: [],

@@ -1,5 +1,5 @@
 import { IconNames } from '../types';
-import { Doday } from '../models';
+import { Node } from '../models';
 
 export type DrawerMenuItem = {
   text: string;
@@ -10,9 +10,9 @@ export type DrawerMenuItem = {
 };
 
 export type CellProps = {
-  doday: Doday;
+  node: Node;
   active?: boolean;
-  onClick?: (route: string, doday: Doday) => void;
+  onClick?: (route: string, node: Node) => void;
 };
 
 export type SidebarQueryParams = {

@@ -1,72 +1,61 @@
-import { IconNames } from '../types';
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { LayoutSpot } from '../common-interfaces';
-import { RootState } from '../models/states';
 import { NodeLabel } from '../models/nodes';
 
 /**
  * Type of Activity
  */
-export type ActivityType = 'do' | 'read' | 'watch';
+export type DodayType = 'do' | 'read' | 'watch';
 
-export interface ShopTool {
-  sysname: string;
-  title: string;
-  description?: string;
-  price: number;
+export enum ModuleSysname {
+  layout = 'layout',
+  schedule = 'schedule',
+  activities = 'activities',
+  memorizer = 'memorizer',
 }
-
-export type ToolSysname = 'schedule' | 'activities' | 'memorizer';
 
 /** Base interfaces to extends from */
 export type BaseToolState = {};
 export type BaseToolBuilderState = {};
 /** Generic interfaces for RootState */
-export type ToolsBuilderState = { [K in ToolSysname]?: BaseToolBuilderState };
-export type ToolsState = { [K in ToolSysname]?: BaseToolState };
+export type ToolsBuilderState = { [K in ModuleSysname]?: BaseToolBuilderState };
+export type ToolsState = { [K in ModuleSysname]?: BaseToolState };
 
-/** ToolBeacon export interface */
-export interface ToolBeacon {
-  loading?: boolean;
-  loaded?: boolean;
-  config: ToolConfig;
+/** Module class */
+export class Module implements Dynamic {
+  status!: {
+    loading?: boolean;
+    loaded?: boolean;
+    error?: string;
+  };
+  config!: ModuleConfig;
   getView?: (
     spot: LayoutSpot,
     entity: NodeLabel,
     node?: NodeLabel
   ) => ToolView | undefined;
-  api?: any;
-  actions?: {
-    actionCreators: any;
-    optimisticUpdatesActionCreators: {
-      createDodayOptimisticUpdateActionCreator: any;
-      updateDodayOptimisticUpdateActionCreator: any;
-      takeDodayOptimisticUpdateActionCreator: any;
-      untakeDodayOptimisticUpdateActionCreator: any;
-      deleteDodayOptimisticUpdateActionCreator: any;
-    };
-  };
-  modules?: {
-    main: any;
-    builder: any;
-  };
+  actions?: any;
   translations?: {
     [lang: string]: {
       [key: string]: string;
     };
   };
-  stateSelector?: (state: RootState) => any;
 }
 
-export type ToolConfig = {
-  sysname: ToolSysname;
-  entities?: NodeLabel[];
-  route?: string;
-  icon?: IconNames;
+export interface Dynamic {
+  status: {
+    loading?: boolean;
+    loaded?: boolean;
+    error?: string;
+  };
+}
+
+export type ModuleConfig = {
+  sysname: ModuleSysname;
 };
 
 export type WithTools = {
-  activeTools?: { [key: string]: ToolBeacon };
+  loadedTools?: { [K in ModuleSysname]: Module };
 };
 
 export interface ToolView {

@@ -4,10 +4,10 @@ import {
   ToastType,
   Status,
   ToolsBuilderState,
-  ToolBeacon,
+  Module,
   BaseToolState,
 } from '../common-interfaces';
-import { Hero, Doday, Progress } from '../models/nodes';
+import { Hero, Node, Progress } from '../models/nodes';
 
 export interface RootState {
   router: RouterState;
@@ -41,7 +41,7 @@ export interface AuthState {
   status: Status;
   isAuthenticated?: boolean;
   hero?: Hero;
-  activeTools: { [key: string]: ToolBeacon };
+  activeTools: { [key: string]: Module };
 }
 
 export interface HeroSettingsState {
@@ -56,14 +56,14 @@ export interface StoreState {
   searching?: boolean;
   searchTerm?: string;
   totalCount?: number;
-  dodays: Doday[];
+  dodays: Node[];
 }
 
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
   updates?: Partial<Progress>;
-  selectedDoday?: Doday;
+  selectedDoday?: Node;
 }
 
 export interface ToastState {

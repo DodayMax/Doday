@@ -1,26 +1,26 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { DBService } from '../db/db.service';
 import { parseNeo4jNodeRecord } from '../../utils';
-import { DodaysQueryParamsDto } from './dto/dodays-query-params';
+import { NodesQueryParamsDto } from './dto/nodes-query-params';
 import { find, totalCount } from '../../queries/dodays';
 
 @Injectable()
-export class DodaysService {
+export class NodesService {
   constructor(@Inject(DBService) private readonly dbService: DBService) {}
 
-  async find(params: DodaysQueryParamsDto): Promise<any> {
+  async find(params: NodesQueryParamsDto): Promise<any> {
     const session = this.dbService.neo4j().session();
-    const parsedParams: DodaysQueryParamsDto = {};
+    const parsedParams: NodesQueryParamsDto = {};
     if (params.labels) {
       parsedParams.labels = params.labels.split(', ').join(' :');
       console.log(parsedParams);
     }
     const tx = session.beginTransaction();
     try {
-      const dodays = await tx.run(find(parsedParams));
+      const nodes = await tx.run(find(parsedParams));
       const countResponse = await tx.run(totalCount(parsedParams));
-      const parsed = dodays.records.map(record =>
-        parseNeo4jNodeRecord(record as any)
+      const parsed = nodes.records.map(node =>
+        parseNeo4jNodeRecord(node as any)
       );
       tx.commit();
       return {
