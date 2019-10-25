@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "outDir": "build/dist",
+    "module": "commonjs",
+    "target": "es5",
+    "lib": ["es6", "dom", "esnext.asynciterable", "es2017"],
+    "sourceMap": true,
+    "downlevelIteration": true,
+    "allowJs": true,
+    "jsx": "react",
+    "baseUrl": "src",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@root/*": ["*"],
+      "@services": ["services"],
+      "@components": ["components"],
+      "@styles/*": ["styles/*"],
+      "@modules/*": ["modules/*"]
+    }
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "setupTests.ts",
+    "config",
+    "server"
+  ],
+  "types": ["typePatches"]
+}

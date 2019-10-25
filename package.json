@@ -2,28 +2,22 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "core/*",
-    "modules/core/*",
-    "modules/tools/*",
-    "server"
+    "packages/*"
   ],
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "dev": "concurrently \"yarn workspace @doday/client run start\" \"yarn workspace @doday/server run start:dev\"",
-    "build:api": "yarn workspace @doday/api run clean && yarn workspace @doday/api run build",
     "build:lib": "yarn workspace @doday/lib run clean && yarn workspace @doday/lib run build",
-    "build:shared": "yarn workspace @doday/shared run clean && yarn workspace @doday/shared run build",
-    "build:ducks": "yarn workspace @doday/ducks run clean && yarn workspace @doday/ducks run build",
-    "build:activities": "yarn workspace @doday/activities run clean && yarn workspace @doday/activities run build",
-    "clean:api": "yarn workspace @doday/api run clean",
-    "clean:lib": "yarn workspace @doday/lib run clean",
-    "clean:shared": "yarn workspace @doday/shared run clean",
-    "clean:ducks": "yarn workspace @doday/ducks run clean",
-    "clean:activities": "yarn workspace @doday/activities run clean",
+    "build:ui": "yarn workspace @doday/ui run clean && yarn workspace @doday/ui run build",
+    "build:services": "yarn workspace @doday/services run clean && yarn workspace @doday/services run build",
     "build:server": "yarn workspace @doday/server run build",
-    "clean:all": "yarn clean:api && yarn clean:lib && yarn clean:ducks && yarn clean:activities && yarn clean:shared",
-    "build:all": "yarn build:lib && yarn build:api && yarn build:ducks && yarn build:shared && yarn build:activities"
+    "clean:lib": "yarn workspace @doday/lib run clean",
+    "clean:ui": "yarn workspace @doday/ui run clean",
+    "clean:services": "yarn workspace @doday/services run clean",
+    "clean:server": "yarn workspace @doday/server run clean",
+    "clean:all": "yarn clean:lib && yarn clean:services && yarn clean:ui",
+    "build:all": "yarn build:lib && yarn build:services && yarn build:ui"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
