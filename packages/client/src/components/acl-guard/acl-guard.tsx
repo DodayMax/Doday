@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RootState } from '@doday/lib';
 import { connect, useSelector } from 'react-redux';
 import { auth } from '@doday/lib';
-import { Icons } from '@doday/shared';
+import { Icons } from '@doday/ui';
 import { useTheme } from '@material-ui/core';
 
 export interface ACLGuardProps {

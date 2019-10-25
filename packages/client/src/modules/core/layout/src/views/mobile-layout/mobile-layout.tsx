@@ -12,7 +12,6 @@ import { mobileStyles } from './css.mobile-layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { layoutStateSelector } from '../../duck/selectors';
 import { toggleDrawerActionCreator } from '../../duck/actions';
-import { LayoutBlock } from '@doday/shared';
 import { ModuleWrapper } from '@root/modules/module-wrapper';
 import { RootState, LayoutSpot, LayoutType } from '@doday/lib';
 
@@ -62,14 +61,15 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
         </SwipeableDrawer>
         <main className={classes.content}>
           <div style={{ height: '64px' }}></div>
-          <LayoutBlock
-            relative
-            flex="1"
-            styles={{ height: 'calc(100vh - 64px)' }}
+          <Box
+            position="relative"
+            display="flex"
+            flexGrow={1}
+            style={{ height: 'calc(100vh - 64px)' }}
           >
             page
             <div className={classes.speedDial}>Speed dial</div>
-          </LayoutBlock>
+          </Box>
         </main>
       </>
     );

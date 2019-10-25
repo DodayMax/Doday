@@ -2,6 +2,7 @@ import { createStore } from 'redux-dynamic-modules';
 import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
+import { getModuleSystemModule } from '@root/modules/redux/ms';
 
 export const history = createBrowserHistory();
 

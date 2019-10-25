@@ -13,13 +13,13 @@ import {
   ListItemText,
   ListItem,
   Zoom,
+  Box,
 } from '@material-ui/core';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
 import { layoutStateSelector } from '../../duck/selectors';
 import { toggleDrawerActionCreator } from '../../duck/actions';
-import { LayoutBlock } from '@doday/shared';
 import { RootState, LayoutSpot, LayoutType } from '@doday/lib';
 import { ModuleWrapper } from '@root/modules/module-wrapper';
 
@@ -79,9 +79,14 @@ export const DesktopLayout = withStyles(desktopStyles, {
           open={!layoutState.isDrawerCollapsed}
         >
           <div className={classes.toolbar} />
-          <LayoutBlock flex="1" direction="column" align="spaceBetween">
-            <LayoutBlock>drawer</LayoutBlock>
-            <LayoutBlock>
+          <Box
+            display="flex"
+            flexGrow={1}
+            flexDirection="column"
+            justifyContent="space-between"
+          >
+            <Box>drawer</Box>
+            <Box>
               <Divider />
               <ListItem button onClick={toggleMenu}>
                 <ListItemIcon>
@@ -96,19 +101,20 @@ export const DesktopLayout = withStyles(desktopStyles, {
                   primaryTypographyProps={{ variant: 'body1' }}
                 />
               </ListItem>
-            </LayoutBlock>
-          </LayoutBlock>
+            </Box>
+          </Box>
         </Drawer>
         <main className={classes.content}>
           <section className={classes.sidebarContainer}>sidebar</section>
           <React.Suspense fallback={null}>
-            <LayoutBlock
-              relative
-              flex={'1'}
+            <Box
+              position="relative"
+              display="flex"
+              flexGrow={1}
               className={classes.mainContentContainer}
             >
               page
-            </LayoutBlock>
+            </Box>
           </React.Suspense>
           <div className={classes.speedDial}>
             <Zoom

@@ -7,10 +7,11 @@ import {
   LayoutSpot,
   LayoutType,
 } from '@doday/lib';
-import { LayoutBlock, Icons } from '@doday/ui';
+import { Icons } from '@doday/ui';
 import { WithTranslation } from 'react-i18next';
 import { RouteComponentProps } from 'react-router';
 import store from '@root/store';
+import { Box } from '@material-ui/core';
 
 interface ModuleWrapperProps {
   moduleObject: ModuleObject;
@@ -31,9 +32,14 @@ export const ModuleWrapper = (
   }
   if (!moduleObject.status.loaded) {
     return (
-      <LayoutBlock flex="1" align="flexCenter" valign="vflexCenter">
+      <Box
+        display="flex"
+        flexGrow={1}
+        justifyContent="center"
+        alignItems="center"
+      >
         <Icons.InlineLoader color="#fff" />
-      </LayoutBlock>
+      </Box>
     );
   }
   const moduleView: ModuleView = moduleObject.getView(layoutType, spot, node);

@@ -1,6 +1,7 @@
 import { i18n } from '@services';
 import { ModuleType, ModuleSysname } from '@doday/lib';
 import store from '@root/store';
+import { addModuleActionCreator } from './redux/ms';
 
 export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
   /** Set loading state */

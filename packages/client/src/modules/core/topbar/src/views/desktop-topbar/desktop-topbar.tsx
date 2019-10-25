@@ -15,7 +15,6 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.desktop-topbar';
 import { ACLGuard } from '@root/components/acl-guard/acl-guard';
-import { Space } from '@doday/lib';
 const logo = require('@root/assets/png/app-icon.png');
 
 export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
@@ -31,12 +30,12 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
 
   return (
     <Toolbar className={classes.topBar}>
-      <Box display="flex" justifyContent="center" styles={{ width: '72px' }}>
+      <Box display="flex" justifyContent="center" style={{ width: '72px' }}>
         <IconButton>
           <img src={logo} style={{ width: '40px', height: '40px' }} />
         </IconButton>
       </Box>
-      <Box styles={{ width: '280px' }}></Box>
+      <Box style={{ width: '280px' }}></Box>
       <ACLGuard
         allowed={
           <Box
