@@ -30,7 +30,7 @@ export type ToolsBuilderState = { [K in ModuleSysname]?: BaseToolBuilderState };
 export type ToolsState = { [K in ModuleSysname]?: BaseToolState };
 
 /** Module class */
-export class ModuleObject<LS = LayoutSpot, RM = string> implements Dynamic {
+export class ModuleObject<LS = LayoutSpot> implements Dynamic {
   status!: {
     loading?: boolean;
     loaded?: boolean;
@@ -44,11 +44,8 @@ export class ModuleObject<LS = LayoutSpot, RM = string> implements Dynamic {
     entity?: NodeLabel,
     node?: NodeLabel
   ): ModuleView | undefined;
-  getReduxModule?(sysname: RM): IModule;
   translations?: {
-    [lang: string]: {
-      [key: string]: string;
-    };
+    [lang: string]: object;
   };
 }
 

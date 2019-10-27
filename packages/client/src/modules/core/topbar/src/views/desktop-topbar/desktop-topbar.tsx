@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Toolbar,
   IconButton,
@@ -15,10 +16,12 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.desktop-topbar';
 import { ACLGuard } from '@root/components/acl-guard/acl-guard';
+import { sizes } from '@doday/lib';
 const logo = require('@root/assets/png/app-icon.png');
 
 export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
   const { classes } = props;
+  const { t } = useTranslation('topbar');
 
   // const handleBaseUrlChange = (e, value) => {
   //   dispatch(pushRouteActionCreator(value));
@@ -30,12 +33,16 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
 
   return (
     <Toolbar className={classes.topBar}>
-      <Box display="flex" justifyContent="center" style={{ width: '72px' }}>
+      <Box
+        display="flex"
+        justifyContent="center"
+        style={{ width: sizes.topbar }}
+      >
         <IconButton>
           <img src={logo} style={{ width: '40px', height: '40px' }} />
         </IconButton>
       </Box>
-      <Box style={{ width: '280px' }}></Box>
+      <Box style={{ width: sizes.sidebar }}></Box>
       <ACLGuard
         allowed={
           <Box
@@ -65,8 +72,8 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
           </Box>
         }
         forbidden={
-          <Box mr={2}>
-            <Button>Sign In</Button>
+          <Box mr={6}>
+            <Button>{t('topbar:signButton.label')}</Button>
           </Box>
         }
       />

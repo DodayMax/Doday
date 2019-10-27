@@ -59,5 +59,6 @@ export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
       );
     }
   }
+  console.log(i18n);
   return loadedModuleObject;
 };

@@ -1,5 +1,5 @@
 import { Theme, createStyles } from '@material-ui/core';
-import { spacing } from '@material-ui/system';
+import { sizes } from '@doday/lib';
 
 export const css = (theme: Theme) =>
   createStyles({
@@ -13,6 +13,7 @@ export const css = (theme: Theme) =>
     },
     topBar: {
       justifyContent: 'space-between',
+      height: sizes.topbar,
     },
     white: {
       color: theme.palette.common.white,

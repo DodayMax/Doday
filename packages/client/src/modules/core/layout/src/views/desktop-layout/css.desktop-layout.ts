@@ -1,4 +1,5 @@
 import { Theme, createStyles } from '@material-ui/core';
+import { sizes } from '@doday/lib';
 
 const drawerWidth = 240;
 const collapsedDrawerWidth = 64;
@@ -14,7 +15,7 @@ export const desktopStyles = (theme: Theme) =>
     },
     // Topbar layout spot styles
     topbar: {
-      height: '64px',
+      height: sizes.topbar,
       zIndex: theme.zIndex.drawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -64,7 +65,7 @@ export const desktopStyles = (theme: Theme) =>
       flexDirection: 'column',
     },
     sidebarContainer: {
-      minWidth: '28rem',
+      minWidth: sizes.sidebar,
       maxWidth: '3rem',
     },
   });
