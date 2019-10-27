@@ -1,6 +1,5 @@
 import { ModuleObject, ModuleSysname, LayoutSpot } from '@doday/lib';
 import { getView } from './views';
-import { en, ru } from './translations';
 
 export const TopbarModuleObject: ModuleObject<LayoutSpot.TopBar> = {
   status: {},
@@ -8,9 +7,5 @@ export const TopbarModuleObject: ModuleObject<LayoutSpot.TopBar> = {
     sysname: ModuleSysname.topbar,
   },
   spots: [LayoutSpot.TopBar],
-  translations: {
-    en,
-    ru,
-  },
   getView,
 };

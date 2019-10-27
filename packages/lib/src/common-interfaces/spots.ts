@@ -1,6 +1,12 @@
+export type AnySpot = AppSpot | LayoutSpot | TopbarSpot;
+
 export enum LayoutType {
   Desktop = 'Desktop',
   Mobile = 'Mobile',
+}
+
+export enum AppSpot {
+  Default = 'AppSpot',
 }
 
 export enum LayoutSpot {
@@ -10,4 +16,10 @@ export enum LayoutSpot {
   Page = 'Page',
   BottomNavigation = 'BottomNavigation',
   SpeedDial = 'SpeedDial',
+}
+
+export enum TopbarSpot {
+  Right = 'Right',
+  Left = 'Left',
+  Middle = 'Middle',
 }

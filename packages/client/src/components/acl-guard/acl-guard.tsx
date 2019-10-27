@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { RootState } from '@doday/lib';
-import { connect, useSelector } from 'react-redux';
-import { auth } from '@doday/lib';
+import { useSelector } from 'react-redux';
 import { Icons } from '@doday/ui';
 import { useTheme } from '@material-ui/core';
 
@@ -29,7 +28,6 @@ export const ACLGuard = (props: ACLGuardProps) => {
 
     if (
       isAuthenticated &&
-      auth.currentUser &&
       (!permission || (permission && checkPermission(permission)))
     ) {
       return allowed;
@@ -40,9 +38,3 @@ export const ACLGuard = (props: ACLGuardProps) => {
 
   return <React.Suspense fallback={null}>{renderContent()}</React.Suspense>;
 };
-
-const mapState = (state: RootState) => ({
-  auth: !!state.auth.hero,
-});
-
-export default connect(mapState)(ACLGuard);

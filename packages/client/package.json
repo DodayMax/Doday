@@ -11,6 +11,7 @@
     "@babel/core": "7.2.2",
     "@doday/lib": "0.1.0",
     "@doday/ui": "0.1.0",
+    "@doday/requests": "0.1.0",
     "@doday/services": "0.1.0",
     "@material-ui/core": "^4.0.0",
     "@material-ui/icons": "^3.0.2",

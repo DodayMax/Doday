@@ -1,6 +1,6 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
-import { LayoutSpot, LayoutType } from './spots';
+import { LayoutType, AnySpot } from './spots';
 
 /**
  * Type of Activity
@@ -10,6 +10,7 @@ export type ActivityType = 'do' | 'read' | 'watch';
 export enum ModuleSysname {
   layout = 'layout',
   ms = 'ms', // module system
+  auth = 'auth',
   topbar = 'topbar',
   schedule = 'schedule',
   activities = 'activities',
@@ -30,7 +31,7 @@ export type ToolsBuilderState = { [K in ModuleSysname]?: BaseToolBuilderState };
 export type ToolsState = { [K in ModuleSysname]?: BaseToolState };
 
 /** Module class */
-export class ModuleObject<LS = LayoutSpot> implements Dynamic {
+export class ModuleObject<LS = AnySpot> implements Dynamic {
   status!: {
     loading?: boolean;
     loaded?: boolean;
@@ -41,8 +42,7 @@ export class ModuleObject<LS = LayoutSpot> implements Dynamic {
   getView?(
     layoutType?: LayoutType,
     spot?: LS,
-    entity?: NodeLabel,
-    node?: NodeLabel
+    entity?: NodeLabel
   ): ModuleView | undefined;
   translations?: {
     [lang: string]: object;
@@ -65,8 +65,8 @@ export type WithTools = {
   loadedTools?: { [K in ModuleSysname]: ModuleObject };
 };
 
-export interface ModuleView {
-  component: React.ComponentType<any>;
+export interface ModuleView<P = any> {
+  component: React.ComponentType<P>;
   dependencies: IModule<any>[];
 }
 

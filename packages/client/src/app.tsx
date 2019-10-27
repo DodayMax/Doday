@@ -8,12 +8,18 @@ import i18next from 'i18next';
 import {
   ModuleSysname,
   ModuleType,
-  RootState,
+  AppSpot,
   configureDodayTheme,
+  auth,
+  APIService,
 } from '@doday/lib';
-import { useSelector } from 'react-redux';
 import { loadModule } from './modules/loader';
-import { ModuleWrapper } from './modules/module-wrapper';
+import { Spot } from './modules/module-wrapper';
+import { useDispatch } from 'react-redux';
+import {
+  getCurrentHeroActionCreator,
+  setIsAuthenticatedStatusAction,
+} from './modules/core/auth/src/redux';
 
 interface AppProps {}
 
@@ -25,6 +31,8 @@ interface TranslationProps {
 export const AppComponent = (
   props: AppProps & TranslationProps & WithTheme
 ) => {
+  const dispatch = useDispatch();
+
   React.useEffect(() => {
     /**
      * Load core modules necessary to the app
@@ -33,11 +41,26 @@ export const AppComponent = (
      * NavigationStack
      */
     loadModule(ModuleSysname.layout, ModuleType.core);
+    loadModule(ModuleSysname.auth, ModuleType.core);
   }, []);
 
-  const layoutModule = useSelector(
-    (state: RootState) => state.ms.modules[ModuleSysname.layout]
-  );
+  React.useEffect(() => {
+    /**
+     * Whenever firebase auth status changes update
+     * AuthenticatedStatus and get Hero node
+     */
+    auth.onAuthStateChanged(firebaseUser => {
+      if (firebaseUser) {
+        return firebaseUser.getIdToken().then(async token => {
+          APIService.token = token;
+          APIService.getNewExp();
+          dispatch(getCurrentHeroActionCreator());
+          dispatch(setIsAuthenticatedStatusAction(true));
+        });
+      }
+      dispatch(setIsAuthenticatedStatusAction(false));
+    });
+  }, [dispatch]);
 
   const theme = configureDodayTheme(props.theme);
 
@@ -45,7 +68,7 @@ export const AppComponent = (
     <MuiThemeProvider theme={theme}>
       <div className="app-container">
         <React.Suspense fallback={null}>
-          <ModuleWrapper moduleObject={layoutModule} />
+          <Spot spot={AppSpot.Default} />
         </React.Suspense>
       </div>
     </MuiThemeProvider>

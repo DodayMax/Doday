@@ -20,8 +20,8 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
 import { layoutStateSelector } from '../../duck/selectors';
 import { toggleDrawerActionCreator } from '../../duck/actions';
-import { RootState, LayoutSpot, LayoutType } from '@doday/lib';
-import { ModuleWrapper } from '@root/modules/module-wrapper';
+import { LayoutSpot, LayoutType } from '@doday/lib';
+import { Spot } from '@root/modules/module-wrapper';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,
@@ -33,35 +33,11 @@ export const DesktopLayout = withStyles(desktopStyles, {
     dispatch(toggleDrawerActionCreator());
   };
 
-  const modules = useSelector((state: RootState) => state.ms.modules);
-
-  /**
-   * Find all tools supports "LayoutSpot.TopBar"
-   */
-  const getViewForTopbarSpot = () => {
-    const topbarModules = Object.values(modules).filter(
-      module => module.spots && module.spots.includes(LayoutSpot.TopBar)
-    );
-    /**
-     * Later we will have `active` option for modules that takes
-     * same spot. For now take just first.
-     */
-    const chosenModule = topbarModules.length && topbarModules[0];
-    if (!chosenModule) return;
-    return (
-      <ModuleWrapper
-        moduleObject={chosenModule}
-        layoutType={LayoutType.Desktop}
-        spot={LayoutSpot.TopBar}
-      />
-    );
-  };
-
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classnames(classes.topbar)}>
-        {getViewForTopbarSpot()}
+        <Spot layoutType={LayoutType.Desktop} spot={LayoutSpot.TopBar} />
       </AppBar>
       <React.Suspense fallback={null}>
         <Drawer

@@ -1,36 +1,44 @@
 import * as React from 'react';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
-import {
-  ModuleObject,
-  NodeLabel,
-  ModuleView,
-  LayoutSpot,
-  LayoutType,
-} from '@doday/lib';
+import { ModuleView, LayoutType, RootState, AnySpot } from '@doday/lib';
 import { Icons } from '@doday/ui';
-import { WithTranslation } from 'react-i18next';
-import { RouteComponentProps } from 'react-router';
 import store from '@root/store';
 import { Box } from '@material-ui/core';
+import { useSelector } from 'react-redux';
 
 interface ModuleWrapperProps {
-  moduleObject: ModuleObject;
   layoutType?: LayoutType;
-  spot?: LayoutSpot;
-  node?: NodeLabel;
+  spot?: AnySpot;
 }
 
-export const ModuleWrapper = (
-  props: ModuleWrapperProps &
-    Partial<RouteComponentProps> &
-    Partial<WithTranslation>
-) => {
-  const { moduleObject, layoutType, spot, node, ...pathrough } = props;
+export const ModuleWrapper = (props: ModuleWrapperProps) => {
+  const allModules = useSelector((state: RootState) => state.ms.modules);
 
-  if (!moduleObject) {
-    return null;
-  }
-  if (!moduleObject.status.loaded) {
+  const { layoutType, spot, ...pathrough } = props;
+
+  /**
+   * Find all modules supports passed Layout spot
+   * Later we will have `active` option for modules that takes
+   * same spot. For now just take first one.
+   */
+  const suitedModule = Object.values(allModules).find(
+    module => module.spots && module.spots.includes(spot)
+  );
+  const loadingModules = Object.values(allModules).filter(
+    module => module.status.loading
+  );
+
+  /**
+   * If there are no suited modules for this spot and
+   * there are no loading modules just end
+   */
+  if (!suitedModule && !loadingModules.length) return null;
+
+  /**
+   * If there are no suited modules and some of them in loading state
+   * just wait
+   */
+  if (!suitedModule && loadingModules.length) {
     return (
       <Box
         display="flex"
@@ -42,7 +50,8 @@ export const ModuleWrapper = (
       </Box>
     );
   }
-  const moduleView: ModuleView = moduleObject.getView(layoutType, spot, node);
+
+  const moduleView: ModuleView = suitedModule.getView(layoutType, spot);
   const Component = moduleView.component;
 
   return (
@@ -53,4 +62,8 @@ export const ModuleWrapper = (
       <Component {...pathrough} />
     </DynamicModuleLoader>
   );
+};
+
+export const Spot = (props: ModuleWrapperProps) => {
+  return <ModuleWrapper {...props} />;
 };

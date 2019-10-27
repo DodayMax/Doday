@@ -1,12 +1,11 @@
-import { NodeLabel, ModuleView, LayoutSpot, LayoutType } from '@doday/lib';
+import { NodeLabel, ModuleView, AppSpot, LayoutType } from '@doday/lib';
 import { Layout } from './layout';
 import { getLayoutModule } from '../duck';
 
 export function getView(
   layoutType?: LayoutType,
-  spot?: LayoutSpot,
-  entity?: NodeLabel,
-  node?: NodeLabel
+  spot?: AppSpot,
+  entity?: NodeLabel
 ): ModuleView | undefined {
   switch (spot) {
     default:

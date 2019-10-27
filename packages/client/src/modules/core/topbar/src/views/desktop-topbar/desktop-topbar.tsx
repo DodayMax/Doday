@@ -16,7 +16,8 @@ import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.desktop-topbar';
 import { ACLGuard } from '@root/components/acl-guard/acl-guard';
-import { sizes } from '@doday/lib';
+import { sizes, LayoutType, TopbarSpot } from '@doday/lib';
+import { Spot } from '@root/modules/module-wrapper';
 const logo = require('@root/assets/png/app-icon.png');
 
 export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
@@ -73,7 +74,7 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
         }
         forbidden={
           <Box mr={6}>
-            <Button>{t('topbar:signButton.label')}</Button>
+            <Spot layoutType={LayoutType.Desktop} spot={TopbarSpot.Right} />
           </Box>
         }
       />
