@@ -1,16 +1,13 @@
-import { NodeLabel, ModuleView, LayoutSpot, LayoutType } from '@doday/lib';
+import { ModuleView, LayoutSpot, LayoutType, GetViewParams } from '@doday/lib';
 import { DesktopTopbar } from './desktop-topbar/desktop-topbar';
 import { MobileTopbar } from './mobile-topbar/mobile-topbar';
 
 export function getView(
-  layoutType?: LayoutType,
-  spot?: LayoutSpot,
-  entity?: NodeLabel,
-  node?: NodeLabel
+  params: GetViewParams<LayoutSpot>
 ): ModuleView | undefined {
-  switch (layoutType) {
+  switch (params.layoutType) {
     case LayoutType.Desktop:
-      switch (spot) {
+      switch (params.spot) {
         default:
           return {
             component: DesktopTopbar,
@@ -18,7 +15,7 @@ export function getView(
           };
       }
     case LayoutType.Mobile:
-      switch (spot) {
+      switch (params.spot) {
         default:
           return {
             component: MobileTopbar,

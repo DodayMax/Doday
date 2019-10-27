@@ -4,7 +4,7 @@ import { getView } from './views';
 export const LayoutModuleObject: ModuleObject<AppSpot> = {
   status: {},
   config: {
-    sysname: ModuleSysname.layout,
+    sysname: ModuleSysname.Layout,
   },
   spots: [AppSpot.Default],
   getView,

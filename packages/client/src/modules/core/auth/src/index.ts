@@ -5,7 +5,7 @@ import { en, ru } from './translations';
 export const AuthModuleObject: ModuleObject<TopbarSpot.Right> = {
   status: {},
   config: {
-    sysname: ModuleSysname.auth,
+    sysname: ModuleSysname.Auth,
   },
   spots: [TopbarSpot.Right],
   translations: {

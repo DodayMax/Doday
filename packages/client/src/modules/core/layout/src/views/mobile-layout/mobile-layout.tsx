@@ -10,8 +10,8 @@ import {
 } from '@material-ui/core';
 import { mobileStyles } from './css.mobile-layout';
 import { useDispatch, useSelector } from 'react-redux';
-import { layoutStateSelector } from '../../duck/selectors';
-import { toggleDrawerActionCreator } from '../../duck/actions';
+import { layoutStateSelector } from '../../redux/selectors';
+import { toggleDrawerActionCreator } from '../../redux/actions';
 import { Spot } from '@root/modules/module-wrapper';
 import { LayoutSpot, LayoutType } from '@doday/lib';
 

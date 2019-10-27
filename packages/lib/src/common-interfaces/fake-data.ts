@@ -53,7 +53,7 @@ export const rootState: RootState = {
     autoHideDuration: 3000,
   },
   dialog: {} as any,
-  navStack: {
+  navigation: {
     base: '/',
     stack: [],
   },

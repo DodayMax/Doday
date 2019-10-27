@@ -8,19 +8,19 @@ import { LayoutType, AnySpot } from './spots';
 export type ActivityType = 'do' | 'read' | 'watch';
 
 export enum ModuleSysname {
-  layout = 'layout',
-  ms = 'ms', // module system
-  auth = 'auth',
-  topbar = 'topbar',
-  schedule = 'schedule',
-  activities = 'activities',
-  memorizer = 'memorizer',
+  Layout = 'layout',
+  MS = 'ms', // module system
+  Auth = 'auth',
+  Navigation = 'navigation',
+  Topbar = 'topbar',
+  Store = 'store',
+  Profile = 'profile',
 }
 
 export enum ModuleType {
-  core = 'core',
-  tool = 'tools',
-  extension = 'extensions',
+  Core = 'core',
+  Tool = 'tools',
+  Extension = 'extensions',
 }
 
 /** Base interfaces to extends from */
@@ -39,14 +39,17 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
   };
   config!: ModuleConfig;
   spots?: LS[];
-  getView?(
-    layoutType?: LayoutType,
-    spot?: LS,
-    entity?: NodeLabel
-  ): ModuleView | undefined;
+  getView?(params: GetViewParams<LS>): ModuleView | undefined;
   translations?: {
     [lang: string]: object;
   };
+}
+
+export interface GetViewParams<T = AnySpot> {
+  layoutType?: LayoutType;
+  spot?: T;
+  label?: NodeLabel;
+  route?: string;
 }
 
 export interface Dynamic {
@@ -68,6 +71,7 @@ export type WithTools = {
 export interface ModuleView<P = any> {
   component: React.ComponentType<P>;
   dependencies: IModule<any>[];
+  props?: { [key: string]: any };
 }
 
 export interface IModule<State = {}> {

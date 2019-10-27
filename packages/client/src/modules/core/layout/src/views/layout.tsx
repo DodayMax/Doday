@@ -10,7 +10,7 @@ export const Layout = () => {
     /**
      * Load default core modules for basic layout spots
      */
-    loadModule(ModuleSysname.topbar, ModuleType.core);
+    loadModule(ModuleSysname.Topbar, ModuleType.Core);
   }, []);
 
   return (

@@ -35,13 +35,18 @@ export const AppComponent = (
 
   React.useEffect(() => {
     /**
-     * Load core modules necessary to the app
-     * Layout
-     * Authorization
-     * NavigationStack
+     * Load core modules necessary to the app:
+     * - Layout
+     * - Authorization
+     * - NavigationStack
+     * - Store
+     * - Profile
      */
-    loadModule(ModuleSysname.layout, ModuleType.core);
-    loadModule(ModuleSysname.auth, ModuleType.core);
+    loadModule(ModuleSysname.Layout, ModuleType.Core);
+    loadModule(ModuleSysname.Auth, ModuleType.Core);
+    loadModule(ModuleSysname.Navigation, ModuleType.Core);
+    loadModule(ModuleSysname.Store, ModuleType.Core);
+    loadModule(ModuleSysname.Profile, ModuleType.Core);
   }, []);
 
   React.useEffect(() => {

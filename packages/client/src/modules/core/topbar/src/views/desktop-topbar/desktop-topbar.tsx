@@ -3,34 +3,48 @@ import { useTranslation } from 'react-i18next';
 import {
   Toolbar,
   IconButton,
-  Tooltip,
   withStyles,
   WithStyles,
-  Button,
   Box,
 } from '@material-ui/core';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import FaceIcon from '@material-ui/icons/Face';
-import AppsIcon from '@material-ui/icons/Apps';
 
 import { css } from './css.desktop-topbar';
 import { ACLGuard } from '@root/components/acl-guard/acl-guard';
-import { sizes, LayoutType, TopbarSpot } from '@doday/lib';
+import { sizes, LayoutType, TopbarSpot, BASE_ROUTES } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
+import { useSelector, useDispatch } from 'react-redux';
+import { pushRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import AppsIcon from '@material-ui/icons/Apps';
+import FaceIcon from '@material-ui/icons/Face';
+import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
+
 const logo = require('@root/assets/png/app-icon.png');
 
+const StyledToggleButtonGroup = withStyles(theme => ({
+  grouped: {
+    margin: theme.spacing(1),
+    border: 'none',
+    padding: theme.spacing(0, 2),
+    '&:not(:first-child)': {
+      borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-child': {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}))(ToggleButtonGroup);
+
 export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
+  const dispatch = useDispatch();
+  const baseRoute = useSelector(baseRouteSelector);
   const { classes } = props;
   const { t } = useTranslation('topbar');
 
-  // const handleBaseUrlChange = (e, value) => {
-  //   dispatch(pushRouteActionCreator(value));
-  // };
-
-  // const handleSignInWithGoogle = () => {
-  //   dispatch(signInWithGoogleActionCreator());
-  // };
+  const handleBaseUrlChange = (e, value) => {
+    value && dispatch(pushRouteActionCreator(value));
+  };
 
   return (
     <Toolbar className={classes.topBar}>
@@ -53,22 +67,20 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
             alignItems="center"
           >
             <Box>
-              <ToggleButtonGroup
+              <StyledToggleButtonGroup
+                size="small"
                 exclusive
-                // onChange={handleBaseUrlChange}
-                aria-label="text alignment"
+                value={baseRoute}
+                aria-label="Top bar navigation"
+                onChange={handleBaseUrlChange}
               >
-                <Tooltip title="Store" placement="bottom">
-                  <ToggleButton value="/store" aria-label="left aligned">
-                    <AppsIcon className={classes.white} />
-                  </ToggleButton>
-                </Tooltip>
-                <Tooltip title="Profile" placement="bottom">
-                  <ToggleButton value="/profile" aria-label="centered">
-                    <FaceIcon />
-                  </ToggleButton>
-                </Tooltip>
-              </ToggleButtonGroup>
+                <ToggleButton value={BASE_ROUTES.store}>
+                  <AppsIcon />
+                </ToggleButton>
+                <ToggleButton value={BASE_ROUTES.profile}>
+                  <FaceIcon />
+                </ToggleButton>
+              </StyledToggleButtonGroup>
             </Box>
           </Box>
         }

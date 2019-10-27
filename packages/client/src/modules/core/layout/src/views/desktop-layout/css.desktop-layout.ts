@@ -11,7 +11,8 @@ export const desktopStyles = (theme: Theme) =>
       display: 'flex',
     },
     mainContentContainer: {
-      height: 'calc(100vh - 64px)',
+      marginTop: sizes.topbar,
+      height: `calc(100vh - ${sizes.topbar}px)`,
     },
     // Topbar layout spot styles
     topbar: {

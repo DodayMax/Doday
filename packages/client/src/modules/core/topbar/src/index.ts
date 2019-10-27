@@ -4,7 +4,7 @@ import { getView } from './views';
 export const TopbarModuleObject: ModuleObject<LayoutSpot.TopBar> = {
   status: {},
   config: {
-    sysname: ModuleSysname.topbar,
+    sysname: ModuleSysname.Topbar,
   },
   spots: [LayoutSpot.TopBar],
   getView,

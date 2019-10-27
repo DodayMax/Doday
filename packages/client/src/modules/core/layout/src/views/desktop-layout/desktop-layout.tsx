@@ -18,10 +18,11 @@ import {
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import { useSelector, useDispatch } from 'react-redux';
-import { layoutStateSelector } from '../../duck/selectors';
-import { toggleDrawerActionCreator } from '../../duck/actions';
+import { layoutStateSelector } from '../../redux/selectors';
+import { toggleDrawerActionCreator } from '../../redux/actions';
 import { LayoutSpot, LayoutType } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
+import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,
@@ -29,6 +30,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
   const dispatch = useDispatch();
   const { classes } = props;
   const layoutState = useSelector(layoutStateSelector);
+  const baseRoute = useSelector(baseRouteSelector);
   const toggleMenu = () => {
     dispatch(toggleDrawerActionCreator());
   };
@@ -89,7 +91,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
               flexGrow={1}
               className={classes.mainContentContainer}
             >
-              page
+              <Spot spot={LayoutSpot.Page} route={baseRoute} />
             </Box>
           </React.Suspense>
           <div className={classes.speedDial}>

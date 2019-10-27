@@ -9,20 +9,20 @@ import {
 } from '../common-interfaces';
 import { Hero, Node, Progress } from './nodes';
 
-export interface RootState {
+export type RootState = {
   router: RouterState;
-  auth: AuthState;
+  ms?: ModuleSystemState;
+  layout?: LayoutState;
+  auth?: AuthState;
+  navigation?: NavigationState;
   sidebar: SidebarState;
   details: DodayDetailsState;
   builder: BuilderState;
-  layout?: LayoutState;
   store: StoreState;
   activities: BaseToolState;
   toast: ToastState;
   dialog: DialogState;
-  navStack: NavStackState;
-  ms: ModuleSystemState;
-}
+};
 
 export type ModuleSystemState = {
   modules: { [key: string]: ModuleObject };
@@ -85,7 +85,7 @@ export interface DialogState {
   actions: React.ReactNode[];
 }
 
-export interface NavStackState {
+export interface NavigationState {
   base: string;
   stack: string[];
 }

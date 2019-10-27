@@ -1,13 +1,11 @@
-import { NodeLabel, ModuleView, AppSpot, LayoutType } from '@doday/lib';
+import { ModuleView, AppSpot, GetViewParams } from '@doday/lib';
 import { Layout } from './layout';
-import { getLayoutModule } from '../duck';
+import { getLayoutModule } from '../redux';
 
 export function getView(
-  layoutType?: LayoutType,
-  spot?: AppSpot,
-  entity?: NodeLabel
+  params: GetViewParams<AppSpot>
 ): ModuleView | undefined {
-  switch (spot) {
+  switch (params.spot) {
     default:
       return {
         component: Layout,

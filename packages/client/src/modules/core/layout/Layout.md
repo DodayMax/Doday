@@ -19,8 +19,6 @@ Supports desktop and mobile layouts.
 
 Other modules placed in these base spots could provide **additional spots** inside itself.
 
-Naming convention for layout spots - `${moduleName}Spot.${NameOfTheSpot}`. For example **DrawerSpot.Tools**.
-
 ## Communications
 
 `Layout` module provides `decorators` and `redux` logic for different ways of communications with user.

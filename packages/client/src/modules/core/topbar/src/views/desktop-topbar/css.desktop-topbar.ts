@@ -14,7 +14,4 @@ export const css = (theme: Theme) =>
       justifyContent: 'space-between',
       padding: 0,
     },
-    white: {
-      color: theme.palette.common.white,
-    },
   });
