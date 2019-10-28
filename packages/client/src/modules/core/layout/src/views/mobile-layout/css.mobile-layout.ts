@@ -1,18 +1,23 @@
 import { Theme, createStyles } from '@material-ui/core';
+import { sizes } from '@doday/lib';
 
 export const mobileStyles = (theme: Theme) =>
   createStyles({
     topbar: {
-      height: '64px',
+      height: sizes.topbar,
       zIndex: theme.zIndex.drawer + 1,
       backgroundColor: theme.palette.grey[900],
     },
-    drawer: {
-      minWidth: '240px',
+    topbarMock: {
+      height: sizes.topbar,
     },
-    speedDial: {
-      position: 'absolute',
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
+    page: {
+      height: `calc(100vh - ${sizes.topbar}px - 54px)`,
+    },
+    drawer: {
+      minWidth: sizes.drawer,
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 2,
     },
   });

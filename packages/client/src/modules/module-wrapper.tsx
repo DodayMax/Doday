@@ -55,13 +55,7 @@ export const ModuleWrapper = (
   const suitedModule = Object.values(allModules).find(module => {
     const hasSpot = module.spots && module.spots.includes(spot);
     const hasViewForRoute = route
-      ? module.getView &&
-        module.getView({
-          layoutType,
-          spot,
-          label,
-          route,
-        })
+      ? module.routes && module.routes.includes(route)
       : true;
     return hasSpot && hasViewForRoute;
   });
@@ -91,8 +85,6 @@ export const ModuleWrapper = (
       </Box>
     );
   }
-
-  console.log(suitedModule);
 
   const moduleView: ModuleView = suitedModule.getView({
     layoutType,

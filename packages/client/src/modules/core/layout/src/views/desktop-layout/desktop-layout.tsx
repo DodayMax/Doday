@@ -12,17 +12,18 @@ import {
   ListItemIcon,
   ListItemText,
   ListItem,
-  Zoom,
   Box,
 } from '@material-ui/core';
 import KeyboardArrowLeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
+import Backdrop from '@material-ui/core/Backdrop';
 import { useSelector, useDispatch } from 'react-redux';
 import { layoutStateSelector } from '../../redux/selectors';
 import { toggleDrawerActionCreator } from '../../redux/actions';
 import { LayoutSpot, LayoutType } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
+import { DodaySpeedDial } from '@root/components/speed-dial/speed-dial';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,
@@ -33,6 +34,19 @@ export const DesktopLayout = withStyles(desktopStyles, {
   const baseRoute = useSelector(baseRouteSelector);
   const toggleMenu = () => {
     dispatch(toggleDrawerActionCreator());
+  };
+
+  /**
+   * SpeedDial state and handlers
+   */
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -91,22 +105,17 @@ export const DesktopLayout = withStyles(desktopStyles, {
               flexGrow={1}
               className={classes.mainContentContainer}
             >
-              <Spot spot={LayoutSpot.Page} route={baseRoute} />
+              <Spot spot={LayoutSpot.Page} />
             </Box>
           </React.Suspense>
-          <div className={classes.speedDial}>
-            <Zoom
-              in={
-                true
-                // !!Object.values(activeTools) &&
-                // !!Object.values(activeTools).length
-              }
-            >
-              <span>speed dial</span>
-            </Zoom>
-          </div>
+          <DodaySpeedDial
+            open={open}
+            handleClose={handleClose}
+            handleOpen={handleOpen}
+          />
         </main>
       </React.Suspense>
+      <Backdrop open={open} className={classes.backdrop} />
     </div>
   );
 });

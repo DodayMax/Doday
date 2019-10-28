@@ -39,6 +39,8 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
   };
   config!: ModuleConfig;
   spots?: LS[];
+  routes?: string[];
+  label?: NodeLabel;
   getView?(params: GetViewParams<LS>): ModuleView | undefined;
   translations?: {
     [lang: string]: object;

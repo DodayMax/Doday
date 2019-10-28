@@ -32,12 +32,6 @@ export const desktopStyles = (theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen,
       }),
     },
-    speedDial: {
-      position: 'absolute',
-      right: theme.spacing(4),
-      bottom: theme.spacing(4),
-      zIndex: 101,
-    },
     drawer: {
       width: drawerWidth,
       flexShrink: 0,
@@ -63,10 +57,12 @@ export const desktopStyles = (theme: Theme) =>
       flex: '1',
       height: '100vh',
       overflow: 'hidden',
-      flexDirection: 'column',
     },
     sidebarContainer: {
       minWidth: sizes.sidebar,
       maxWidth: '3rem',
+    },
+    backdrop: {
+      zIndex: theme.zIndex.drawer + 2,
     },
   });
