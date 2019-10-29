@@ -51,6 +51,9 @@ export const AppComponent = (
     loadModule(ModuleSysname.Dialog, ModuleType.Core);
     loadModule(ModuleSysname.Store, ModuleType.Core);
     loadModule(ModuleSysname.Profile, ModuleType.Core);
+
+    // temporary
+    loadModule(ModuleSysname.Activities, ModuleType.Tool);
   }, []);
 
   React.useEffect(() => {

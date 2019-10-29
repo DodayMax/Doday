@@ -17,6 +17,7 @@ export enum ModuleSysname {
   Topbar = 'topbar',
   Store = 'store',
   Profile = 'profile',
+  Activities = 'activities',
 }
 
 export enum ModuleType {

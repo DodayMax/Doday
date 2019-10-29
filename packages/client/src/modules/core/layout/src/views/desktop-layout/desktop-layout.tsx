@@ -20,10 +20,18 @@ import Backdrop from '@material-ui/core/Backdrop';
 import { useSelector, useDispatch } from 'react-redux';
 import { layoutStateSelector } from '../../redux/selectors';
 import { toggleDrawerActionCreator } from '../../redux/actions';
-import { LayoutSpot, LayoutType } from '@doday/lib';
-import { Spot } from '@root/modules/module-wrapper';
-import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
+import {
+  LayoutSpot,
+  LayoutType,
+  sizes,
+  DrawerSpot,
+  BASE_ROUTES,
+} from '@doday/lib';
+import { Spot, ModuleWrapper } from '@root/modules/module-wrapper';
+import { sidebarRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
 import { DodaySpeedDial } from '@root/components/speed-dial/speed-dial';
+import { allLoadedModulesSelector } from '@root/modules/redux/ms/selectors';
+import { changeSidebarRouteActionCreator } from '@root/modules/core/navigation/src/redux';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,
@@ -31,10 +39,18 @@ export const DesktopLayout = withStyles(desktopStyles, {
   const dispatch = useDispatch();
   const { classes } = props;
   const layoutState = useSelector(layoutStateSelector);
-  const baseRoute = useSelector(baseRouteSelector);
+  const sidebarRoute = useSelector(sidebarRouteSelector);
   const toggleMenu = () => {
     dispatch(toggleDrawerActionCreator());
   };
+
+  /**
+   * Find :Tool modules for drawer's menu
+   */
+  const allModules = useSelector(allLoadedModulesSelector);
+  const tools = Object.values(allModules).filter(
+    module => module.spots && module.spots.includes(DrawerSpot.ToolItem)
+  );
 
   /**
    * SpeedDial state and handlers
@@ -70,14 +86,32 @@ export const DesktopLayout = withStyles(desktopStyles, {
           }}
           open={!layoutState.isDrawerCollapsed}
         >
-          <div className={classes.toolbar} />
           <Box
             display="flex"
             flexGrow={1}
             flexDirection="column"
             justifyContent="space-between"
+            mt={`${sizes.topbar}px`}
           >
-            <Box>drawer</Box>
+            <Box>
+              {tools.map(tool => (
+                <ListItem
+                  key={tool.config.sysname}
+                  button
+                  onClick={() => {
+                    dispatch(
+                      changeSidebarRouteActionCreator(`/${tool.config.sysname}`)
+                    );
+                  }}
+                >
+                  <ModuleWrapper
+                    module={tool}
+                    spot={DrawerSpot.ToolItem}
+                    route={BASE_ROUTES.activities}
+                  />
+                </ListItem>
+              ))}
+            </Box>
             <Box>
               <Divider />
               <ListItem button onClick={toggleMenu}>
@@ -97,7 +131,9 @@ export const DesktopLayout = withStyles(desktopStyles, {
           </Box>
         </Drawer>
         <main className={classes.content}>
-          <section className={classes.sidebarContainer}>sidebar</section>
+          <section className={classes.sidebarContainer}>
+            <Spot spot={LayoutSpot.Sidebar} route={sidebarRoute} />
+          </section>
           <React.Suspense fallback={null}>
             <Box
               position="relative"

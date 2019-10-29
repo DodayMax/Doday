@@ -88,4 +88,7 @@ export interface DialogState {
 export interface NavigationState {
   base: string;
   stack: string[];
+  sidebar: {
+    route?: string;
+  };
 }

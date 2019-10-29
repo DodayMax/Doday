@@ -92,6 +92,9 @@ export const ModuleWrapper = (
     label,
     route,
   });
+
+  if (!moduleView) return null;
+
   const Component = moduleView.component;
 
   return (

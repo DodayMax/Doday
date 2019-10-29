@@ -61,6 +61,7 @@ export const desktopStyles = (theme: Theme) =>
     sidebarContainer: {
       minWidth: sizes.sidebar,
       maxWidth: '3rem',
+      marginTop: sizes.topbar,
     },
     backdrop: {
       zIndex: theme.zIndex.drawer + 2,

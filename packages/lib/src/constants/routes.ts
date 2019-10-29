@@ -1,6 +1,7 @@
 export const BASE_ROUTES = {
   store: '/store',
   profile: '/profile',
+  activities: '/activities',
 };
 
 export const STACKED_ROUTES = {

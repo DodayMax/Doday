@@ -1,4 +1,9 @@
-export type AnySpot = AppSpot | LayoutSpot | NavigationSpot | TopbarSpot;
+export type AnySpot =
+  | AppSpot
+  | LayoutSpot
+  | NavigationSpot
+  | TopbarSpot
+  | DrawerSpot;
 
 export enum LayoutType {
   Desktop = 'Desktop',
@@ -30,4 +35,8 @@ export enum TopbarSpot {
   Right = 'TopbarSpot.Right',
   Left = 'TopbarSpot.Left',
   NavItem = 'TopbarSpot.Middle',
+}
+
+export enum DrawerSpot {
+  ToolItem = 'DrawerSpot.ToolItem',
 }

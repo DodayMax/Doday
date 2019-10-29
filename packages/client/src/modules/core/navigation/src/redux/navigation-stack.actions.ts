@@ -4,12 +4,13 @@ import { AnyAction } from 'redux';
  * Define action name constants here
  */
 export enum ActionTypes {
-  PUSH_ROUTE = 'navstack/PUSH_ROUTE',
-  SET_BASE_ROUTE = 'navstack/SET_BASE_ROUTE',
-  STACK_ROUTE = 'navstack/STACK_ROUTE',
-  UNSTACK_ROUTE = 'navstack/UNSTACK_ROUTE',
-  POP_FROM_STACK = 'navstack/POP_FROM_STACK',
-  CLEAR_STACK = 'navstack/CLEAR_STACK',
+  PUSH_ROUTE = '[navigation] PUSH_ROUTE',
+  SET_BASE_ROUTE = '[navigation] SET_BASE_ROUTE',
+  STACK_ROUTE = '[navigation] STACK_ROUTE',
+  UNSTACK_ROUTE = '[navigation] UNSTACK_ROUTE',
+  POP_FROM_STACK = '[navigation] POP_FROM_STACK',
+  CHANGE_SIDEBAR_ROUTE = '[navigation] CHANGE_SIDEBAR_ROUTE',
+  CLEAR_STACK = '[navigation] CLEAR_STACK',
 }
 
 /*
@@ -40,6 +41,11 @@ export interface UnStackRouteAction extends AnyAction {
 
 export interface PopFromStackAction extends AnyAction {
   type: ActionTypes.POP_FROM_STACK;
+}
+
+export interface ChangeSidebarRouteAction extends AnyAction {
+  type: ActionTypes.CHANGE_SIDEBAR_ROUTE;
+  payload: string;
 }
 
 export interface ClearStackAction extends AnyAction {
@@ -94,6 +100,15 @@ export const unstackRouteActionCreator = (): UnStackRouteAction => {
   };
 };
 
+export const changeSidebarRouteActionCreator = (
+  route: string
+): ChangeSidebarRouteAction => {
+  return {
+    type: ActionTypes.CHANGE_SIDEBAR_ROUTE,
+    payload: route,
+  };
+};
+
 export const clearStackActionCreator = (): ClearStackAction => {
   return {
     type: ActionTypes.CLEAR_STACK,
@@ -106,6 +121,7 @@ export default {
   setBaseRouteActionCreator,
   stackRouteActionCreator,
   unstackRouteActionCreator,
+  changeSidebarRouteActionCreator,
   clearStackActionCreator,
 };
 
@@ -115,4 +131,5 @@ export type Action =
   | StackRouteAction
   | UnStackRouteAction
   | PopFromStackAction
+  | ChangeSidebarRouteAction
   | ClearStackAction;
