@@ -7,22 +7,41 @@ import {
   SwipeableDrawer,
   CssBaseline,
   Box,
+  IconButton,
+  ListItem,
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import { mobileStyles } from './css.mobile-layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { layoutStateSelector } from '../../redux/selectors';
 import { toggleDrawerActionCreator } from '../../redux/actions';
-import { Spot } from '@root/modules/module-wrapper';
-import { LayoutSpot, LayoutType } from '@doday/lib';
+import { Spot, ModuleWrapper } from '@root/modules/module-wrapper';
+import {
+  LayoutSpot,
+  LayoutType,
+  sizes,
+  DrawerSpot,
+  BASE_ROUTES,
+} from '@doday/lib';
 import { DodayBottomNavigation } from '@root/components/bottom-navigation/bottom-navigation';
 import { DodaySpeedDial } from '@root/components/speed-dial/speed-dial';
+import { logo } from '@root/modules/core/topbar/src/views/desktop-topbar/desktop-topbar';
+import { pushRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import { allLoadedModulesSelector } from '@root/modules/redux/ms/selectors';
 
 export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
   (props: WithStyles) => {
     const dispatch = useDispatch();
     const { classes } = props;
     const layoutState = useSelector(layoutStateSelector);
+
+    /**
+     * Find :Tool modules for drawer's menu
+     */
+    const allModules = useSelector(allLoadedModulesSelector);
+    const tools = Object.values(allModules).filter(
+      module => module.spots && module.spots.includes(DrawerSpot.ToolItem)
+    );
 
     /**
      * SpeedDial state and handlers
@@ -50,7 +69,31 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
           onClose={() => dispatch(toggleDrawerActionCreator(true))}
           onOpen={() => dispatch(toggleDrawerActionCreator(false))}
         >
-          <div className={classes.drawer}>drawer</div>
+          <Box className={classes.drawer}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              className={classes.drawerHeader}
+            >
+              <IconButton>
+                <img src={logo} style={{ width: '40px', height: '40px' }} />
+              </IconButton>
+            </Box>
+            <Box>
+              {tools.map(tool => (
+                <ListItem
+                  key={tool.config.sysname}
+                  button
+                  onClick={() => {
+                    dispatch(pushRouteActionCreator(`/${tool.config.sysname}`));
+                    dispatch(toggleDrawerActionCreator());
+                  }}
+                >
+                  <ModuleWrapper module={tool} spot={DrawerSpot.ToolItem} />
+                </ListItem>
+              ))}
+            </Box>
+          </Box>
         </SwipeableDrawer>
         <main>
           <div className={classes.topbarMock}></div>

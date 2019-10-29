@@ -17,6 +17,10 @@ export const mobileStyles = (theme: Theme) =>
     drawer: {
       minWidth: sizes.drawer,
     },
+    drawerHeader: {
+      backgroundColor: theme.palette.grey[900],
+      minWidth: sizes.drawer,
+    },
     backdrop: {
       zIndex: theme.zIndex.drawer + 2,
     },

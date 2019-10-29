@@ -20,7 +20,7 @@ import AppsIcon from '@material-ui/icons/Apps';
 import FaceIcon from '@material-ui/icons/Face';
 import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
 
-const logo = require('@root/assets/png/app-icon.png');
+export const logo = require('@root/assets/png/app-icon.png');
 
 const StyledToggleButtonGroup = withStyles(theme => ({
   grouped: {

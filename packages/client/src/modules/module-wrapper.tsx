@@ -2,7 +2,13 @@ import * as React from 'react';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 import { Box } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { ModuleView, RootState, GetViewParams, ModuleObject } from '@doday/lib';
+import {
+  ModuleView,
+  RootState,
+  GetViewParams,
+  ModuleObject,
+  LayoutType,
+} from '@doday/lib';
 import { Icons } from '@doday/ui';
 import store from '@root/store';
 
@@ -17,8 +23,17 @@ export const ModuleWrapper = (
     React.HTMLAttributes<HTMLDivElement>
 ) => {
   const allModules = useSelector((state: RootState) => state.ms.modules);
+  // By default set layoutType automatically by detecting screen size
+  const isMobile = window.innerWidth <= 768;
 
-  const { layoutType, spot, label, route, module, ...passthrough } = props;
+  const {
+    layoutType = isMobile ? LayoutType.Mobile : LayoutType.Desktop,
+    spot,
+    label,
+    route,
+    module,
+    ...passthrough
+  } = props;
 
   /**
    * If module passed as prop just render it
@@ -31,6 +46,7 @@ export const ModuleWrapper = (
       label,
       route,
     });
+    if (!moduleView) return null;
     const Component = moduleView.component;
     if (!moduleView.dependencies.length) {
       return <Component {...passthrough} {...moduleView.props} />;

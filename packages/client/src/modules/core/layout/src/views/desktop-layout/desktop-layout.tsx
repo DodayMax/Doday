@@ -104,11 +104,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
                     );
                   }}
                 >
-                  <ModuleWrapper
-                    module={tool}
-                    spot={DrawerSpot.ToolItem}
-                    route={BASE_ROUTES.activities}
-                  />
+                  <ModuleWrapper module={tool} spot={DrawerSpot.ToolItem} />
                 </ListItem>
               ))}
             </Box>
