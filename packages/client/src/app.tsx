@@ -40,6 +40,7 @@ export const AppComponent = (
      * - Authorization
      * - Navigation module
      * - Toast
+     * - Dialog
      * - Store
      * - Profile
      */
@@ -47,6 +48,7 @@ export const AppComponent = (
     loadModule(ModuleSysname.Auth, ModuleType.Core);
     loadModule(ModuleSysname.Navigation, ModuleType.Core);
     loadModule(ModuleSysname.Toast, ModuleType.Core);
+    loadModule(ModuleSysname.Dialog, ModuleType.Core);
     loadModule(ModuleSysname.Store, ModuleType.Core);
     loadModule(ModuleSysname.Profile, ModuleType.Core);
   }, []);
@@ -79,6 +81,7 @@ export const AppComponent = (
         </React.Suspense>
       </div>
       <Spot spot={AppSpot.Toast} />
+      <Spot spot={AppSpot.Dialog} />
     </MuiThemeProvider>
   );
 };

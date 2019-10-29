@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core';
+import { makeStyles, createStyles, Theme, Button } from '@material-ui/core';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
@@ -10,6 +10,10 @@ import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
 import { openToastActionCreator } from '@root/modules/core/toast/src/redux';
+import {
+  openDialogActionCreator,
+  closeDialogActionCreator,
+} from '@root/modules/core/dialog/src/redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,10 +33,7 @@ export interface SpeedDialProps {
 }
 
 const mockedActions = [
-  { icon: <FileCopyIcon />, name: 'Copy' },
-  { icon: <SaveIcon />, name: 'Save' },
-  { icon: <PrintIcon />, name: 'Print' },
-  { icon: <ShareIcon />, name: 'Share' },
+  { icon: <ShareIcon />, name: 'Dialog', action: openDialogActionCreator },
   { icon: <DeleteIcon />, name: 'Toast', action: openToastActionCreator },
 ];
 
@@ -42,12 +43,43 @@ export const DodaySpeedDial = (props: SpeedDialProps) => {
   const { open, handleClose, handleOpen } = props;
 
   const handleClick = (item: any) => {
-    dispatch(
-      item.action({
-        open: true,
-        messages: ['Hello there'],
-      })
-    );
+    switch (item.name) {
+      case 'Dialog':
+        dispatch(
+          item.action({
+            open: true,
+            title: 'Hello there!',
+            message: 'What you choose?',
+            actions: [
+              <Button
+                key={1}
+                onClick={() => {
+                  dispatch(closeDialogActionCreator());
+                }}
+              >
+                No
+              </Button>,
+              <Button
+                key={2}
+                onClick={() => {
+                  dispatch(closeDialogActionCreator());
+                }}
+              >
+                Yes
+              </Button>,
+            ],
+          })
+        );
+        return;
+      case 'Toast':
+        dispatch(
+          item.action({
+            open: true,
+            messages: ['Hello there'],
+          })
+        );
+        return;
+    }
   };
 
   return (
