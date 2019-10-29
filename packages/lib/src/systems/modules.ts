@@ -12,6 +12,8 @@ export enum ModuleSysname {
   MS = 'ms', // module system
   Auth = 'auth',
   Navigation = 'navigation',
+  Toast = 'toast',
+  Dialog = 'dialog',
   Topbar = 'topbar',
   Store = 'store',
   Profile = 'profile',

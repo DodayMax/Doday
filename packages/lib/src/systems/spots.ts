@@ -7,6 +7,8 @@ export enum LayoutType {
 
 export enum AppSpot {
   Default = 'AppSpot',
+  Toast = 'Toast',
+  Dialog = 'Dialog',
 }
 
 export enum LayoutSpot {

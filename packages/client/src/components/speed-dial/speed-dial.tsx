@@ -8,6 +8,8 @@ import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useDispatch } from 'react-redux';
+import { openToastActionCreator } from '@root/modules/core/toast/src/redux';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -31,17 +33,27 @@ const mockedActions = [
   { icon: <SaveIcon />, name: 'Save' },
   { icon: <PrintIcon />, name: 'Print' },
   { icon: <ShareIcon />, name: 'Share' },
-  { icon: <DeleteIcon />, name: 'Delete' },
+  { icon: <DeleteIcon />, name: 'Toast', action: openToastActionCreator },
 ];
 
 export const DodaySpeedDial = (props: SpeedDialProps) => {
+  const dispatch = useDispatch();
   const css = useStyles(undefined);
   const { open, handleClose, handleOpen } = props;
+
+  const handleClick = (item: any) => {
+    dispatch(
+      item.action({
+        open: true,
+        messages: ['Hello there'],
+      })
+    );
+  };
 
   return (
     <>
       <SpeedDial
-        ariaLabel="SpeedDial tooltip example"
+        ariaLabel="Doday speed dial button"
         className={css.speedDial}
         icon={<SpeedDialIcon />}
         onClose={handleClose}
@@ -54,7 +66,7 @@ export const DodaySpeedDial = (props: SpeedDialProps) => {
             icon={action.icon}
             tooltipTitle={action.name}
             tooltipOpen
-            onClick={handleClose}
+            onClick={() => handleClick(action)}
           />
         ))}
       </SpeedDial>
