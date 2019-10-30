@@ -1,8 +1,8 @@
 import React from 'react';
 import { BottomNavigation, BottomNavigationAction } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
-import { pushRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import { baseRouteSelector } from '@core/navigation';
+import { pushRouteActionCreator } from '@core/navigation';
 import AppsIcon from '@material-ui/icons/Apps';
 import FaceIcon from '@material-ui/icons/Face';
 import { useTranslation } from 'react-i18next';

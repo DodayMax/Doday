@@ -268,12 +268,16 @@ module.exports = function(webpackEnv) {
         '@root/*': '@root/*',
         '@icons': '@root/assets/icons',
         '@components': '@root/components',
-        '@stores': '@root/stores',
+        '@components/*': '@root/components/*',
         '@services': '@root/services',
         '@styles': '@root/styles',
         '@styles/*': '@root/styles/*',
         '@modules': '@root/modules',
         '@modules/*': '@root/modules/*',
+        '@core': '@root/modules/core',
+        '@core/*': '@root/modules/core/*',
+        '@tools': '@root/modules/tools',
+        '@tools/*': '@root/modules/tools/*',
       },
       plugins: [
         // Adds support for installing with Plug'n'Play, leading to faster installs and adding

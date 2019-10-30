@@ -27,11 +27,11 @@ import {
   DrawerSpot,
   BASE_ROUTES,
 } from '@doday/lib';
-import { Spot, ModuleWrapper } from '@root/modules/module-wrapper';
-import { sidebarRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
-import { DodaySpeedDial } from '@root/components/speed-dial/speed-dial';
-import { allLoadedModulesSelector } from '@root/modules/redux/ms/selectors';
-import { changeSidebarRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import { Spot, ModuleWrapper } from '@modules/module-wrapper';
+import { sidebarRouteSelector } from '@core/navigation';
+import { DodaySpeedDial } from '@components/speed-dial/speed-dial';
+import { allLoadedModulesSelector } from '@modules/redux/ms/selectors';
+import { changeSidebarRouteActionCreator } from '@core/navigation';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,

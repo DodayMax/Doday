@@ -9,11 +9,11 @@ import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useDispatch } from 'react-redux';
-import { openToastActionCreator } from '@root/modules/core/toast/src/redux';
+import { openToastActionCreator } from '@core/toast';
 import {
   openDialogActionCreator,
   closeDialogActionCreator,
-} from '@root/modules/core/dialog/src/redux';
+} from '@core/dialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

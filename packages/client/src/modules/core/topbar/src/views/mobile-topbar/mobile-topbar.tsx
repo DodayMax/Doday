@@ -8,7 +8,7 @@ import {
   Box,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
-import { toggleDrawerActionCreator } from '@root/modules/core/layout/src/redux/actions';
+import { toggleDrawerActionCreator } from '@core/layout';
 import { css } from './css.mobile-topbar';
 
 export const MobileTopbar = withStyles(css)((props: WithStyles) => {

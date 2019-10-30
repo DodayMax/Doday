@@ -13,7 +13,7 @@ import { Icons } from '@doday/ui';
 import store from '@root/store';
 
 interface ModuleWrapperProps {
-  /** Render all found modules for passed spot */
+  /** Render particular module */
   module?: ModuleObject;
 }
 

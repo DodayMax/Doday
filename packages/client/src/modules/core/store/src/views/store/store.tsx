@@ -1,5 +1,6 @@
 import React from 'react';
+import { Page } from '@components/page';
 
 export const DodayStore = () => {
-  return <div>Store</div>;
+  return <Page base>Store</Page>;
 };

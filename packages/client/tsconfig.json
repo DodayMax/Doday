@@ -15,9 +15,11 @@
     "paths": {
       "@root/*": ["*"],
       "@services": ["services"],
-      "@components": ["components"],
+      "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
-      "@modules/*": ["modules/*"]
+      "@modules/*": ["modules/*"],
+      "@core/*": ["modules/core/*"],
+      "@tools/*": ["modules/tools/*"]
     }
   },
   "exclude": [

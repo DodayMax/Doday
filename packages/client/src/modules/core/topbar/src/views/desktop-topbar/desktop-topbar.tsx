@@ -14,11 +14,10 @@ import { ACLGuard } from '@root/components/acl-guard/acl-guard';
 import { sizes, LayoutType, TopbarSpot, BASE_ROUTES } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 import { useSelector, useDispatch } from 'react-redux';
-import { pushRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import { pushRouteActionCreator, baseRouteSelector } from '@core/navigation';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import AppsIcon from '@material-ui/icons/Apps';
 import FaceIcon from '@material-ui/icons/Face';
-import { baseRouteSelector } from '@root/modules/core/navigation/src/redux/selectors';
 
 export const logo = require('@root/assets/png/app-icon.png');
 

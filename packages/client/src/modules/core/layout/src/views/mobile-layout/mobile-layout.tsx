@@ -16,17 +16,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { layoutStateSelector } from '../../redux/selectors';
 import { toggleDrawerActionCreator } from '../../redux/actions';
 import { Spot, ModuleWrapper } from '@root/modules/module-wrapper';
-import {
-  LayoutSpot,
-  LayoutType,
-  sizes,
-  DrawerSpot,
-  BASE_ROUTES,
-} from '@doday/lib';
-import { DodayBottomNavigation } from '@root/components/bottom-navigation/bottom-navigation';
-import { DodaySpeedDial } from '@root/components/speed-dial/speed-dial';
-import { logo } from '@root/modules/core/topbar/src/views/desktop-topbar/desktop-topbar';
-import { pushRouteActionCreator } from '@root/modules/core/navigation/src/redux';
+import { LayoutSpot, LayoutType, DrawerSpot } from '@doday/lib';
+import { DodayBottomNavigation } from '@components/bottom-navigation/bottom-navigation';
+import { DodaySpeedDial } from '@components/speed-dial/speed-dial';
+import { logo } from '@core/topbar/src/views/desktop-topbar/desktop-topbar';
+import { pushRouteActionCreator } from '@core/navigation';
 import { allLoadedModulesSelector } from '@root/modules/redux/ms/selectors';
 
 export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(

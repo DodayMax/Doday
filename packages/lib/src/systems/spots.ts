@@ -3,7 +3,8 @@ export type AnySpot =
   | LayoutSpot
   | NavigationSpot
   | TopbarSpot
-  | DrawerSpot;
+  | DrawerSpot
+  | SpeedDialSpot;
 
 export enum LayoutType {
   Desktop = 'Desktop',
@@ -39,4 +40,8 @@ export enum TopbarSpot {
 
 export enum DrawerSpot {
   ToolItem = 'DrawerSpot.ToolItem',
+}
+
+export enum SpeedDialSpot {
+  Item = 'SpeedDialSpot.Item',
 }
