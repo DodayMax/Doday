@@ -8,34 +8,23 @@ import {
   CssBaseline,
   Box,
   IconButton,
-  ListItem,
 } from '@material-ui/core';
 import Backdrop from '@material-ui/core/Backdrop';
 import { mobileStyles } from './css.mobile-layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { layoutStateSelector } from '../../redux/selectors';
 import { toggleDrawerActionCreator } from '../../redux/actions';
-import { Spot, ModuleWrapper } from '@root/modules/module-wrapper';
-import { LayoutSpot, LayoutType, DrawerSpot } from '@doday/lib';
+import { Spot } from '@root/modules/module-wrapper';
+import { LayoutSpot, LayoutType, ModuleType, DrawerSpot } from '@doday/lib';
 import { DodayBottomNavigation } from '@components/bottom-navigation/bottom-navigation';
 import { DodaySpeedDial } from '@components/speed-dial/speed-dial';
 import { logo } from '@core/topbar/src/views/desktop-topbar/desktop-topbar';
-import { pushRouteActionCreator } from '@core/navigation';
-import { allLoadedModulesSelector } from '@root/modules/redux/ms/selectors';
 
 export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
   (props: WithStyles) => {
     const dispatch = useDispatch();
     const { classes } = props;
     const layoutState = useSelector(layoutStateSelector);
-
-    /**
-     * Find :Tool modules for drawer's menu
-     */
-    const allModules = useSelector(allLoadedModulesSelector);
-    const tools = Object.values(allModules).filter(
-      module => module.spots && module.spots.includes(DrawerSpot.ToolItem)
-    );
 
     /**
      * SpeedDial state and handlers
@@ -55,7 +44,11 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
         <CssBaseline />
         <AppBar position="fixed" className={classnames(classes.topbar)}>
           <Box height={64} px={2}>
-            <Spot layoutType={LayoutType.Mobile} spot={LayoutSpot.TopBar} />
+            <Spot
+              layoutType={LayoutType.Mobile}
+              spot={LayoutSpot.TopBar}
+              moduleType={ModuleType.Core}
+            />
           </Box>
         </AppBar>
         <SwipeableDrawer
@@ -74,18 +67,11 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
               </IconButton>
             </Box>
             <Box>
-              {tools.map(tool => (
-                <ListItem
-                  key={tool.config.sysname}
-                  button
-                  onClick={() => {
-                    dispatch(pushRouteActionCreator(`/${tool.config.sysname}`));
-                    dispatch(toggleDrawerActionCreator());
-                  }}
-                >
-                  <ModuleWrapper module={tool} spot={DrawerSpot.ToolItem} />
-                </ListItem>
-              ))}
+              <Spot
+                renderAll
+                moduleType={ModuleType.Tool}
+                spot={DrawerSpot.ToolItem}
+              />
             </Box>
           </Box>
         </SwipeableDrawer>
@@ -97,7 +83,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             flexGrow={1}
             className={classes.page}
           >
-            <Spot spot={LayoutSpot.Page} />
+            <Spot spot={LayoutSpot.Page} moduleType={ModuleType.Core} />
             <DodaySpeedDial
               open={open}
               handleClose={handleClose}

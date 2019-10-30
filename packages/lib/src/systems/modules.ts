@@ -1,6 +1,7 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
 import { LayoutType, AnySpot } from './spots';
+import { Entity } from '../models/entity';
 
 /**
  * Type of Activity
@@ -35,25 +36,58 @@ export type ToolsState = { [K in ModuleSysname]?: BaseToolState };
 
 /** Module class */
 export class ModuleObject<LS = AnySpot> implements Dynamic {
+  /**
+   * Needed for the system to properly load modules
+   */
   status!: {
     loading?: boolean;
     loaded?: boolean;
     error?: string;
   };
+  /**
+   * Sysname and ModuleType for now
+   */
   config!: ModuleConfig;
+  /**
+   * Just to simplify dev process we are store
+   * node labels of the provided Entities as well
+   */
+  nodes?: NodeLabel[];
+  /**
+   * New Entities that the module provides
+   */
+  entities?: Entity[];
+  /**
+   * Layout spots that the module uses and for which
+   * it has views
+   */
   spots?: LS[];
+  /**
+   * Routes that the module uses and for which
+   * it has views
+   */
   routes?: string[];
-  label?: NodeLabel;
+  /**
+   * Function with which you can pick up the desired
+   * views according to the passed parameters
+   */
   getView?(params: GetViewParams<LS>): ModuleView | undefined;
+  /**
+   * Translations for the module (if it needs them)
+   */
   translations?: {
     [lang: string]: object;
   };
 }
 
 export interface GetViewParams<T = AnySpot> {
+  /** Desktop or Mobile */
   layoutType?: LayoutType;
+  /** Layout spot to which view is needed */
   spot?: T;
-  label?: NodeLabel;
+  /** NodeLabel for which view is needed */
+  node?: NodeLabel;
+  /** Route to which view is needed */
   route?: string;
 }
 
@@ -67,6 +101,7 @@ export interface Dynamic {
 
 export type ModuleConfig = {
   sysname: ModuleSysname;
+  type: ModuleType;
 };
 
 export type WithTools = {

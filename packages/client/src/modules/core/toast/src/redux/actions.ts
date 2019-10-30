@@ -7,6 +7,19 @@ export enum ToastActionConstants {
 }
 
 /**
+ * Define return types of actions
+ */
+
+export interface OpenToastAction extends AnyAction {
+  type: ToastActionConstants.OPEN;
+  payload: ToastState;
+}
+
+export interface CloseToastAction extends AnyAction {
+  type: ToastActionConstants.CLOSE;
+}
+
+/**
  * Open toast
  *
  * @export
@@ -29,24 +42,6 @@ export function closeToastActionCreator(): CloseToastAction {
   return {
     type: ToastActionConstants.CLOSE,
   };
-}
-
-export default {
-  openToastActionCreator,
-  closeToastActionCreator,
-};
-
-/**
- * Define return types of actions
- */
-
-export interface OpenToastAction extends AnyAction {
-  type: ToastActionConstants.OPEN;
-  payload: ToastState;
-}
-
-export interface CloseToastAction extends AnyAction {
-  type: ToastActionConstants.CLOSE;
 }
 
 /**

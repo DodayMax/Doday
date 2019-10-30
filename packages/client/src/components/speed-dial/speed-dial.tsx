@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import { makeStyles, createStyles, Theme, Button } from '@material-ui/core';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
@@ -8,12 +9,19 @@ import SaveIcon from '@material-ui/icons/Save';
 import PrintIcon from '@material-ui/icons/Print';
 import ShareIcon from '@material-ui/icons/Share';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openToastActionCreator } from '@core/toast';
 import {
   openDialogActionCreator,
   closeDialogActionCreator,
 } from '@core/dialog';
+import {
+  toolModulesSelector,
+  creatableEntitiesLabelsSelector,
+} from '@root/modules/init/ms/selectors';
+import { SpeedDialSpot, NodeLabel, ModuleType } from '@doday/lib';
+import { ActivitySpeedDialItem } from '@root/modules/tools/activities/src/views/speed-dial-item/activity-speed-dial-item';
+import { Spot } from '@root/modules/module-wrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -41,6 +49,8 @@ export const DodaySpeedDial = (props: SpeedDialProps) => {
   const dispatch = useDispatch();
   const css = useStyles(undefined);
   const { open, handleClose, handleOpen } = props;
+
+  const creatable = useSelector(creatableEntitiesLabelsSelector);
 
   const handleClick = (item: any) => {
     switch (item.name) {
@@ -92,15 +102,12 @@ export const DodaySpeedDial = (props: SpeedDialProps) => {
         onOpen={handleOpen}
         open={open}
       >
-        {mockedActions.map(action => (
-          <SpeedDialAction
-            key={action.name}
-            icon={action.icon}
-            tooltipTitle={action.name}
-            tooltipOpen
-            onClick={() => handleClick(action)}
-          />
-        ))}
+        <Spot
+          moduleType={ModuleType.Tool}
+          renderAll
+          spot={SpeedDialSpot.Item}
+          nodes={creatable}
+        />
       </SpeedDial>
     </>
   );

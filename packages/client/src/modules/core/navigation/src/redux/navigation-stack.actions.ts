@@ -115,16 +115,6 @@ export const clearStackActionCreator = (): ClearStackAction => {
   };
 };
 
-export default {
-  popFromStackActionCreator,
-  pushRouteActionCreator,
-  setBaseRouteActionCreator,
-  stackRouteActionCreator,
-  unstackRouteActionCreator,
-  changeSidebarRouteActionCreator,
-  clearStackActionCreator,
-};
-
 export type Action =
   | PushRouteAction
   | SetBaseRouteAction

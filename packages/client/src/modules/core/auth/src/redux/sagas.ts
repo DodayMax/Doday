@@ -1,9 +1,11 @@
 import { call, put, takeLatest, all } from 'redux-saga/effects';
-import actions, {
+import {
   AuthActionConstants,
   SignInWithGoogleAction,
   LogoutAction,
   GetCurrentHeroAction,
+  setAuthStatusActionCreator,
+  setHeroActionCreator,
 } from './actions';
 import { Hero } from '@doday/lib';
 import {
@@ -19,7 +21,7 @@ import {
  * @param {SignInWithGoogleAction} action
  */
 export function* signInWithGoogleSaga(action: SignInWithGoogleAction) {
-  yield put(actions.setAuthStatusActionCreator({ loading: true }));
+  yield put(setAuthStatusActionCreator({ loading: true }));
   const response = yield call(signInWithGoogleFirebaseRequest);
   if (response.error) {
     // Handle error
@@ -31,7 +33,7 @@ export function* signInWithGoogleSaga(action: SignInWithGoogleAction) {
       });
     }
   }
-  yield put(actions.setAuthStatusActionCreator({ loading: false }));
+  yield put(setAuthStatusActionCreator({ loading: false }));
 }
 
 /**
@@ -40,14 +42,14 @@ export function* signInWithGoogleSaga(action: SignInWithGoogleAction) {
  * @param {SignInWithGoogleAction} action
  */
 export function* logoutSaga(action: LogoutAction) {
-  yield put(actions.setAuthStatusActionCreator({ loading: true }));
+  yield put(setAuthStatusActionCreator({ loading: true }));
   const response = yield call(logoutFirebaseRequest);
   if (response && response.error) {
     // handle error
-    yield put(actions.setAuthStatusActionCreator({ loading: false }));
+    yield put(setAuthStatusActionCreator({ loading: false }));
     return;
   }
-  yield put(actions.setAuthStatusActionCreator({ loading: false }));
+  yield put(setAuthStatusActionCreator({ loading: false }));
 }
 
 /**
@@ -57,7 +59,7 @@ export function* logoutSaga(action: LogoutAction) {
  */
 export function* getCurrentHeroSaga(action: GetCurrentHeroAction) {
   const hero: Hero = yield call(meAPIRequest);
-  yield put(actions.setHeroActionCreator(hero));
+  yield put(setHeroActionCreator(hero));
 }
 
 export default function* runAuthSagas() {

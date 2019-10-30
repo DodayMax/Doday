@@ -1,4 +1,5 @@
 import reducer from './reducer';
+import runMSSagas from './sagas';
 
 export * from './actions';
 export const getModuleSystemModule = () => ({
@@ -6,5 +7,5 @@ export const getModuleSystemModule = () => ({
   reducerMap: {
     ms: reducer,
   },
-  sagas: [],
+  sagas: [runMSSagas],
 });

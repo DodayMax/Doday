@@ -25,13 +25,11 @@ import {
   LayoutType,
   sizes,
   DrawerSpot,
-  BASE_ROUTES,
+  ModuleType,
 } from '@doday/lib';
-import { Spot, ModuleWrapper } from '@modules/module-wrapper';
+import { Spot } from '@modules/module-wrapper';
 import { sidebarRouteSelector } from '@core/navigation';
 import { DodaySpeedDial } from '@components/speed-dial/speed-dial';
-import { allLoadedModulesSelector } from '@modules/redux/ms/selectors';
-import { changeSidebarRouteActionCreator } from '@core/navigation';
 
 export const DesktopLayout = withStyles(desktopStyles, {
   withTheme: true,
@@ -43,14 +41,6 @@ export const DesktopLayout = withStyles(desktopStyles, {
   const toggleMenu = () => {
     dispatch(toggleDrawerActionCreator());
   };
-
-  /**
-   * Find :Tool modules for drawer's menu
-   */
-  const allModules = useSelector(allLoadedModulesSelector);
-  const tools = Object.values(allModules).filter(
-    module => module.spots && module.spots.includes(DrawerSpot.ToolItem)
-  );
 
   /**
    * SpeedDial state and handlers
@@ -69,7 +59,11 @@ export const DesktopLayout = withStyles(desktopStyles, {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar position="fixed" className={classnames(classes.topbar)}>
-        <Spot layoutType={LayoutType.Desktop} spot={LayoutSpot.TopBar} />
+        <Spot
+          layoutType={LayoutType.Desktop}
+          spot={LayoutSpot.TopBar}
+          moduleType={ModuleType.Core}
+        />
       </AppBar>
       <React.Suspense fallback={null}>
         <Drawer
@@ -94,19 +88,11 @@ export const DesktopLayout = withStyles(desktopStyles, {
             mt={`${sizes.topbar}px`}
           >
             <Box>
-              {tools.map(tool => (
-                <ListItem
-                  key={tool.config.sysname}
-                  button
-                  onClick={() => {
-                    dispatch(
-                      changeSidebarRouteActionCreator(`/${tool.config.sysname}`)
-                    );
-                  }}
-                >
-                  <ModuleWrapper module={tool} spot={DrawerSpot.ToolItem} />
-                </ListItem>
-              ))}
+              <Spot
+                renderAll
+                spot={DrawerSpot.ToolItem}
+                moduleType={ModuleType.Tool}
+              />
             </Box>
             <Box>
               <Divider />
@@ -128,7 +114,11 @@ export const DesktopLayout = withStyles(desktopStyles, {
         </Drawer>
         <main className={classes.content}>
           <section className={classes.sidebarContainer}>
-            <Spot spot={LayoutSpot.Sidebar} route={sidebarRoute} />
+            <Spot
+              spot={LayoutSpot.Sidebar}
+              route={sidebarRoute}
+              moduleType={ModuleType.Tool}
+            />
           </section>
           <React.Suspense fallback={null}>
             <Box
@@ -137,7 +127,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
               flexGrow={1}
               className={classes.mainContentContainer}
             >
-              <Spot spot={LayoutSpot.Page} />
+              <Spot spot={LayoutSpot.Page} moduleType={ModuleType.Core} />
             </Box>
           </React.Suspense>
           <DodaySpeedDial

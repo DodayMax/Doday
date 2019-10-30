@@ -1,80 +1,94 @@
 import * as React from 'react';
+import _ from 'lodash';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 import { Box } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import {
-  ModuleView,
-  RootState,
   GetViewParams,
   ModuleObject,
   LayoutType,
+  NodeLabel,
+  ModuleType,
 } from '@doday/lib';
 import { Icons } from '@doday/ui';
 import store from '@root/store';
+import {
+  coreModulesSelector,
+  toolModulesSelector,
+  extensionModulesSelector,
+} from './init/ms/selectors';
 
-interface ModuleWrapperProps {
+interface ModuleWrapperProps extends GetViewParams {
+  moduleType: ModuleType;
   /** Render particular module */
   module?: ModuleObject;
+  /**
+   * Render all suitable modules which has views
+   */
+  renderAll?: boolean;
+  /**
+   * Pass array of NodeLabels to render all suitable views
+   * Only works with `renderAll` prop
+   */
+  nodes?: NodeLabel[];
 }
 
 export const ModuleWrapper = (
-  props: GetViewParams &
-    ModuleWrapperProps &
-    React.HTMLAttributes<HTMLDivElement>
+  props: ModuleWrapperProps & React.HTMLAttributes<HTMLDivElement>
 ) => {
-  const allModules = useSelector((state: RootState) => state.ms.modules);
   // By default set layoutType automatically by detecting screen size
   const isMobile = window.innerWidth <= 768;
-
   const {
+    moduleType,
     layoutType = isMobile ? LayoutType.Mobile : LayoutType.Desktop,
     spot,
-    label,
+    node,
+    nodes,
     route,
     module,
+    renderAll,
     ...passthrough
   } = props;
 
+  const selector =
+    moduleType === ModuleType.Core
+      ? coreModulesSelector
+      : moduleType === ModuleType.Tool
+      ? toolModulesSelector
+      : extensionModulesSelector;
+  const allModules = useSelector(selector);
+
   /**
-   * If module passed as prop just render it
+   * If `module` prop is passed just render it
    */
-
   if (module) {
-    const moduleView: ModuleView = module.getView({
-      layoutType,
-      spot,
-      label,
-      route,
-    });
-    if (!moduleView) return null;
-    const Component = moduleView.component;
-    if (!moduleView.dependencies.length) {
-      return <Component {...passthrough} {...moduleView.props} />;
-    }
-
-    return (
-      <DynamicModuleLoader
-        modules={[...moduleView.dependencies]}
-        createStore={() => store}
-      >
-        <Component {...passthrough} {...moduleView.props} />
-      </DynamicModuleLoader>
+    wrapModuleView(
+      module,
+      {
+        layoutType,
+        spot,
+        node,
+        route,
+      },
+      passthrough
     );
   }
 
   /**
-   * If no module passed as a prop, then
-   * find all modules supports passed Layout spot
-   * Later we will have `active` option for modules that takes
-   * same spot. For now just take first one.
+   * If no `module` prop is passed, then
+   * find all modules supports passed params
    */
-  const suitedModule = Object.values(allModules).find(module => {
+  const suitableModules = Object.values(allModules).filter(module => {
     const hasSpot = module.spots && module.spots.includes(spot);
     const hasViewForRoute = route
       ? module.routes && module.routes.includes(route)
       : true;
-    return hasSpot && hasViewForRoute;
+    const hasNodeLabel =
+      node && module.nodes ? module.nodes.includes(node) : true;
+
+    return hasSpot && hasViewForRoute && hasNodeLabel;
   });
+
   const loadingModules = Object.values(allModules).filter(
     module => module.status.loading
   );
@@ -83,13 +97,13 @@ export const ModuleWrapper = (
    * If there are no suited modules for this spot and
    * there are no loading modules just end
    */
-  if (!suitedModule && !loadingModules.length) return null;
+  if (!suitableModules.length && !loadingModules.length) return null;
 
   /**
    * If there are no suited modules and some of them in loading state
    * just wait
    */
-  if (!suitedModule && loadingModules.length) {
+  if (!suitableModules.length && loadingModules.length) {
     return (
       <Box
         display="flex"
@@ -102,27 +116,89 @@ export const ModuleWrapper = (
     );
   }
 
-  const moduleView: ModuleView = suitedModule.getView({
-    layoutType,
-    spot,
-    label,
-    route,
-  });
+  /**
+   * If `renderAll` prop is passed render all suitable views
+   */
+  if (renderAll) {
+    const views = [];
+    suitableModules.map(module => {
+      if (nodes) {
+        const intersections = _.intersection(module.nodes || [], nodes);
+        if (intersections.length) {
+          intersections.forEach(intersectionNode => {
+            views.push(
+              wrapModuleView(
+                module,
+                {
+                  layoutType,
+                  spot,
+                  node: intersectionNode,
+                  route,
+                },
+                passthrough
+              )
+            );
+          });
+        }
+      } else {
+        views.push(
+          wrapModuleView(
+            module,
+            {
+              layoutType,
+              spot,
+              node,
+              route,
+            },
+            passthrough
+          )
+        );
+      }
+    });
+    return <>{_.compact(views)}</>;
+  }
 
-  if (!moduleView) return null;
-
-  const Component = moduleView.component;
-
-  return (
-    <DynamicModuleLoader
-      modules={[...moduleView.dependencies]}
-      createStore={() => store}
-    >
-      <Component {...passthrough} {...moduleView.props} />
-    </DynamicModuleLoader>
+  /**
+   * Later we will have `active` option for modules that takes
+   * same spot. For now just take first one.
+   */
+  return wrapModuleView(
+    suitableModules[0],
+    {
+      layoutType,
+      spot,
+      node,
+      route,
+    },
+    passthrough
   );
 };
 
-export const Spot = (props: GetViewParams) => {
+export const Spot = (props: ModuleWrapperProps) => {
   return <ModuleWrapper {...props} />;
+};
+
+export const wrapModuleView = (
+  module: ModuleObject,
+  params: GetViewParams,
+  props?: any
+) => {
+  const view = module.getView(params);
+  if (!view) return null;
+
+  const Component = view.component;
+
+  if (!view.dependencies.length) {
+    return <Component key={module.config.sysname} {...props} {...view.props} />;
+  }
+
+  return (
+    <DynamicModuleLoader
+      key={module.config.sysname}
+      modules={[...view.dependencies]}
+      createStore={() => store}
+    >
+      <Component {...props} {...view.props} />
+    </DynamicModuleLoader>
+  );
 };

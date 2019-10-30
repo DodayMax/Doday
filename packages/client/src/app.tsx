@@ -13,13 +13,14 @@ import {
   auth,
   APIService,
 } from '@doday/lib';
-import { loadModule } from './modules/loader';
 import { Spot } from './modules/module-wrapper';
 import { useDispatch } from 'react-redux';
 import {
   getCurrentHeroActionCreator,
   setIsAuthenticatedStatusAction,
 } from './modules/core/auth/src/redux';
+import { loadModulesActionCreator } from './modules/init/ms';
+import { initialCoreModules } from './modules/init/initial-modules';
 
 interface AppProps {}
 
@@ -44,16 +45,15 @@ export const AppComponent = (
      * - Store
      * - Profile
      */
-    loadModule(ModuleSysname.Layout, ModuleType.Core);
-    loadModule(ModuleSysname.Auth, ModuleType.Core);
-    loadModule(ModuleSysname.Navigation, ModuleType.Core);
-    loadModule(ModuleSysname.Toast, ModuleType.Core);
-    loadModule(ModuleSysname.Dialog, ModuleType.Core);
-    loadModule(ModuleSysname.Store, ModuleType.Core);
-    loadModule(ModuleSysname.Profile, ModuleType.Core);
-
-    // temporary
-    loadModule(ModuleSysname.Activities, ModuleType.Tool);
+    dispatch(
+      loadModulesActionCreator([
+        ...initialCoreModules,
+        {
+          sysname: ModuleSysname.Activities,
+          type: ModuleType.Tool,
+        },
+      ])
+    );
   }, []);
 
   React.useEffect(() => {
@@ -80,11 +80,11 @@ export const AppComponent = (
     <MuiThemeProvider theme={theme}>
       <div className="app-container">
         <React.Suspense fallback={null}>
-          <Spot spot={AppSpot.Default} />
+          <Spot spot={AppSpot.Default} moduleType={ModuleType.Core} />
         </React.Suspense>
       </div>
-      <Spot spot={AppSpot.Toast} />
-      <Spot spot={AppSpot.Dialog} />
+      <Spot spot={AppSpot.Toast} moduleType={ModuleType.Core} />
+      <Spot spot={AppSpot.Dialog} moduleType={ModuleType.Core} />
     </MuiThemeProvider>
   );
 };

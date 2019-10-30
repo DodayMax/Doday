@@ -11,7 +11,13 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import { css } from './css.desktop-topbar';
 import { ACLGuard } from '@root/components/acl-guard/acl-guard';
-import { sizes, LayoutType, TopbarSpot, BASE_ROUTES } from '@doday/lib';
+import {
+  sizes,
+  LayoutType,
+  TopbarSpot,
+  BASE_ROUTES,
+  ModuleType,
+} from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 import { useSelector, useDispatch } from 'react-redux';
 import { pushRouteActionCreator, baseRouteSelector } from '@core/navigation';
@@ -85,7 +91,11 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
         }
         forbidden={
           <Box mr={6}>
-            <Spot layoutType={LayoutType.Desktop} spot={TopbarSpot.Right} />
+            <Spot
+              layoutType={LayoutType.Desktop}
+              spot={TopbarSpot.Right}
+              moduleType={ModuleType.Core}
+            />
           </Box>
         }
       />

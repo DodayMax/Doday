@@ -1,18 +1,22 @@
 import { i18n } from '@services';
-import { ModuleType, ModuleSysname } from '@doday/lib';
+import { ModuleType, ModuleSysname, ModuleObject } from '@doday/lib';
 import store from '@root/store';
-import { addModuleActionCreator } from './redux/ms';
+import { addModuleActionCreator, addEntitiesActionCreator } from './init/ms';
 
 export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
   /** Set loading state */
   store.dispatch(
     addModuleActionCreator({
-      status: {
-        loading: true,
+      module: {
+        status: {
+          loading: true,
+        },
+        config: {
+          sysname,
+          type,
+        },
       },
-      config: {
-        sysname,
-      },
+      type,
     })
   );
   /** Load module */
@@ -22,24 +26,36 @@ export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
       loadedModule = loaded;
       store.dispatch(
         addModuleActionCreator({
-          ...loadedModule.default,
-          status: {
-            loading: false,
-            loaded: true,
+          module: {
+            ...loadedModule.default,
+            status: {
+              loading: false,
+              loaded: true,
+            },
           },
+          type,
         })
       );
+      /**
+       * Add entities provided by module
+       */
+      if (loaded.default.entities && loaded.default.entities.length) {
+        store.dispatch(addEntitiesActionCreator(loaded.default.entities));
+      }
     });
   } catch (err) {
     console.log(err);
     store.dispatch(
       addModuleActionCreator({
-        status: {
-          loading: false,
-          loaded: false,
-          error: err,
+        module: {
+          status: {
+            loading: false,
+            loaded: false,
+            error: err,
+          },
+          ...loadedModule.default,
         },
-        ...loadedModule.default,
+        type,
       })
     );
   }

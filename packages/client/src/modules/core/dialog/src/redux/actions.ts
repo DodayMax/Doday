@@ -7,6 +7,19 @@ export enum DialogActionConstants {
 }
 
 /**
+ * Define return types of actions
+ */
+
+export interface OpenDialogAction extends AnyAction {
+  type: DialogActionConstants.OPEN;
+  payload: any;
+}
+
+export interface CloseDialogAction extends AnyAction {
+  type: DialogActionConstants.CLOSE;
+}
+
+/**
  * Open Dialog
  *
  * @export
@@ -31,24 +44,6 @@ export function closeDialogActionCreator(): CloseDialogAction {
   return {
     type: DialogActionConstants.CLOSE,
   };
-}
-
-export default {
-  openDialogActionCreator,
-  closeDialogActionCreator,
-};
-
-/**
- * Define return types of actions
- */
-
-export interface OpenDialogAction extends AnyAction {
-  type: DialogActionConstants.OPEN;
-  payload: any;
-}
-
-export interface CloseDialogAction extends AnyAction {
-  type: DialogActionConstants.CLOSE;
 }
 
 /**

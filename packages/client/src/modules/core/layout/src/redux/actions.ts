@@ -8,6 +8,29 @@ export enum LayoutActionConstants {
 }
 
 /**
+ * Define return types of actions
+ */
+
+export interface ToggleDrawerAction extends AnyAction {
+  type: LayoutActionConstants.TOGGLE_DRAWER;
+  payload?: boolean;
+}
+
+export interface ToggleSidebarAction extends AnyAction {
+  type: LayoutActionConstants.TOGGLE_SIDEBAR;
+}
+
+export interface SetSidebarWidthAction extends AnyAction {
+  type: LayoutActionConstants.SET_SIDEBAR_WIDTH;
+  payload: number;
+}
+
+export interface ToggleThemeAction extends AnyAction {
+  type: LayoutActionConstants.TOGGLE_THEME;
+  payload: 'light' | 'dark';
+}
+
+/**
  * Toggle drawer
  *
  * @export
@@ -60,36 +83,6 @@ export function toggleThemeActionCreator(
     type: LayoutActionConstants.TOGGLE_THEME,
     payload: mode,
   };
-}
-
-export default {
-  toggleDrawerActionCreator,
-  toggleSidebarActionCreator,
-  toggleSidebarWidthActionCreator,
-  toggleThemeActionCreator,
-};
-
-/**
- * Define return types of actions
- */
-
-export interface ToggleDrawerAction extends AnyAction {
-  type: LayoutActionConstants.TOGGLE_DRAWER;
-  payload?: boolean;
-}
-
-export interface ToggleSidebarAction extends AnyAction {
-  type: LayoutActionConstants.TOGGLE_SIDEBAR;
-}
-
-export interface SetSidebarWidthAction extends AnyAction {
-  type: LayoutActionConstants.SET_SIDEBAR_WIDTH;
-  payload: number;
-}
-
-export interface ToggleThemeAction extends AnyAction {
-  type: LayoutActionConstants.TOGGLE_THEME;
-  payload: 'light' | 'dark';
 }
 
 /**

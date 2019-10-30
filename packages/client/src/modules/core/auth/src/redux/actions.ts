@@ -11,6 +11,37 @@ export enum AuthActionConstants {
 }
 
 /**
+ * Define return types of actions
+ */
+
+export interface SetAuthStatusAction extends AnyAction {
+  type: AuthActionConstants.SET_AUTH_STATUS;
+  payload: Status;
+}
+
+export interface SetIsAuthenticatedStatusAction extends AnyAction {
+  type: AuthActionConstants.SET_IS_AUTHENTICATED_STATUS;
+  payload: boolean;
+}
+
+export interface SignInWithGoogleAction extends AnyAction {
+  type: AuthActionConstants.SIGN_IN_WITH_GOOGLE;
+}
+
+export interface LogoutAction extends AnyAction {
+  type: AuthActionConstants.LOGOUT;
+}
+
+export interface SetHeroAction extends AnyAction {
+  type: AuthActionConstants.SET_HERO;
+  payload: Hero;
+}
+
+export interface GetCurrentHeroAction extends AnyAction {
+  type: AuthActionConstants.GET_CURRENT_HERO;
+}
+
+/**
  * Set auth status
  *
  * @export
@@ -87,46 +118,6 @@ export function getCurrentHeroActionCreator(): GetCurrentHeroAction {
   return {
     type: AuthActionConstants.GET_CURRENT_HERO,
   };
-}
-
-export default {
-  setAuthStatusActionCreator,
-  setIsAuthenticatedStatusAction,
-  signInWithGoogleActionCreator,
-  logoutActionCreator,
-  setHeroActionCreator,
-  getCurrentHeroActionCreator,
-};
-
-/**
- * Define return types of actions
- */
-
-export interface SetAuthStatusAction extends AnyAction {
-  type: AuthActionConstants.SET_AUTH_STATUS;
-  payload: Status;
-}
-
-export interface SetIsAuthenticatedStatusAction extends AnyAction {
-  type: AuthActionConstants.SET_IS_AUTHENTICATED_STATUS;
-  payload: boolean;
-}
-
-export interface SignInWithGoogleAction extends AnyAction {
-  type: AuthActionConstants.SIGN_IN_WITH_GOOGLE;
-}
-
-export interface LogoutAction extends AnyAction {
-  type: AuthActionConstants.LOGOUT;
-}
-
-export interface SetHeroAction extends AnyAction {
-  type: AuthActionConstants.SET_HERO;
-  payload: Hero;
-}
-
-export interface GetCurrentHeroAction extends AnyAction {
-  type: AuthActionConstants.GET_CURRENT_HERO;
 }
 
 /**

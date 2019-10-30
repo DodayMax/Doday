@@ -8,6 +8,7 @@ import {
   BaseToolState,
 } from '../common-interfaces';
 import { Hero, Node, Progress } from './nodes';
+import { Entity } from './entity';
 
 export type RootState = {
   router: RouterState;
@@ -25,7 +26,10 @@ export type RootState = {
 };
 
 export type ModuleSystemState = {
-  modules: { [key: string]: ModuleObject };
+  entities: Entity[];
+  core: { [key: string]: ModuleObject };
+  tools: { [key: string]: ModuleObject };
+  extensions: { [key: string]: ModuleObject };
 };
 
 export type SidebarState = {
