@@ -25,14 +25,14 @@ export const animated = (options?: AnimatedOptions) => (
     const [visible, updateVisible] = React.useState(false);
 
     React.useEffect(() => {
-      setTimeout(() => updateVisible(true), 300);
+      setTimeout(() => updateVisible(true), 200);
     }, []);
 
     const requestClose = (callback: () => void) => {
       updateVisible(false);
       setTimeout(() => {
         if (callback) callback();
-      }, 300);
+      }, 200);
     };
 
     const getAnimationClass = () => {

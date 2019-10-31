@@ -40,6 +40,9 @@ export const ActivitiesModuleObject: ModuleObject<
     NavigationSpot.StackedRoute,
     SpeedDialSpot.Item,
   ],
-  routes: [BASE_ROUTES.activities, STACKED_ROUTES.builder],
+  routes: [
+    BASE_ROUTES.activities,
+    `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`,
+  ],
   getView,
 };

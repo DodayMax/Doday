@@ -94,7 +94,7 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
             <Spot
               layoutType={LayoutType.Desktop}
               spot={TopbarSpot.Right}
-              moduleType={ModuleType.Core}
+              moduleTypes={[ModuleType.Core]}
             />
           </Box>
         }

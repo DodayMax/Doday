@@ -80,11 +80,11 @@ export const AppComponent = (
     <MuiThemeProvider theme={theme}>
       <div className="app-container">
         <React.Suspense fallback={null}>
-          <Spot spot={AppSpot.Default} moduleType={ModuleType.Core} />
+          <Spot spot={AppSpot.Default} moduleTypes={[ModuleType.Core]} />
         </React.Suspense>
       </div>
-      <Spot spot={AppSpot.Toast} moduleType={ModuleType.Core} />
-      <Spot spot={AppSpot.Dialog} moduleType={ModuleType.Core} />
+      <Spot spot={AppSpot.Toast} moduleTypes={[ModuleType.Core]} />
+      <Spot spot={AppSpot.Dialog} moduleTypes={[ModuleType.Core]} />
     </MuiThemeProvider>
   );
 };

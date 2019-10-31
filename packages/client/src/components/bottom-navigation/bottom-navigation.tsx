@@ -8,7 +8,9 @@ import FaceIcon from '@material-ui/icons/Face';
 import { useTranslation } from 'react-i18next';
 import { BASE_ROUTES } from '@doday/lib';
 
-export const DodayBottomNavigation = () => {
+export const DodayBottomNavigation = (
+  props: React.HTMLAttributes<HTMLDivElement>
+) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const baseRoute = useSelector(baseRouteSelector);
@@ -20,6 +22,7 @@ export const DodayBottomNavigation = () => {
         dispatch(pushRouteActionCreator(newValue));
       }}
       showLabels
+      {...props}
     >
       <BottomNavigationAction
         value={BASE_ROUTES.store}

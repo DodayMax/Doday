@@ -47,7 +47,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             <Spot
               layoutType={LayoutType.Mobile}
               spot={LayoutSpot.TopBar}
-              moduleType={ModuleType.Core}
+              moduleTypes={[ModuleType.Core]}
             />
           </Box>
         </AppBar>
@@ -69,7 +69,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             <Box>
               <Spot
                 renderAll
-                moduleType={ModuleType.Tool}
+                moduleTypes={[ModuleType.Tool]}
                 spot={DrawerSpot.ToolItem}
               />
             </Box>
@@ -83,7 +83,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             flexGrow={1}
             className={classes.page}
           >
-            <Spot spot={LayoutSpot.Page} moduleType={ModuleType.Core} />
+            <Spot spot={LayoutSpot.Page} moduleTypes={[ModuleType.Core]} />
             <DodaySpeedDial
               open={open}
               handleClose={handleClose}
@@ -91,7 +91,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             />
           </Box>
         </main>
-        <DodayBottomNavigation />
+        <DodayBottomNavigation className={classes.bottomNavigation} />
         <Backdrop open={open} className={classes.backdrop} />
       </>
     );

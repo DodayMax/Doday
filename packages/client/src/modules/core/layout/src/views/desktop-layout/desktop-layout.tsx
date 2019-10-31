@@ -62,7 +62,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
         <Spot
           layoutType={LayoutType.Desktop}
           spot={LayoutSpot.TopBar}
-          moduleType={ModuleType.Core}
+          moduleTypes={[ModuleType.Core]}
         />
       </AppBar>
       <React.Suspense fallback={null}>
@@ -91,7 +91,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
               <Spot
                 renderAll
                 spot={DrawerSpot.ToolItem}
-                moduleType={ModuleType.Tool}
+                moduleTypes={[ModuleType.Tool]}
               />
             </Box>
             <Box>
@@ -117,7 +117,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
             <Spot
               spot={LayoutSpot.Sidebar}
               route={sidebarRoute}
-              moduleType={ModuleType.Tool}
+              moduleTypes={[ModuleType.Tool]}
             />
           </section>
           <React.Suspense fallback={null}>
@@ -127,7 +127,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
               flexGrow={1}
               className={classes.mainContentContainer}
             >
-              <Spot spot={LayoutSpot.Page} moduleType={ModuleType.Core} />
+              <Spot spot={LayoutSpot.Page} moduleTypes={[ModuleType.Core]} />
             </Box>
           </React.Suspense>
           <DodaySpeedDial

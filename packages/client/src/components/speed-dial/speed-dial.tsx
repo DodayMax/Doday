@@ -15,12 +15,8 @@ import {
   openDialogActionCreator,
   closeDialogActionCreator,
 } from '@core/dialog';
-import {
-  toolModulesSelector,
-  creatableEntitiesLabelsSelector,
-} from '@root/modules/init/ms/selectors';
-import { SpeedDialSpot, NodeLabel, ModuleType } from '@doday/lib';
-import { ActivitySpeedDialItem } from '@root/modules/tools/activities/src/views/speed-dial-item/activity-speed-dial-item';
+import { creatableEntitiesLabelsSelector } from '@root/modules/init/ms/selectors';
+import { SpeedDialSpot, ModuleType } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -35,15 +31,23 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export interface SpeedDialProps {
-  handleOpen: () => void;
-  handleClose: () => void;
   open: boolean;
+  handleClose: () => void;
+  handleOpen: () => void;
+}
+
+export interface SpeedDialContext {
+  handleClose?: () => void;
 }
 
 const mockedActions = [
   { icon: <ShareIcon />, name: 'Dialog', action: openDialogActionCreator },
   { icon: <DeleteIcon />, name: 'Toast', action: openToastActionCreator },
 ];
+
+export const SpeedDialContext = React.createContext(
+  undefined as SpeedDialContext
+);
 
 export const DodaySpeedDial = (props: SpeedDialProps) => {
   const dispatch = useDispatch();
@@ -93,22 +97,31 @@ export const DodaySpeedDial = (props: SpeedDialProps) => {
   };
 
   return (
-    <>
+    <SpeedDialContext.Provider value={{ handleClose }}>
       <SpeedDial
         ariaLabel="Doday speed dial button"
         className={css.speedDial}
         icon={<SpeedDialIcon />}
+        open={open}
         onClose={handleClose}
         onOpen={handleOpen}
-        open={open}
       >
+        {mockedActions.map(action => (
+          <SpeedDialAction
+            key={action.name}
+            icon={action.icon}
+            tooltipOpen
+            tooltipTitle={action.name}
+            onClick={() => handleClick(action)}
+          />
+        ))}
         <Spot
-          moduleType={ModuleType.Tool}
+          moduleTypes={[ModuleType.Tool]}
           renderAll
           spot={SpeedDialSpot.Item}
           nodes={creatable}
         />
       </SpeedDial>
-    </>
+    </SpeedDialContext.Provider>
   );
 };

@@ -15,6 +15,7 @@ import {
   Box,
 } from '@material-ui/core';
 import { popFromStackActionCreator } from '@core/navigation';
+import { AnimatedContext } from '../animated/animated';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -22,7 +23,7 @@ const css = (theme: Theme) =>
       color: theme.palette.action.active,
       height: `${64}px`,
       boxSizing: 'border-box',
-      padding: `0 ${theme.spacing(6)}rem`,
+      padding: `0 ${theme.spacing(6)}px`,
     },
   });
 
@@ -47,7 +48,7 @@ export const PageHeader = withStyles(css)(
   (props: PageHeaderProps & WithStyles) => {
     const dispatch = useDispatch();
     const [anchor, updateAnchor] = React.useState();
-    // const requestClose = React.useContext(PageflowContext);
+    const requestClose = React.useContext(AnimatedContext);
 
     const handleOpen = (event: React.MouseEvent<any>) =>
       updateAnchor(event.currentTarget);
@@ -62,6 +63,7 @@ export const PageHeader = withStyles(css)(
           {status}
         </Box>
         <Box
+          width="100%"
           display="flex"
           flexGrow={1}
           justifyContent="flex-end"
@@ -108,7 +110,7 @@ export const PageHeader = withStyles(css)(
           {withClose && (
             <IconButton
               onClick={() => {
-                // if (requestClose) requestClose();
+                if (requestClose) requestClose();
                 setTimeout(() => {
                   dispatch(popFromStackActionCreator());
                   if (onClose) {

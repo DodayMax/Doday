@@ -8,11 +8,13 @@ import {
   NavigationSpot,
   NodeLabel,
   SpeedDialSpot,
+  STACKED_ROUTES,
 } from '@doday/lib';
 import { ActivitiesDrawerMenuItem } from './desktop-drawer-menu-item/desktop-drawer-menu-item';
-import { ActivitiesApp } from './activities-app/activities-app';
+import { MobileActivitiesApp, ActivitiesApp } from './activities-app';
 import { ActivitySpeedDialItem } from './speed-dial-item/activity-speed-dial-item';
 import { MobileActivitiesDrawerMenuItem } from './mobile-drawer-menu-item/mobile-drawer-menu-item';
+import { ActivityBuilder } from './activity-builder/activity-builder';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
@@ -54,19 +56,22 @@ export function getView(params: GetViewParams): ModuleView | undefined {
         case BASE_ROUTES.activities:
           if (params.layoutType === LayoutType.Mobile) {
             return {
-              component: ActivitiesApp,
+              component: MobileActivitiesApp,
               dependencies: [],
             };
           }
         default:
           return null;
       }
-    // case NavigationSpot.StackedRoute:
-    //   switch (true) {
-    //     case params.route.startsWith(STACKED_ROUTES.builder):
-    //       switch (params.label) {
-    //         case NodeLabel.Activity:
-    //       }
-    //   }
+    case NavigationSpot.StackedRoute:
+      switch (true) {
+        case params.route.startsWith(
+          `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`
+        ):
+          return {
+            component: ActivityBuilder,
+            dependencies: [],
+          };
+      }
   }
 }

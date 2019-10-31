@@ -24,4 +24,8 @@ export const mobileStyles = (theme: Theme) =>
     backdrop: {
       zIndex: theme.zIndex.drawer + 2,
     },
+    bottomNavigation: {
+      position: 'relative',
+      zIndex: theme.zIndex.mobileStepper,
+    },
   });
