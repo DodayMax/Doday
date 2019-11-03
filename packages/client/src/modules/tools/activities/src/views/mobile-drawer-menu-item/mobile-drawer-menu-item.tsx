@@ -3,8 +3,9 @@ import { ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import { useDispatch } from 'react-redux';
 import { pushRouteActionCreator } from '@core/navigation';
-import { ModuleSysname } from '@doday/lib';
+import { ModuleSysname, DodayRoutes } from '@doday/lib';
 import { toggleDrawerActionCreator } from '@root/modules/core/layout';
+import { routes } from '../../routes';
 
 export const MobileActivitiesDrawerMenuItem = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ export const MobileActivitiesDrawerMenuItem = () => {
       key={ModuleSysname.Activities}
       button
       onClick={() => {
-        dispatch(pushRouteActionCreator(`/${ModuleSysname.Activities}`));
+        dispatch(pushRouteActionCreator(routes.activityApp.create().build()));
         dispatch(toggleDrawerActionCreator());
       }}
     >

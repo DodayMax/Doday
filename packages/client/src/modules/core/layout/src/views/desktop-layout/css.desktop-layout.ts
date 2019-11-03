@@ -11,12 +11,12 @@ export const desktopStyles = (theme: Theme) =>
       display: 'flex',
     },
     mainContentContainer: {
-      marginTop: sizes.topbar,
-      height: `calc(100vh - ${sizes.topbar}px)`,
+      marginTop: sizes.topbarHeight,
+      height: `calc(100vh - ${sizes.topbarHeight}px)`,
     },
     // Topbar layout spot styles
     topbar: {
-      height: sizes.topbar,
+      height: sizes.topbarHeight,
       zIndex: theme.zIndex.drawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -59,9 +59,9 @@ export const desktopStyles = (theme: Theme) =>
       overflow: 'hidden',
     },
     sidebarContainer: {
-      minWidth: sizes.sidebar,
+      minWidth: sizes.sidebarWidth,
       maxWidth: '3rem',
-      marginTop: sizes.topbar,
+      marginTop: sizes.topbarHeight,
     },
     backdrop: {
       zIndex: theme.zIndex.drawer + 2,

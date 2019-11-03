@@ -4,22 +4,22 @@ import { sizes } from '@doday/lib';
 export const mobileStyles = (theme: Theme) =>
   createStyles({
     topbar: {
-      height: sizes.topbar,
+      height: sizes.topbarHeight,
       zIndex: theme.zIndex.drawer + 1,
       backgroundColor: theme.palette.grey[900],
     },
     topbarMock: {
-      height: sizes.topbar,
+      height: sizes.topbarHeight,
     },
     page: {
-      height: `calc(100vh - ${sizes.topbar}px - 54px)`,
+      height: `calc(100vh - ${sizes.topbarHeight}px - 54px)`,
     },
     drawer: {
-      minWidth: sizes.drawer,
+      minWidth: sizes.drawerWidth,
     },
     drawerHeader: {
       backgroundColor: theme.palette.grey[900],
-      minWidth: sizes.drawer,
+      minWidth: sizes.drawerWidth,
     },
     backdrop: {
       zIndex: theme.zIndex.drawer + 2,

@@ -17,9 +17,14 @@ export const DodayBottomNavigation = (
 
   return (
     <BottomNavigation
-      value={baseRoute}
+      value={baseRoute.path}
       onChange={(event, newValue) => {
-        dispatch(pushRouteActionCreator(newValue));
+        dispatch(
+          pushRouteActionCreator({
+            path: newValue,
+            url: newValue,
+          })
+        );
       }}
       showLabels
       {...props}

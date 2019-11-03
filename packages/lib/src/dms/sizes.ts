@@ -1,5 +1,6 @@
 export const sizes = {
-  topbar: 64,
-  drawer: 260,
-  sidebar: 280,
+  topbarHeight: 64,
+  drawerWidth: 260,
+  sidebarWidth: 280,
+  bottomNavigationHeight: 56,
 };

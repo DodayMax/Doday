@@ -2,7 +2,10 @@ import { NavigationState } from '@doday/lib';
 import { Action, ActionTypes } from './navigation-stack.actions';
 
 export const navigationInitialState: NavigationState = {
-  base: '/store',
+  base: {
+    path: '/store',
+    url: '/store',
+  },
   stack: [],
   sidebar: {},
 };
@@ -21,7 +24,7 @@ export default (
     case ActionTypes.STACK_ROUTE:
       return {
         ...state,
-        stack: !state.stack.includes(payload)
+        stack: !state.stack.find(route => route.path === payload.path)
           ? state.stack.concat(payload)
           : state.stack,
       };

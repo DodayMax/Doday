@@ -1,5 +1,10 @@
 import { i18n } from '@services';
-import { ModuleType, ModuleSysname, ModuleObject } from '@doday/lib';
+import {
+  ModuleType,
+  ModuleSysname,
+  ModuleObject,
+  DodayRoutes,
+} from '@doday/lib';
 import store from '@root/store';
 import { addModuleActionCreator, addEntitiesActionCreator } from './init/ms';
 
@@ -41,6 +46,12 @@ export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
        */
       if (loaded.default.entities && loaded.default.entities.length) {
         store.dispatch(addEntitiesActionCreator(loaded.default.entities));
+      }
+      /**
+       * Register routes provided by module
+       */
+      if (loaded.default.routes && loaded.default.routes.length) {
+        DodayRoutes.registerRoutes(loaded.default.routes);
       }
     });
   } catch (err) {

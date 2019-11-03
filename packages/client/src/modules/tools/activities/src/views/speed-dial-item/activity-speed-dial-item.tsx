@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
-import { NodeLabel, STACKED_ROUTES } from '@doday/lib';
+import {
+  NodeLabel,
+  STACKED_ROUTES,
+  DodayRoutes,
+  ModuleSysname,
+} from '@doday/lib';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { pushRouteActionCreator } from '@root/modules/core/navigation';
 import { SpeedDialContext } from '@root/components/speed-dial/speed-dial';
+import { routes } from '../../routes';
 
 export const ActivitySpeedDialItem = React.forwardRef((props, ref) => {
   const dispatch = useDispatch();
@@ -14,11 +20,7 @@ export const ActivitySpeedDialItem = React.forwardRef((props, ref) => {
 
   const handleClick = () => {
     handleClose();
-    dispatch(
-      pushRouteActionCreator(
-        `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`
-      )
-    );
+    dispatch(pushRouteActionCreator(routes.builder.create().build()));
   };
   return (
     <SpeedDialAction

@@ -9,6 +9,7 @@ import {
 } from '../common-interfaces';
 import { Hero, Node, Progress } from './nodes';
 import { Entity } from './entity';
+import { Route } from '../systems';
 
 export type RootState = {
   router: RouterState;
@@ -90,9 +91,9 @@ export interface DialogState {
 }
 
 export interface NavigationState {
-  base: string;
-  stack: string[];
+  base?: Route;
+  stack: Route[];
   sidebar: {
-    route?: string;
+    route?: Route;
   };
 }

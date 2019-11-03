@@ -85,7 +85,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
             flexGrow={1}
             flexDirection="column"
             justifyContent="space-between"
-            mt={`${sizes.topbar}px`}
+            mt={`${sizes.topbarHeight}px`}
           >
             <Box>
               <Spot

@@ -2,11 +2,11 @@ import {
   ModuleObject,
   ModuleSysname,
   NavigationSpot,
-  BASE_ROUTES,
   ModuleType,
 } from '@doday/lib';
 import { getView } from './views';
 import { en, ru } from './translations';
+import { routes } from './routes';
 
 export const ProfileModuleObject: ModuleObject<NavigationSpot.BaseRoute> = {
   status: {},
@@ -15,7 +15,7 @@ export const ProfileModuleObject: ModuleObject<NavigationSpot.BaseRoute> = {
     type: ModuleType.Core,
   },
   spots: [NavigationSpot.BaseRoute],
-  routes: [BASE_ROUTES.profile],
+  routes,
   translations: {
     en,
     ru,

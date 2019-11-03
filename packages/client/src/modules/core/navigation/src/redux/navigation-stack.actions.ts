@@ -1,4 +1,5 @@
 import { AnyAction } from 'redux';
+import { Route } from '@doday/lib';
 
 /*
  * Define action name constants here
@@ -18,20 +19,17 @@ export enum ActionTypes {
  */
 
 export interface PushRouteAction extends AnyAction {
-  payload: {
-    route: string;
-    state?: any;
-  };
+  payload: Route;
   type: ActionTypes.PUSH_ROUTE;
 }
 
 export interface SetBaseRouteAction extends AnyAction {
-  payload: string;
+  payload: Route;
   type: ActionTypes.SET_BASE_ROUTE;
 }
 
 export interface StackRouteAction extends AnyAction {
-  payload: string;
+  payload: Route;
   type: ActionTypes.STACK_ROUTE;
 }
 
@@ -45,7 +43,7 @@ export interface PopFromStackAction extends AnyAction {
 
 export interface ChangeSidebarRouteAction extends AnyAction {
   type: ActionTypes.CHANGE_SIDEBAR_ROUTE;
-  payload: string;
+  payload: Route;
 }
 
 export interface ClearStackAction extends AnyAction {
@@ -63,31 +61,23 @@ export const popFromStackActionCreator = (): PopFromStackAction => {
   };
 };
 
-export const pushRouteActionCreator = (
-  route: string,
-  state?: any
-): PushRouteAction => {
+export const pushRouteActionCreator = (route: Route): PushRouteAction => {
   return {
     type: ActionTypes.PUSH_ROUTE,
-    payload: {
-      route,
-      state,
-    },
+    payload: route,
   };
 };
 
 /** Actions to change state */
 
-export const setBaseRouteActionCreator = (
-  route: string
-): SetBaseRouteAction => {
+export const setBaseRouteActionCreator = (route: Route): SetBaseRouteAction => {
   return {
     type: ActionTypes.SET_BASE_ROUTE,
     payload: route,
   };
 };
 
-export const stackRouteActionCreator = (route: string): StackRouteAction => {
+export const stackRouteActionCreator = (route: Route): StackRouteAction => {
   return {
     type: ActionTypes.STACK_ROUTE,
     payload: route,
@@ -101,7 +91,7 @@ export const unstackRouteActionCreator = (): UnStackRouteAction => {
 };
 
 export const changeSidebarRouteActionCreator = (
-  route: string
+  route: Route
 ): ChangeSidebarRouteAction => {
   return {
     type: ActionTypes.CHANGE_SIDEBAR_ROUTE,

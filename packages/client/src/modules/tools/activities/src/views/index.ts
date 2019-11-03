@@ -19,8 +19,8 @@ import { ActivityBuilder } from './activity-builder/activity-builder';
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
     case LayoutSpot.Sidebar:
-      switch (params.route) {
-        case BASE_ROUTES.activities:
+      switch (true) {
+        case params.route && params.route.path === '/activities':
           return {
             component: ActivitiesApp,
             dependencies: [],
@@ -52,8 +52,8 @@ export function getView(params: GetViewParams): ModuleView | undefined {
           return null;
       }
     case NavigationSpot.BaseRoute:
-      switch (params.route) {
-        case BASE_ROUTES.activities:
+      switch (true) {
+        case params.route && params.route.path === '/activities':
           if (params.layoutType === LayoutType.Mobile) {
             return {
               component: MobileActivitiesApp,
@@ -65,9 +65,7 @@ export function getView(params: GetViewParams): ModuleView | undefined {
       }
     case NavigationSpot.StackedRoute:
       switch (true) {
-        case params.route.startsWith(
-          `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`
-        ):
+        case params.route && params.route.path === '/builder/activity':
           return {
             component: ActivityBuilder,
             dependencies: [],

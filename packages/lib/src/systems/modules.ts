@@ -2,6 +2,7 @@ import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
 import { LayoutType, AnySpot } from './spots';
 import { Entity } from '../models/entity';
+import { RouteModel, Route } from './routes';
 
 /**
  * Type of Activity
@@ -66,7 +67,7 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
    * Routes that the module uses and for which
    * it has views
    */
-  routes?: string[];
+  routes?: RouteModel[];
   /**
    * Function with which you can pick up the desired
    * views according to the passed parameters
@@ -88,7 +89,7 @@ export interface GetViewParams<T = AnySpot> {
   /** NodeLabel for which view is needed */
   node?: NodeLabel;
   /** Route to which view is needed */
-  route?: string;
+  route?: Route;
 }
 
 export interface Dynamic {

@@ -24,7 +24,6 @@ export function* loadModulesSaga(action: LoadModulesAction) {
   const tasks = action.payload.map(item =>
     call(loadModule, item.sysname, item.type)
   );
-  console.log(tasks);
   yield all(tasks);
 }
 

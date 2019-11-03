@@ -2,12 +2,12 @@ import {
   ModuleObject,
   ModuleSysname,
   NavigationSpot,
-  BASE_ROUTES,
   ModuleType,
   TopbarSpot,
 } from '@doday/lib';
 import { getView } from './views';
 import { en, ru } from './translations';
+import { routes } from './routes';
 
 export const StoreModuleObject: ModuleObject<
   NavigationSpot.BaseRoute | TopbarSpot.NavItem
@@ -18,7 +18,7 @@ export const StoreModuleObject: ModuleObject<
     type: ModuleType.Core,
   },
   spots: [NavigationSpot.BaseRoute, TopbarSpot.NavItem],
-  routes: [BASE_ROUTES.store],
+  routes,
   translations: {
     en,
     ru,

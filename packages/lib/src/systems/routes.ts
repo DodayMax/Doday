@@ -1,80 +1,114 @@
-import { BASE_ROUTES, STACKED_ROUTES } from '../constants';
 import { encodeQueryData } from '../utils';
+import { ModuleSysname } from './modules';
 
 export class DodayRoute {
   constructor(private _path: string) {}
 
-  private _params = '';
-
-  /**
-   * Base routes of the doday app (not closable)
-   */
-  static base = {
-    store: {
-      page: new DodayRoute(`${BASE_ROUTES.store}`),
-    },
-    profile: {
-      page: new DodayRoute(`${BASE_ROUTES.profile}`),
-    },
-  };
-
-  /**
-   * Stacked routes of the doday app
-   * (pushed in navigation stack, closable)
-   */
-  static stacked = {
-    dodays: {
-      id: (id: string) => {
-        return new DodayRoute(`${STACKED_ROUTES.dodays}/${id}`);
-      },
-    },
-    progress: {
-      id: (id: string) => {
-        return new DodayRoute(`${STACKED_ROUTES.progress}/${id}`);
-      },
-    },
-    builder: (tool: string) =>
-      new DodayRoute(`${STACKED_ROUTES.builder}/${tool}`),
-  };
+  private _params: { [key: string]: string } | undefined;
+  private _paramsString = '';
 
   /**
    * Query params for the new route
    */
-  public query = (params?: { [key: string]: string | number }) => {
+  public query = (params?: { [key: string]: string }) => {
     let paramsString = '';
     if (params) paramsString = `?${encodeQueryData(params)}`;
-
-    this._params = paramsString;
+    this._params = params;
+    this._paramsString = paramsString;
   };
 
   /**
    * Parse new route to string
    */
-  public toString = () => {
-    return `${this._path}${this._params}`;
-  };
-
-  /**
-   * Parse route from url to object
-   * { path: string, params: { [key]: value } }
-   */
-  static parseRoute = (route: string) => {
-    console.log(route);
-    const parts = route.split('?');
-    const base = parts[0];
-    const params = {};
-    console.log(parts);
-    if (parts.length > 1) {
-      const hashes = route.slice(route.indexOf('?') + 1).split('&');
-      hashes.map(hash => {
-        const [key, val] = hash.split('=');
-        params[key] = decodeURIComponent(val);
-      });
-    }
-
+  public build = (): Route => {
     return {
-      path: base,
-      params,
+      path: this._path,
+      params: this._params,
+      url: `${this._path}${this._paramsString}`,
     };
   };
+}
+
+export class RouteSystem {
+  protected static _instance: RouteSystem;
+
+  constructor() {
+    if (RouteSystem._instance) {
+      throw new Error(
+        'Instantiation failed: ' +
+          'use RouteSystem.getInstance() instead of new.'
+      );
+    }
+    RouteSystem._instance = this;
+  }
+
+  private _registeredRoutes: { [key: string]: RouteModel } = {};
+
+  /**
+   * Registered routes
+   */
+  public get routes() {
+    return this._registeredRoutes;
+  }
+
+  /**
+   * Register new routes in the system
+   */
+  public registerRoutes = (routes?: RouteModel[]) => {
+    if (!routes) return;
+    routes.forEach(route => {
+      this._registeredRoutes = {
+        ...this._registeredRoutes,
+        [route.sysname]: route,
+      };
+    });
+  };
+
+  public test = (path: string): RouteModel | undefined => {
+    let matchedRoutes: RouteModel[] = [];
+    Object.values(this._registeredRoutes).forEach(route => {
+      if (route.pattern.test(path)) {
+        matchedRoutes.push(route);
+      }
+    });
+    if (matchedRoutes.length) {
+      return matchedRoutes[0];
+    }
+    return;
+  };
+
+  public static getInstance(): RouteSystem {
+    if (RouteSystem._instance) {
+      return RouteSystem._instance;
+    }
+    return (RouteSystem._instance = new RouteSystem());
+  }
+}
+
+const DodayRoutes = new RouteSystem();
+
+export { DodayRoutes };
+
+export interface RouteModel {
+  sysname: string;
+  path: string;
+  type: RouteType;
+  pattern: RegExp;
+  create: (...params: string[]) => DodayRoute;
+  parse: (path: string) => Route;
+  provider: ModuleSysname;
+}
+
+export interface Route {
+  path: string;
+  params?: { [key: string]: string };
+  query?: { [key: string]: string };
+  payload?: any;
+  url: string;
+}
+
+export enum RouteType {
+  Base = 'base',
+  Stacked = 'stacked',
+  Sidebar = 'sidebar',
 }

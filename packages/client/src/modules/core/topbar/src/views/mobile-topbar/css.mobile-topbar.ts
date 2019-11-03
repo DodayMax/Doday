@@ -13,7 +13,7 @@ export const css = (theme: Theme) =>
     },
     topBar: {
       justifyContent: 'space-between',
-      height: sizes.topbar,
+      height: sizes.topbarHeight,
     },
     white: {
       color: theme.palette.common.white,

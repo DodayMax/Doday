@@ -1,21 +1,21 @@
 import { takeLatest, select, put, call, all } from 'redux-saga/effects';
 import * as navigationActions from './navigation-stack.actions';
-import { BASE_ROUTES, STATIC_ROUTES, DodayRoute } from '@doday/lib';
+import { DodayRoutes, RouteType } from '@doday/lib';
 import { push } from 'connected-react-router';
 import { navigationStateSelector } from './selectors';
 
 export function* pushRouteSaga(action: navigationActions.PushRouteAction) {
-  const parsed = yield call(DodayRoute.parseRoute, action.payload.route);
-  if (Object.values(STATIC_ROUTES).includes(parsed.path)) return;
-  if (Object.values(BASE_ROUTES).includes(parsed.path)) {
-    yield put(
-      navigationActions.setBaseRouteActionCreator(action.payload.route)
-    );
+  const route = yield call(DodayRoutes.test, action.payload.url);
+  if (
+    (route && route.type === RouteType.Base) ||
+    (route && route.type === RouteType.Sidebar)
+  ) {
+    yield put(navigationActions.setBaseRouteActionCreator(action.payload));
     yield put(navigationActions.clearStackActionCreator());
-  } else {
-    yield put(navigationActions.stackRouteActionCreator(action.payload.route));
+  } else if (route && route.type === RouteType.Stacked) {
+    yield put(navigationActions.stackRouteActionCreator(action.payload));
   }
-  yield put(push(action.payload.route, action.payload.state));
+  yield put(push(action.payload.url, action.payload.payload));
 }
 
 export function* popRouteSaga(action: navigationActions.PopFromStackAction) {

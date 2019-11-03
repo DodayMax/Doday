@@ -18,7 +18,7 @@ export const NavigationStack = () => {
         ? navigation.stack.map((route, index) => {
             return (
               <ModuleWrapper
-                key={route}
+                key={route.path}
                 spot={NavigationSpot.StackedRoute}
                 route={route}
                 moduleTypes={[ModuleType.Tool]}

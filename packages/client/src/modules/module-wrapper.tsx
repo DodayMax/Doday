@@ -65,10 +65,6 @@ export const ModuleWrapper = React.memo(
       allModules.push(...Object.values(extensions));
     }
 
-    if (spot === NavigationSpot.StackedRoute) {
-      console.log(allModules);
-    }
-
     /**
      * If `module` prop is passed just render it
      */
@@ -92,7 +88,8 @@ export const ModuleWrapper = React.memo(
     const suitableModules = allModules.filter(module => {
       const hasSpot = module.spots && module.spots.includes(spot);
       const hasViewForRoute = route
-        ? module.routes && module.routes.includes(route)
+        ? module.routes &&
+          module.routes.find(moduleRoute => moduleRoute.path === route.path)
         : true;
       const hasNodeLabel =
         node && module.nodes ? module.nodes.includes(node) : true;
@@ -101,7 +98,6 @@ export const ModuleWrapper = React.memo(
     });
 
     const loadingModules = allModules.filter(module => module.status.loading);
-
     /**
      * If there are no suited modules for this spot and
      * there are no loading modules just end

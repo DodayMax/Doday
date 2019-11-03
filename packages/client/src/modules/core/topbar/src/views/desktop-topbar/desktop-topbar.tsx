@@ -48,7 +48,13 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
   const { t } = useTranslation('topbar');
 
   const handleBaseUrlChange = (e, value) => {
-    value && dispatch(pushRouteActionCreator(value));
+    value &&
+      dispatch(
+        pushRouteActionCreator({
+          path: value,
+          url: value,
+        })
+      );
   };
 
   return (
@@ -56,13 +62,13 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
       <Box
         display="flex"
         justifyContent="center"
-        style={{ width: sizes.topbar }}
+        style={{ width: sizes.topbarHeight }}
       >
         <IconButton>
           <img src={logo} style={{ width: '40px', height: '40px' }} />
         </IconButton>
       </Box>
-      <Box style={{ width: sizes.sidebar }}></Box>
+      <Box style={{ width: sizes.topbarHeight }}></Box>
       <ACLGuard
         allowed={
           <Box
@@ -75,7 +81,7 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
               <StyledToggleButtonGroup
                 size="small"
                 exclusive
-                value={baseRoute}
+                value={baseRoute.path}
                 aria-label="Top bar navigation"
                 onChange={handleBaseUrlChange}
               >

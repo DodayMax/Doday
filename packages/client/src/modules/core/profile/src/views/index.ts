@@ -9,8 +9,8 @@ import { Profile } from './profile/profile';
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
     case NavigationSpot.BaseRoute:
-      switch (params.route) {
-        case BASE_ROUTES.profile:
+      switch (true) {
+        case params.route.path === BASE_ROUTES.profile:
           return {
             component: Profile,
             dependencies: [],

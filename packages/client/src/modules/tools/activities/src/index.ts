@@ -1,17 +1,16 @@
 import {
   ModuleObject,
   ModuleSysname,
-  BASE_ROUTES,
   DrawerSpot,
   LayoutSpot,
   NavigationSpot,
   NodeLabel,
-  STACKED_ROUTES,
   SpeedDialSpot,
   ModuleType,
 } from '@doday/lib';
 import { getView } from './views';
 import { Behavior } from '@doday/lib/dist/src/models/entity';
+import { routes } from './routes';
 
 export const ActivitiesModuleObject: ModuleObject<
   | DrawerSpot.ToolItem
@@ -40,9 +39,6 @@ export const ActivitiesModuleObject: ModuleObject<
     NavigationSpot.StackedRoute,
     SpeedDialSpot.Item,
   ],
-  routes: [
-    BASE_ROUTES.activities,
-    `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`,
-  ],
+  routes: Object.values(routes),
   getView,
 };

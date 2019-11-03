@@ -3,6 +3,7 @@ import { ListItemIcon, ListItemText, ListItem } from '@material-ui/core';
 import DataUsageIcon from '@material-ui/icons/DataUsage';
 import { useDispatch } from 'react-redux';
 import { changeSidebarRouteActionCreator } from '@core/navigation';
+import { routes } from '../../routes';
 import { ModuleSysname } from '@doday/lib';
 
 export const ActivitiesDrawerMenuItem = () => {
@@ -14,7 +15,7 @@ export const ActivitiesDrawerMenuItem = () => {
       button
       onClick={() => {
         dispatch(
-          changeSidebarRouteActionCreator(`/${ModuleSysname.Activities}`)
+          changeSidebarRouteActionCreator(routes.activityApp.create().build())
         );
       }}
     >

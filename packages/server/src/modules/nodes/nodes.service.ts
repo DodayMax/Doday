@@ -13,7 +13,6 @@ export class NodesService {
     const parsedParams: NodesQueryParamsDto = {};
     if (params.labels) {
       parsedParams.labels = params.labels.split(', ').join(' :');
-      console.log(parsedParams);
     }
     const tx = session.beginTransaction();
     try {
