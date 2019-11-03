@@ -21,5 +21,6 @@ export enum RouteSysname {
   Dodays = 'dodays',
   Progress = 'progress',
   ActivityBuilder = 'activityBuilder',
+  ActivityDetails = 'activityDetails',
   Welcome = 'welcome',
 }

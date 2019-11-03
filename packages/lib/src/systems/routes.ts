@@ -7,24 +7,53 @@ export class DodayRoute {
   private _params: { [key: string]: string } | undefined;
   private _paramsString = '';
 
+  private _queryParams: { [key: string]: string } | undefined;
+  private _queryParamsString = '';
+
+  private _payload: any;
+
   /**
-   * Query params for the new route
+   * Set params for new route
    */
-  public query = (params?: { [key: string]: string }) => {
+  public params = (params?: { [key: string]: string }) => {
     let paramsString = '';
-    if (params) paramsString = `?${encodeQueryData(params)}`;
+    if (params) paramsString = `/${Object.values(params).join('/')}`;
     this._params = params;
     this._paramsString = paramsString;
+    return this;
   };
 
   /**
-   * Parse new route to string
+   * Query params for the new route
+   */
+  public query = (query?: { [key: string]: string }) => {
+    let queryParamsString = '';
+    if (query) queryParamsString = `?${encodeQueryData(query)}`;
+    this._queryParams = query;
+    this._queryParamsString = queryParamsString;
+    return this;
+  };
+
+  /**
+   * Attach payload to the route object
+   */
+  public payload = (payload?: any) => {
+    if (payload) {
+      this._payload = payload;
+    }
+    return this;
+  };
+
+  /**
+   * Parse new route to `Route` object
    */
   public build = (): Route => {
     return {
       path: this._path,
       params: this._params,
-      url: `${this._path}${this._paramsString}`,
+      query: this._queryParams,
+      payload: this._payload,
+      url: `${this._path}${this._paramsString}${this._queryParamsString}`,
     };
   };
 }

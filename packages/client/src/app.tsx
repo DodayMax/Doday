@@ -48,6 +48,7 @@ export const AppComponent = (
     dispatch(
       loadModulesActionCreator([
         ...initialCoreModules,
+        // Replace it with all bought modules by Hero
         {
           sysname: ModuleSysname.Activities,
           type: ModuleType.Tool,

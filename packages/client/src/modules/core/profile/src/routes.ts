@@ -13,7 +13,7 @@ export const routes: RouteModel[] = [
     sysname: RouteSysname.Profile,
     path: BASE_ROUTES.profile,
     type: RouteType.Base,
-    pattern: new RegExp(BASE_ROUTES.profile),
+    pattern: new RegExp(`^${BASE_ROUTES.profile}`),
     create: () => new DodayRoute(BASE_ROUTES.profile),
     parse: (path: string): Route | undefined => {
       const result = path.match(new RegExp(BASE_ROUTES.profile));

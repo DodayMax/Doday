@@ -15,6 +15,8 @@ import { MobileActivitiesApp, ActivitiesApp } from './activities-app';
 import { ActivitySpeedDialItem } from './speed-dial-item/activity-speed-dial-item';
 import { MobileActivitiesDrawerMenuItem } from './mobile-drawer-menu-item/mobile-drawer-menu-item';
 import { ActivityBuilder } from './activity-builder/activity-builder';
+import { routes } from '../routes';
+import { ActivityDetails } from './activity-details/activity-details';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
@@ -65,11 +67,14 @@ export function getView(params: GetViewParams): ModuleView | undefined {
       }
     case NavigationSpot.StackedRoute:
       switch (true) {
-        case params.route &&
-          params.route.path ===
-            `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`:
+        case params.route && routes.builder.pattern.test(params.route.url):
           return {
             component: ActivityBuilder,
+            dependencies: [],
+          };
+        case params.route && routes.details.pattern.test(params.route.url):
+          return {
+            component: ActivityDetails,
             dependencies: [],
           };
       }

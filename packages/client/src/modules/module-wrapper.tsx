@@ -9,7 +9,6 @@ import {
   LayoutType,
   NodeLabel,
   ModuleType,
-  NavigationSpot,
 } from '@doday/lib';
 import { Icons } from '@doday/ui';
 import store from '@root/store';
@@ -195,7 +194,14 @@ export const wrapModuleView = (
   const Component = view.component;
 
   if (!view.dependencies.length) {
-    return <Component key={module.config.sysname} {...props} {...view.props} />;
+    return (
+      <Component
+        key={module.config.sysname}
+        route={params.route}
+        {...props}
+        {...view.props}
+      />
+    );
   }
 
   return (
@@ -204,7 +210,7 @@ export const wrapModuleView = (
       modules={[...view.dependencies]}
       createStore={() => store}
     >
-      <Component {...props} {...view.props} />
+      <Component {...props} route={params.route} {...view.props} />
     </DynamicModuleLoader>
   );
 };
