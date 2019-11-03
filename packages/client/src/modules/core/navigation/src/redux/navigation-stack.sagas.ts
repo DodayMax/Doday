@@ -19,12 +19,12 @@ export function* pushRouteSaga(action: navigationActions.PushRouteAction) {
 }
 
 export function* popRouteSaga(action: navigationActions.PopFromStackAction) {
-  const navStack = yield select(navigationStateSelector);
-  const popped = [...navStack.stack.slice(0, navStack.stack.length - 1)];
+  const navigation = yield select(navigationStateSelector);
+  const popped = [...navigation.stack.slice(0, navigation.stack.length - 1)];
   if (popped.length) {
-    yield put(push(popped[popped.length - 1]));
+    yield put(push(popped[popped.length - 1].url));
   } else {
-    yield put(push(navStack.base));
+    yield put(push(navigation.base.url));
   }
   yield put(navigationActions.unstackRouteActionCreator());
 }

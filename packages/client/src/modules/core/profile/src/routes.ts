@@ -4,17 +4,19 @@ import {
   ModuleSysname,
   DodayRoute,
   Route,
+  BASE_ROUTES,
+  RouteSysname,
 } from '@doday/lib';
 
 export const routes: RouteModel[] = [
   {
-    sysname: 'profile',
-    path: '/profile',
+    sysname: RouteSysname.Profile,
+    path: BASE_ROUTES.profile,
     type: RouteType.Base,
-    pattern: new RegExp('/profile'),
-    create: () => new DodayRoute('/profile'),
+    pattern: new RegExp(BASE_ROUTES.profile),
+    create: () => new DodayRoute(BASE_ROUTES.profile),
     parse: (path: string): Route | undefined => {
-      const result = path.match(new RegExp('/profile'));
+      const result = path.match(new RegExp(BASE_ROUTES.profile));
       if (result.length) {
         return {
           path: result[0],

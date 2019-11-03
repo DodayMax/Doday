@@ -1,10 +1,12 @@
-import { call, takeLatest, all } from 'redux-saga/effects';
+import { call, takeLatest, all, put } from 'redux-saga/effects';
 import {
   LoadModuleAction,
   ModuleSystemActionConstants,
   LoadModulesAction,
 } from './actions';
 import { loadModule } from '@root/modules/loader';
+import { pushRouteActionCreator } from '@root/modules/core/navigation';
+import { DodayRoutes } from '@doday/lib';
 
 /**
  * Load new single module
@@ -25,6 +27,13 @@ export function* loadModulesSaga(action: LoadModulesAction) {
     call(loadModule, item.sysname, item.type)
   );
   yield all(tasks);
+  /**
+   * Push initial route to stack
+   */
+  const route = yield call(DodayRoutes.test, window.location.pathname);
+  if (route) {
+    yield put(pushRouteActionCreator(route.create().build()));
+  }
 }
 
 export default function* runMSSagas() {

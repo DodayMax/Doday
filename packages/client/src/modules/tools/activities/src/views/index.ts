@@ -20,7 +20,7 @@ export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
     case LayoutSpot.Sidebar:
       switch (true) {
-        case params.route && params.route.path === '/activities':
+        case params.route && params.route.path === BASE_ROUTES.activities:
           return {
             component: ActivitiesApp,
             dependencies: [],
@@ -53,7 +53,7 @@ export function getView(params: GetViewParams): ModuleView | undefined {
       }
     case NavigationSpot.BaseRoute:
       switch (true) {
-        case params.route && params.route.path === '/activities':
+        case params.route && params.route.path === BASE_ROUTES.activities:
           if (params.layoutType === LayoutType.Mobile) {
             return {
               component: MobileActivitiesApp,
@@ -65,7 +65,9 @@ export function getView(params: GetViewParams): ModuleView | undefined {
       }
     case NavigationSpot.StackedRoute:
       switch (true) {
-        case params.route && params.route.path === '/builder/activity':
+        case params.route &&
+          params.route.path ===
+            `${STACKED_ROUTES.builder}/${NodeLabel.Activity.toLowerCase()}`:
           return {
             component: ActivityBuilder,
             dependencies: [],

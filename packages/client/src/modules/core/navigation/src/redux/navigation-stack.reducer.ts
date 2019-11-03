@@ -1,10 +1,10 @@
-import { NavigationState } from '@doday/lib';
+import { NavigationState, BASE_ROUTES } from '@doday/lib';
 import { Action, ActionTypes } from './navigation-stack.actions';
 
 export const navigationInitialState: NavigationState = {
   base: {
-    path: '/store',
-    url: '/store',
+    path: BASE_ROUTES.store,
+    url: BASE_ROUTES.store,
   },
   stack: [],
   sidebar: {},

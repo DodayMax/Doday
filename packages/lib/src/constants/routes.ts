@@ -13,3 +13,13 @@ export const STACKED_ROUTES = {
 export const STATIC_ROUTES = {
   welcome: '/welcome',
 };
+
+export enum RouteSysname {
+  Store = 'store',
+  Profile = 'profile',
+  Activities = 'activities',
+  Dodays = 'dodays',
+  Progress = 'progress',
+  ActivityBuilder = 'activityBuilder',
+  Welcome = 'welcome',
+}
