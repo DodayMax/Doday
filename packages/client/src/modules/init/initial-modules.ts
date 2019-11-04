@@ -2,6 +2,10 @@ import { ModuleSysname, ModuleType } from '@doday/lib';
 
 export const initialCoreModules = [
   {
+    sysname: ModuleSysname.MS,
+    type: ModuleType.Core,
+  },
+  {
     sysname: ModuleSysname.Layout,
     type: ModuleType.Core,
   },
@@ -23,6 +27,10 @@ export const initialCoreModules = [
   },
   {
     sysname: ModuleSysname.Store,
+    type: ModuleType.Core,
+  },
+  {
+    sysname: ModuleSysname.StoreFilter,
     type: ModuleType.Core,
   },
   {

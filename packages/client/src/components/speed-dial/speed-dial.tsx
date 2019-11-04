@@ -15,7 +15,7 @@ import {
   openDialogActionCreator,
   closeDialogActionCreator,
 } from '@core/dialog';
-import { creatableEntitiesLabelsSelector } from '@root/modules/init/ms/selectors';
+import { creatableEntitiesLabelsSelector } from '@root/modules/core/ms/src/redux/selectors';
 import { SpeedDialSpot, ModuleType } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 

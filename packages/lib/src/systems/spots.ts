@@ -4,7 +4,8 @@ export type AnySpot =
   | NavigationSpot
   | TopbarSpot
   | DrawerSpot
-  | SpeedDialSpot;
+  | SpeedDialSpot
+  | StoreSpot;
 
 export enum LayoutType {
   Desktop = 'Desktop',
@@ -44,4 +45,9 @@ export enum DrawerSpot {
 
 export enum SpeedDialSpot {
   Item = 'SpeedDialSpot.Item',
+}
+
+export enum StoreSpot {
+  Filter = 'StoreSpot.Filter',
+  Grid = 'StoreSpot.Grid',
 }

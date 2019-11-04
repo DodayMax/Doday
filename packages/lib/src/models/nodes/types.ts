@@ -13,6 +13,7 @@ export enum NodeLabel {
    * Node labels which are used by actual Node instances
    */
   Module = 'Module',
+  ModuleProgress = 'ModuleProgress',
   Hero = 'Hero',
   Activity = 'Activity',
   ActivityProgress = 'ActivityProgress',

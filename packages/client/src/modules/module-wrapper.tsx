@@ -16,7 +16,7 @@ import {
   coreModulesSelector,
   toolModulesSelector,
   extensionModulesSelector,
-} from './init/ms/selectors';
+} from './core/ms/src/redux/selectors';
 
 interface ModuleWrapperProps extends GetViewParams {
   moduleTypes: ModuleType[];
@@ -31,6 +31,10 @@ interface ModuleWrapperProps extends GetViewParams {
    * Only works with `renderAll` prop
    */
   nodes?: NodeLabel[];
+  /**
+   * You can passthrough any kind of props
+   */
+  [key: string]: any;
 }
 
 export const ModuleWrapper = React.memo(

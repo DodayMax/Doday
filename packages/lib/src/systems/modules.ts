@@ -18,6 +18,8 @@ export enum ModuleSysname {
   Dialog = 'dialog',
   Topbar = 'topbar',
   Store = 'store',
+  StoreFilter = 'store-filter',
+  StoreGrid = 'store-grid',
   Profile = 'profile',
   Activities = 'activities',
 }
@@ -103,6 +105,10 @@ export interface Dynamic {
 export type ModuleConfig = {
   sysname: ModuleSysname;
   type: ModuleType;
+};
+
+export type WithRoute = {
+  route: Route;
 };
 
 export type WithTools = {

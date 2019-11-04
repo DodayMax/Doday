@@ -6,7 +6,10 @@ import {
   DodayRoutes,
 } from '@doday/lib';
 import store from '@root/store';
-import { addModuleActionCreator, addEntitiesActionCreator } from './init/ms';
+import {
+  addModuleActionCreator,
+  addEntitiesActionCreator,
+} from './core/ms/src/redux';
 
 export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
   /** Set loading state */

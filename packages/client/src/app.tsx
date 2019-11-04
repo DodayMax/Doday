@@ -19,7 +19,7 @@ import {
   getCurrentHeroActionCreator,
   setIsAuthenticatedStatusAction,
 } from './modules/core/auth/src/redux';
-import { loadModulesActionCreator } from './modules/init/ms';
+import { loadModulesActionCreator } from './modules/core/ms/src/redux';
 import { initialCoreModules } from './modules/init/initial-modules';
 
 interface AppProps {}
