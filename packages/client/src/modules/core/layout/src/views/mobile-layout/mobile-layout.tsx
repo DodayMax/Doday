@@ -69,7 +69,7 @@ export const MobileLayout = withStyles(mobileStyles, { withTheme: true })(
             <Box>
               <Spot
                 renderAll
-                moduleTypes={[ModuleType.Tool]}
+                moduleTypes={[ModuleType.Tool, ModuleType.Core]}
                 spot={DrawerSpot.ToolItem}
               />
             </Box>

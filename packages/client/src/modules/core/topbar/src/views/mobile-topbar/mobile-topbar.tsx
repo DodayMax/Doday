@@ -1,18 +1,25 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Toolbar,
   IconButton,
   withStyles,
   WithStyles,
   Box,
+  Zoom,
 } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
 import { toggleDrawerActionCreator } from '@core/layout';
 import { css } from './css.mobile-topbar';
+import {
+  navigationStackSelector,
+  popFromStackActionCreator,
+} from '@root/modules/core/navigation';
 
 export const MobileTopbar = withStyles(css)((props: WithStyles) => {
   const dispatch = useDispatch();
+  const navigationStack = useSelector(navigationStackSelector);
 
   const { classes } = props;
 
@@ -28,6 +35,16 @@ export const MobileTopbar = withStyles(css)((props: WithStyles) => {
           <MenuIcon />
         </IconButton>
       </Box>
+      <Zoom in={!!navigationStack.length}>
+        <IconButton
+          onClick={() => {
+            dispatch(popFromStackActionCreator());
+          }}
+          aria-label="Close"
+        >
+          <CloseIcon />
+        </IconButton>
+      </Zoom>
     </Toolbar>
   );
 });

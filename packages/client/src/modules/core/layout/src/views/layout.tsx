@@ -3,7 +3,9 @@ import Media from 'react-media';
 import { DesktopLayout } from './desktop-layout/desktop-layout';
 import { MobileLayout } from './mobile-layout/mobile-layout';
 import { loadModule } from '@root/modules/loader';
-import { ModuleSysname, ModuleType } from '@doday/lib';
+import { ModuleSysname, ModuleType, LayoutType } from '@doday/lib';
+
+export const LayoutContext = React.createContext(null as LayoutType);
 
 export const Layout = () => {
   useEffect(() => {
@@ -15,7 +17,17 @@ export const Layout = () => {
 
   return (
     <Media query={`(max-width: 768px)`}>
-      {matches => (matches ? <MobileLayout /> : <DesktopLayout />)}
+      {matches =>
+        matches ? (
+          <LayoutContext.Provider value={LayoutType.Mobile}>
+            <MobileLayout />
+          </LayoutContext.Provider>
+        ) : (
+          <LayoutContext.Provider value={LayoutType.Desktop}>
+            <DesktopLayout />
+          </LayoutContext.Provider>
+        )
+      }
     </Media>
   );
 };

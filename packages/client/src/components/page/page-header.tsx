@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core';
 import { popFromStackActionCreator } from '@core/navigation';
 import { AnimatedContext } from '../animated/animated';
+import { LayoutContext } from '@root/modules/core/layout/src/views/layout';
+import { LayoutType } from '@doday/lib';
 
 const css = (theme: Theme) =>
   createStyles({
@@ -49,6 +51,9 @@ export const PageHeader = withStyles(css)(
     const dispatch = useDispatch();
     const [anchor, updateAnchor] = React.useState();
     const requestClose = React.useContext(AnimatedContext);
+    const layoutType = React.useContext(LayoutContext);
+
+    if (layoutType === LayoutType.Mobile) return null;
 
     const handleOpen = (event: React.MouseEvent<any>) =>
       updateAnchor(event.currentTarget);
