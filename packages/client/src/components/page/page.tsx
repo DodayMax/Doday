@@ -23,7 +23,11 @@ const css = (theme: Theme) =>
       overflowY: 'scroll',
     },
     stacked: {
-      position: 'relative',
+      position: 'absolute',
+      top: 0,
+      bottom: 0,
+      left: 0,
+      right: 0,
       zIndex: 1,
       backgroundColor: theme.palette.background.default,
     },

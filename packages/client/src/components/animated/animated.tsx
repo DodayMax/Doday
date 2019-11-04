@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { CSSTransition } from 'react-transition-group';
 import { RouteComponentProps } from 'react-router';
-import { useDispatch } from 'react-redux';
-import { popFromStackActionCreator } from '@root/modules/core/navigation';
 
 export enum AnimationType {
   UP = 'UP',
@@ -24,7 +22,6 @@ export const animated = (options?: AnimatedOptions) => (
   WrappedComponent: React.ComponentType<any>
 ): any => {
   return (props: React.HTMLAttributes<any> & RouteComponentProps<any, any>) => {
-    const dispatch = useDispatch();
     const [visible, updateVisible] = React.useState(false);
 
     React.useEffect(() => {
@@ -35,7 +32,6 @@ export const animated = (options?: AnimatedOptions) => (
       updateVisible(false);
       setTimeout(() => {
         if (callback) callback();
-        dispatch(popFromStackActionCreator());
       }, 200);
     };
 

@@ -54,11 +54,11 @@ export const ModuleWrapper = React.memo(
     const extensions = useSelector(extensionModulesSelector);
     const allModules = [];
 
-    if (moduleTypes.includes(ModuleType.Core)) {
-      allModules.push(...Object.values(core));
-    }
     if (moduleTypes.includes(ModuleType.Tool)) {
       allModules.push(...Object.values(tools));
+    }
+    if (moduleTypes.includes(ModuleType.Core)) {
+      allModules.push(...Object.values(core));
     }
     if (moduleTypes.includes(ModuleType.Extension)) {
       allModules.push(...Object.values(extensions));

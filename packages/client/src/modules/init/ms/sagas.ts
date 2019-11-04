@@ -1,11 +1,14 @@
-import { call, takeLatest, all, put } from 'redux-saga/effects';
+import { call, takeLatest, all, put, select } from 'redux-saga/effects';
 import {
   LoadModuleAction,
   ModuleSystemActionConstants,
   LoadModulesAction,
 } from './actions';
 import { loadModule } from '@root/modules/loader';
-import { pushRouteActionCreator } from '@root/modules/core/navigation';
+import {
+  pushRouteActionCreator,
+  routerLocationStateSelector,
+} from '@root/modules/core/navigation';
 import { DodayRoutes } from '@doday/lib';
 
 /**
@@ -30,9 +33,24 @@ export function* loadModulesSaga(action: LoadModulesAction) {
   /**
    * Push initial route to stack
    */
-  const route = yield call(DodayRoutes.test, window.location.pathname);
+  const location = yield select(routerLocationStateSelector);
+  /**
+   * Find suitable registered route for
+   * current location
+   */
+  const suitableRouteModel = yield call(
+    DodayRoutes.test,
+    location.pathname + location.search
+  );
+  /**
+   * Parse current location to Route object
+   */
+  const route = yield call(
+    suitableRouteModel.parse,
+    location.pathname + location.search
+  );
   if (route) {
-    yield put(pushRouteActionCreator(route.create().build()));
+    yield put(pushRouteActionCreator(route));
   }
 }
 

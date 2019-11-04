@@ -9,3 +9,5 @@ export const sidebarRouteSelector = (state: RootState) =>
   state.navigation &&
   state.navigation.sidebar &&
   state.navigation.sidebar.route;
+export const routerLocationStateSelector = (state: RootState) =>
+  state.router.location;

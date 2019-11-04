@@ -57,11 +57,13 @@ export const routes = {
     sysname: RouteSysname.ActivityDetails,
     path: `${BASE_ROUTES.activities}/:id`,
     type: RouteType.Stacked,
-    pattern: new RegExp(`^\(${BASE_ROUTES.activities})\/([a-z0-9]+)`),
+    pattern: new RegExp(`\(${BASE_ROUTES.activities})\/([a-z0-9]+)`),
     create: (id: string) =>
       new DodayRoute(`${BASE_ROUTES.activities}`).params({ id }),
     parse: (path: string): Route | undefined => {
-      const result = path.match(this.pattern);
+      const result = path.match(
+        new RegExp(`\(${BASE_ROUTES.activities})\/([a-z0-9]+)`)
+      );
       if (result.length) {
         return {
           path: result[1],

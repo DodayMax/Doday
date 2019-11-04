@@ -91,7 +91,7 @@ export const DesktopLayout = withStyles(desktopStyles, {
               <Spot
                 renderAll
                 spot={DrawerSpot.ToolItem}
-                moduleTypes={[ModuleType.Tool]}
+                moduleTypes={[ModuleType.Tool, ModuleType.Core]}
               />
             </Box>
             <Box>
