@@ -4,7 +4,6 @@ import { Spot } from '@root/modules/module-wrapper';
 import { StoreSpot, ModuleType } from '@doday/lib';
 
 export const DodayStore = props => {
-  console.log(props);
   // Get current module for StoreSpot.Filter
   // Use selector to get state of the StoreSpot.Filter module
   // Create useEffect for props of selected state of the filter to refetch dodays with params

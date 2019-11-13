@@ -18,13 +18,3 @@ Supports desktop and mobile layouts.
 ![](2019-10-21-23-41-21.png)
 
 Other modules placed in these base spots could provide **additional spots** inside itself.
-
-## Communications
-
-`Layout` module provides `decorators` and `redux` logic for different ways of communications with user.
-
-### Modal page
-
-### Dialogs
-
-### Toasts

@@ -20,6 +20,7 @@ export const routes: RouteModel[] = [
       if (result.length) {
         return {
           path: result[0],
+          base: result[0],
           url: path,
         };
       }

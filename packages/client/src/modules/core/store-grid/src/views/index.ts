@@ -1,11 +1,11 @@
 import { ModuleView, GetViewParams, StoreSpot } from '@doday/lib';
-import { StoreFilter } from './store-filter/store-filter';
+import { StoreGrid } from './store-grid/store-grid';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
-    case StoreSpot.Filter:
+    case StoreSpot.Grid:
       return {
-        component: StoreFilter,
+        component: StoreGrid,
         dependencies: [],
       };
   }

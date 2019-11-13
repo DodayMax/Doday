@@ -4,23 +4,24 @@ import {
   DodayRoute,
   Route,
   RouteSysname,
-  BASE_ROUTES,
   STACKED_ROUTES,
   NodeLabel,
+  SIDEBAR_ROUTES,
 } from '@doday/lib';
 
 export const routes = {
   activityApp: {
     sysname: RouteSysname.Activities,
-    path: BASE_ROUTES.activities,
+    path: SIDEBAR_ROUTES.activities,
     type: RouteType.Sidebar,
-    pattern: new RegExp(`^${BASE_ROUTES.activities}$`),
-    create: () => new DodayRoute(BASE_ROUTES.activities),
+    pattern: new RegExp(`^${SIDEBAR_ROUTES.activities}$`),
+    create: () => new DodayRoute(SIDEBAR_ROUTES.activities),
     parse: (path: string): Route | undefined => {
-      const result = path.match(new RegExp(BASE_ROUTES.activities));
+      const result = path.match(new RegExp(SIDEBAR_ROUTES.activities));
       if (result.length) {
         return {
           path: result[0],
+          base: result[0],
           url: path,
         };
       }
@@ -47,6 +48,7 @@ export const routes = {
       if (result.length) {
         return {
           path: result[0],
+          base: result[0],
           url: path,
         };
       }
@@ -55,18 +57,19 @@ export const routes = {
   },
   details: {
     sysname: RouteSysname.ActivityDetails,
-    path: `${BASE_ROUTES.activities}/:id`,
+    path: `${STACKED_ROUTES.activities}/:id`,
     type: RouteType.Stacked,
-    pattern: new RegExp(`\(${BASE_ROUTES.activities})\/([a-z0-9]+)`),
+    pattern: new RegExp(`\(${STACKED_ROUTES.activities})\/([a-z0-9]+)`),
     create: (id: string) =>
-      new DodayRoute(`${BASE_ROUTES.activities}`).params({ id }),
+      new DodayRoute(`${STACKED_ROUTES.activities}`).params({ id }),
     parse: (path: string): Route | undefined => {
       const result = path.match(
-        new RegExp(`\(${BASE_ROUTES.activities})\/([a-z0-9]+)`)
+        new RegExp(`\(${STACKED_ROUTES.activities})\/([a-z0-9]+)`)
       );
       if (result.length) {
         return {
-          path: result[1],
+          path: `${STACKED_ROUTES.activities}/:id`,
+          base: result[1],
           params: {
             id: result[2],
           },

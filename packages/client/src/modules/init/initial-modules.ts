@@ -34,6 +34,10 @@ export const initialCoreModules = [
     type: ModuleType.Core,
   },
   {
+    sysname: ModuleSysname.StoreGrid,
+    type: ModuleType.Core,
+  },
+  {
     sysname: ModuleSysname.Profile,
     type: ModuleType.Core,
   },

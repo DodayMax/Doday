@@ -1,14 +1,14 @@
 import {
   ModuleView,
   GetViewParams,
-  BASE_ROUTES,
   DrawerSpot,
   LayoutSpot,
   LayoutType,
   NavigationSpot,
   NodeLabel,
   SpeedDialSpot,
-  STACKED_ROUTES,
+  StoreSpot,
+  SIDEBAR_ROUTES,
 } from '@doday/lib';
 import { ActivitiesDrawerMenuItem } from './desktop-drawer-menu-item/desktop-drawer-menu-item';
 import { MobileActivitiesApp, ActivitiesApp } from './activities-app';
@@ -17,12 +17,13 @@ import { MobileActivitiesDrawerMenuItem } from './mobile-drawer-menu-item/mobile
 import { ActivityBuilder } from './activity-builder/activity-builder';
 import { routes } from '../routes';
 import { ActivityDetails } from './activity-details/activity-details';
+import { ActivityCard } from './activity-card/activity-card';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
     case LayoutSpot.Sidebar:
       switch (true) {
-        case params.route && params.route.path === BASE_ROUTES.activities:
+        case params.route && params.route.path === SIDEBAR_ROUTES.activities:
           return {
             component: ActivitiesApp,
             dependencies: [],
@@ -55,7 +56,7 @@ export function getView(params: GetViewParams): ModuleView | undefined {
       }
     case NavigationSpot.BaseRoute:
       switch (true) {
-        case params.route && params.route.path === BASE_ROUTES.activities:
+        case params.route && params.route.path === SIDEBAR_ROUTES.activities:
           if (params.layoutType === LayoutType.Mobile) {
             return {
               component: MobileActivitiesApp,
@@ -75,6 +76,14 @@ export function getView(params: GetViewParams): ModuleView | undefined {
         case params.route && routes.details.pattern.test(params.route.url):
           return {
             component: ActivityDetails,
+            dependencies: [],
+          };
+      }
+    case StoreSpot.Card:
+      switch (params.node) {
+        case NodeLabel.Activity:
+          return {
+            component: ActivityCard,
             dependencies: [],
           };
       }

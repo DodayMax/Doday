@@ -4,6 +4,7 @@ import { Action, ActionTypes } from './navigation-stack.actions';
 export const navigationInitialState: NavigationState = {
   base: {
     path: BASE_ROUTES.store,
+    base: BASE_ROUTES.store,
     url: BASE_ROUTES.store,
   },
   stack: [],

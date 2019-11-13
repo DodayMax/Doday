@@ -50,4 +50,5 @@ export enum SpeedDialSpot {
 export enum StoreSpot {
   Filter = 'StoreSpot.Filter',
   Grid = 'StoreSpot.Grid',
+  Card = 'StoreSpot.Card',
 }

@@ -2,7 +2,11 @@ import { encodeQueryData } from '../utils';
 import { ModuleSysname } from './modules';
 
 export class DodayRoute {
-  constructor(private _path: string) {}
+  constructor(private _base: string) {
+    this._path = this._base;
+  }
+
+  private _path = '';
 
   private _params: { [key: string]: string } | undefined;
   private _paramsString = '';
@@ -17,7 +21,11 @@ export class DodayRoute {
    */
   public params = (params?: { [key: string]: string }) => {
     let paramsString = '';
-    if (params) paramsString = `/${Object.values(params).join('/')}`;
+    console.log(params);
+    if (params) {
+      paramsString = `/${Object.values(params).join('/')}`;
+      this._path += `/:${Object.keys(params).join('/:')}`;
+    }
     this._params = params;
     this._paramsString = paramsString;
     return this;
@@ -50,10 +58,11 @@ export class DodayRoute {
   public build = (): Route => {
     return {
       path: this._path,
+      base: this._base,
       params: this._params,
       query: this._queryParams,
       payload: this._payload,
-      url: `${this._path}${this._paramsString}${this._queryParamsString}`,
+      url: `${this._base}${this._paramsString}${this._queryParamsString}`,
     };
   };
 }
@@ -130,10 +139,23 @@ export interface RouteModel {
 
 export interface Route {
   path: string;
+  base: string;
   params?: { [key: string]: string };
   query?: { [key: string]: string };
   payload?: any;
   url: string;
+}
+
+export enum RouteSysname {
+  Store = 'store',
+  Profile = 'profile',
+  Activities = 'activities',
+  Dodays = 'dodays',
+  Progress = 'progress',
+  ActivityBuilder = 'activityBuilder',
+  ActivityDetails = 'activityDetails',
+  ModuleDetails = 'moduleDetails',
+  Welcome = 'welcome',
 }
 
 export enum RouteType {

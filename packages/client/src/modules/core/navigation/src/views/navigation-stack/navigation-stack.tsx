@@ -21,7 +21,7 @@ export const NavigationStack = () => {
                 key={route.path}
                 spot={NavigationSpot.StackedRoute}
                 route={route}
-                moduleTypes={[ModuleType.Tool]}
+                moduleTypes={[ModuleType.Tool, ModuleType.Core]}
                 style={{ zIndex: index + 1 }}
               />
             );

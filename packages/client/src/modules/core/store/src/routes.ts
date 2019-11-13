@@ -29,6 +29,7 @@ export const routes = {
       if (result.length) {
         return {
           path: result[0],
+          base: result[0],
           query: params,
           url: path,
         };

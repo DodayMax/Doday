@@ -52,6 +52,7 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
       dispatch(
         pushRouteActionCreator({
           path: value,
+          base: value,
           url: value,
         })
       );

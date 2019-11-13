@@ -60,6 +60,7 @@ import * as React from 'react';
 import classNames from 'classnames';
 import { throttle } from 'lodash';
 import { Doday } from '@doday/lib';
+import { HTMLAttributes } from 'enzyme';
 
 const DEFAULT_IMAGE_HEIGHT = 112.5;
 
@@ -89,6 +90,12 @@ interface LayoutItem extends Partial<Position> {
   width: number;
 }
 
+export interface MasonryItemProps extends HTMLAttributes {
+  key: string;
+  columnSpan?: number;
+  item?: Doday;
+}
+
 interface MasonryProps {
   header?: () => React.ReactNode;
   alignCenter: boolean;
@@ -100,7 +107,7 @@ interface MasonryProps {
   hasMore?: boolean;
   isLoading?: boolean;
   items: Doday[];
-  itemComponent: React.ComponentType;
+  renderItem: (props: MasonryItemProps) => React.ReactNode;
   itemProps?: {};
   loadingElement: React.ReactNode;
   onInfiniteLoad?: () => void;
@@ -645,7 +652,7 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
       hasMore,
       loadingElement,
       isLoading,
-      itemComponent: Item,
+      renderItem,
     } = this.props;
 
     const { pages } = this.state;
@@ -676,19 +683,17 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
                       { props, left, top, width, height, columnSpan },
                       itemIndex
                     ) => {
-                      return (
-                        <Item
-                          key={itemIndex}
-                          columnSpan={columnSpan}
-                          style={{
-                            position: 'absolute',
-                            left: left + 'px',
-                            top: top + 'px',
-                            width: width + 'px',
-                          }}
-                          {...props}
-                        />
-                      );
+                      return renderItem({
+                        key: props.did,
+                        columnSpan,
+                        style: {
+                          position: 'absolute',
+                          left: left + 'px',
+                          top: top + 'px',
+                          width: width + 'px',
+                        },
+                        item: props,
+                      });
                     }
                   )}
                 </div>

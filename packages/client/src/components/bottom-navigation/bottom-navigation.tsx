@@ -22,6 +22,7 @@ export const DodayBottomNavigation = (
         dispatch(
           pushRouteActionCreator({
             path: newValue,
+            base: newValue,
             url: newValue,
           })
         );

@@ -6,7 +6,10 @@ export const parseMetadataFromUrl = (url: string) => {
 
 export const encodeQueryData = (data: any) => {
   const ret = [];
-  for (let d in data)
-    ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+  for (let d in data) {
+    if (data[d]) {
+      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    }
+  }
   return ret.join('&');
 };

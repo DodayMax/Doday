@@ -7,9 +7,10 @@ import {
   NodeLabel,
   SpeedDialSpot,
   ModuleType,
+  StoreSpot,
+  Behavior,
 } from '@doday/lib';
 import { getView } from './views';
-import { Behavior } from '@doday/lib/dist/src/models/entity';
 import { routes } from './routes';
 
 export const ActivitiesModuleObject: ModuleObject<
@@ -18,6 +19,7 @@ export const ActivitiesModuleObject: ModuleObject<
   | NavigationSpot.BaseRoute
   | NavigationSpot.StackedRoute
   | SpeedDialSpot.Item
+  | StoreSpot.Card
 > = {
   status: {},
   config: {
@@ -38,6 +40,7 @@ export const ActivitiesModuleObject: ModuleObject<
     NavigationSpot.BaseRoute,
     NavigationSpot.StackedRoute,
     SpeedDialSpot.Item,
+    StoreSpot.Card,
   ],
   routes: Object.values(routes),
   getView,
