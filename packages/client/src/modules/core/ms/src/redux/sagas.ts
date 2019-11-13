@@ -45,12 +45,14 @@ export function* loadModulesSaga(action: LoadModulesAction) {
   /**
    * Parse current location to Route object
    */
-  const route = yield call(
-    suitableRouteModel.parse,
-    location.pathname + location.search
-  );
-  if (route) {
-    yield put(pushRouteActionCreator(route));
+  if (suitableRouteModel) {
+    const route = yield call(
+      suitableRouteModel.parse,
+      location.pathname + location.search
+    );
+    if (route) {
+      yield put(pushRouteActionCreator(route));
+    }
   }
 }
 

@@ -2,8 +2,8 @@ import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { Injectable, NestMiddleware, Inject, HttpStatus } from '@nestjs/common';
 import { Response, NextFunction } from 'express';
 //
-import { RequestWithUser } from '../../interfaces/request.interface';
 import { DBService } from '../../modules/db/db.service';
+import { AuthorizedRequest } from '@interfaces/common';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
@@ -11,7 +11,7 @@ export class AuthMiddleware implements NestMiddleware {
 
   authProvider = this.dbService.firebaseAuth();
 
-  async use(req: RequestWithUser, res: Response, next: NextFunction) {
+  async use(req: AuthorizedRequest, res: Response, next: NextFunction) {
     try {
       const authHeaders = req.headers.authorization;
       if (authHeaders && authHeaders.split(' ')[1]) {
@@ -22,7 +22,10 @@ export class AuthMiddleware implements NestMiddleware {
           throw new HttpException('User not found.', HttpStatus.UNAUTHORIZED);
         }
 
-        req.user = user;
+        req.user = {
+          ...user,
+          did: user.uid,
+        };
         next();
       } else {
         throw new HttpException('Not authorized.', HttpStatus.UNAUTHORIZED);

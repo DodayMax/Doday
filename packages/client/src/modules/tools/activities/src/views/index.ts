@@ -18,6 +18,7 @@ import { ActivityBuilder } from './activity-builder/activity-builder';
 import { routes } from '../routes';
 import { ActivityDetails } from './activity-details/activity-details';
 import { ActivityCard } from './activity-card/activity-card';
+import { ActivityModuleCard } from './module-card/module-card';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
   switch (params.spot) {
@@ -84,6 +85,11 @@ export function getView(params: GetViewParams): ModuleView | undefined {
         case NodeLabel.Activity:
           return {
             component: ActivityCard,
+            dependencies: [],
+          };
+        case NodeLabel.Module:
+          return {
+            component: ActivityModuleCard,
             dependencies: [],
           };
       }

@@ -1,7 +1,7 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
 import { LayoutType, AnySpot } from './spots';
-import { Entity } from '../models/entity';
+import { EntityConfig } from '../models/entity';
 import { RouteModel, Route } from './routes';
 
 /**
@@ -59,7 +59,7 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
   /**
    * New Entities that the module provides
    */
-  entities?: Entity[];
+  entities?: EntityConfig[];
   /**
    * Layout spots that the module uses and for which
    * it has views

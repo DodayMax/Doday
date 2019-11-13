@@ -1,7 +1,7 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Query, Req } from '@nestjs/common';
 import { ApiUseTags, ApiImplicitQuery } from '@nestjs/swagger';
 import { NodesService } from './nodes.service';
-import { Node } from '@doday/lib';
+import { Node, AuthorizedRequest } from '@doday/lib';
 
 @ApiUseTags('nodes')
 @Controller('nodes')
@@ -14,6 +14,7 @@ export class NodesController {
   @ApiImplicitQuery({ name: 'skip', required: false, type: Number })
   @ApiImplicitQuery({ name: 'limit', required: false, type: Number })
   async find(
+    @Req() req: AuthorizedRequest,
     @Query('name') name?: string,
     @Query('labels') labels?: string,
     @Query('skip') skip?: string,
@@ -28,6 +29,7 @@ export class NodesController {
         labels,
         skip,
         limit,
+        user: req.user,
       });
       return nodes;
     } catch (error) {

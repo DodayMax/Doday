@@ -8,25 +8,25 @@ import {
   Box,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { pushRouteActionCreator } from '@root/modules/core/navigation';
 import { Icons } from '@doday/ui';
 import { DodayRoutes, RouteSysname } from '@doday/lib';
+import { pushRouteActionCreator } from '@modules/core/navigation';
 
-export const ModuleCard = props => {
+export const ActivityModuleCard = props => {
   const dispatch = useDispatch();
   const { item, style } = props;
 
   if (!item) return null;
 
   return (
-    <Grid item key={item.did} style={style}>
+    <Grid item key={item.doday.did} style={style}>
       <Card
         onClick={() => {
-          console.log('click', item.did);
+          console.log('click', item.doday.did);
           dispatch(
             pushRouteActionCreator(
               DodayRoutes.routes[RouteSysname.ModuleDetails]
-                .create(item.did)
+                .create(item.doday.did)
                 .build()
             )
           );
@@ -35,14 +35,14 @@ export const ModuleCard = props => {
         <CardActionArea>
           <CardContent>
             <Typography gutterBottom variant="body2" component="h2">
-              {item.name}
+              {item.doday.sysname}
             </Typography>
             <Box display="flex" mt={2} mb={2} alignItems="center">
               <Typography
                 variant="body1"
                 // className={classes.paddedLabel}
               >
-                {item.rate || 0}
+                {item.doday.rate || 0}
               </Typography>
               <Icons.Score color="primary" width={2} height={2} />
             </Box>

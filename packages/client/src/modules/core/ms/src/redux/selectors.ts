@@ -1,5 +1,5 @@
 import { RootState, ModuleSystemState } from '@doday/lib';
-import { Behavior } from '@doday/lib/dist/src/models/entity';
+import { Behavior } from '@doday/lib';
 
 export const moduleSystemStateSelector = (
   state: RootState

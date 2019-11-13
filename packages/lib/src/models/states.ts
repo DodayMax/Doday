@@ -8,7 +8,7 @@ import {
   BaseToolState,
 } from '../common-interfaces';
 import { Hero, Node, Progress } from './nodes';
-import { Entity } from './entity';
+import { EntityConfig } from './entity';
 import { Route } from '../systems';
 
 export type RootState = {
@@ -20,14 +20,14 @@ export type RootState = {
   sidebar: SidebarState;
   details: DodayDetailsState;
   builder: BuilderState;
-  store: StoreState;
   activities: BaseToolState;
   toast: ToastState;
   dialog: DialogState;
+  storeGrid?: StoreGridState;
 };
 
 export type ModuleSystemState = {
-  entities: Entity[];
+  entities: EntityConfig[];
   core: { [key: string]: ModuleObject };
   tools: { [key: string]: ModuleObject };
   extensions: { [key: string]: ModuleObject };
@@ -61,14 +61,6 @@ export interface LayoutState {
   theme: 'light' | 'dark';
 }
 
-export interface StoreState {
-  loading?: boolean;
-  searching?: boolean;
-  searchTerm?: string;
-  totalCount?: number;
-  dodays: Node[];
-}
-
 export interface DodayDetailsState {
   loading: boolean;
   dirty?: boolean;
@@ -96,4 +88,10 @@ export interface NavigationState {
   sidebar: {
     route?: Route;
   };
+}
+
+export interface StoreGridState {
+  status: Status;
+  items: Node[];
+  count: number;
 }

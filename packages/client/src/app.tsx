@@ -21,6 +21,7 @@ import {
 } from './modules/core/auth/src/redux';
 import { loadModulesActionCreator } from './modules/core/ms/src/redux';
 import { initialCoreModules } from './modules/init/initial-modules';
+import { ACLGuard } from './components/acl-guard/acl-guard';
 
 interface AppProps {}
 
@@ -81,7 +82,12 @@ export const AppComponent = (
     <MuiThemeProvider theme={theme}>
       <div className="app-container">
         <React.Suspense fallback={null}>
-          <Spot spot={AppSpot.Default} moduleTypes={[ModuleType.Core]} />
+          <ACLGuard
+            allowed={
+              <Spot spot={AppSpot.Default} moduleTypes={[ModuleType.Core]} />
+            }
+            forbidden={null}
+          />
         </React.Suspense>
       </div>
       <Spot spot={AppSpot.Toast} moduleTypes={[ModuleType.Core]} />

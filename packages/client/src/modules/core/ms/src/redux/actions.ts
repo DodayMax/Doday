@@ -1,6 +1,10 @@
 import { AnyAction } from 'redux';
-import { ModuleObject, ModuleType, ModuleSysname } from '@doday/lib';
-import { Entity } from '@doday/lib/dist/src/models/entity';
+import {
+  ModuleObject,
+  ModuleType,
+  ModuleSysname,
+  EntityConfig,
+} from '@doday/lib';
 
 export enum ModuleSystemActionConstants {
   LOAD_MODULE = '[ms] LOAD_MODULE',
@@ -35,7 +39,7 @@ export interface AddModuleAction extends AnyAction {
 
 export interface AddEntitiesAction extends AnyAction {
   type: ModuleSystemActionConstants.ADD_ENTITIES;
-  payload: Entity | Entity[];
+  payload: EntityConfig | EntityConfig[];
 }
 
 /**
@@ -95,7 +99,7 @@ export function addModuleActionCreator(payload: {
  * @returns {AddEntitiesAction}
  */
 export function addEntitiesActionCreator(
-  payload: Entity | Entity[]
+  payload: EntityConfig | EntityConfig[]
 ): AddEntitiesAction {
   return {
     type: ModuleSystemActionConstants.ADD_ENTITIES,

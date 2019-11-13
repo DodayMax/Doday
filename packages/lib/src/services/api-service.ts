@@ -66,7 +66,6 @@ export class APIServiceClass {
     };
     if (exp) {
       const diff = exp()! - Date.now();
-      console.log(!isNaN(diff) && diff / 1000 / 60);
       return !isNaN(diff) && diff / 1000 / 60 < 10;
     }
     return;
@@ -183,5 +182,8 @@ export const createAPIUrl = (params?: any) => ({
   auth: {
     signin: `${API_URL}/auth/signin`,
     me: `${API_URL}/auth/me`,
+  },
+  dodays: {
+    get: `${API_URL}/nodes?labels=Module`,
   },
 });

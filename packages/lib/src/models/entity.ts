@@ -1,9 +1,14 @@
-import { NodeLabel } from './nodes';
+import { NodeLabel, Node } from './nodes';
 
-export class Entity {
+export class EntityConfig {
   doday!: NodeLabel;
   progress!: NodeLabel;
   behavior!: Behavior[];
+}
+
+export class Entity {
+  doday!: Node;
+  progress!: Node;
 }
 
 export enum Behavior {

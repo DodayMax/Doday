@@ -9,7 +9,6 @@
       "@modules/*": ["src/modules/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@interfaces/*": ["src/interfaces/*"]
-    },
-    "incremental": true
+    }
   }
 }

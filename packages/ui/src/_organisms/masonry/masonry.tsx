@@ -59,7 +59,7 @@
 import * as React from 'react';
 import classNames from 'classnames';
 import { throttle } from 'lodash';
-import { Doday } from '@doday/lib';
+import { Doday, Entity } from '@doday/lib';
 import { HTMLAttributes } from 'enzyme';
 
 const DEFAULT_IMAGE_HEIGHT = 112.5;
@@ -93,7 +93,7 @@ interface LayoutItem extends Partial<Position> {
 export interface MasonryItemProps extends HTMLAttributes {
   key: string;
   columnSpan?: number;
-  item?: Doday;
+  item?: Entity;
 }
 
 interface MasonryProps {
@@ -684,7 +684,7 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
                       itemIndex
                     ) => {
                       return renderItem({
-                        key: props.did,
+                        key: props.doday.did,
                         columnSpan,
                         style: {
                           position: 'absolute',

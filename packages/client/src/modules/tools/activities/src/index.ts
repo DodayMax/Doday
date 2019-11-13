@@ -26,7 +26,7 @@ export const ActivitiesModuleObject: ModuleObject<
     sysname: ModuleSysname.Activities,
     type: ModuleType.Tool,
   },
-  nodes: [NodeLabel.Activity, NodeLabel.ActivityProgress],
+  nodes: [NodeLabel.Activity, NodeLabel.ActivityProgress, NodeLabel.Module],
   entities: [
     {
       doday: NodeLabel.Activity,

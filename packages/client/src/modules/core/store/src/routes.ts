@@ -15,7 +15,6 @@ export const routes = {
     pattern: new RegExp(`${BASE_ROUTES.store}`),
     create: () => new DodayRoute(BASE_ROUTES.store),
     parse: (path: string): Route | undefined => {
-      console.log(path);
       const result = path.match(new RegExp(BASE_ROUTES.store));
       const parts = path.split('?');
       const params = {};

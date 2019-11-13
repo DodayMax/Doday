@@ -14,7 +14,7 @@ export interface ACLGuardProps {
 
 export const ACLGuard = (props: ACLGuardProps) => {
   const isAuthenticated = useSelector(
-    (state: RootState) => (state.auth && state.auth.isAuthenticated) || true
+    (state: RootState) => state.auth && state.auth.isAuthenticated
   );
   const theme = useTheme();
   const checkPermission = (permission: string) => true;

@@ -10,9 +10,7 @@ import { Behavior } from '@doday/lib/dist/src/models/entity';
 import { getView } from './views';
 import { routes } from './routes';
 
-export const MSModuleObject: ModuleObject<
-  StoreSpot.Card | NavigationSpot.StackedRoute
-> = {
+export const MSModuleObject: ModuleObject<NavigationSpot.StackedRoute> = {
   status: {},
   config: {
     sysname: ModuleSysname.MS,
@@ -26,7 +24,7 @@ export const MSModuleObject: ModuleObject<
       behavior: [Behavior.Publishable],
     },
   ],
-  spots: [StoreSpot.Card, NavigationSpot.StackedRoute],
+  spots: [NavigationSpot.StackedRoute],
   routes: Object.values(routes),
   getView,
 };

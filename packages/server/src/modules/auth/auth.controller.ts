@@ -13,7 +13,7 @@ import { AuthService } from './auth.service';
 import { AuthSigninDto, AuthSigninResponseDto } from './dto/auth-signin.dto';
 import { HeroService } from '../hero/hero.service';
 import { HeroModel } from '@modules/hero/hero.model';
-import { RequestWithUser } from '@interfaces/request.interface';
+import { AuthorizedRequest } from '@interfaces/common';
 
 @ApiUseTags('auth')
 @Controller('auth')
@@ -47,11 +47,10 @@ export class AuthController {
   }
 
   @Get('me')
-  async me(@Req() req: RequestWithUser): Promise<HeroModel> {
+  async me(@Req() req: AuthorizedRequest): Promise<HeroModel> {
     try {
-      const did = req.user.uid;
-      if (did) {
-        const me = this.heroService.findById(did);
+      if (req.user.did) {
+        const me = this.heroService.findById(req.user.did);
         if (me) {
           return me;
         }

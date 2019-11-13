@@ -4,8 +4,7 @@ import { useStyles } from './css.store-filter';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { availableEntitiesSelector } from '@core/ms/src/redux/selectors';
-import { Behavior } from '@doday/lib/dist/src/models/entity';
-import { capitalize, DodayRoutes } from '@doday/lib';
+import { capitalize, DodayRoutes, Behavior } from '@doday/lib';
 import { pushRouteActionCreator } from '@core/navigation';
 
 export interface WithQuery {

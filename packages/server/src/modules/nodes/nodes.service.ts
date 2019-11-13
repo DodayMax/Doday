@@ -10,9 +10,9 @@ export class NodesService {
 
   async find(params: NodesQueryParamsDto): Promise<any> {
     const session = this.dbService.neo4j().session();
-    const parsedParams: NodesQueryParamsDto = {};
+    const parsedParams: NodesQueryParamsDto = { user: params.user };
     if (params.labels) {
-      parsedParams.labels = params.labels.split(', ').join(' :');
+      parsedParams.labels = params.labels.split(',').join(' :');
     }
     const tx = session.beginTransaction();
     try {

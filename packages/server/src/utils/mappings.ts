@@ -25,9 +25,15 @@ export const parseNeo4jRecords = (records: Neo4jRecord[]): Node[] => {
 };
 
 export const parseNeo4jNodeRecord = (record: Neo4jRecord): Node => {
-  const node: Neo4jNode = record._fields[0];
+  const node = record._fields[0];
+  console.log(node);
   return {
-    labels: node.labels,
-    ...node.properties,
-  };
+    doday: node.doday && mapNode(node.doday),
+    progress: node.progress && mapNode(node.progress),
+  } as any;
 };
+
+export const mapNode = (node: Neo4jNode): Node => ({
+  labels: node.labels,
+  ...node.properties,
+});
