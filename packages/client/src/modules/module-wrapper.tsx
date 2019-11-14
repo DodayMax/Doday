@@ -47,7 +47,6 @@ export const ModuleWrapper = React.memo(
       spot,
       node,
       nodes,
-      route,
       module,
       renderAll,
       ...passthrough
@@ -78,7 +77,6 @@ export const ModuleWrapper = React.memo(
           layoutType,
           spot,
           node,
-          route,
         },
         passthrough
       );
@@ -90,14 +88,10 @@ export const ModuleWrapper = React.memo(
      */
     const suitableModules = allModules.filter(module => {
       const hasSpot = module.spots && module.spots.includes(spot);
-      const hasViewForRoute = route
-        ? module.routes &&
-          module.routes.find(moduleRoute => moduleRoute.path === route.path)
-        : true;
       const hasNodeLabel =
         node && module.nodes ? module.nodes.includes(node) : true;
 
-      return hasSpot && hasViewForRoute && hasNodeLabel;
+      return hasSpot && hasNodeLabel;
     });
 
     const loadingModules = allModules.filter(module => module.status.loading);
@@ -141,7 +135,6 @@ export const ModuleWrapper = React.memo(
                     layoutType,
                     spot,
                     node: intersectionNode,
-                    route,
                   },
                   passthrough
                 )
@@ -156,7 +149,6 @@ export const ModuleWrapper = React.memo(
                 layoutType,
                 spot,
                 node,
-                route,
               },
               passthrough
             )
@@ -176,7 +168,6 @@ export const ModuleWrapper = React.memo(
         layoutType,
         spot,
         node,
-        route,
       },
       passthrough
     );
@@ -198,14 +189,7 @@ export const wrapModuleView = (
   const Component = view.component;
 
   if (!view.dependencies.length) {
-    return (
-      <Component
-        key={module.config.sysname}
-        route={params.route}
-        {...props}
-        {...view.props}
-      />
-    );
+    return <Component key={module.config.sysname} {...props} {...view.props} />;
   }
 
   return (
@@ -214,7 +198,7 @@ export const wrapModuleView = (
       modules={[...view.dependencies]}
       createStore={() => store}
     >
-      <Component {...props} route={params.route} {...view.props} />
+      <Component {...props} {...view.props} />
     </DynamicModuleLoader>
   );
 };

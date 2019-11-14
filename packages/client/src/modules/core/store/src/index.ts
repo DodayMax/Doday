@@ -19,10 +19,12 @@ export const StoreModuleObject: ModuleObject<
     type: ModuleType.Core,
   },
   spots: [NavigationSpot.BaseRoute, TopbarSpot.NavItem, DrawerSpot.ToolItem],
-  routes: Object.values(routes),
   translations: {
     en,
     ru,
   },
   getView,
+  provided: {
+    routes: Object.values(routes),
+  },
 };

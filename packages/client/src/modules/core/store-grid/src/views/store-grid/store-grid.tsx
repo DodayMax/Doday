@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Box } from '@material-ui/core';
-import { ModuleType, StoreSpot } from '@doday/lib';
+import { ModuleType, StoreSpot, getPrimaryLabel } from '@doday/lib';
 import { Spot } from '@root/modules/module-wrapper';
 import { Masonry } from '@doday/ui';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,14 +26,16 @@ export const StoreGrid = () => {
     >
       <Masonry
         items={storeGridState.items}
-        renderItem={props => (
-          <Spot
-            moduleTypes={[ModuleType.Core, ModuleType.Tool]}
-            spot={StoreSpot.Card}
-            node={props.item.doday.labels[props.item.doday.labels.length - 1]}
-            {...props}
-          />
-        )}
+        renderItem={props => {
+          return (
+            <Spot
+              moduleTypes={[ModuleType.Core, ModuleType.Tool]}
+              spot={StoreSpot.Card}
+              node={getPrimaryLabel(props.item.doday.labels)}
+              {...props}
+            />
+          );
+        }}
         columnWidth={300}
         columnGutter={10}
         onInfiniteLoad={() => {}}

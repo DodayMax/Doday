@@ -1,5 +1,11 @@
 import React from 'react';
+import { NavigationRoute } from '@root/modules/core/navigation';
+import { routes } from '../../routes';
 
 export const Profile = () => {
-  return <div>Profile</div>;
+  return (
+    <NavigationRoute base path={routes.profile.pattern}>
+      {route => <div>Profile</div>}
+    </NavigationRoute>
+  );
 };

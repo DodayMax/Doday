@@ -52,24 +52,14 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
    */
   config!: ModuleConfig;
   /**
-   * Just to simplify dev process we are store
-   * node labels of the provided Entities as well
+   * Nodes for which the module has views
    */
   nodes?: NodeLabel[];
-  /**
-   * New Entities that the module provides
-   */
-  entities?: EntityConfig[];
   /**
    * Layout spots that the module uses and for which
    * it has views
    */
   spots?: LS[];
-  /**
-   * Routes that the module uses and for which
-   * it has views
-   */
-  routes?: RouteModel[];
   /**
    * Function with which you can pick up the desired
    * views according to the passed parameters
@@ -81,6 +71,19 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
   translations?: {
     [lang: string]: object;
   };
+  /**
+   * Provided new instances for the System
+   */
+  provided?: {
+    /**
+     * New Routes to register in the Navigation System
+     */
+    routes?: RouteModel[];
+    /**
+     * New Entities that the module provides
+     */
+    entities?: EntityConfig[];
+  };
 }
 
 export interface GetViewParams<T = AnySpot> {
@@ -90,8 +93,6 @@ export interface GetViewParams<T = AnySpot> {
   spot?: T;
   /** NodeLabel for which view is needed */
   node?: NodeLabel;
-  /** Route to which view is needed */
-  route?: Route;
 }
 
 export interface Dynamic {

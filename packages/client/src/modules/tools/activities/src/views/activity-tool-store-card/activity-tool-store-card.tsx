@@ -12,7 +12,7 @@ import { Icons } from '@doday/ui';
 import { DodayRoutes, RouteSysname } from '@doday/lib';
 import { pushRouteActionCreator } from '@modules/core/navigation';
 
-export const ActivityModuleCard = props => {
+export const ActivityToolStoreCard = props => {
   const dispatch = useDispatch();
   const { item, style } = props;
 
@@ -25,7 +25,7 @@ export const ActivityModuleCard = props => {
           console.log('click', item.doday.did);
           dispatch(
             pushRouteActionCreator(
-              DodayRoutes.routes[RouteSysname.ModuleDetails]
+              DodayRoutes.routes[RouteSysname.DodayDetails]
                 .create(item.doday.did)
                 .build()
             )

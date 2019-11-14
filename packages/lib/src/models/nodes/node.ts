@@ -2,7 +2,7 @@ import { NodeLabel } from './types';
 import { Hero } from './hero';
 import { Progress } from './progress';
 import { Resource } from './resource';
-import { Module } from './module';
+import { Tool } from './tool';
 
 /**
  * Basic abstract class for all types of nodes
@@ -39,8 +39,8 @@ export class Node {
   static isResource(node: Node): node is Resource {
     return node.labels.includes(NodeLabel.Resource);
   }
-  static isTool(node: Node): node is Module {
-    return node.labels.includes(NodeLabel.Module);
+  static isTool(node: Node): node is Tool {
+    return node.labels.includes(NodeLabel.Tool);
   }
 }
 

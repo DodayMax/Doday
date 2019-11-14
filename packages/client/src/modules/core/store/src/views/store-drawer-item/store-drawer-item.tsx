@@ -21,7 +21,7 @@ export const StoreDrawerMenuItem = () => {
           pushRouteActionCreator(
             routes.store
               .create()
-              .query({ node: NodeLabel.Module })
+              .query({ node: NodeLabel.Tool })
               .build()
           )
         );

@@ -31,12 +31,12 @@ export const DodayBottomNavigation = (
       {...props}
     >
       <BottomNavigationAction
-        value={BASE_ROUTES.store}
+        value={`/${BASE_ROUTES.store}`}
         label={t('store:title')}
         icon={<AppsIcon />}
       />
       <BottomNavigationAction
-        value={BASE_ROUTES.profile}
+        value={`/${BASE_ROUTES.profile}`}
         label={t('store:profile')}
         icon={<FaceIcon />}
       />

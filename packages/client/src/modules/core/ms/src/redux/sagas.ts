@@ -1,4 +1,4 @@
-import { call, takeLatest, all, put, select } from 'redux-saga/effects';
+import { call, takeLatest, all, put, select, delay } from 'redux-saga/effects';
 import {
   LoadModuleAction,
   ModuleSystemActionConstants,
@@ -30,6 +30,7 @@ export function* loadModulesSaga(action: LoadModulesAction) {
     call(loadModule, item.sysname, item.type)
   );
   yield all(tasks);
+  yield delay(1500);
   /**
    * Push initial route to stack
    */

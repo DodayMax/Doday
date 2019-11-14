@@ -5,7 +5,8 @@ export type AnySpot =
   | TopbarSpot
   | DrawerSpot
   | SpeedDialSpot
-  | StoreSpot;
+  | StoreSpot
+  | BaseStackSpot;
 
 export enum LayoutType {
   Desktop = 'Desktop',
@@ -31,6 +32,12 @@ export enum NavigationSpot {
   BaseRoute = 'NavigationSpot.BaseRoute',
   StackedRoute = 'NavigationSpot.StackedRoute',
   SidebarRoute = 'NavigationSpot.SidebarRoute',
+}
+
+export enum BaseStackSpot {
+  Builder = 'BaseStackSpot.Builder',
+  Details = 'BaseStackSpot.Details',
+  Progress = 'BaseStackSpot.Progress',
 }
 
 export enum TopbarSpot {

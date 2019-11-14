@@ -8,15 +8,15 @@ import {
   RouteSysname,
 } from '@doday/lib';
 
-export const routes: RouteModel[] = [
-  {
+export const routes = {
+  profile: {
     sysname: RouteSysname.Profile,
-    path: BASE_ROUTES.profile,
+    path: `/${BASE_ROUTES.profile}`,
     type: RouteType.Base,
-    pattern: new RegExp(`^${BASE_ROUTES.profile}`),
+    pattern: new RegExp(`^/${BASE_ROUTES.profile}`),
     create: () => new DodayRoute(BASE_ROUTES.profile),
     parse: (path: string): Route | undefined => {
-      const result = path.match(new RegExp(BASE_ROUTES.profile));
+      const result = path.match(new RegExp(`^/${BASE_ROUTES.profile}`));
       if (result.length) {
         return {
           path: result[0],
@@ -27,4 +27,4 @@ export const routes: RouteModel[] = [
     },
     provider: ModuleSysname.Profile,
   },
-];
+};

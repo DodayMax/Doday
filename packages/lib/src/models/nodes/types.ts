@@ -12,8 +12,8 @@ export enum NodeLabel {
   /**
    * Node labels which are used by actual Node instances
    */
-  Module = 'Module',
-  ModuleProgress = 'ModuleProgress',
+  Tool = 'Tool',
+  ToolProgress = 'ToolProgress',
   Hero = 'Hero',
   Activity = 'Activity',
   ActivityProgress = 'ActivityProgress',

@@ -86,10 +86,10 @@ export const DesktopTopbar = withStyles(css)((props: WithStyles) => {
                 aria-label="Top bar navigation"
                 onChange={handleBaseUrlChange}
               >
-                <ToggleButton value={BASE_ROUTES.store}>
+                <ToggleButton value={`/${BASE_ROUTES.store}`}>
                   <AppsIcon />
                 </ToggleButton>
-                <ToggleButton value={BASE_ROUTES.profile}>
+                <ToggleButton value={`/${BASE_ROUTES.profile}`}>
                   <FaceIcon />
                 </ToggleButton>
               </StyledToggleButtonGroup>

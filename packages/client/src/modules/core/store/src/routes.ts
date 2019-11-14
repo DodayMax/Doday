@@ -10,12 +10,12 @@ import {
 export const routes = {
   store: {
     sysname: RouteSysname.Store,
-    path: BASE_ROUTES.store,
+    path: `/${BASE_ROUTES.store}`,
     type: RouteType.Base,
-    pattern: new RegExp(`${BASE_ROUTES.store}`),
+    pattern: new RegExp(`^/${BASE_ROUTES.store}`),
     create: () => new DodayRoute(BASE_ROUTES.store),
     parse: (path: string): Route | undefined => {
-      const result = path.match(new RegExp(BASE_ROUTES.store));
+      const result = path.match(new RegExp(`^/${BASE_ROUTES.store}`));
       const parts = path.split('?');
       const params = {};
       if (parts.length > 1) {

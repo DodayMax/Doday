@@ -1,10 +1,5 @@
 import { i18n } from '@services';
-import {
-  ModuleType,
-  ModuleSysname,
-  ModuleObject,
-  DodayRoutes,
-} from '@doday/lib';
+import { ModuleType, ModuleSysname, DodayRoutes } from '@doday/lib';
 import store from '@root/store';
 import {
   addModuleActionCreator,
@@ -47,14 +42,24 @@ export const loadModule = async (sysname: ModuleSysname, type: ModuleType) => {
       /**
        * Add entities provided by module
        */
-      if (loaded.default.entities && loaded.default.entities.length) {
-        store.dispatch(addEntitiesActionCreator(loaded.default.entities));
+      if (
+        loaded.default.provided &&
+        loaded.default.provided.entities &&
+        loaded.default.provided.entities.length
+      ) {
+        store.dispatch(
+          addEntitiesActionCreator(loaded.default.provided.entities)
+        );
       }
       /**
        * Register routes provided by module
        */
-      if (loaded.default.routes && loaded.default.routes.length) {
-        DodayRoutes.registerRoutes(loaded.default.routes);
+      if (
+        loaded.default.provided &&
+        loaded.default.provided.routes &&
+        loaded.default.provided.routes.length
+      ) {
+        DodayRoutes.registerRoutes(loaded.default.provided.routes);
       }
     });
   } catch (err) {

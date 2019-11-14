@@ -28,7 +28,7 @@ import {
   ModuleType,
 } from '@doday/lib';
 import { Spot } from '@modules/module-wrapper';
-import { sidebarRouteSelector } from '@core/navigation';
+import { sidebarRouteSelector, baseRouteSelector } from '@core/navigation';
 import { DodaySpeedDial } from '@components/speed-dial/speed-dial';
 
 export const DesktopLayout = withStyles(desktopStyles, {

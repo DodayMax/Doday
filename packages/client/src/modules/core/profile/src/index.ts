@@ -15,10 +15,12 @@ export const ProfileModuleObject: ModuleObject<NavigationSpot.BaseRoute> = {
     type: ModuleType.Core,
   },
   spots: [NavigationSpot.BaseRoute],
-  routes,
   translations: {
     en,
     ru,
   },
   getView,
+  provided: {
+    routes: Object.values(routes),
+  },
 };

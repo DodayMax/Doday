@@ -10,11 +10,11 @@ export const initialCoreModules = [
     type: ModuleType.Core,
   },
   {
-    sysname: ModuleSysname.Auth,
+    sysname: ModuleSysname.Navigation,
     type: ModuleType.Core,
   },
   {
-    sysname: ModuleSysname.Navigation,
+    sysname: ModuleSysname.Auth,
     type: ModuleType.Core,
   },
   {

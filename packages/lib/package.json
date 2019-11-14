@@ -5,7 +5,8 @@
   "private": false,
   "license": "MIT",
   "dependencies": {
-    "@material-ui/styles": "^4.5.0"
+    "@material-ui/styles": "^4.5.0",
+    "lodash": "^4.17.15"
   },
   "scripts": {
     "build": "tsc",

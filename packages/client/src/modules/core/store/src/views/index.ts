@@ -2,7 +2,6 @@ import {
   ModuleView,
   GetViewParams,
   NavigationSpot,
-  BASE_ROUTES,
   DrawerSpot,
   LayoutType,
 } from '@doday/lib';
@@ -25,13 +24,11 @@ export function getView(params: GetViewParams): ModuleView | undefined {
             dependencies: [],
           };
       }
+      break;
     case NavigationSpot.BaseRoute:
-      switch (true) {
-        case routes.store.pattern.test(params.route.path):
-          return {
-            component: DodayStore,
-            dependencies: [],
-          };
-      }
+      return {
+        component: DodayStore,
+        dependencies: [],
+      };
   }
 }

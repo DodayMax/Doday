@@ -3,31 +3,46 @@ import { ModuleSysname } from './modules';
 
 export class DodayRoute {
   constructor(private _base: string) {
-    this._path = this._base;
+    this._path = `/${this._base}`;
+    this._parts.push(`/${this._base}`);
   }
 
   private _path = '';
 
+  private _parts: string[] = [];
+
   private _params: { [key: string]: string } | undefined;
-  private _paramsString = '';
 
   private _queryParams: { [key: string]: string } | undefined;
-  private _queryParamsString = '';
+  private _queryParamsString: string = '';
 
   private _payload: any;
+
+  /**
+   * Add another static part of the route
+   */
+  public part = (part: string) => {
+    this._path += `/${part}`;
+    this._parts.push(`${part}`);
+    return this;
+  };
 
   /**
    * Set params for new route
    */
   public params = (params?: { [key: string]: string }) => {
     let paramsString = '';
-    console.log(params);
     if (params) {
-      paramsString = `/${Object.values(params).join('/')}`;
+      paramsString = `${Object.values(params)
+        .map(param => param.toLowerCase())
+        .join('/')}`;
       this._path += `/:${Object.keys(params).join('/:')}`;
     }
-    this._params = params;
-    this._paramsString = paramsString;
+    this._params = {
+      ...this.params,
+      ...params,
+    };
+    this._parts.push(paramsString);
     return this;
   };
 
@@ -62,7 +77,7 @@ export class DodayRoute {
       params: this._params,
       query: this._queryParams,
       payload: this._payload,
-      url: `${this._base}${this._paramsString}${this._queryParamsString}`,
+      url: `${this._parts.join('/')}${this._queryParamsString}`,
     };
   };
 }
@@ -150,11 +165,9 @@ export enum RouteSysname {
   Store = 'store',
   Profile = 'profile',
   Activities = 'activities',
-  Dodays = 'dodays',
-  Progress = 'progress',
-  ActivityBuilder = 'activityBuilder',
-  ActivityDetails = 'activityDetails',
-  ModuleDetails = 'moduleDetails',
+  DodayDetails = 'doday.details',
+  DodayProgress = 'doday.progress',
+  DodayBuilder = 'doday.builder',
   Welcome = 'welcome',
 }
 
