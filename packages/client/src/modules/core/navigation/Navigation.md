@@ -2,7 +2,7 @@
 
 In `Doday` we don't use React router since we need Navigation stack.
 
-For this purpose was create `Navigation module`.
+For this purpose was created `Navigation module`.
 
 ### How it works
 
