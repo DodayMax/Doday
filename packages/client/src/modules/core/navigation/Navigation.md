@@ -20,6 +20,8 @@ A route that is pushed into the navigation stack and the view provided for the r
 
 Routes used only for part of the layout - sidebar. In the mobile version of the sidebar application, the routes behave as **base** routes, since the views for the sidebar in the mobile version are displayed on the whole screen.
 
+<hr />
+
 In order to provide a view for particular route, you must use the `NavigationRoute` component.
 
 His job is to verify the passed route as a `path` prop for compliance with the state of the navigation module.
