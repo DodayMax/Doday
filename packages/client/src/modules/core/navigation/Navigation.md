@@ -1,94 +1,125 @@
 # [:Core] Navigation module
 
-Every `route` in the app have to be properly registered.
+In `Doday` we don't use React router since we need Navigation stack.
 
-### Shape of the `RegisteredRoute` object:
+For this purpose was create `Navigation module`.
 
+### How it works
+
+Each route must be registered in the system and described using the `RouteModel` interface. **Any module** can register a new **route**. After registration, the route becomes **recognizable** by the system and participates in navigation. There are 3 main types of routes in the system - `base`, `stacked` and `sidebar` routes.
+
+#### Base Route
+
+Changes the application page as on a regular website, replacing the previous base route. (When changing the base route, the navigation stack will be cleared)
+
+#### Stack route
+
+A route that is pushed into the navigation stack and the view provided for the route is located on top of the base route.
+
+#### Sidebar route
+
+Routes used only for part of the layout - sidebar. In the mobile version of the sidebar application, the routes behave as **base** routes, since the views for the sidebar in the mobile version are displayed on the whole screen.
+
+In order to provide a view for particular route, you must use the `NavigationRoute` component.
+
+His job is to verify the passed route as a `path` prop for compliance with the state of the navigation module.
+
+You can specify for which type of route you provide the view - base, stacked or sidebar (accordingly, the component will check the provided `path` with the corresponding piece of the navigation state)
+
+```javascript
+<NavigationRoute stacked path={routes.builder.pattern}>
+  {(route, zIndex) => {
+    return (
+      <Spot
+        spot={BaseStackSpot.Builder}
+        node={route.params.sysname}
+        moduleTypes={[ModuleType.Tool]}
+        style={{ zIndex }}
+      />
+    );
+  }}
+</NavigationRoute>
 ```
+
+### Shape of the registered `RouteModel` object:
+
+```javascript
 {
   /**
-  * String describes shape of the route
-  * For example - '/activity/:id'
-  */
-  route: string;
+   * Sysname of the new route
+   */
+  sysname: string;
   /**
-  * RegExp to test a string to compliance with this route
-  */
-  test: RegExp;
+   * Path for the new route, for example `/dodays/:id/details
+   */
+  path: string;
   /**
-  * Helper func to create `DodayRoute` object for this
-  * route
-  */
-  create: (...params?, {
-    query?: { [key: string]: string; };
-    payload?: any;
-  }) => DodayRoute;
+   * Type of the new route - Base, Stacked or Sidebar
+   */
+  type: RouteType;
   /**
-  * Helper function to parse url to `DodayRoute` object
-  */
-  parse: (url: string) => DodayRoute;
+   * RegExp object to test route for compliance
+   */
+  pattern: RegExp;
+  /**
+   * Helper function to create `Route` to use it for navigation
+   */
+  create: (...params: string[]) => DodayRoute;
+  /**
+   * Helper function to parse some url to this Route object
+   */
+  parse: (path: string) => Route;
+  /**
+   * Sysname of the Module that provides this route
+   */
+  provider: ModuleSysname;
 }
 ```
 
-After the new route is registered, you can use it in the app. In the app we operate the `DodayRoute` object.
+After the new route is registered, you can use it in the app. In the app we operate the `Route` object.
 
-### Shape of the `DodayRoute` object:
+### Shape of the `Route` object:
 
-```
+```javascript
 {
   /**
-  * String describes shape of the route (same as in RegisteredRoute)
-  * For example - '/activity/:id'
+  * Same as in `RouteModel`
   */
-  route: string;
+  path: string;
   /**
-  * Parsed `params` from url or created using
-  * `RegisteredRoute.create()` helper function
-  * For example { id: string; }
+  * Base of the route (without params and query)
   */
-  params: { [key: string]: string; };
+  base: string;
   /**
-  * Query params from url string or created using
-  * `RegisteredRoute.create()` helper function
+  * Parsed `params` from url, for example { id: string; }
+  */
+  params?: { [key: string]: string };
+  /**
+  * Query params from url string
   * For example url like -
   * '/store?node=Activity&duration=60M'
   * Will be parsed to { node: Activity, duration: 60M }
   */
-  query: { [key: string]: string; };
+  query?: { [key: string]: string };
   /**
-  * Initial full url string
+  * Payload attached to this route
+  * Same as `State` in the ReactRouter
+  */
+  payload?: any;
+  /**
+  * Full url string
   * For example, '/store?node=Activity&duration=60M'
   */
   url: string;
-  /**
-  * Payload passed through `create` helper function
-  */
-  payload?: any;
 }
 ```
 
-### Basic shapes for routes
+### Logic schema
 
-Three main directions where routes can lead - Modules, Entities and builder route.
+Let's take a look how it works when user initially enters route in the browser location:
 
-In the first case shape of the `route` looks like this:
-`/${ModuleSysname}/{param}?{query}`
+![](2019-11-15-08-11-33.png)
 
-In the second case:
-`/${NodeLabel}/:id`
-`/${NodeLabel}/progress/:id`
+Second case when the user just use our UI to change route:
 
-Third case is the builder route used to create new `Instance` of the `Entity`:
-`/builder/${NodeLabel}`
-
-All routes are `lowercase`.
-
-### How it works
-
-In case when the route is pushed into navigation stack from the application interface:
-
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://www.lucidchart.com/documents/embeddedchart/2fa7d1e1-6d6a-4b46-b690-4925d6822bac" id="TU15NLzyBI7C"></iframe></div>
-
-In case when the route is initially put in the browser location:
-
-<div style="width: 640px; height: 480px; margin: 10px; position: relative;"><iframe allowfullscreen frameborder="0" style="width:640px; height:480px" src="https://www.lucidchart.com/documents/embeddedchart/2fa7d1e1-6d6a-4b46-b690-4925d6822bac" id="ck25cz01_Jb4"></iframe></div>
+![](2019-11-15-08-20-15.png)

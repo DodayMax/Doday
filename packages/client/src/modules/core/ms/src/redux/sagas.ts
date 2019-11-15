@@ -8,8 +8,10 @@ import { loadModule } from '@root/modules/loader';
 import {
   pushRouteActionCreator,
   routerLocationStateSelector,
+  baseRouteSelector,
 } from '@root/modules/core/navigation';
 import { DodayRoutes } from '@doday/lib';
+import { push } from 'connected-react-router';
 
 /**
  * Load new single module
@@ -35,6 +37,7 @@ export function* loadModulesSaga(action: LoadModulesAction) {
    * Push initial route to stack
    */
   const location = yield select(routerLocationStateSelector);
+  const baseRoute = yield select(baseRouteSelector);
   /**
    * Find suitable registered route for
    * current location
@@ -54,6 +57,9 @@ export function* loadModulesSaga(action: LoadModulesAction) {
     if (route) {
       yield put(pushRouteActionCreator(route));
     }
+  } else {
+    // Push default base route to browser location
+    yield put(push(baseRoute.url));
   }
 }
 

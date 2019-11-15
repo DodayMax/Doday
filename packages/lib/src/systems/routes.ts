@@ -143,12 +143,33 @@ const DodayRoutes = new RouteSystem();
 export { DodayRoutes };
 
 export interface RouteModel {
+  /**
+   * Sysname of the new route
+   */
   sysname: string;
+  /**
+   * Path for the new route, for example `/dodays/:id/details`
+   */
   path: string;
+  /**
+   * Type of the new route - Base, Stacked or Sidebar
+   */
   type: RouteType;
+  /**
+   * RegExp object to test route for compliance
+   */
   pattern: RegExp;
+  /**
+   * Helper function to create `Route` to use it for navigation
+   */
   create: (...params: string[]) => DodayRoute;
+  /**
+   * Helper function to parse some url to this Route object
+   */
   parse: (path: string) => Route;
+  /**
+   * Sysname of the Module that provides this route
+   */
   provider: ModuleSysname;
 }
 
