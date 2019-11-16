@@ -17,8 +17,6 @@ import { MobileActivitiesDrawerMenuItem } from './mobile-drawer-menu-item/mobile
 import { ActivityBuilder } from './activity-builder/activity-builder';
 import { ActivityDetails } from './activity-details/activity-details';
 import { ActivityCard } from './activity-card/activity-card';
-import { ActivityToolStoreCard } from './activity-tool-store-card/activity-tool-store-card';
-import { ActivityToolDetails } from './activity-tool-details/activity-tool-details';
 import { ActivityProgressDetails } from './activity-progress-details/activity-progress-details';
 
 export function getView(params: GetViewParams): ModuleView | undefined {
@@ -64,11 +62,6 @@ export function getView(params: GetViewParams): ModuleView | undefined {
         case NodeLabel.Activity:
           return {
             component: ActivityCard,
-            dependencies: [],
-          };
-        case NodeLabel.Tool:
-          return {
-            component: ActivityToolStoreCard,
             dependencies: [],
           };
       }

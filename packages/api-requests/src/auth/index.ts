@@ -1,4 +1,5 @@
-import { firebase, auth, APIService, createAPIUrl } from '@doday/lib';
+import { firebase, auth, APIService } from '@doday/lib';
+import { createAPIUrl } from '../urls';
 
 export const signInWithGoogleFirebaseRequest = () => {
   return auth

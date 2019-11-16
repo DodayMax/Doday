@@ -1,8 +1,8 @@
 import { APIService } from '@doday/lib';
 import { createAPIUrl } from '../urls';
 
-export const fetchDodaysRequest = () => {
+export const buyModuleRequest = (id: string) => {
   return APIService.request()
     .json()
-    .get(createAPIUrl().dodays.get);
+    .get(createAPIUrl().modules.buy(id));
 };

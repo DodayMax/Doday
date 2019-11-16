@@ -11,6 +11,7 @@ export enum ModuleSystemActionConstants {
   LOAD_MODULES = '[ms] LOAD_MODULES',
   ADD_MODULE = '[ms] ADD_MODULE',
   ADD_ENTITIES = '[ms] ADD_ENTITIES',
+  BUY_MODULE = '[ms] BUY_MODULE',
 }
 
 export interface LoadModuleAction extends AnyAction {
@@ -40,6 +41,11 @@ export interface AddModuleAction extends AnyAction {
 export interface AddEntitiesAction extends AnyAction {
   type: ModuleSystemActionConstants.ADD_ENTITIES;
   payload: EntityConfig | EntityConfig[];
+}
+
+export interface BuyModuleAction extends AnyAction {
+  type: ModuleSystemActionConstants.BUY_MODULE;
+  payload: string;
 }
 
 /**
@@ -108,6 +114,19 @@ export function addEntitiesActionCreator(
 }
 
 /**
+ * Action to buy module
+ *
+ * @export
+ * @returns {BuyModuleAction}
+ */
+export function buyModuleActionCreator(id: string): BuyModuleAction {
+  return {
+    type: ModuleSystemActionConstants.BUY_MODULE,
+    payload: id,
+  };
+}
+
+/**
  * Export all action types for reducers
  */
 
@@ -115,4 +134,5 @@ export type ModuleSystemActionTypes =
   | AddModuleAction
   | LoadModuleAction
   | LoadModulesAction
-  | AddEntitiesAction;
+  | AddEntitiesAction
+  | BuyModuleAction;

@@ -6,17 +6,24 @@ import {
   CardContent,
   Typography,
   Box,
+  CardActions,
+  Button,
 } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { Icons } from '@doday/ui';
 import { DodayRoutes, RouteSysname } from '@doday/lib';
 import { pushRouteActionCreator } from '@modules/core/navigation';
+import { buyModuleActionCreator } from '@root/modules/core/ms';
 
-export const ActivityToolStoreCard = props => {
+export const ModuleStoreCard = props => {
   const dispatch = useDispatch();
   const { item, style } = props;
 
   if (!item) return null;
+
+  const handleBuyModule = () => {
+    dispatch(buyModuleActionCreator(item.doday.did));
+  };
 
   return (
     <Grid item key={item.doday.did} style={style}>
@@ -48,6 +55,11 @@ export const ActivityToolStoreCard = props => {
             </Box>
           </CardContent>
         </CardActionArea>
+        <CardActions>
+          <Button size="small" color="primary" onClick={handleBuyModule}>
+            Buy
+          </Button>
+        </CardActions>
       </Card>
     </Grid>
   );

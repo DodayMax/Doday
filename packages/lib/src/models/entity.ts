@@ -1,4 +1,5 @@
-import { NodeLabel, Node } from './nodes';
+import { NodeLabel, Progress } from './nodes';
+import { Doday } from '../../dist/src';
 
 export class EntityConfig {
   doday!: NodeLabel;
@@ -6,9 +7,9 @@ export class EntityConfig {
   behavior!: Behavior[];
 }
 
-export class Entity {
-  doday!: Node;
-  progress!: Node;
+export class Entity<D = Doday, P = Progress> {
+  doday!: D;
+  progress!: P;
 }
 
 export enum Behavior {

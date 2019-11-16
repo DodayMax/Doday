@@ -5,7 +5,6 @@ export const initialState: AuthState = {
   status: {
     loading: false,
   },
-  activeTools: {},
 };
 
 export default (state = initialState, action: AuthActionTypes): AuthState => {

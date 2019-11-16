@@ -51,7 +51,6 @@ export interface AuthState {
   status: Status;
   isAuthenticated?: boolean;
   hero?: Hero;
-  activeTools: { [key: string]: ModuleObject };
 }
 
 export interface LayoutState {

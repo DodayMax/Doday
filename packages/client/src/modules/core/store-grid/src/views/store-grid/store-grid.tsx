@@ -27,6 +27,7 @@ export const StoreGrid = () => {
       <Masonry
         items={storeGridState.items}
         renderItem={props => {
+          console.log(getPrimaryLabel(props.item.doday.labels));
           return (
             <Spot
               moduleTypes={[ModuleType.Core, ModuleType.Tool]}

@@ -9,13 +9,15 @@ export enum NodeLabel {
   Node = 'Node',
   Doday = 'Doday',
   Progress = 'Progress',
+  Module = 'Module',
+  Tool = 'Tool',
   /**
    * Node labels which are used by actual Node instances
    */
-  Tool = 'Tool',
-  ToolProgress = 'ToolProgress',
   Hero = 'Hero',
   Activity = 'Activity',
   ActivityProgress = 'ActivityProgress',
   Resource = 'Resource',
+  ActivitiesTool = 'ActivitiesTool',
+  ActivitiesToolProgress = 'ActivitiesToolProgress',
 }

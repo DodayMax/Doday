@@ -14,10 +14,11 @@ import {
   APIService,
 } from '@doday/lib';
 import { Spot } from './modules/module-wrapper';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   getCurrentHeroActionCreator,
   setIsAuthenticatedStatusAction,
+  heroSelector,
 } from './modules/core/auth/src/redux';
 import { loadModulesActionCreator } from './modules/core/ms/src/redux';
 import { initialCoreModules } from './modules/init/initial-modules';
@@ -34,6 +35,7 @@ export const AppComponent = (
   props: AppProps & TranslationProps & WithTheme
 ) => {
   const dispatch = useDispatch();
+  const activeHeroModules = useSelector(heroSelector);
 
   React.useEffect(() => {
     /**
@@ -46,17 +48,25 @@ export const AppComponent = (
      * - Store
      * - Profile
      */
-    dispatch(
-      loadModulesActionCreator([
-        ...initialCoreModules,
-        // Replace it with all bought modules by Hero
-        {
-          sysname: ModuleSysname.Activities,
-          type: ModuleType.Tool,
-        },
-      ])
-    );
+    dispatch(loadModulesActionCreator([...initialCoreModules]));
   }, []);
+
+  React.useEffect(() => {
+    /**
+     * Load active Hero's modules
+     */
+    if (
+      activeHeroModules &&
+      activeHeroModules.activeModules &&
+      activeHeroModules.activeModules.length
+    ) {
+      dispatch(
+        loadModulesActionCreator([
+          ...activeHeroModules.activeModules.map(entity => entity.doday),
+        ])
+      );
+    }
+  }, [activeHeroModules]);
 
   React.useEffect(() => {
     /**

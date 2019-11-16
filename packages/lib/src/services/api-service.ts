@@ -177,13 +177,3 @@ export class APIRequest {
     return normalizedHeaders;
   }
 }
-
-export const createAPIUrl = (params?: any) => ({
-  auth: {
-    signin: `${API_URL}/auth/signin`,
-    me: `${API_URL}/auth/me`,
-  },
-  dodays: {
-    get: `${API_URL}/nodes?labels=Module`,
-  },
-});

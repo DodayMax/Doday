@@ -17,8 +17,8 @@ export const DodayDetails = () => {
         return (
           <Spot
             spot={BaseStackSpot.Details}
-            node={NodeLabel.Activity}
-            moduleTypes={[ModuleType.Tool]}
+            node={NodeLabel.Tool}
+            moduleTypes={[ModuleType.Tool, ModuleType.Core]}
             style={{ zIndex }}
           />
         );

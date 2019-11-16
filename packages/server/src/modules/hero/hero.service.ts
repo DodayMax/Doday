@@ -3,8 +3,9 @@ import { DBService } from '../db/db.service';
 import { HeroModel } from './hero.model';
 import { findHeroById, createHero } from '../../queries/heroes';
 import { auth } from 'firebase-admin';
-import { mapHeroFromToken, parseNeo4jRecords } from '../../utils';
+import { mapHeroFromToken } from '../../utils';
 import { firstItem } from '@doday/lib';
+import { parseHeroNeo4jRecords } from '../../utils';
 
 @Injectable()
 export class HeroService {
@@ -17,7 +18,7 @@ export class HeroService {
         .readTransaction(tx => findHeroById(tx, { did: id }))
         .then(result => {
           session.close();
-          return firstItem(parseNeo4jRecords(result.records as any));
+          return firstItem(parseHeroNeo4jRecords(result.records as any));
         });
     } catch (error) {
       session.close();

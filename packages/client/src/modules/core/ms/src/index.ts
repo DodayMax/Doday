@@ -3,21 +3,27 @@ import {
   ModuleSysname,
   NodeLabel,
   ModuleType,
-  NavigationSpot,
+  StoreSpot,
+  BaseStackSpot,
 } from '@doday/lib';
 import { Behavior } from '@doday/lib/dist/src/models/entity';
+import { getView } from './views';
 
-export const MSModuleObject: ModuleObject<NavigationSpot.StackedRoute> = {
+export const MSModuleObject: ModuleObject<
+  StoreSpot.Card | BaseStackSpot.Details
+> = {
   status: {},
   config: {
     sysname: ModuleSysname.MS,
     type: ModuleType.Core,
   },
+  spots: [StoreSpot.Card, BaseStackSpot.Details],
+  getView,
   provided: {
     entities: [
       {
         doday: NodeLabel.Tool,
-        progress: NodeLabel.ToolProgress,
+        progress: NodeLabel.Progress,
         behavior: [Behavior.Publishable],
       },
     ],

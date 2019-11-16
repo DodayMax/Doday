@@ -121,56 +121,44 @@ export const ModuleWrapper = React.memo(
     /**
      * If `renderAll` prop is passed render all suitable views
      */
-    if (renderAll) {
-      const views = [];
-      suitableModules.map(module => {
-        if (nodes) {
-          const intersections = _.intersection(module.nodes || [], nodes);
-          if (intersections.length) {
-            intersections.forEach(intersectionNode => {
-              views.push(
-                wrapModuleView(
-                  module,
-                  {
-                    layoutType,
-                    spot,
-                    node: intersectionNode,
-                  },
-                  passthrough
-                )
-              );
-            });
-          }
-        } else {
-          views.push(
-            wrapModuleView(
-              module,
-              {
-                layoutType,
-                spot,
-                node,
-              },
-              passthrough
-            )
-          );
+    const views = [];
+    suitableModules.map(module => {
+      if (nodes) {
+        const intersections = _.intersection(module.nodes || [], nodes);
+        if (intersections.length) {
+          intersections.forEach(intersectionNode => {
+            views.push(
+              wrapModuleView(
+                module,
+                {
+                  layoutType,
+                  spot,
+                  node: intersectionNode,
+                },
+                passthrough
+              )
+            );
+          });
         }
-      });
-      return <>{_.compact(views)}</>;
-    }
-
+      } else {
+        views.push(
+          wrapModuleView(
+            module,
+            {
+              layoutType,
+              spot,
+              node,
+            },
+            passthrough
+          )
+        );
+      }
+    });
     /**
      * Later we will have `active` option for modules that takes
      * same spot. For now just take first one.
      */
-    return wrapModuleView(
-      suitableModules[0],
-      {
-        layoutType,
-        spot,
-        node,
-      },
-      passthrough
-    );
+    return renderAll ? <>{_.compact(views)}</> : _.compact(views)[0];
   }
 );
 
