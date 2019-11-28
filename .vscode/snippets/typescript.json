@@ -1,0 +1,106 @@
+{
+  "acts": {
+    "prefix": "acts",
+    "body": [
+      "import { AnyAction } from 'redux';\n",
+      "export enum ${1:ModuleName}ActionConstants {}\n",
+      "/** Action types */\n",
+      "/** Action creators */\n",
+      "/** Export all action types for reducers */",
+      "export type ${1: ModuleName}ActionTypes = ;"
+    ],
+    "description": "Creates actions.ts template file for redux module"
+  },
+  "at": {
+    "prefix": "at",
+    "body": [
+      "export interface ${1:ActionName}Action extends AnyAction {",
+      "\ttype: ${2:ActionConstant};",
+      "\tpayload: {}",
+      "}"
+    ],
+    "description": "Creates blank action type"
+  },
+  "ac": {
+    "prefix": "ac",
+    "body": [
+      "export function ${1:ActionName}ActionCreator(${2:Payload}): ${3:ActionType} {",
+      "\treturn {",
+      "\t\ttype: ${4:ActionConstant},",
+      "\t\tpayload: ${2:Payload},",
+      "\t};",
+      "}"
+    ],
+    "description": "Creates blank action creator"
+  },
+  "rdc": {
+    "prefix": "rdc",
+    "body": [
+      "import { ${1:ModuleName}ActionTypes, ${1:ModuleName}ActionConstants } from './actions';\n",
+      "import { ${1:ModuleName}State } from '@doday/lib';\n",
+      "export const ${1:ModuleName}InitialState: ${1:ModuleName}State = {}\n",
+      "export default (state = ${1:ModuleName}InitialState, action: ${1:ModuleName}ActionTypes): ${1:ModuleName}State => {",
+      "\tconst { type, payload } = action;",
+      "\tswitch (type) {",
+      "\t\tdefault:",
+      "\t\t\treturn state;",
+      "\t}",
+      "};"
+    ],
+    "description": "Creates reducer.ts template file for redux module"
+  },
+  "sgs": {
+    "prefix": "sgs",
+    "body": [
+      "import { all } from 'redux-saga/effects';",
+      "import { } from './${1:moduleName}.actions';\n\n\n",
+      "export default function* run${2:ModuleName}Sagas() {",
+      "\tyield all([]);",
+      "}"
+    ],
+    "description": "Creates sagas.ts template file for redux module"
+  },
+  "saga": {
+    "prefix": "saga",
+    "body": [
+      "export function* ${1:sagaName}Saga(action: ${2:ActionType}) {",
+      "\t${3:SagaLogic}",
+      "}"
+    ],
+    "description": "Creates blank saga"
+  },
+  "sslc": {
+    "prefix": "slc",
+    "body": [
+      "export const ${1:Name}Selector = (state: RootState) => ${2:state.something}"
+    ],
+    "description": "Creates blank selector"
+  },
+  "reslc": {
+    "prefix": "reslc",
+    "body": [
+      "export const ${1:Name}Selector = createSelector(",
+      "\t(state: RootState) => ${2:Selector},",
+      "\t(${3:selected}) => ${4:SomeCalculations},",
+      ")"
+    ],
+    "description": "Creates blank reselect selector"
+  },
+  "rdxexp": {
+    "prefix": "rdxexp",
+    "body": [
+      "import reducer from './reducer';",
+      "import ${1:ModuleName}Sagas from './sagas';\n",
+      "export * from './actions';",
+      "export * from './selectors';\n",
+      "export const get${1:ModuleName}Module = () => ({",
+      "\tid: '${2:id}',",
+      "\treducerMap: {",
+      "\t\t${1:ModuleName}: reducer,",
+      "\t},",
+      "\tsagas: [${1:ModuleName}Sagas],",
+      "});"
+    ],
+    "description": "Creates template for export redux module"
+  }
+}

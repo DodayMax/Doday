@@ -2,7 +2,6 @@ import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
 import { AnySpot, SpotObject } from './spots';
 import { RouteModel, Route } from './routes';
-import { RootState } from '../models';
 
 /**
  * Type of Activity
@@ -20,20 +19,11 @@ export enum ModuleSysname {
   StoreGrid = 'store-grid',
 }
 
-export enum ModuleType {
-  Redux = 'redux',
-  View = 'view',
-}
-
 export type ModuleConfig<Spot> = {
   /**
    * Sysname of the module
    */
   sysname: ModuleSysname;
-  /**
-   * Type of the module
-   */
-  type: ModuleType;
   /**
    * Specify node for which the module has view
    */
@@ -48,14 +38,8 @@ export type ModuleConfig<Spot> = {
   dependencies?: ModuleSysname[];
 };
 
-/** Module class */
-export class ModuleObject<
-  Spot = AnySpot,
-  Actions = { [key: string]: () => AnyAction },
-  Selectors = { [key: string]: (state: RootState) => any },
-  State = any,
-  ActionTypes extends AnyAction = AnyAction
-> implements Dynamic {
+/** ViewModule shape */
+export class ViewModule<Spot = AnySpot> implements Dynamic {
   /**
    * Needed for the system to properly load modules
    */
@@ -72,21 +56,6 @@ export class ModuleObject<
    * Get view for module
    */
   getView?(): ModuleView;
-  /**
-   * If module provide interface to interact with it
-   */
-  acitons?: Actions;
-  /**
-   * If module provide some state to store data
-   */
-  selectors?: Selectors;
-  /**
-   * Redux dynamic module for this module
-   * If you need manually plug this module to store or
-   * this module doesn't have view with Redux module in
-   * it's dependencies
-   */
-  getReduxModule?(): IModule<State, ActionTypes>;
   /**
    * Provided new instances for the System
    */

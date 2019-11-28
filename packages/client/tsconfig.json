@@ -14,11 +14,11 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@root/*": ["*"],
-      "@services": ["services"],
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"],
-      "@modules/*": ["modules/*"],
-      "@core/*": ["modules/core/*"],
+      "@redux/*": ["modules/redux/*"],
+      "@modules/*": ["modules/views/*"],
+      "@core/*": ["core/*"],
       "@tools/*": ["modules/tools/*"]
     }
   },

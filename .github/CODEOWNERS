@@ -1,0 +1,3 @@
+* @dodayio/core
+packages/server @dodayio/backend
+packages/ui @dodayio/ui

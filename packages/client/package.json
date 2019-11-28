@@ -53,6 +53,7 @@
     "redux-dynamic-modules-saga": "^5.0.2",
     "redux-saga": "^1.0.2",
     "redux-subspace-saga": "^4.0.0",
+    "reselect": "^4.0.0",
     "resolve": "1.10.0",
     "sfcookies": "^1.0.2"
   },
@@ -133,6 +134,7 @@
     "@types/react-transition-group": "^2.9.0",
     "@types/react-virtualized": "^9.21.2",
     "@types/redux-saga": "^0.10.5",
+    "@types/reselect": "^2.2.0",
     "css-loader": "1.0.0",
     "cypress": "^3.4.1",
     "cypress-react-unit-test": "^2.4.3",
