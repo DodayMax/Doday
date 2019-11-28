@@ -6,7 +6,6 @@ import {
 } from '@material-ui/core/styles';
 import i18next from 'i18next';
 import { AppSpot, configureDodayTheme, auth, APIService } from '@doday/lib';
-import { Spot } from './components/spot/spot';
 import { useDispatch, useSelector } from 'react-redux';
 import { ACLGuard } from './components/acl-guard/acl-guard';
 
