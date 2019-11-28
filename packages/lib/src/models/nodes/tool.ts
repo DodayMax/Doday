@@ -1,11 +1,15 @@
-import { Node } from './node';
-import { Module, SerializedModule } from './module';
+import { Node, SerializedNode } from './node';
 import { Progress, SerializedProgress } from './progress';
+import { ModuleSysname } from '../../systems';
+import { Module, SerializedModule } from './module';
 
 /**
  * Type of node that represents an autonomous dynamic module with additional functionality for the app.
  */
-export class Tool extends Module {
+export class Tool extends Node {
+  sysname!: ModuleSysname;
+  modules!: Module[];
+  dependencies?: ModuleSysname[];
   static serialize(node: Tool): SerializedTool {
     const serialized = Node.serialize(node) as SerializedTool;
     return serialized;
@@ -16,7 +20,11 @@ export class Tool extends Module {
   }
 }
 
-export class SerializedTool extends SerializedModule {}
+export class SerializedTool extends SerializedNode {
+  sysname!: string;
+  modules!: SerializedModule[];
+  dependencies?: string[];
+}
 
 /**
  * Type of node that store stats about relation

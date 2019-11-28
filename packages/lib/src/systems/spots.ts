@@ -1,3 +1,24 @@
+import { NodeLabel } from '../models';
+
+export interface SpotObject {
+  /**
+   * Layout spot sysname
+   */
+  sysname: AnySpot;
+  /**
+   * Desktop or Mobile
+   */
+  layoutType?: LayoutType;
+  /**
+   * NodeLabel for which view is needed
+   */
+  node?: NodeLabel;
+  /**
+   * Render all suitable modules which has views
+   */
+  multiple?: boolean;
+}
+
 export type AnySpot =
   | AppSpot
   | LayoutSpot

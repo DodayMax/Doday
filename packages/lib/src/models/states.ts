@@ -3,32 +3,29 @@ import {
   SidebarQueryParams,
   ToastType,
   Status,
-  ToolsBuilderState,
   ModuleObject,
-  BaseToolState,
 } from '../common-interfaces';
-import { Hero, Node, Progress } from './nodes';
+import { Hero, Node } from './nodes';
 import { EntityConfig } from './entity';
-import { Route } from '../systems';
+import { Route, RouteModel, SpotObject, ModuleSysname } from '../systems';
 
 export type RootState = {
   router: RouterState;
-  ms?: ModuleSystemState;
+  oko?: SystemState;
   layout?: LayoutState;
   auth?: AuthState;
   navigation?: NavigationState;
   sidebar: SidebarState;
-  details: DodayDetailsState;
-  builder: BuilderState;
-  activities: BaseToolState;
   toast: ToastState;
   dialog: DialogState;
   storeGrid?: StoreGridState;
 };
 
-export type ModuleSystemState = {
+export type SystemState = {
   entities: EntityConfig[];
-  core: { [key: string]: ModuleObject };
+  routes: { [key: string]: RouteModel };
+  spots: { [key: string]: { spot: SpotObject; modules?: ModuleSysname[] } };
+  modules: { [key: string]: ModuleObject };
   tools: { [key: string]: ModuleObject };
   extensions: { [key: string]: ModuleObject };
 };
@@ -39,13 +36,6 @@ export type SidebarState = {
   routeParams: SidebarQueryParams;
   badge: number;
 };
-
-export interface BuilderState {
-  status: {
-    loading: boolean;
-  };
-  tools?: ToolsBuilderState;
-}
 
 export interface AuthState {
   status: Status;
@@ -58,13 +48,6 @@ export interface LayoutState {
   isSidebarCollapsed: boolean;
   sidebarWidth: number;
   theme: 'light' | 'dark';
-}
-
-export interface DodayDetailsState {
-  loading: boolean;
-  dirty?: boolean;
-  updates?: Partial<Progress>;
-  selectedDoday?: Node;
 }
 
 export interface ToastState {

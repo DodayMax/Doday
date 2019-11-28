@@ -1,44 +1,61 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
-import { LayoutType, AnySpot } from './spots';
-import { EntityConfig } from '../models/entity';
+import { AnySpot, SpotObject } from './spots';
 import { RouteModel, Route } from './routes';
+import { RootState } from '../models';
 
 /**
  * Type of Activity
  */
-export type ActivityType = 'do' | 'read' | 'watch';
 
 export enum ModuleSysname {
   Layout = 'layout',
-  MS = 'ms', // module system
+  System = 'system',
   Auth = 'auth',
   Navigation = 'navigation',
   Toast = 'toast',
   Dialog = 'dialog',
   Topbar = 'topbar',
-  Store = 'store',
   StoreFilter = 'store-filter',
   StoreGrid = 'store-grid',
-  Profile = 'profile',
-  Activities = 'activities',
 }
 
 export enum ModuleType {
-  Core = 'core',
-  Tool = 'tools',
-  Extension = 'extensions',
+  Redux = 'redux',
+  View = 'view',
 }
 
-/** Base interfaces to extends from */
-export type BaseToolState = {};
-export type BaseToolBuilderState = {};
-/** Generic interfaces for RootState */
-export type ToolsBuilderState = { [K in ModuleSysname]?: BaseToolBuilderState };
-export type ToolsState = { [K in ModuleSysname]?: BaseToolState };
+export type ModuleConfig<Spot> = {
+  /**
+   * Sysname of the module
+   */
+  sysname: ModuleSysname;
+  /**
+   * Type of the module
+   */
+  type: ModuleType;
+  /**
+   * Specify node for which the module has view
+   */
+  node?: NodeLabel;
+  /**
+   * Layout spot that the module uses
+   */
+  spot?: Spot;
+  /**
+   * If module has another modules in Dependencies
+   */
+  dependencies?: ModuleSysname[];
+};
 
 /** Module class */
-export class ModuleObject<LS = AnySpot> implements Dynamic {
+export class ModuleObject<
+  Spot = AnySpot,
+  Actions = { [key: string]: () => AnyAction },
+  Selectors = { [key: string]: (state: RootState) => any },
+  State = any,
+  ActionTypes extends AnyAction = AnyAction
+> implements Dynamic {
   /**
    * Needed for the system to properly load modules
    */
@@ -50,49 +67,45 @@ export class ModuleObject<LS = AnySpot> implements Dynamic {
   /**
    * Sysname and ModuleType for now
    */
-  config!: ModuleConfig;
+  config!: ModuleConfig<Spot>;
   /**
-   * Nodes for which the module has views
+   * Get view for module
    */
-  nodes?: NodeLabel[];
+  getView?(): ModuleView;
   /**
-   * Layout spots that the module uses and for which
-   * it has views
+   * If module provide interface to interact with it
    */
-  spots?: LS[];
+  acitons?: Actions;
   /**
-   * Function with which you can pick up the desired
-   * views according to the passed parameters
+   * If module provide some state to store data
    */
-  getView?(params: GetViewParams<LS>): ModuleView | undefined;
+  selectors?: Selectors;
+  /**
+   * Redux dynamic module for this module
+   * If you need manually plug this module to store or
+   * this module doesn't have view with Redux module in
+   * it's dependencies
+   */
+  getReduxModule?(): IModule<State, ActionTypes>;
+  /**
+   * Provided new instances for the System
+   */
+  provided?: {
+    /**
+     * New Routes to register in the System
+     */
+    routes?: RouteModel[];
+    /**
+     * New Spots provided by module for the System
+     */
+    spots?: SpotObject[];
+  };
   /**
    * Translations for the module (if it needs them)
    */
   translations?: {
     [lang: string]: object;
   };
-  /**
-   * Provided new instances for the System
-   */
-  provided?: {
-    /**
-     * New Routes to register in the Navigation System
-     */
-    routes?: RouteModel[];
-    /**
-     * New Entities that the module provides
-     */
-    entities?: EntityConfig[];
-  };
-}
-
-export interface GetViewParams<T = AnySpot> {
-  /** Desktop or Mobile */
-  layoutType?: LayoutType;
-  /** Layout spot to which view is needed */
-  spot?: T;
-  /** NodeLabel for which view is needed */
-  node?: NodeLabel;
 }
 
 export interface Dynamic {
@@ -103,26 +116,16 @@ export interface Dynamic {
   };
 }
 
-export type ModuleConfig = {
-  sysname: ModuleSysname;
-  type: ModuleType;
-};
-
 export type WithRoute = {
   route: Route;
-};
-
-export type WithTools = {
-  loadedTools?: { [K in ModuleSysname]: ModuleObject };
 };
 
 export interface ModuleView<P = any> {
   component: React.ComponentType<P>;
   dependencies: IModule<any>[];
-  props?: { [key: string]: any };
 }
 
-export interface IModule<State = {}> {
+export interface IModule<State = {}, Actions extends AnyAction = AnyAction> {
   /**
    * Id of the module
    */
@@ -130,7 +133,7 @@ export interface IModule<State = {}> {
   /**
    * Reducers for the module
    */
-  reducerMap?: ReducersMapObject<State, AnyAction>;
+  reducerMap?: ReducersMapObject<State, Actions>;
   /**
    * Middlewares to add to the store
    */

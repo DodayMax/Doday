@@ -5,23 +5,9 @@ import {
   withTheme,
 } from '@material-ui/core/styles';
 import i18next from 'i18next';
-import {
-  ModuleSysname,
-  ModuleType,
-  AppSpot,
-  configureDodayTheme,
-  auth,
-  APIService,
-} from '@doday/lib';
-import { Spot } from './modules/module-wrapper';
+import { AppSpot, configureDodayTheme, auth, APIService } from '@doday/lib';
+import { Spot } from './components/spot/spot';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getCurrentHeroActionCreator,
-  setIsAuthenticatedStatusAction,
-  heroSelector,
-} from './modules/core/auth/src/redux';
-import { loadModulesActionCreator } from './modules/core/ms/src/redux';
-import { initialCoreModules } from './modules/init/initial-modules';
 import { ACLGuard } from './components/acl-guard/acl-guard';
 
 interface AppProps {}
@@ -45,8 +31,6 @@ export const AppComponent = (
      * - Navigation module
      * - Toast
      * - Dialog
-     * - Store
-     * - Profile
      */
     dispatch(loadModulesActionCreator([...initialCoreModules]));
   }, []);
@@ -93,15 +77,13 @@ export const AppComponent = (
       <div className="app-container">
         <React.Suspense fallback={null}>
           <ACLGuard
-            allowed={
-              <Spot spot={AppSpot.Default} moduleTypes={[ModuleType.Core]} />
-            }
+            allowed={<Spot sysname={AppSpot.Default} />}
             forbidden={null}
           />
         </React.Suspense>
       </div>
-      <Spot spot={AppSpot.Toast} moduleTypes={[ModuleType.Core]} />
-      <Spot spot={AppSpot.Dialog} moduleTypes={[ModuleType.Core]} />
+      <Spot sysname={AppSpot.Toast} />
+      <Spot sysname={AppSpot.Dialog} />
     </MuiThemeProvider>
   );
 };

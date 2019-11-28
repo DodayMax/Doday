@@ -2,8 +2,6 @@ import { createStore } from 'redux-dynamic-modules';
 import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import { getModuleSystemModule } from '@core/ms/src/redux';
-import { getAuthenticationModule } from '@root/modules/core/auth';
 
 export const history = createBrowserHistory();
 
@@ -26,9 +24,7 @@ const store = createStore(
     initialState: {},
     extensions: [getSagaExtension()],
   },
-  getRootModule(),
-  getModuleSystemModule(),
-  getAuthenticationModule()
+  getRootModule()
 );
 
 // expose store when run in Cypress

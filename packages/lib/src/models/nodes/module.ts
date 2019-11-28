@@ -1,14 +1,15 @@
 import { Node, SerializedNode } from './node';
-import { ModuleType } from '../../systems';
-import { ModuleSysname } from '../../../dist/src';
+import { NodeLabel } from './types';
+import { ModuleSysname, AnySpot } from '../../systems';
 
 /**
  * Type of node that represents an autonomous dynamic module with additional functionality for the app.
  */
 export class Module extends Node {
   sysname!: ModuleSysname;
-  type!: ModuleType;
-  dependencies?: string[];
+  spot?: AnySpot;
+  node?: NodeLabel;
+  dependencies?: ModuleSysname[];
   static serialize(node: Module): SerializedModule {
     const serialized = Node.serialize(node) as SerializedModule;
     return serialized;
@@ -21,6 +22,7 @@ export class Module extends Node {
 
 export class SerializedModule extends SerializedNode {
   sysname!: string;
-  type!: string;
+  spot?: string;
+  node?: string;
   dependencies?: string[];
 }
