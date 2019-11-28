@@ -95,7 +95,7 @@ export class RouteSystem {
     RouteSystem._instance = this;
   }
 
-  private _registeredRoutes: { [key: string]: RouteModel } = {};
+  private _registeredRoutes: { [key: string]: RouteConfig } = {};
 
   /**
    * Registered routes
@@ -107,7 +107,7 @@ export class RouteSystem {
   /**
    * Register new routes in the system
    */
-  public registerRoutes = (routes?: RouteModel[]) => {
+  public registerRoutes = (routes?: RouteConfig[]) => {
     if (!routes) return;
     routes.forEach(route => {
       this._registeredRoutes = {
@@ -117,8 +117,8 @@ export class RouteSystem {
     });
   };
 
-  public test = (path: string): RouteModel | undefined => {
-    let matchedRoutes: RouteModel[] = [];
+  public test = (path: string): RouteConfig | undefined => {
+    let matchedRoutes: RouteConfig[] = [];
     Object.values(this._registeredRoutes).forEach(route => {
       if (route.pattern.test(path)) {
         matchedRoutes.push(route);
@@ -142,7 +142,7 @@ const DodayRoutes = new RouteSystem();
 
 export { DodayRoutes };
 
-export interface RouteModel {
+export interface RouteConfig {
   /**
    * Sysname of the new route
    */

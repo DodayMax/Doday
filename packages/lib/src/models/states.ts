@@ -3,11 +3,11 @@ import {
   SidebarQueryParams,
   ToastType,
   Status,
-  ViewModule,
+  ViewModuleConfig,
 } from '../common-interfaces';
 import { Hero, Node } from './nodes';
 import { EntityConfig } from './entity';
-import { Route, RouteModel, SpotObject, ModuleSysname } from '../systems';
+import { Route, RouteConfig, SpotConfig, ModuleSysname } from '../systems';
 
 export type RootState = {
   router: RouterState;
@@ -23,11 +23,11 @@ export type RootState = {
 
 export type OKOState = {
   entities: EntityConfig[];
-  routes: { [key: string]: RouteModel };
-  spots: { [key: string]: { spot: SpotObject; modules?: ModuleSysname[] } };
-  modules: { [key: string]: ViewModule };
-  tools: { [key: string]: ViewModule };
-  extensions: { [key: string]: ViewModule };
+  routes: { [key: string]: RouteConfig };
+  spots: { [key: string]: { spot: SpotConfig; modules?: ModuleSysname[] } };
+  modules: { [key: string]: ViewModuleConfig };
+  tools: { [key: string]: ViewModuleConfig };
+  extensions: { [key: string]: ViewModuleConfig };
 };
 
 export type SidebarState = {

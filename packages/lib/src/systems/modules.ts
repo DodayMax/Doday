@@ -1,7 +1,7 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
 import { NodeLabel } from '../models/nodes';
-import { AnySpot, SpotObject } from './spots';
-import { RouteModel, Route } from './routes';
+import { AnySpot, SpotConfig } from './spots';
+import { RouteConfig, Route } from './routes';
 
 /**
  * Type of Activity
@@ -39,7 +39,7 @@ export type ModuleConfig<Spot> = {
 };
 
 /** ViewModule shape */
-export class ViewModule<Spot = AnySpot> implements Dynamic {
+export class ViewModuleConfig<Spot = AnySpot> implements Dynamic {
   /**
    * Needed for the system to properly load modules
    */
@@ -63,11 +63,11 @@ export class ViewModule<Spot = AnySpot> implements Dynamic {
     /**
      * New Routes to register in the System
      */
-    routes?: RouteModel[];
+    routes?: RouteConfig[];
     /**
      * New Spots provided by module for the System
      */
-    spots?: SpotObject[];
+    spots?: SpotConfig[];
   };
   /**
    * Translations for the module (if it needs them)
