@@ -2,8 +2,8 @@ import { createStore } from 'redux-dynamic-modules';
 import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import { getModuleSystemModule } from '@root/modules/redux/module-system';
-import { getAuthenticationModule } from '@root/modules/redux/auth';
+import { getModuleSystemModule } from '@redux/module-system';
+import { getAuthenticationModule } from '@redux/auth';
 
 export const history = createBrowserHistory();
 
@@ -11,10 +11,9 @@ export const getRootModule = () => ({
   id: 'root',
   reducerMap: {
     router: connectRouter(history),
-    // auth: ducks.auth.reducer,
   },
   middlewares: [routerMiddleware(history)],
-  sagas: [rootSaga],
+  sagas: [],
 });
 
 function* rootSaga() {
@@ -27,8 +26,8 @@ const store = createStore(
     extensions: [getSagaExtension()],
   },
   getRootModule(),
-  getAuthenticationModule(),
-  getModuleSystemModule()
+  getModuleSystemModule(),
+  getAuthenticationModule()
 );
 
 // expose store when run in Cypress

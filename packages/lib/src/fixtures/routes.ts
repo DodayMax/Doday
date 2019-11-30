@@ -17,5 +17,5 @@ export const fakeRouteConfig: RouteConfig = {
     base: 'some path',
     url: 'some path',
   }),
-  provider: ModuleSysname.Auth,
+  provider: ModuleSysname.SignButtons,
 };

@@ -1,5 +1,4 @@
-import { NodeLabel, Progress } from './nodes';
-import { Doday } from '../../dist/src';
+import { NodeLabel, Progress, Doday } from './nodes';
 
 export class EntityConfig {
   doday!: NodeLabel;

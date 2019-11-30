@@ -1,4 +1,4 @@
-import { AuthActionTypes, AuthActionConstants } from './actions';
+import { AuthActionTypes, AuthActionConstants } from './auth.actions';
 import { AuthState } from '@doday/lib';
 
 export const initialState: AuthState = {

@@ -1,4 +1,4 @@
-import { call, takeLatest, all } from 'redux-saga/effects';
+import { call, all, takeEvery } from 'redux-saga/effects';
 import {
   LoadModuleAction,
   LoadModulesAction,
@@ -27,7 +27,7 @@ export function* loadModulesSaga(action: LoadModulesAction) {
 
 export default function* runModuleSystemSagas() {
   yield all([
-    takeLatest(ModuleSystemActionConstants.LOAD_MODULE, loadModuleSaga),
-    takeLatest(ModuleSystemActionConstants.LOAD_MODULES, loadModulesSaga),
+    takeEvery(ModuleSystemActionConstants.LOAD_MODULE, loadModuleSaga),
+    takeEvery(ModuleSystemActionConstants.LOAD_MODULES, loadModulesSaga),
   ]);
 }

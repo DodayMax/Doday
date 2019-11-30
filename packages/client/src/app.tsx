@@ -15,6 +15,7 @@ import {
 } from '@redux/auth';
 import { loadModulesActionCreator } from '@redux/module-system';
 import { Spot } from './components/spot/spot';
+import { modules } from './modules/init';
 
 interface AppProps {}
 
@@ -38,24 +39,24 @@ export const AppComponent = (
      * - Toast
      * - Dialog
      */
-    dispatch(loadModulesActionCreator([...initialCoreModules]));
+    dispatch(loadModulesActionCreator([...modules.map(item => item.sysname)]));
   }, []);
 
   React.useEffect(() => {
     /**
      * Load active Hero's modules
      */
-    if (
-      activeHeroModules &&
-      activeHeroModules.activeModules &&
-      activeHeroModules.activeModules.length
-    ) {
-      dispatch(
-        loadModulesActionCreator([
-          ...activeHeroModules.activeModules.map(entity => entity.doday),
-        ])
-      );
-    }
+    // if (
+    //   activeHeroModules &&
+    //   activeHeroModules.activeModules &&
+    //   activeHeroModules.activeModules.length
+    // ) {
+    //   dispatch(
+    //     loadModulesActionCreator([
+    //       ...activeHeroModules.activeModules.map(entity => entity.doday),
+    //     ])
+    //   );
+    // }
   }, [activeHeroModules]);
 
   React.useEffect(() => {

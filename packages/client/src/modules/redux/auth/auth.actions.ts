@@ -1,5 +1,5 @@
 import { AnyAction } from 'redux';
-import { Hero, ModuleObject, Status } from '@doday/lib';
+import { Hero, Status } from '@doday/lib';
 
 export enum AuthActionConstants {
   SET_AUTH_STATUS = '[auth] SET_AUTH_STATUS',

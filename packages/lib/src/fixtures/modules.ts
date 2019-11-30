@@ -6,6 +6,6 @@ export const fakeDodayModule: DodayModule = {
     loaded: true,
   },
   config: {
-    sysname: ModuleSysname.Auth,
+    sysname: ModuleSysname.SignButtons,
   },
 };

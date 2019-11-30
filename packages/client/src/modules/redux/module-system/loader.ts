@@ -1,11 +1,12 @@
 import { i18n } from '@core/services';
-import { ModuleSysname, DodayRoutes } from '@doday/lib';
+import { ModuleSysname } from '@doday/lib';
 import store from '@core/store';
 import {
   registerModuleBySysnameActionCreator,
   registerModuleBySpotActionCreator,
   registerSpotActionCreator,
 } from './module-system.actions';
+import { RouteSystem } from '@core/systems';
 
 export const loadModule = async (sysname: ModuleSysname) => {
   /** Set loading state */
@@ -22,7 +23,7 @@ export const loadModule = async (sysname: ModuleSysname) => {
   /** Load module */
   let loadedModule;
   try {
-    await import(`@modules/doday/${sysname}`).then(loaded => {
+    await import(`@modules/${sysname}`).then(loaded => {
       loadedModule = {
         ...loaded.default,
         status: {
@@ -52,7 +53,7 @@ export const loadModule = async (sysname: ModuleSysname) => {
         loaded.default.provided.routes &&
         loaded.default.provided.routes.length
       ) {
-        DodayRoutes.registerRoutes(loaded.default.provided.routes);
+        RouteSystem.api().registerRoutes(loaded.default.provided.routes);
       }
     });
   } catch (err) {

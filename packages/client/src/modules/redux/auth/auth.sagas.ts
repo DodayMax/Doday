@@ -6,7 +6,7 @@ import {
   GetCurrentHeroAction,
   setAuthStatusActionCreator,
   setHeroActionCreator,
-} from './actions';
+} from './auth.actions';
 import { Hero } from '@doday/lib';
 import {
   signinAPIRequest,

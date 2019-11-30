@@ -39,13 +39,17 @@ export const Spot = React.memo(
      * If there are no suited modules for this spot and
      * there are no loading modules just end
      */
-    if (!suitableModules.length && !loadingModules.length) return null;
+    if ((!suitableModules || !suitableModules.length) && !loadingModules.length)
+      return null;
 
     /**
      * If there are no suited modules and some of them in loading state
      * just wait
      */
-    if (!suitableModules.length && loadingModules.length) {
+    if (
+      (!suitableModules || !suitableModules.length) &&
+      loadingModules.length
+    ) {
       return (
         <Box
           display="flex"

@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { IconProps } from '../names';
-import { ActivityType } from '@doday/lib';
 
 interface CheckboxProps extends IconProps {
   checked?: boolean;
-  activityType?: ActivityType;
 }
 
 export const Checkbox = ({
@@ -12,7 +10,6 @@ export const Checkbox = ({
   height = 20,
   color = '#000',
   checked = false,
-  activityType = 'do',
 }: CheckboxProps) => {
   if (!checked) {
     return (

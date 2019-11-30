@@ -1,8 +1,8 @@
-import reducer from './reducer';
-import authSagas from './sagas';
+import reducer from './auth.reducer';
+import authSagas from './auth.sagas';
 
-export * from './actions';
-export * from './selectors';
+export * from './auth.actions';
+export * from './auth.selectors';
 export const getAuthenticationModule = () => ({
   id: 'auth',
   reducerMap: {
