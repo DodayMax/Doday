@@ -39,7 +39,7 @@ export type ModuleConfig<Spot> = {
 };
 
 /** ViewModule shape */
-export class ViewModuleConfig<Spot = AnySpot> implements Dynamic {
+export class DodayModule<Spot = AnySpot> implements Dynamic {
   /**
    * Needed for the system to properly load modules
    */
@@ -65,7 +65,7 @@ export class ViewModuleConfig<Spot = AnySpot> implements Dynamic {
      */
     routes?: RouteConfig[];
     /**
-     * New Spots provided by module for the System
+     * Provided Spots
      */
     spots?: SpotConfig[];
   };

@@ -2,9 +2,14 @@ import * as React from 'react';
 import _ from 'lodash';
 import { DynamicModuleLoader } from 'redux-dynamic-modules';
 import { Box } from '@material-ui/core';
-import { ViewModuleConfig, LayoutType, SpotConfig } from '@doday/lib';
+import { DodayModule, LayoutType, SpotConfig } from '@doday/lib';
 import { Icons } from '@doday/ui';
 import store from '@root/core/store';
+import { useSelector } from 'react-redux';
+import {
+  findSuitableModulesSelector,
+  loadingModulesSelector,
+} from '@root/modules/redux/module-system/module-system.selectors';
 
 interface SpotProps extends SpotConfig {
   [key: string]: any;
@@ -22,21 +27,13 @@ export const Spot = React.memo(
       ...passthrough
     } = props;
 
-    // Get all modules from ModuleSystem
-    const registeredModules = {};
-    const loadingModules = [];
-
     /**
      * Find all modules supports passed params
      */
-    const getSuitableModules = () => {
-      const modulesForSpot = registeredModules[sysname];
-      if (modulesForSpot && modulesForSpot.length) {
-        if (!node) return modulesForSpot;
-        return modulesForSpot.filter(module => module.node === node);
-      }
-    };
-    const suitableModules = getSuitableModules();
+    const suitableModules = useSelector(
+      findSuitableModulesSelector({ sysname, node, multiple })
+    );
+    const loadingModules = useSelector(loadingModulesSelector);
 
     /**
      * If there are no suited modules for this spot and
@@ -62,22 +59,17 @@ export const Spot = React.memo(
     }
 
     /**
-     * If `multiple` prop is passed render all suitable views
-     * else render only active one
+     * For now we load only active modules for Hero
+     * So we could just take first suitable module for Spot
      */
-    const views = [];
-    suitableModules.map(module => {
-      views.push(wrapModuleView(module, passthrough));
-    });
-    /**
-     * Later we will have `active` option for modules that takes
-     * same spot. For now just take first one.
-     */
-    return multiple ? <>{_.compact(views)}</> : _.compact(views)[0];
+    const wrapped = _.compact(
+      suitableModules.map(module => wrapModuleView(module, passthrough))
+    );
+    return multiple ? <>{wrapped}</> : <>{wrapped[0]}</>;
   }
 );
 
-export const wrapModuleView = (module: ViewModuleConfig, props?: any) => {
+export const wrapModuleView = (module: DodayModule, props?: any) => {
   const view = module.getView();
   if (!view) return null;
 

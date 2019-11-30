@@ -24,14 +24,26 @@
   "ac": {
     "prefix": "ac",
     "body": [
-      "export function ${1:ActionName}ActionCreator(${2:Payload}): ${3:ActionType} {",
+      "export function ${1:ActionName}ActionCreator(payload:${2:Payload}): ${3:ActionType} {",
       "\treturn {",
       "\t\ttype: ${4:ActionConstant},",
-      "\t\tpayload: ${2:Payload},",
+      "\t\tpayload,",
       "\t};",
       "}"
     ],
     "description": "Creates blank action creator"
+  },
+  "tac": {
+    "prefix": "tac",
+    "body": [
+      "it('${1:actionCreator}', () => {",
+      "\tconst payload: any = {}",
+      "\tconst expectedActionObject: ${1:ActionType} = {}",
+      "\texpect(${1:actionCreator}).toEqual(",
+      "\t\texpectedActionObject",
+      "\t);",
+      "});"
+    ]
   },
   "rdc": {
     "prefix": "rdc",
@@ -47,6 +59,21 @@
       "};"
     ],
     "description": "Creates reducer.ts template file for redux module"
+  },
+  "trdc": {
+    "prefix": "trdc",
+    "body": [
+      "it('${1:name} reducer', () => {",
+      "\tconst oldState = {}",
+      "\tconst newState = reducer(",
+      "\t\t{",
+      "\t\t\t...oldState",
+      "\t\t},",
+      "\t\t${2:actionCreator()}",
+      "\t);",
+      "expect(newState).toEqual(${3:something});",
+      "});"
+    ]
   },
   "sgs": {
     "prefix": "sgs",
@@ -67,6 +94,19 @@
       "}"
     ],
     "description": "Creates blank saga"
+  },
+  "tsaga": {
+    "prefix": "tsaga",
+    "body": [
+      "it('${1:sagaName}', () => {",
+      "\tconst action: ${2:ActionType} = {}",
+      "\tconst gen = ${1:sagaName}(action);",
+      "\texpect(gen.next().value).toEqual(",
+      "\t\t${3:SagaLogic}",
+      "\t);",
+      "\texpect(gen.next().done).toBe(true);",
+      "});"
+    ]
   },
   "sslc": {
     "prefix": "slc",

@@ -3,7 +3,7 @@ import {
   SidebarQueryParams,
   ToastType,
   Status,
-  ViewModuleConfig,
+  DodayModule,
 } from '../common-interfaces';
 import { Hero, Node } from './nodes';
 import { EntityConfig } from './entity';
@@ -11,23 +11,28 @@ import { Route, RouteConfig, SpotConfig, ModuleSysname } from '../systems';
 
 export type RootState = {
   router: RouterState;
-  oko?: OKOState;
+  modules?: ModuleSystemState;
   layout?: LayoutState;
   auth?: AuthState;
   navigation?: NavigationState;
-  sidebar: SidebarState;
-  toast: ToastState;
-  dialog: DialogState;
+  sidebar?: SidebarState;
+  toast?: ToastState;
+  dialog?: DialogState;
   storeGrid?: StoreGridState;
 };
 
-export type OKOState = {
+export type ModuleSystemState = {
   entities: EntityConfig[];
   routes: { [key: string]: RouteConfig };
-  spots: { [key: string]: { spot: SpotConfig; modules?: ModuleSysname[] } };
-  modules: { [key: string]: ViewModuleConfig };
-  tools: { [key: string]: ViewModuleConfig };
-  extensions: { [key: string]: ViewModuleConfig };
+  spots: {
+    [key: string]: {
+      spot: SpotConfig;
+      modules?: ModuleSysname[];
+    };
+  };
+  modules: { [key: string]: DodayModule };
+  tools: { [key: string]: DodayModule };
+  extensions: { [key: string]: DodayModule };
 };
 
 export type SidebarState = {
