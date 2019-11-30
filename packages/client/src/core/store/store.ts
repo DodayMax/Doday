@@ -3,6 +3,7 @@ import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
 import { getModuleSystemModule } from '@root/modules/redux/module-system';
+import { getAuthenticationModule } from '@root/modules/redux/auth';
 
 export const history = createBrowserHistory();
 
@@ -26,6 +27,7 @@ const store = createStore(
     extensions: [getSagaExtension()],
   },
   getRootModule(),
+  getAuthenticationModule(),
   getModuleSystemModule()
 );
 

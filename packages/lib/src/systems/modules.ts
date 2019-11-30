@@ -10,7 +10,7 @@ import { RouteConfig, Route } from './routes';
 export enum ModuleSysname {
   Layout = 'layout',
   System = 'system',
-  Auth = 'auth',
+  SignButtons = 'auth/sign-buttons',
   NavigationStack = 'navigation/stack',
   Toast = 'toast',
   Dialog = 'dialog',

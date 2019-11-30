@@ -4,16 +4,23 @@ import {
   WithTheme,
   withTheme,
 } from '@material-ui/core/styles';
-import i18next from 'i18next';
+import { TFunction, i18n } from 'i18next';
 import { AppSpot, configureDodayTheme, auth, APIService } from '@doday/lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { ACLGuard } from './components/acl-guard/acl-guard';
+import {
+  heroSelector,
+  getCurrentHeroActionCreator,
+  setIsAuthenticatedStatusAction,
+} from '@redux/auth';
+import { loadModulesActionCreator } from '@redux/module-system';
+import { Spot } from './components/spot/spot';
 
 interface AppProps {}
 
 interface TranslationProps {
-  t?: i18next.TFunction;
-  i18n?: i18next.i18n;
+  t?: TFunction;
+  i18n?: i18n;
 }
 
 export const AppComponent = (

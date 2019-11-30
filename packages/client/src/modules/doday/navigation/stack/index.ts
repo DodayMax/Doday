@@ -1,5 +1,5 @@
 import { DodayModule, LayoutSpot, ModuleSysname } from '@doday/lib';
-import { NavigationStack } from './navigation-stack';
+import { NavigationStack } from './view/navigation-stack';
 import { getNavigationModule } from '@redux/navigation';
 
 export const NavigationStackDodayModule: DodayModule<LayoutSpot.Page> = {
