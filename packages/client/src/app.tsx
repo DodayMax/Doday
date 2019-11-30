@@ -39,24 +39,28 @@ export const AppComponent = (
      * - Toast
      * - Dialog
      */
-    dispatch(loadModulesActionCreator([...modules.map(item => item.sysname)]));
+    dispatch(
+      loadModulesActionCreator([...modules.map(item => item.doday.sysname)])
+    );
   }, []);
 
   React.useEffect(() => {
     /**
      * Load active Hero's modules
      */
-    // if (
-    //   activeHeroModules &&
-    //   activeHeroModules.activeModules &&
-    //   activeHeroModules.activeModules.length
-    // ) {
-    //   dispatch(
-    //     loadModulesActionCreator([
-    //       ...activeHeroModules.activeModules.map(entity => entity.doday),
-    //     ])
-    //   );
-    // }
+    if (
+      activeHeroModules &&
+      activeHeroModules.activeModules &&
+      activeHeroModules.activeModules.length
+    ) {
+      dispatch(
+        loadModulesActionCreator([
+          ...activeHeroModules.activeModules.map(
+            entity => entity.doday.sysname
+          ),
+        ])
+      );
+    }
   }, [activeHeroModules]);
 
   React.useEffect(() => {

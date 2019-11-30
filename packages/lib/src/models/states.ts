@@ -18,7 +18,7 @@ export type RootState = {
   sidebar?: SidebarState;
   toast?: ToastState;
   dialog?: DialogState;
-  storeGrid?: StoreGridState;
+  store?: StoreState;
 };
 
 export type ModuleSystemState = {
@@ -77,7 +77,7 @@ export interface NavigationState {
   };
 }
 
-export interface StoreGridState {
+export interface StoreState {
   status: Status;
   items: Node[];
   count: number;

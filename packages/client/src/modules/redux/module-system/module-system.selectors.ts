@@ -38,3 +38,6 @@ export const creatableEntitiesLabelsSelector = createSelector(
   entities =>
     entities.filter(item => item.behavior.includes(Behavior.Creatable))
 );
+
+export const availableEntitiesSelector = (state: RootState) =>
+  state.modules.entities;

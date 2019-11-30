@@ -15,8 +15,9 @@ export enum ModuleSysname {
   Toast = 'toast',
   Dialog = 'dialog',
   Topbar = 'topbar',
-  StoreFilter = 'store-filter',
-  StoreGrid = 'store-grid',
+  Store = 'store/page',
+  StoreFilter = 'store/filter',
+  StoreMasonry = 'store/masonry',
 }
 
 export type ModuleConfig<Spot> = {
