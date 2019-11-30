@@ -37,4 +37,11 @@ export const modules: Module[] = [
     createdAt: new Date(),
     sysname: ModuleSysname.Dialog,
   },
+  {
+    did: cuid(),
+    labels: [NodeLabel.Module],
+    public: false,
+    createdAt: new Date(),
+    sysname: ModuleSysname.Topbar,
+  },
 ];
