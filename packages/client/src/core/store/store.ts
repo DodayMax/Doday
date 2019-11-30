@@ -2,8 +2,9 @@ import { createStore } from 'redux-dynamic-modules';
 import { getSagaExtension } from 'redux-dynamic-modules-saga';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory } from 'history';
-import { getModuleSystemModule } from '@redux/module-system';
 import { getAuthenticationModule } from '@redux/auth';
+import { getDialogModule } from '@root/modules/redux/dialog';
+import { getToastModule } from '@root/modules/redux/toast';
 
 export const history = createBrowserHistory();
 
@@ -26,7 +27,9 @@ const store = createStore(
     extensions: [getSagaExtension()],
   },
   getRootModule(),
-  getAuthenticationModule()
+  getAuthenticationModule(),
+  getDialogModule(),
+  getToastModule()
 );
 
 // store.addModule();

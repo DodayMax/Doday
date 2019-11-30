@@ -16,4 +16,25 @@ export const modules: Module[] = [
     createdAt: new Date(),
     sysname: ModuleSysname.NavigationStack,
   },
+  {
+    did: cuid(),
+    labels: [NodeLabel.Module],
+    public: false,
+    createdAt: new Date(),
+    sysname: ModuleSysname.Layout,
+  },
+  {
+    did: cuid(),
+    labels: [NodeLabel.Module],
+    public: false,
+    createdAt: new Date(),
+    sysname: ModuleSysname.Toast,
+  },
+  {
+    did: cuid(),
+    labels: [NodeLabel.Module],
+    public: false,
+    createdAt: new Date(),
+    sysname: ModuleSysname.Dialog,
+  },
 ];

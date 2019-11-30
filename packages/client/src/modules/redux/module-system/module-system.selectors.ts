@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { RootState, SpotConfig } from '@doday/lib';
+import { RootState, SpotConfig, Behavior } from '@doday/lib';
 
 export const findSuitableModulesSelector = (params: SpotConfig) =>
   createSelector(
@@ -18,7 +18,7 @@ export const findSuitableModulesSelector = (params: SpotConfig) =>
         const moduleObjects = modulesForSpot.map(
           item => moduleSystemState.modules[item]
         );
-        return moduleObjects;
+        return moduleObjects.filter(item => item.status.loaded);
       }
     }
   );
@@ -31,4 +31,10 @@ export const loadingModulesSelector = createSelector(
       []
     );
   }
+);
+
+export const creatableEntitiesLabelsSelector = createSelector(
+  (state: RootState) => state.modules.entities,
+  entities =>
+    entities.filter(item => item.behavior.includes(Behavior.Creatable))
 );
