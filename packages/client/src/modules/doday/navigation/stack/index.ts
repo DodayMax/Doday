@@ -2,7 +2,7 @@ import { DodayModule, LayoutSpot, ModuleSysname } from '@doday/lib';
 import { NavigationStack } from './view/navigation-stack';
 import { getNavigationModule } from '@redux/navigation';
 
-export const NavigationStackDodayModule: DodayModule<LayoutSpot.Page> = {
+const NavigationStackDodayModule: DodayModule<LayoutSpot.Page> = {
   status: {},
   config: {
     sysname: ModuleSysname.NavigationStack,
@@ -13,3 +13,5 @@ export const NavigationStackDodayModule: DodayModule<LayoutSpot.Page> = {
     dependencies: [getNavigationModule()],
   }),
 };
+
+export default NavigationStackDodayModule;

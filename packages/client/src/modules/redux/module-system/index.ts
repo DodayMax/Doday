@@ -4,7 +4,7 @@ import sagas from './module-system.sagas';
 export * from './module-system.actions';
 export * from './module-system.selectors';
 export const getModuleSystemModule = () => ({
-  id: 'module-system',
+  id: 'modules',
   reducerMap: {
     modules: reducer,
   },

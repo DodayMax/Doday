@@ -5,7 +5,7 @@ import {
   registerModuleBySysnameActionCreator,
   registerModuleBySpotActionCreator,
   registerSpotActionCreator,
-} from './module-system.actions';
+} from './redux/module-system/module-system.actions';
 import { RouteSystem } from '@core/systems';
 
 export const loadModule = async (sysname: ModuleSysname) => {
@@ -31,6 +31,7 @@ export const loadModule = async (sysname: ModuleSysname) => {
           loaded: true,
         },
       };
+      console.log(loadedModule, sysname);
       store.dispatch(registerModuleBySpotActionCreator(loadedModule));
       store.dispatch(registerModuleBySysnameActionCreator(loadedModule));
       /**

@@ -3,7 +3,7 @@ import { SignButtons } from './view/sign-buttons';
 import { getAuthenticationModule } from '@root/modules/redux/auth';
 import { en, ru } from './translations';
 
-export const SignButtonsDodayModule: DodayModule<TopbarSpot.Right> = {
+const SignButtonsDodayModule: DodayModule<TopbarSpot.Right> = {
   status: {},
   config: {
     sysname: ModuleSysname.SignButtons,
@@ -18,3 +18,5 @@ export const SignButtonsDodayModule: DodayModule<TopbarSpot.Right> = {
     ru,
   },
 };
+
+export default SignButtonsDodayModule;

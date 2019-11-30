@@ -26,9 +26,10 @@ const store = createStore(
     extensions: [getSagaExtension()],
   },
   getRootModule(),
-  getModuleSystemModule(),
   getAuthenticationModule()
 );
+
+// store.addModule();
 
 // expose store when run in Cypress
 if ((window as any).Cypress) {

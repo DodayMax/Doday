@@ -1,10 +1,10 @@
-import { call, all, takeEvery } from 'redux-saga/effects';
+import { call, takeEvery, all } from 'redux-saga/effects';
 import {
   LoadModuleAction,
   LoadModulesAction,
   ModuleSystemActionConstants,
 } from './module-system.actions';
-import { loadModule } from './loader';
+import { loadModule } from '../../loader';
 
 /**
  * Load new single module

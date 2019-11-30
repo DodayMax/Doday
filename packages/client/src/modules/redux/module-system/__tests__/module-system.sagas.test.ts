@@ -6,13 +6,13 @@ import {
   LoadModulesAction,
 } from '../module-system.actions';
 import { ModuleSysname } from '@doday/lib';
-import { loadModule } from '../loader';
+import { loadModule } from '../../../loader';
 
 describe('Module system sagas tests', () => {
   it('loadModuleSaga', () => {
     const action: LoadModuleAction = {
       type: ModuleSystemActionConstants.LOAD_MODULE,
-      payload: ModuleSysname.Auth,
+      payload: ModuleSysname.SignButtons,
     };
     const gen = loadModuleSaga(action);
     expect(gen.next().value).toEqual(call(loadModule, action.payload));
@@ -22,7 +22,7 @@ describe('Module system sagas tests', () => {
   it('loadModulesSaga', () => {
     const action: LoadModulesAction = {
       type: ModuleSystemActionConstants.LOAD_MODULES,
-      payload: [ModuleSysname.Auth, ModuleSysname.Dialog],
+      payload: [ModuleSysname.SignButtons, ModuleSysname.Dialog],
     };
     const tasks = action.payload.map(item => call(loadModule, item));
     const gen = loadModulesSaga(action);

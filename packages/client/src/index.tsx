@@ -13,6 +13,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '@styles/starter.scss';
 import '@styles/_fonts.scss';
 import '@styles/_animations.scss';
+import { getModuleSystemModule } from './modules/redux/module-system';
+
+store.addModule(getModuleSystemModule());
 
 const Root = () => (
   <I18nextProvider i18n={i18n}>
