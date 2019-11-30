@@ -11,7 +11,7 @@ export enum ModuleSysname {
   Layout = 'layout',
   System = 'system',
   Auth = 'auth',
-  Navigation = 'navigation',
+  NavigationStack = 'navigation/stack',
   Toast = 'toast',
   Dialog = 'dialog',
   Topbar = 'topbar',
