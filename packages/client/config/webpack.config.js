@@ -266,6 +266,7 @@ module.exports = function(webpackEnv) {
         'react-native': 'react-native-web',
         '@root': path.resolve(__dirname, '../src'),
         '@root/*': '@root/*',
+        '@requests': '@root/api-requests',
         '@icons': '@root/assets/icons',
         '@components': '@root/components',
         '@components/*': '@root/components/*',

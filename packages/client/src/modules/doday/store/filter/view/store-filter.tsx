@@ -3,7 +3,7 @@ import { Box, TextField, Chip } from '@material-ui/core';
 import { useStyles } from './css.store-filter';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
-import { availableEntitiesSelector } from '@redux/module-system';
+import { availableEntitiesSelector } from '@redux/auth';
 import { capitalize, Behavior } from '@doday/lib';
 import { pushRouteActionCreator } from '@redux/navigation';
 import { RouteSystem } from '@root/core/systems';
@@ -16,14 +16,17 @@ export const StoreFilter = (props: WithQuery) => {
   const dispatch = useDispatch();
   const css = useStyles({});
   const entities = useSelector(availableEntitiesSelector);
-  const filteredEntities = entities.filter(entity =>
-    entity.behavior.includes(Behavior.Publishable)
-  );
+  const filteredEntities =
+    entities &&
+    entities.filter(entity =>
+      entity.doday.behavior.includes(Behavior.Publishable)
+    );
   const [selectedEntities, updateSelectedEntities] = useState([]);
 
   useEffect(() => {
-    const entities = props.query && props.query.node;
-    if (entities) {
+    const nodes = props.query && props.query.node;
+    console.log(props.query);
+    if (nodes) {
       updateSelectedEntities(props.query.node.split(','));
     } else {
       updateSelectedEntities([]);
@@ -63,44 +66,49 @@ export const StoreFilter = (props: WithQuery) => {
         />
       </Box>
       <Box display="flex" justifyContent="center" mb={4}>
-        {filteredEntities.map(entity => (
-          <Chip
-            key={entity.doday}
-            label={capitalize(entity.doday)}
-            clickable
-            color={
-              selectedEntities.includes(entity.doday) ? 'primary' : undefined
-            }
-            onClick={() => {
-              if (selectedEntities.includes(entity.doday)) {
-                dispatch(
-                  pushRouteActionCreator(
-                    RouteSystem.api()
-                      .routes.store.create()
-                      .query({
-                        node: selectedEntities
-                          .filter(selected => selected !== entity.doday)
-                          .join(','),
-                      })
-                      .build()
-                  )
-                );
-              } else {
-                dispatch(
-                  pushRouteActionCreator(
-                    RouteSystem.api()
-                      .routes.store.create()
-                      .query({
-                        node: selectedEntities.concat(entity.doday).join(','),
-                      })
-                      .build()
-                  )
-                );
+        {filteredEntities &&
+          filteredEntities.map(entity => (
+            <Chip
+              key={entity.doday.did}
+              label={capitalize(entity.doday.doday)}
+              clickable
+              color={
+                selectedEntities.includes(entity.doday.doday)
+                  ? 'primary'
+                  : undefined
               }
-            }}
-            className={css.tag}
-          />
-        ))}
+              onClick={() => {
+                if (selectedEntities.includes(entity.doday.doday)) {
+                  dispatch(
+                    pushRouteActionCreator(
+                      RouteSystem.api()
+                        .routes.store.create()
+                        .query({
+                          node: selectedEntities
+                            .filter(selected => selected !== entity.doday.doday)
+                            .join(','),
+                        })
+                        .build()
+                    )
+                  );
+                } else {
+                  dispatch(
+                    pushRouteActionCreator(
+                      RouteSystem.api()
+                        .routes.store.create()
+                        .query({
+                          node: selectedEntities
+                            .concat(entity.doday.doday)
+                            .join(','),
+                        })
+                        .build()
+                    )
+                  );
+                }
+              }}
+              className={css.tag}
+            />
+          ))}
       </Box>
     </Box>
   );

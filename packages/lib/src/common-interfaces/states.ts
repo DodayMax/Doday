@@ -1,13 +1,13 @@
 import { RouterState } from 'connected-react-router';
+import { SidebarQueryParams, ToastType, Status } from '.';
+import { Hero, Node } from '../models/entities';
 import {
-  SidebarQueryParams,
-  ToastType,
-  Status,
+  Route,
+  RouteConfig,
+  SpotConfig,
+  ModuleSysname,
   DodayModule,
-} from '../common-interfaces';
-import { Hero, Node } from './nodes';
-import { EntityConfig } from './entity';
-import { Route, RouteConfig, SpotConfig, ModuleSysname } from '../systems';
+} from '../systems';
 
 export type RootState = {
   router: RouterState;
@@ -22,7 +22,6 @@ export type RootState = {
 };
 
 export type ModuleSystemState = {
-  entities: EntityConfig[];
   routes: { [key: string]: RouteConfig };
   spots: {
     [key: string]: {

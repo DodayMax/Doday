@@ -1,4 +1,4 @@
-import { API_URL } from '@doday/lib';
+import { API_URL } from '@root/core/services';
 
 export const createAPIUrl = (params?: any) => ({
   auth: {

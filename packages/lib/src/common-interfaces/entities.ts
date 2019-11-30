@@ -1,10 +1,4 @@
-import { NodeLabel, Progress, Doday } from './nodes';
-
-export class EntityConfig {
-  doday!: NodeLabel;
-  progress!: NodeLabel;
-  behavior!: Behavior[];
-}
+import { Doday, Progress } from '../models';
 
 export class Entity<D = Doday, P = Progress> {
   doday!: D;

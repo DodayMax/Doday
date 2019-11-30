@@ -1,5 +1,5 @@
-import { APIService } from '@doday/lib';
 import { createAPIUrl } from '../urls';
+import { APIService } from '@root/core/services';
 
 export const fetchDodaysRequest = () => {
   return APIService.request()

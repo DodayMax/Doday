@@ -1,4 +1,4 @@
-import { Node, SerializedNode } from './node';
+import { Node, SerializedNode } from '../abstract/node';
 
 export class Resource extends Node {
   /** A user displayable description for the page. */

@@ -1,8 +1,8 @@
-import { NodeLabel } from './types';
-import { Hero } from './hero';
+import { NodeLabel } from '../node-labels';
+import { Hero } from '../hero/hero';
 import { Progress } from './progress';
-import { Resource } from './resource';
-import { Tool } from './tool';
+import { Resource } from '../resource/resource';
+import { Tool } from '../tool/tool';
 
 /**
  * Basic abstract class for all types of nodes

@@ -1,5 +1,5 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
-import { NodeLabel } from '../models/nodes';
+import { NodeLabel } from '../models/entities';
 import { AnySpot, SpotConfig } from './spots';
 import { RouteConfig, Route } from './routes';
 
@@ -9,7 +9,6 @@ import { RouteConfig, Route } from './routes';
 
 export enum ModuleSysname {
   Layout = 'layout',
-  System = 'system',
   SignButtons = 'auth/sign-buttons',
   NavigationStack = 'navigation/stack',
   Toast = 'toast',
@@ -39,7 +38,7 @@ export type ModuleConfig<Spot> = {
   dependencies?: ModuleSysname[];
 };
 
-/** ViewModule shape */
+/** DodayModule shape */
 export class DodayModule<Spot = AnySpot> implements Dynamic {
   /**
    * Needed for the system to properly load modules

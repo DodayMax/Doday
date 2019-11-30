@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { RootState, SpotConfig, Behavior } from '@doday/lib';
+import { RootState, SpotConfig } from '@doday/lib';
 
 export const findSuitableModulesSelector = (params: SpotConfig) =>
   createSelector(
@@ -32,12 +32,3 @@ export const loadingModulesSelector = createSelector(
     );
   }
 );
-
-export const creatableEntitiesLabelsSelector = createSelector(
-  (state: RootState) => state.modules.entities,
-  entities =>
-    entities.filter(item => item.behavior.includes(Behavior.Creatable))
-);
-
-export const availableEntitiesSelector = (state: RootState) =>
-  state.modules.entities;

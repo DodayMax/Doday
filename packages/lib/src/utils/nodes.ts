@@ -7,6 +7,8 @@ export const getPrimaryLabel = (labels: NodeLabel[]): NodeLabel | undefined => {
     NodeLabel.Hero,
     NodeLabel.Tool,
     NodeLabel.Resource,
+    NodeLabel.Entity,
+    NodeLabel.Module,
   ];
   const res = labels.map(label => {
     if (primaryLabels.includes(label)) {

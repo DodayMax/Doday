@@ -6,7 +6,6 @@ import {
 import { ModuleSystemState } from '@doday/lib';
 
 export const moduleSystemInitialState: ModuleSystemState = {
-  entities: [],
   modules: {},
   spots: {},
   routes: {},
@@ -64,14 +63,6 @@ export default (
           ...state.routes,
           [action.payload.sysname]: action.payload,
         },
-      };
-    case ModuleSystemActionConstants.REGISTER_ENTITY:
-      return {
-        ...state,
-        entities: uniqBy(
-          state.entities.concat(action.payload),
-          item => item.doday
-        ),
       };
     default:
       return state;

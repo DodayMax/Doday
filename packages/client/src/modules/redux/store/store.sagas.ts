@@ -6,7 +6,7 @@ import {
   setDodaysCountActionCreator,
   setStoreStatusActionCreator,
 } from './store.actions';
-import { fetchDodaysRequest } from '@doday/requests';
+import { fetchDodaysRequest } from '@requests';
 
 export function* fetchDodaysSaga(action: FetchDodaysAction) {
   yield put(setStoreStatusActionCreator({ loading: true }));

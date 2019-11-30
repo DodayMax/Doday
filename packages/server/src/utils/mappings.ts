@@ -19,6 +19,10 @@ export const parseHeroNeo4jRecords = (records: Neo4jRecord[]): Node[] => {
     const node: {
       hero: Neo4jNode;
       modules?: { doday: Neo4jNode; progress: Neo4jNode }[];
+      entities?: {
+        doday: Neo4jNode;
+        progress: Neo4jNode;
+      }[];
     } = record._fields[0];
     return {
       labels: node.hero.labels,
@@ -26,6 +30,12 @@ export const parseHeroNeo4jRecords = (records: Neo4jRecord[]): Node[] => {
       activeModules:
         node.modules &&
         node.modules.map(entity => ({
+          doday: mapNode(entity.doday),
+          progress: mapNode(entity.progress),
+        })),
+      availableEntities:
+        node.entities &&
+        node.entities.map(entity => ({
           doday: mapNode(entity.doday),
           progress: mapNode(entity.progress),
         })),

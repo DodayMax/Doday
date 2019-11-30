@@ -18,6 +18,7 @@
       "@redux/*": ["modules/redux/*"],
       "@modules/*": ["modules/doday/*"],
       "@tools/*": ["modules/tools/*"],
+      "@requests": ["api-requests"],
       "@components/*": ["components/*"],
       "@styles/*": ["styles/*"]
     }
