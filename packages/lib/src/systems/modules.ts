@@ -17,6 +17,7 @@ export enum ModuleSysname {
   Store = 'store/page',
   StoreFilter = 'store/filter',
   StoreMasonry = 'store/masonry',
+  StoreModuleMasonryItem = 'store/module-masonry-item',
   StoreDrawerItem = 'store/drawer-item',
 }
 

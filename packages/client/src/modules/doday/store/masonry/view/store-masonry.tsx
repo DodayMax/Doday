@@ -26,7 +26,6 @@ export const StoreMasonry = () => {
       <Masonry
         items={storeState.items}
         renderItem={props => {
-          console.log(getPrimaryLabel(props.item.doday.labels));
           return (
             <Spot
               sysname={StoreSpot.MasonryItem}
