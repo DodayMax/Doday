@@ -17,6 +17,7 @@ export enum ModuleSysname {
   Store = 'store/page',
   StoreFilter = 'store/filter',
   StoreMasonry = 'store/masonry',
+  StoreDrawerItem = 'store/drawer-item',
 }
 
 export type ModuleConfig<Spot> = {
