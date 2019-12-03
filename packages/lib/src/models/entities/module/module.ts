@@ -7,6 +7,7 @@ import { ModuleSysname, AnySpot } from '../../../systems';
  */
 export class Module extends Node {
   sysname!: ModuleSysname;
+  default?: boolean;
   spot?: AnySpot;
   node?: NodeLabel;
   dependencies?: ModuleSysname[];
@@ -22,6 +23,7 @@ export class Module extends Node {
 
 export class SerializedModule extends SerializedNode {
   sysname!: string;
+  default?: boolean;
   spot?: string;
   node?: string;
   dependencies?: string[];

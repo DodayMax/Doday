@@ -5,20 +5,25 @@ export const findSuitableModulesSelector = (params: SpotConfig) =>
   createSelector(
     (state: RootState) => state.modules,
     moduleSystemState => {
-      let modulesForSpot =
+      const modulesForSpot =
         moduleSystemState.spots[params.sysname] &&
         moduleSystemState.spots[params.sysname].modules;
+      let suitableModules;
       if (modulesForSpot && modulesForSpot.length) {
-        if (params.node) {
-          modulesForSpot = modulesForSpot.filter(
-            sysname =>
-              moduleSystemState.modules[sysname].config.node === params.node
-          );
-        }
-        const moduleObjects = modulesForSpot.map(
+        /**
+         * Find suitable loaded modules
+         */
+        suitableModules = modulesForSpot.filter(
+          sysname =>
+            moduleSystemState.modules[sysname].status.loaded &&
+            ((params.node &&
+              moduleSystemState.modules[sysname].config.node === params.node) ||
+              true)
+        );
+        const suitableModuleObjects = suitableModules.map(
           item => moduleSystemState.modules[item]
         );
-        return moduleObjects.filter(item => item.status.loaded);
+        return suitableModuleObjects;
       }
     }
   );

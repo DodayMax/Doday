@@ -25,6 +25,10 @@ export type ModuleConfig<Spot> = {
    */
   sysname: ModuleSysname;
   /**
+   * Default modules available for Hero from start
+   */
+  default?: boolean;
+  /**
    * Specify node for which the module has view
    */
   node?: NodeLabel;
