@@ -1,7 +1,11 @@
 import React from 'react';
-import { StoreSpot } from '@doday/lib';
+import { StoreSpot, Route, SpotConfig, Doday, Entity } from '@doday/lib';
 import { routes } from '../routes';
 import { NavigationRoute, Spot, Page } from '@root/components';
+
+export interface StoreFilterSpotConfig extends SpotConfig {
+  route: Route;
+}
 
 export const DodayStore = props => {
   // Get current module for StoreSpot.Filter
@@ -12,7 +16,10 @@ export const DodayStore = props => {
     <NavigationRoute base path={routes.store.pattern}>
       {route => (
         <Page base>
-          <Spot sysname={StoreSpot.Filter} query={route.query} />
+          <Spot<StoreFilterSpotConfig>
+            sysname={StoreSpot.Filter}
+            route={route}
+          />
           <Spot sysname={StoreSpot.Masonry} />
         </Page>
       )}

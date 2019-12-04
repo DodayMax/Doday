@@ -30,7 +30,6 @@ export const ModuleMasonryItem = props => {
     <Grid item key={item.doday.did} style={style}>
       <Card
         onClick={() => {
-          console.log('click', item.doday.did);
           dispatch(
             pushRouteActionCreator(
               RouteSystem.api()
@@ -38,6 +37,9 @@ export const ModuleMasonryItem = props => {
                 .build()
             )
           );
+        }}
+        style={{
+          margin: '10px',
         }}
       >
         <CardActionArea>

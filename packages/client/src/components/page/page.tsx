@@ -16,6 +16,7 @@ const css = (theme: Theme) =>
       position: 'relative',
       color: theme.palette.action.active,
       marginBottom: `${theme.spacing(3)}px`,
+      padding: `${theme.spacing(10)}px`,
     },
     scroll: {
       width: '100%',

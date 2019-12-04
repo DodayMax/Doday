@@ -22,6 +22,7 @@ export type RootState = {
 };
 
 export type ModuleSystemState = {
+  status: { isInitialized: boolean };
   routes: { [key: string]: RouteConfig };
   spots: {
     [key: string]: {

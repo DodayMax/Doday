@@ -4,15 +4,15 @@ import { useStyles } from './css.store-filter';
 import SearchIcon from '@material-ui/icons/Search';
 import { useSelector, useDispatch } from 'react-redux';
 import { availableEntitiesSelector } from '@redux/auth';
-import { capitalize, Behavior } from '@doday/lib';
+import { capitalize, Behavior, Route } from '@doday/lib';
 import { pushRouteActionCreator } from '@redux/navigation';
 import { RouteSystem } from '@root/core/systems';
 
-export interface WithQuery {
-  query: { [key: string]: string };
+export interface StoreFilterProps {
+  route: Route;
 }
 
-export const StoreFilter = (props: WithQuery) => {
+export const StoreFilter = (props: StoreFilterProps) => {
   const dispatch = useDispatch();
   const css = useStyles({});
   const entities = useSelector(availableEntitiesSelector);
@@ -24,14 +24,13 @@ export const StoreFilter = (props: WithQuery) => {
   const [selectedEntities, updateSelectedEntities] = useState([]);
 
   useEffect(() => {
-    const nodes = props.query && props.query.node;
-    console.log(props.query);
+    const nodes = props.route && props.route.query && props.route.query.node;
     if (nodes) {
-      updateSelectedEntities(props.query.node.split(','));
+      updateSelectedEntities(props.route.query.node.split(','));
     } else {
       updateSelectedEntities([]);
     }
-  }, [props.query]);
+  }, [props.route]);
 
   return (
     <Box

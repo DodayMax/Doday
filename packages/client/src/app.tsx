@@ -13,7 +13,10 @@ import {
   getCurrentHeroActionCreator,
   setIsAuthenticatedStatusAction,
 } from '@redux/auth';
-import { loadModulesActionCreator } from '@redux/module-system';
+import {
+  loadModulesActionCreator,
+  setInitializedStatusActionCreator,
+} from '@redux/module-system';
 import { Spot } from './components/spot/spot';
 import { modules } from './modules/init';
 import { auth, APIService } from './core/services';
@@ -55,11 +58,16 @@ export const AppComponent = (
       activeHeroModules.activeModules.length
     ) {
       dispatch(
-        loadModulesActionCreator([
-          ...activeHeroModules.activeModules.map(
-            entity => entity.doday.sysname
-          ),
-        ])
+        loadModulesActionCreator(
+          [
+            ...activeHeroModules.activeModules.map(
+              entity => entity.doday.sysname
+            ),
+          ],
+          {
+            after: setInitializedStatusActionCreator(true),
+          }
+        )
       );
     }
   }, [activeHeroModules]);

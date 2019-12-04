@@ -47,7 +47,6 @@ export const parseNeo4jRecords = (records: Neo4jRecord[]): Node[] => {
   if (!records.length) return [];
   return records.map(record => {
     const node: Neo4jNode = record._fields[0];
-    console.log(node);
     return {
       labels: node.labels,
       ...node.properties,

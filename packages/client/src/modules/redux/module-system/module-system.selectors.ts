@@ -13,13 +13,14 @@ export const findSuitableModulesSelector = (params: SpotConfig) =>
         /**
          * Find suitable loaded modules
          */
-        suitableModules = modulesForSpot.filter(
-          sysname =>
-            moduleSystemState.modules[sysname].status.loaded &&
-            ((params.node &&
-              moduleSystemState.modules[sysname].config.node === params.node) ||
-              true)
-        );
+        suitableModules = modulesForSpot.filter(sysname => {
+          let result = moduleSystemState.modules[sysname].status.loaded;
+          if (params.node) {
+            result =
+              moduleSystemState.modules[sysname].config.node === params.node;
+          }
+          return result;
+        });
         const suitableModuleObjects = suitableModules.map(
           item => moduleSystemState.modules[item]
         );
