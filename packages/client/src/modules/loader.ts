@@ -31,7 +31,6 @@ export const loadModule = async (sysname: ModuleSysname) => {
           loaded: true,
         },
       };
-      console.log(loadedModule, sysname);
       store.dispatch(registerModuleBySpotActionCreator(loadedModule));
       store.dispatch(registerModuleBySysnameActionCreator(loadedModule));
       /**

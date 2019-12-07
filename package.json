@@ -10,14 +10,12 @@
     "dev": "concurrently \"yarn workspace @doday/client run start\" \"yarn workspace @doday/server run start:dev\"",
     "build:lib": "yarn workspace @doday/lib run clean && yarn workspace @doday/lib run build",
     "build:ui": "yarn workspace @doday/ui run clean && yarn workspace @doday/ui run build",
-    "build:requests": "yarn workspace @doday/requests run clean && yarn workspace @doday/requests run build",
     "build:server": "yarn workspace @doday/server run build",
     "clean:lib": "yarn workspace @doday/lib run clean",
     "clean:ui": "yarn workspace @doday/ui run clean",
-    "clean:requests": "yarn workspace @doday/requests run clean",
     "clean:server": "yarn workspace @doday/server run clean",
-    "clean:all": "yarn clean:lib && yarn clean:requests && yarn clean:ui",
-    "build:all": "yarn build:lib && yarn build:requests && yarn build:ui"
+    "clean:all": "yarn clean:lib && yarn clean:ui",
+    "build:all": "yarn build:lib && && yarn build:ui"
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",

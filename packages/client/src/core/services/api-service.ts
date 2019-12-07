@@ -66,7 +66,6 @@ export class APIServiceClass {
     };
     if (exp) {
       const diff = exp()! - Date.now();
-      console.log(!isNaN(diff) && diff / 1000 / 60);
       return !isNaN(diff) && diff / 1000 / 60 < 10;
     }
     return;

@@ -1,4 +1,4 @@
-import { uniq, uniqBy } from 'lodash';
+import { uniq } from 'lodash';
 import {
   ModuleSystemActionTypes,
   ModuleSystemActionConstants,
@@ -6,7 +6,9 @@ import {
 import { ModuleSystemState } from '@doday/lib';
 
 export const moduleSystemInitialState: ModuleSystemState = {
-  entities: [],
+  status: {
+    isInitialized: false,
+  },
   modules: {},
   spots: {},
   routes: {},
@@ -19,6 +21,13 @@ export default (
   action: ModuleSystemActionTypes
 ): ModuleSystemState => {
   switch (action.type) {
+    case ModuleSystemActionConstants.SET_IS_INITIALIZED_STATUS:
+      return {
+        ...state,
+        status: {
+          isInitialized: action.payload,
+        },
+      };
     case ModuleSystemActionConstants.REGISTER_MODULE_BY_SYSNAME:
       return {
         ...state,
@@ -64,14 +73,6 @@ export default (
           ...state.routes,
           [action.payload.sysname]: action.payload,
         },
-      };
-    case ModuleSystemActionConstants.REGISTER_ENTITY:
-      return {
-        ...state,
-        entities: uniqBy(
-          state.entities.concat(action.payload),
-          item => item.doday
-        ),
       };
     default:
       return state;

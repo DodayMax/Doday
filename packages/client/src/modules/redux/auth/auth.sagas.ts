@@ -13,7 +13,7 @@ import {
   signInWithGoogleFirebaseRequest,
   logoutFirebaseRequest,
   meAPIRequest,
-} from '@doday/requests';
+} from '@requests';
 
 /**
  * Auth with Google saga

@@ -5,7 +5,7 @@ import {
   withTheme,
 } from '@material-ui/core/styles';
 import { TFunction, i18n } from 'i18next';
-import { AppSpot, configureDodayTheme, auth, APIService } from '@doday/lib';
+import { AppSpot, configureDodayTheme } from '@doday/lib';
 import { useDispatch, useSelector } from 'react-redux';
 import { ACLGuard } from './components/acl-guard/acl-guard';
 import {
@@ -13,9 +13,13 @@ import {
   getCurrentHeroActionCreator,
   setIsAuthenticatedStatusAction,
 } from '@redux/auth';
-import { loadModulesActionCreator } from '@redux/module-system';
+import {
+  loadModulesActionCreator,
+  setInitializedStatusActionCreator,
+} from '@redux/module-system';
 import { Spot } from './components/spot/spot';
 import { modules } from './modules/init';
+import { auth, APIService } from './core/services';
 
 interface AppProps {}
 
@@ -39,24 +43,33 @@ export const AppComponent = (
      * - Toast
      * - Dialog
      */
-    dispatch(loadModulesActionCreator([...modules.map(item => item.sysname)]));
+    dispatch(
+      loadModulesActionCreator([...modules.map(item => item.doday.sysname)])
+    );
   }, []);
 
   React.useEffect(() => {
     /**
      * Load active Hero's modules
      */
-    // if (
-    //   activeHeroModules &&
-    //   activeHeroModules.activeModules &&
-    //   activeHeroModules.activeModules.length
-    // ) {
-    //   dispatch(
-    //     loadModulesActionCreator([
-    //       ...activeHeroModules.activeModules.map(entity => entity.doday),
-    //     ])
-    //   );
-    // }
+    if (
+      activeHeroModules &&
+      activeHeroModules.activeModules &&
+      activeHeroModules.activeModules.length
+    ) {
+      dispatch(
+        loadModulesActionCreator(
+          [
+            ...activeHeroModules.activeModules.map(
+              entity => entity.doday.sysname
+            ),
+          ],
+          {
+            after: setInitializedStatusActionCreator(true),
+          }
+        )
+      );
+    }
   }, [activeHeroModules]);
 
   React.useEffect(() => {

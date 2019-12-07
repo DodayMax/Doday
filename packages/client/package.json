@@ -10,7 +10,6 @@
   "dependencies": {
     "@babel/core": "7.2.2",
     "@doday/lib": "0.1.0",
-    "@doday/requests": "0.1.0",
     "@doday/ui": "0.1.0",
     "@material-ui/core": "^4.5.1",
     "@material-ui/icons": "^4.5.1",
@@ -91,6 +90,7 @@
     "moduleNameMapper": {
       "^.+\\.(css|sass|scss)$": "identity-obj-proxy",
       "^@root(.*)$": "<rootDir>/src$1",
+      "^@requests(.*)$": "<rootDir>/src/api-requests$1",
       "^@components(.*)$": "<rootDir>/src/components$1",
       "^@core(.*)$": "<rootDir>/src/core$1",
       "^@styles(.*)$": "<rootDir>/src/styles$1",

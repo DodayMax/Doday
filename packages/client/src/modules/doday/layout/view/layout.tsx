@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Media from 'react-media';
 import { DesktopLayout } from './desktop-layout/desktop-layout';
 import { MobileLayout } from './mobile-layout/mobile-layout';
-import { ModuleSysname, LayoutType } from '@doday/lib';
+import { LayoutType } from '@doday/lib';
 
 export const LayoutContext = React.createContext(null as LayoutType);
 

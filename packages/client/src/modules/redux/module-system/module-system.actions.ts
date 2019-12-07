@@ -5,10 +5,12 @@ import {
   SpotConfig,
   EntityConfig,
   RouteConfig,
+  DodayAction,
 } from '@doday/lib';
 
 export enum ModuleSystemActionConstants {
   FETCH_ACTIVE_MODULES_FOR_HERO = '[module-system] FETCH_ACTIVE_MODULES_FOR_HERO',
+  SET_IS_INITIALIZED_STATUS = '[module-system] SET_IS_INITIALIZED_STATUS',
   LOAD_MODULE = '[module-system] LOAD_MODULE',
   LOAD_MODULES = '[module-system] LOAD_MODULES',
   REGISTER_MODULE_BY_SYSNAME = '[module-system] REGISTER_MODULE_BY_SYSNAME',
@@ -24,12 +26,17 @@ export interface FetchActiveModulesForHeroAction extends AnyAction {
   type: ModuleSystemActionConstants.FETCH_ACTIVE_MODULES_FOR_HERO;
 }
 
+export interface SetInitializedStatusAction extends AnyAction {
+  type: ModuleSystemActionConstants.SET_IS_INITIALIZED_STATUS;
+  payload: boolean;
+}
+
 export interface LoadModuleAction extends AnyAction {
   type: ModuleSystemActionConstants.LOAD_MODULE;
   payload: ModuleSysname;
 }
 
-export interface LoadModulesAction extends AnyAction {
+export interface LoadModulesAction extends DodayAction {
   type: ModuleSystemActionConstants.LOAD_MODULES;
   payload: ModuleSysname[];
 }
@@ -71,6 +78,19 @@ export function fetchActiveModulesForHeroActionCreator(): FetchActiveModulesForH
 }
 
 /**
+ * Set initialized status when all core
+ * and hero's active modules are loaded
+ */
+export function setInitializedStatusActionCreator(
+  payload: boolean
+): SetInitializedStatusAction {
+  return {
+    type: ModuleSystemActionConstants.SET_IS_INITIALIZED_STATUS,
+    payload,
+  };
+}
+
+/**
  * Load module bundle
  */
 export function loadModuleActionCreator(
@@ -86,11 +106,13 @@ export function loadModuleActionCreator(
  * Load module bundles
  */
 export function loadModulesActionCreator(
-  payload: ModuleSysname[]
+  payload: ModuleSysname[],
+  meta?: { after?: DodayAction }
 ): LoadModulesAction {
   return {
     type: ModuleSystemActionConstants.LOAD_MODULES,
     payload,
+    meta,
   };
 }
 
@@ -158,6 +180,7 @@ export function registerRouteActionCreator(
 
 /** Export all action types for reducers */
 export type ModuleSystemActionTypes =
+  | SetInitializedStatusAction
   | RegisterModuleBySpotAction
   | RegisterModuleBySysnameAction
   | RegisterEntityAction

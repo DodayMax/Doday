@@ -6,3 +6,4 @@ export * from './bottom-navigation/bottom-navigation';
 export * from './navigation-route/navigation-route';
 export * from './speed-dial/speed-dial';
 export * from './spot/spot';
+export * from './page';

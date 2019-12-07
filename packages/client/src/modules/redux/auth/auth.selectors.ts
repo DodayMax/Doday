@@ -7,3 +7,6 @@ export const heroSelector = (state: RootState) => state.auth.hero;
 
 export const activeModulesSelector = (state: RootState) =>
   state.auth.hero.activeModules;
+
+export const availableEntitiesSelector = (state: RootState) =>
+  state.auth.hero.availableEntities;

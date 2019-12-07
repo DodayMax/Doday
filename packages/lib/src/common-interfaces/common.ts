@@ -1,6 +1,14 @@
+import { AnyAction } from 'redux';
+
 export interface Status {
   loading?: boolean;
   error?: DodayError;
+}
+
+export interface DodayAction extends AnyAction {
+  meta?: {
+    after?: DodayAction;
+  };
 }
 
 export interface DodayError {

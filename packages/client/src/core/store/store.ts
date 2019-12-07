@@ -17,10 +17,6 @@ export const getRootModule = () => ({
   sagas: [],
 });
 
-function* rootSaga() {
-  // yield all([...ducks.auth.sagas]);
-}
-
 const store = createStore(
   {
     initialState: {},
@@ -31,8 +27,6 @@ const store = createStore(
   getDialogModule(),
   getToastModule()
 );
-
-// store.addModule();
 
 // expose store when run in Cypress
 if ((window as any).Cypress) {
