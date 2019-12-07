@@ -1,6 +1,6 @@
 import { NodeLabel } from '../models';
 
-export interface SpotObject {
+export interface SpotConfig {
   /**
    * Layout spot sysname
    */
@@ -14,7 +14,8 @@ export interface SpotObject {
    */
   node?: NodeLabel;
   /**
-   * Render all suitable modules which has views
+   * Spot could have multiple active modules?
+   * Spot will render all of them
    */
   multiple?: boolean;
 }
@@ -77,6 +78,6 @@ export enum SpeedDialSpot {
 
 export enum StoreSpot {
   Filter = 'StoreSpot.Filter',
-  Grid = 'StoreSpot.Grid',
-  Card = 'StoreSpot.Card',
+  Masonry = 'StoreSpot.Masonry',
+  MasonryItem = 'StoreSpot.MasonryItem',
 }

@@ -3,7 +3,6 @@ import { ModuleSysname } from './modules';
 
 export enum ToolSysname {
   Store = 'store',
-  Profile = 'profile',
   Activities = 'activities',
 }
 

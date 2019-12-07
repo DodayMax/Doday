@@ -19,9 +19,16 @@ export const findHeroById = (tx: neo4j.Transaction, props: { did: string }) => {
   return tx.run(
     `
         MATCH (h:Hero { did: $did })
+        OPTIONAL MATCH (h)-[]-(ep:Progress)-[]-(e:Entity)
+        WITH h, e, ep, CASE WHEN e IS NULL THEN NULL ELSE collect({
+            doday: e,
+            progress: ep
+          }) END as entities
         OPTIONAL MATCH (h)-[]-(p:Progress)-[]-(m:Module)
+        WITH h, p, m, entities
         RETURN {
           hero: h,
+          entities: entities,
           modules: CASE WHEN m IS NULL THEN NULL ELSE collect({
             doday: m,
             progress: p

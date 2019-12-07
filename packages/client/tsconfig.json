@@ -14,12 +14,13 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "@root/*": ["*"],
-      "@components/*": ["components/*"],
-      "@styles/*": ["styles/*"],
-      "@redux/*": ["modules/redux/*"],
-      "@modules/*": ["modules/views/*"],
       "@core/*": ["core/*"],
-      "@tools/*": ["modules/tools/*"]
+      "@redux/*": ["modules/redux/*"],
+      "@modules/*": ["modules/doday/*"],
+      "@tools/*": ["modules/tools/*"],
+      "@requests": ["api-requests"],
+      "@components/*": ["components/*"],
+      "@styles/*": ["styles/*"]
     }
   },
   "exclude": [

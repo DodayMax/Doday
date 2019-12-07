@@ -1,7 +1,7 @@
 import { ReducersMapObject, AnyAction, Middleware } from 'redux';
-import { NodeLabel } from '../models/nodes';
-import { AnySpot, SpotObject } from './spots';
-import { RouteModel, Route } from './routes';
+import { NodeLabel } from '../models/entities';
+import { AnySpot, SpotConfig } from './spots';
+import { RouteConfig, Route } from './routes';
 
 /**
  * Type of Activity
@@ -9,14 +9,16 @@ import { RouteModel, Route } from './routes';
 
 export enum ModuleSysname {
   Layout = 'layout',
-  System = 'system',
-  Auth = 'auth',
-  Navigation = 'navigation',
+  SignButtons = 'auth/sign-buttons',
+  NavigationStack = 'navigation/stack',
   Toast = 'toast',
   Dialog = 'dialog',
   Topbar = 'topbar',
-  StoreFilter = 'store-filter',
-  StoreGrid = 'store-grid',
+  Store = 'store/page',
+  StoreFilter = 'store/filter',
+  StoreMasonry = 'store/masonry',
+  StoreModuleMasonryItem = 'store/module-masonry-item',
+  StoreDrawerItem = 'store/drawer-item',
 }
 
 export type ModuleConfig<Spot> = {
@@ -24,6 +26,10 @@ export type ModuleConfig<Spot> = {
    * Sysname of the module
    */
   sysname: ModuleSysname;
+  /**
+   * Default modules available for Hero from start
+   */
+  default?: boolean;
   /**
    * Specify node for which the module has view
    */
@@ -38,8 +44,8 @@ export type ModuleConfig<Spot> = {
   dependencies?: ModuleSysname[];
 };
 
-/** ViewModule shape */
-export class ViewModule<Spot = AnySpot> implements Dynamic {
+/** DodayModule shape */
+export class DodayModule<Spot = AnySpot> implements Dynamic {
   /**
    * Needed for the system to properly load modules
    */
@@ -63,11 +69,11 @@ export class ViewModule<Spot = AnySpot> implements Dynamic {
     /**
      * New Routes to register in the System
      */
-    routes?: RouteModel[];
+    routes?: RouteConfig[];
     /**
-     * New Spots provided by module for the System
+     * Provided Spots
      */
-    spots?: SpotObject[];
+    spots?: SpotConfig[];
   };
   /**
    * Translations for the module (if it needs them)
