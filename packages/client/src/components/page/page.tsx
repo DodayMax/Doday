@@ -56,7 +56,10 @@ interface PageProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: React.ReactNode;
 }
 
+export const PageScrollContext = React.createContext(null);
+
 export const PageComponent = (props: PageProps & WithStyles) => {
+  const [scrollRef, updateScrollRef] = React.useState();
   const { base, classes, className, style } = props;
   const cx = classnames({
     [classes.pageContainer]: true,
@@ -69,13 +72,19 @@ export const PageComponent = (props: PageProps & WithStyles) => {
     [classes.base]: base,
   });
   return (
-    <div className={scrollContainer} style={style}>
-      {props.header}
-      <div className={cx}>
-        <Box display="flex" flexDirection="column">
-          {props.children}
-        </Box>
-      </div>
+    <div
+      ref={node => updateScrollRef(node)}
+      className={scrollContainer}
+      style={style}
+    >
+      <PageScrollContext.Provider value={scrollRef}>
+        {props.header}
+        <div className={cx}>
+          <Box display="flex" flexDirection="column">
+            {props.children}
+          </Box>
+        </div>
+      </PageScrollContext.Provider>
     </div>
   );
 };

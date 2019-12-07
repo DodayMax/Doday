@@ -643,7 +643,6 @@ export class Masonry extends React.PureComponent<MasonryProps, MasonryState> {
 
   onScroll = throttle(
     () => {
-      console.log('onScroll');
       if (!this.node) {
         return;
       }

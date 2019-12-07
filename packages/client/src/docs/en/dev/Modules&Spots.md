@@ -10,7 +10,7 @@ Initially there is only one `spot` in the app that takes up the entire screen of
 
 But `modules` can provide new `spots` in their views, so that as new `modules` are installed, more `spots` for views registered in the application.
 
-![](2019-11-20-23-56-38.png)
+![](../../../assets/docs2019-11-20-23-56-38.png)
 
 Every registered `spot` has a configuration object to describe `spot` and connect suited `module` to it.
 
